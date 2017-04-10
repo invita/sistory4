@@ -17,5 +17,6 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', "Admin\\IndexController@index")->name("admin.index.index#get");
+    Route::get('login', "Admin\\LoginController@index")->name("admin.login.index#get");
 
 });
