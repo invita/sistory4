@@ -17,6 +17,7 @@ div.nav1 { margin-left:10px; }
 
 table.logoTable { border:none; margin-bottom:0px; }
 div.mainTitle { display:inline-table; font-size:18px; margin-left:10px; margin-top:10px; vertical-align:top; color:#553490; }
+div.formTitle { font-size:16px; margin-bottom:10px; color:rgb(74,149,211); }
 
 div.statusDiv { font-weight:bold; margin: 4px 12px 0px 0px; color:#6699CC; }
 div.errorDiv { color:#996666; }
@@ -63,6 +64,8 @@ div.si4Input.flat { width:300px; border:none; box-shadow:none; background:inheri
 input.si4Input[type=text], input.si4Input[type=password], textarea.si4Input { width:200px; }
 input.si4Input.searchInput[type=text], textarea.si4Input.searchInput { width:120px; }
 div.si4InputDiv.modified > .si4Input { border: orange solid 1px; }
+
+input.si4Input[type=submit] { border:#87BCEA solid 1px; }
 
 input.si4Input.lookupKey { width:60px; }
 input.si4Input.lookupValue { width:140px; }
@@ -233,4 +236,5 @@ table.borderCollapseSeparate { border-collapse: separate; }
 
 div.CodeMirror { height:auto; }
 
+#primaryPage { padding: 10px; }
 
