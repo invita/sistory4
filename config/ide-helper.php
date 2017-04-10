@@ -52,7 +52,7 @@ return array(
     */
 
     'model_locations' => array(
-        'app\Models',
+        'app/Models',
     ),
 
 
