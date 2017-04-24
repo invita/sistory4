@@ -46,10 +46,18 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof TokenMismatchException){
-            // Catch it here and do what you want. For example...
-            return redirect()->route("admin.login.index#get")
-                ->withInput()
-                ->withErrors('Your session has expired!');
+
+            if($request->ajax()){
+                return response()->json([
+                    "status" => false,
+                    "error" => ["code" => 1, "message" => "Your session has expired!"]
+                ]);
+            } else {
+                // Catch it here and do what you want. For example...
+                return redirect()->route("admin.login.index#get")
+                    ->withInput()
+                    ->withErrors('Your session has expired!');
+            }
         }
 
         return parent::render($request, $exception);
@@ -65,7 +73,7 @@ class Handler extends ExceptionHandler
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->expectsJson()) {
-            return response()->json(['error' => 'Unauthenticated.'], 401);
+            return response()->json(["status" => false, "error" => ["code" => 1, "message" => "Your session has expired!"]]);
         }
 
         return redirect()->guest(route("admin.login.index#get"));

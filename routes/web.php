@@ -23,6 +23,10 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::group(['middleware' => 'auth'], function(){
         Route::get('/', "Admin\\IndexController@index")->name("admin.index.index#get");
+
+        Route::group(['prefix' => 'api'], function () {
+            Route::post('entity-list', "Admin\\ApiController@entityList")->name("admin.api.entity-list#post");
+        });
     });
 
 });
