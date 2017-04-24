@@ -21,12 +21,24 @@
     <div id="primaryPage">
         <div class="formTitle">Login</div>
         <div style="width: 300px">
-            <form method="POST" action="/">
-                <input class="si4Input" type="text" name="username" placeholder="Username" />
+            <form method="POST" action="{{ route("admin.login.index#post") }}">
+                {{ csrf_field() }}
+                <input class="si4Input" type="text" name="name" placeholder="Username" />
                 <input class="si4Input" type="password" name="password" placeholder="Password" />
+                <input class="si4Input" type="checkbox" name="remember" /> Remember me
                 <input class="si4Input gradBlue" type="submit" value="Login" />
             </form>
         </div>
+
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 </div>
 

@@ -32,7 +32,7 @@
     </div>
 
     <div class="floatRight vtop identityDiv">
-        <span class="loginName">Username (<a href="/logout">Logout</a>)</span>
+        <span class="loginName">Username (<a href="{{ route("admin.logout.index#get") }}">Logout</a>)</span>
     </div>
 
 </div>

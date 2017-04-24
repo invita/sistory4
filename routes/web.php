@@ -16,7 +16,13 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', "Admin\\IndexController@index")->name("admin.index.index#get");
+
     Route::get('login', "Admin\\LoginController@index")->name("admin.login.index#get");
+    Route::post('login', "Admin\\LoginController@index")->name("admin.login.index#post");
+    Route::get('logout', "Admin\\LogoutController@index")->name("admin.logout.index#get");
+
+    Route::group(['middleware' => 'auth'], function(){
+        Route::get('/', "Admin\\IndexController@index")->name("admin.index.index#get");
+    });
 
 });

@@ -2,6 +2,7 @@
 <html lang="sl" xml:lang="sl" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <link rel="icon" type="image/png" href="/img/icon.png">
     <title>Sistory 4 - Admin</title>
