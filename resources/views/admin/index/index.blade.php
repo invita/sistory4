@@ -19,12 +19,17 @@
                 <ul class="navigationUl">
 
                     <li class="mainMenuList">
-                        <a href="javascript:si4.loadModule({moduleName:'Dev/TestPage', newTab:'TestPage'});">DevTestPage</a>
+                        <a href="javascript:si4.loadModule({moduleName:'Dev/TestPage' });">TestPage</a>
                     </li>
 
                     <li class="mainMenuList">
-                        <a href="javascript:si4.loadModule({moduleName:'System/Dashboard', newTab:'System'});">System</a>
+                        <a href="javascript:si4.loadModule({moduleName:'System/Dashboard' });">Sistem</a>
                     </li>
+
+                    <li class="mainMenuList">
+                        <a href="javascript:si4.loadModule({moduleName:'Entities/EntityList' });">Seznam entitet</a>
+                    </li>
+
                 </ul>
             </div>
         </div>
