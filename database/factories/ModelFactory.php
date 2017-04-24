@@ -22,3 +22,26 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(100),
     ];
 });
+$factory->define(App\Models\EntityType::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->title
+    ];
+});
+$factory->define(App\Models\RelationType::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->title
+    ];
+});
+$factory->define(App\Models\Entity::class, function (Faker\Generator $faker) {
+    return [
+        'entity_type_id' => function(){ return factory(\App\Models\EntityType::class)->create()->id; },
+        "data" => $faker->text()
+    ];
+});
+$factory->define(App\Models\Relation::class, function (Faker\Generator $faker) {
+    return [
+        "first_entity_id" => function(){ return factory(\App\Models\Entity::class)->create()->id; },
+        "relation_type_id" => function(){ return factory(\App\Models\RelationType::class)->create()->id; },
+        "second_entity_id" => function(){ return factory(\App\Models\Entity::class)->create()->id; },
+    ];
+});
