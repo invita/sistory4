@@ -25,6 +25,8 @@ si4.widget.si4TabPage = function(args)
     this.parentTab = null;
     this.childTabs = {};
 
+    this.tabCloseImgUrl = "/img/tabClose4.png";
+
     // Settings
     this.parent = si4.getArg(args, "parent", null);
     this.name = si4.getArg(args, "name", this.uniqId);
@@ -79,7 +81,7 @@ si4.widget.si4TabPage = function(args)
         _p.tabButton.closeSpan = new si4.widget.si4Element({parent:_p.tabButton.selector, tagName:'span'});
         _p.tabButton.closeSpan.selector.addClass("si4TabButton_closeButton");
         _p.tabButton.closeImg = new si4.widget.si4Element({parent:_p.tabButton.closeSpan.selector, tagName:'img'});
-        _p.tabButton.closeImg.selector.attr("src", "/img/tabClose2.png");
+        _p.tabButton.closeImg.selector.attr("src", _p.tabCloseImgUrl);
         _p.tabButton.closeSpan.selector.click(function(e) {
             _p.destroyTab();
         });
