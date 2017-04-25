@@ -33,8 +33,8 @@ si4.widget.si4DataTable = function(args)
     this.hideNoData = si4.getArg(args, "hideNoData", false);
     this.showPaginator = si4.getArg(args, "showPaginator", true);
     this.initRefresh = si4.getArg(args, "initRefresh", true);
-    this.canExportXls = si4.getArg(args, "canExportXls", true);
-    this.canExportCsv = si4.getArg(args, "canExportCsv", true);
+    this.canExportXls = si4.getArg(args, "canExportXls", false);
+    this.canExportCsv = si4.getArg(args, "canExportCsv", false);
     this.filterHint = si4.getArg(args, "filterHint", true);
 
     this.rowsPerPage = si4.getArg(args, "rowsPerPage", si4.defaults.dataTableRowsPerPage); // Ignored if dataSource is given
@@ -230,7 +230,7 @@ si4.widget.si4DataTable = function(args)
         _p[cpName].firstPageImg = new si4.widget.si4Element({parent:_p[cpName].firstPage.selector, tagName:"img", tagClass:"icon8 vmid"});
         _p[cpName].firstPageImg.selector.attr("src", "/img/icon/dataTable_prev.png");
         _p[cpName].firstPageSpan = new si4.widget.si4Element({parent:_p[cpName].firstPage.selector, tagName:"span", tagClass:"vmid"});
-        _p[cpName].firstPageSpan.selector.html("First");
+        _p[cpName].firstPageSpan.selector.html("Začetek");
         _p[cpName].firstPage.selector.click(function(){ _p.switchPage(1); });
 
         // Prev page button
@@ -238,7 +238,7 @@ si4.widget.si4DataTable = function(args)
         _p[cpName].prevPageImg = new si4.widget.si4Element({parent:_p[cpName].prevPage.selector, tagName:"img", tagClass:"icon8 vmid"});
         _p[cpName].prevPageImg.selector.attr("src", "/img/icon/dataTable_prev.png");
         _p[cpName].prevPageSpan = new si4.widget.si4Element({parent:_p[cpName].prevPage.selector, tagName:"span", tagClass:"vmid"});
-        _p[cpName].prevPageSpan.selector.html("Prev");
+        _p[cpName].prevPageSpan.selector.html("Nazaj");
         _p[cpName].prevPage.selector.click(function(){ _p.switchPage(_p.currentPage-1); });
 
         // Page inputs
@@ -261,7 +261,7 @@ si4.widget.si4DataTable = function(args)
         // Next page button
         _p[cpName].nextPage = new si4.widget.si4Element({parent:_p[cpName].selector, tagClass:"inline nextButton vmid"});
         _p[cpName].nextPageSpan = new si4.widget.si4Element({parent:_p[cpName].nextPage.selector, tagName:"span", tagClass:"vmid"});
-        _p[cpName].nextPageSpan.selector.html("Next");
+        _p[cpName].nextPageSpan.selector.html("Naprej");
         _p[cpName].nextPageImg = new si4.widget.si4Element({parent:_p[cpName].nextPage.selector, tagName:"img", tagClass:"icon8 vmid"});
         _p[cpName].nextPageImg.selector.attr("src", "/img/icon/dataTable_next.png");
         _p[cpName].nextPage.selector.click(function(){ _p.switchPage(_p.currentPage+1); });
@@ -269,7 +269,7 @@ si4.widget.si4DataTable = function(args)
         // Last page button
         _p[cpName].lastPage = new si4.widget.si4Element({parent:_p[cpName].selector, tagClass:"inline lastButton vmid"});
         _p[cpName].lastPageSpan = new si4.widget.si4Element({parent:_p[cpName].lastPage.selector, tagName:"span", tagClass:"vmid"});
-        _p[cpName].lastPageSpan.selector.html("Last");
+        _p[cpName].lastPageSpan.selector.html("Konec");
         _p[cpName].lastPageImg = new si4.widget.si4Element({parent:_p[cpName].lastPage.selector, tagName:"img", tagClass:"icon8 vmid"});
         _p[cpName].lastPageImg.selector.attr("src", "/img/icon/dataTable_next.png");
         _p[cpName].lastPage.selector.click(function(){ _p.switchPage(_p.currentPageCount); });
@@ -286,7 +286,7 @@ si4.widget.si4DataTable = function(args)
         _p[cpName].recsPerPageInput.selector.val(_p.dataSource.pageCount);
 
         _p[cpName].recsPerPageText = new si4.widget.si4Element({parent:_p[cpName].selector, tagClass:"inline vmid"});
-        _p[cpName].recsPerPageText.selector.html(' / page');
+        _p[cpName].recsPerPageText.selector.html(' / stran');
 
 
         // Export

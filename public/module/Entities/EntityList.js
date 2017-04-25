@@ -14,10 +14,9 @@ var F = function(args){
             staticData : { bla: "blabla" },
             pageCount: 10
         }),
-        //editorModuleArgs: {
-        //    moduleName:"Pub/PubEdit",
-        //    tabPage:mainTab
-        //},
+        editorModuleArgs: {
+            moduleName:"Entities/EntityDetails",
+        },
         canInsert: false,
         canDelete: false,
         tabPage: mainTab,

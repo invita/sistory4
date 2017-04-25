@@ -9,7 +9,7 @@ si4.api.abstractCall = function(args, callback) {
 
 si4.api.getTestTable = function(args, callback) {
 
-    console.log("request", args);
+    //console.log("request", args);
     //console.log("getTestTable", args);
     var offset = args.pageStart;
     var data = [];
@@ -24,7 +24,15 @@ si4.api.getTestTable = function(args, callback) {
         data: data,
         rowCount: 1000,
     };
-    console.log("response", response);
+    //console.log("response", response);
 
     callback(response);
+};
+
+
+si4.api.getEntityList = function(args, callback) {
+    $.post(si4.config.apis.entityList, JSON.stringify(args), function(data) {
+        console.log("post callback", data);
+        if (typeof(callback) == "function") callback(data);
+    });
 };

@@ -7,10 +7,10 @@ si4.defaults = {
     hintTriggerDelay: 200,
     autoCompleteDelay: 500,
 
-    buttonGrad: "blue",
-    submitGrad: "orange",
-    tabActiveGrad: "blue",
-    tabInactiveGrad: "gold",
+    buttonGrad: "gray",
+    submitGrad: "red",
+    tabActiveGrad: "red",
+    tabInactiveGrad: "brown",
 
     dataTableRowsPerPage: 10
 }
@@ -189,5 +189,7 @@ $(document).ready(function() {
     var primaryPage = $('#primaryPage');
     if (primaryPage)
         si4.data.mainTab.content.selector.append(primaryPage);
+
+    si4.loadModule({moduleName:'Dev/TestPage' });
 });
 
