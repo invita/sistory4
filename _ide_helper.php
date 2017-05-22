@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.4.17 on 2017-04-10.
+ * Generated for Laravel 5.4.18 on 2017-05-22.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -10590,6 +10590,20 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
+         * Register a custom implicit validator extension.
+         *
+         * @param string $rule
+         * @param \Closure|string $extension
+         * @param string $message
+         * @return void 
+         * @static 
+         */
+        public static function extendDependent($rule, $extension, $message = null)
+        {
+            \Illuminate\Validation\Factory::extendDependent($rule, $extension, $message);
+        }
+        
+        /**
          * Register a custom implicit validator message replacer.
          *
          * @param string $rule
@@ -11376,6 +11390,58 @@ namespace Illuminate\Support\Facades {
         public static function renderTranslation()
         {
             return \Illuminate\View\Factory::renderTranslation();
+        }
+        
+    }         
+}
+    
+namespace Cviebrock\LaravelElasticsearch {
+
+    class Facade {
+        
+        /**
+         * Retrieve or build the named connection.
+         *
+         * @param null $name
+         * @return \Elasticsearch\Client|mixed 
+         * @static 
+         */
+        public static function connection($name = null)
+        {
+            return \Cviebrock\LaravelElasticsearch\Manager::connection($name);
+        }
+        
+        /**
+         * Get the default connection.
+         *
+         * @return string 
+         * @static 
+         */
+        public static function getDefaultConnection()
+        {
+            return \Cviebrock\LaravelElasticsearch\Manager::getDefaultConnection();
+        }
+        
+        /**
+         * Set the default connection.
+         *
+         * @param string $connection
+         * @static 
+         */
+        public static function setDefaultConnection($connection)
+        {
+            return \Cviebrock\LaravelElasticsearch\Manager::setDefaultConnection($connection);
+        }
+        
+        /**
+         * Return all of the created connections.
+         *
+         * @return array 
+         * @static 
+         */
+        public static function getConnections()
+        {
+            return \Cviebrock\LaravelElasticsearch\Manager::getConnections();
         }
         
     }         
@@ -13406,6 +13472,8 @@ namespace {
             return \Illuminate\Database\Query\Builder::macroCall($method, $parameters);
         }
         }
+    
+    class Elasticsearch extends \Cviebrock\LaravelElasticsearch\Facade {}
     
 }
 
