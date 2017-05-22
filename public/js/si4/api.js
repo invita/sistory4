@@ -16,6 +16,7 @@ si4.api.getTestTable = function(args, callback) {
     for (var i = offset; i < offset+args.pageCount; i++) {
         data.push({
             id: i,
+            entity_type_id: 1,
             name: "test"+i,
             description: "Some description..."
         });
