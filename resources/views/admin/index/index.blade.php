@@ -45,6 +45,14 @@
 <div id="content">
     <div id="pageHolder"></div>
     <div id="primaryPage">
+        <div class="formTitle">Sistory 4 Admin</div>
+        <div>
+            <b>Kaj je novega:</b>
+            <ul class="simpleList">
+                <li>Nov uporabniški vmesnik</li>
+                <li>Prenovljen entitetno-relacijski model</li>
+            </ul>
+        </div>
     </div>
 </div>
 

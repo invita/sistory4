@@ -2,43 +2,38 @@ var F = function(args){
     var mainTab = new si4.widget.si4TabPage({
         name: "Test",
         parent: si4.data.mainTab,
-        contentText: "Test Page Module"
     });
 
-    /*
-    si4.api.abstractCall({some:"data"}, function(data){
-        console.log("callback2", data);
-    });
-    */
+    var panel = new si4.widget.si4Panel({parent:mainTab.content.selector});
+    var panelGroupLoading = panel.addGroup("Tests");
+    var formLoading = new si4.widget.si4Form({parent:panelGroupLoading.content.selector, captionWidth:"90px", inputClass:"searchInput"});
 
-
-    var dataTable = new si4.widget.si4DataTable({
-        parent: mainTab.content.selector,
-        primaryKey: ['id'],
-        entityTitle: "Entity %id% - %name%",
-        //filter: { enabled: false },
-        dataSource: new si4.widget.si4DataTableDataSource({
-            moduleName:"Pub/PubSearch",
-            staticData : { bla: "blabla" },
-            pageCount: 10
-        }),
-        //editorModuleArgs: {
-        //    moduleName:"Pub/PubEdit",
-        //    tabPage:mainTab
-        //},
-        canInsert: false,
-        canDelete: false,
-        tabPage: mainTab,
-        fields: {
-//            pub_id: { caption:"Entity&nbsp;Id", hintF: function(args) { sic.hint.publication(args.row.lastRowData.pub_id); } },
-        }
+    var showLoadingButton = formLoading.addInput({value:"Show loading", type:"submit", caption:"Akcije"});
+    showLoadingButton.selector.click(function(){
+        si4.loading.show();
     });
 
-    dataTable.onDataFeedComplete(function(args){
-        //dataTable.dataSource.staticData = args["staticData"];
-        //console.log("onDataFeedComplete", args);
+    var hideLoadingButton = formLoading.addInput({value:"Hide loading", type:"button"});
+    hideLoadingButton.selector.click(function(){
+        si4.loading.hide();
     });
 
-    //dataTable.refresh(true);
+    formLoading.addHr();
+
+    var jsonTestButton = formLoading.addInput({value:"Send", type:"button", caption:"Json Test"});
+    jsonTestButton.selector.click(function(){
+        si4.api.getEntityList({
+        });
+    });
+
+
+
+    var panelGroup2 = panel.addGroup("Test group 2");
+    var form2 = new si4.widget.si4Form({parent:panelGroup2.content.selector, captionWidth:"90px", inputClass:"searchInput"});
+
+    var button3 = form2.addInput({value:"Test3", type:"button", caption:"Test3"});
+    button3.selector.click(function(){
+    });
+
 
 };
