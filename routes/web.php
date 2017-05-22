@@ -27,6 +27,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::group(['prefix' => 'api'], function () {
             Route::post('entity-list', "Admin\\ApiController@entityList")->name("admin.api.entity-list#post");
         });
+
+        Route::group(['prefix' => 'upload'], function () {
+            Route::post('entity', "Admin\\UploadController@entity")->name("admin.upload.entity#post");
+        });
     });
 
 });
