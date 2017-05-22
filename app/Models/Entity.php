@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\EntityType;
+use Illuminate\Http\UploadedFile;
 
 /**
  * App\Models\Entity
@@ -40,5 +41,48 @@ class Entity extends Model
     public function entityType()
     {
         return $this->belongsTo(EntityType::class);
+    }
+
+    /**
+     * @return bool
+     */
+    public function dataSchemaValidate() : bool
+    {
+        return self::xmlStringSchemaValidate($this->data);
+    }
+
+    /**
+     * @param \App\Models\EntityType $entityType
+     * @param UploadedFile $uploadedFile
+     * @return Entity
+     */
+    public static function createFromUpload(EntityType $entityType, UploadedFile $uploadedFile) : Entity
+    {
+        $entity = new self;
+        $entity->entity_type_id = $entityType->id;
+        $entity->data = file_get_contents($uploadedFile->getPathname());
+        $entity->save();
+
+        return $entity;
+    }
+
+    /**
+     * @param string $xmlContent
+     * @param array $errors
+     * @return bool
+     */
+    public static function xmlStringSchemaValidate(string $xmlContent, array &$errors = []) : bool
+    {
+        libxml_clear_errors();
+        libxml_use_internal_errors(true);
+
+        $xml = new \DOMDocument();
+        $xml->loadXML($xmlContent);
+        $valid = $xml->schemaValidate(asset("xsd/mets.xsd"));
+        if(!$valid){
+            $errors = libxml_get_errors();
+        }
+
+        return $valid;
     }
 }
