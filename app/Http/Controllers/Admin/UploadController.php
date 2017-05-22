@@ -8,6 +8,6 @@ class UploadController extends Controller
 {
     public function entity(Request $request)
     {
-
+        $file = $request->file("file");
     }
 }
