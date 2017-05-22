@@ -210,6 +210,8 @@ si4.widget.si4Input = function(args)
             _p.codemirror.setValue(value);
         } else if (_p.type == "flat") {
             _p.input.selector.html(value);
+        } else if (_p.type == "file") {
+            if (!value) _p.input.selector.val("");
         } else {
             _p.input.selector.val(value);
         }

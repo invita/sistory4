@@ -128,6 +128,33 @@ si4.widget.si4Form = function(args)
         }
     };
 
+    // Get value as FormData
+    this.getValueAsFormData = function(){
+
+        var formData = new FormData();
+        for (var i in _p.inputs) {
+            if (_p.skipTypes.indexOf(_p.inputs[i].type) != -1) continue;
+            var key = _p.inputs[i].name;
+            if (key[0] == "_") continue;
+            var val = _p.inputs[i].getValue();
+            if (_p.inputs[i].type == "file") val = _p.inputs[i].input.selector[0].files;
+            console.log("append",key, val);
+            formData.append(key, val);
+        }
+        return formData;
+
+        /*
+        var formData = new FormData();
+        var val = _p.getValue();
+        for (var k in val) {
+            formData.append(k, val[k]);
+            console.log("append",k, val[k]);
+        }
+        return formData;
+        */
+    };
+
+
     this.submit = function() {
         if (_p._submitInput) _p._submitInput.selector.click();
     };
