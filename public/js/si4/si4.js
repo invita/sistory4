@@ -20,9 +20,29 @@ si4.loadModule = function(loadArgs) {
 
     si4.loading.show();
 
-    console.log("si4.loadModule", loadArgs);
+    //console.log("si4.loadModule", loadArgs);
 
     var moduleName = si4.getArg(loadArgs, "moduleName", null); // Module Name
+    var newTab = si4.getArg(loadArgs, "newTab", null); // new TabPage Name string
+
+    loadArgs.createMainTab = function(name) {
+        if (!name) name = si4.translate(si4.moduleNameNormalize(moduleName)+"_mainTab_text");
+        loadArgs.mainTab = new si4.widget.si4TabPage({
+            name: si4.mergePlaceholders(name, loadArgs.row),
+            //name: name,
+            parent: loadArgs.tabPage ? loadArgs.tabPage : si4.data.mainTab,
+        });
+        return loadArgs.mainTab;
+    };
+    loadArgs.createContentTab = function(name) {
+        if (!name) name = si4.translate(si4.moduleNameNormalize(moduleName)+"_contentTab_text");
+        loadArgs.contentTab = new si4.widget.si4TabPage({
+            name: name,
+            parent: loadArgs.mainTab.content.selector,
+        });
+        return loadArgs.contentTab;
+    };
+
     $.get(si4.config.modulePath+moduleName+".js", function(data) {
         eval(data);
         if (F && typeof(F) == "function") F(loadArgs);
@@ -93,8 +113,9 @@ si4.loadModule = function(loadArgs) {
     */
 };
 
+
 si4.callMethod = function(args, f) {
-    return si4.api.abstractCall(args, f);
+    //return si4.api.abstractCall(args, f);
     /*
     si4.loading.show();
 
@@ -190,6 +211,7 @@ $(document).ready(function() {
     if (primaryPage)
         si4.data.mainTab.content.selector.append(primaryPage);
 
-    si4.loadModule({moduleName:'Dev/TestPage' });
+
+    //si4.loadModule({moduleName:'Dev/TestPage' });
 });
 

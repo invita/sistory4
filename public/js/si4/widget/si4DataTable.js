@@ -11,14 +11,15 @@ si4.widget.si4DataTable = function(args)
     this._eventb = si4.object.si4EventBase;
     this._eventb();
 
-    // Settings - Basi4
+    // Settings - Basic
     this.name = si4.getArg(args, "name", null);
     this.caption = si4.getArg(args, "caption", "");
     this.primaryKey = si4.getArg(args, "primaryKey", null);
     this.fields = si4.getArg(args, "fields", {});
     this.actions = si4.getArg(args, "actions", {});
     this.filter = si4.getArg(args, "filter", null);
-    this.entityTitle = si4.getArg(args, "entityTitle", null);
+    this.entityTitleNew = si4.getArg(args, "entityTitleNew", null);
+    this.entityTitleEdit = si4.getArg(args, "entityTitleEdit", null);
     this.dataSource = si4.getArg(args, "dataSource", null);
     this.editorModuleArgs = si4.getArg(args, "editorModuleArgs", null);
     this.hoverRows = si4.getArg(args, "hoverRows", true);
@@ -206,11 +207,13 @@ si4.widget.si4DataTable = function(args)
         } else {
             _p.insertButton.selector.click(function(e){
                 var row = _p.createEmptyRow();
-                var tabName = si4.mergePlaceholders(_p.entityTitle, row);
-                var editorModuleArgs = si4.mergeObjects(_p.editorModuleArgs, {newTab:tabName, entityTitle:_p.entityTitle});
+                var tabName = si4.mergePlaceholders(_p.entityTitleNew, row);
+                var editorModuleArgs = si4.mergeObjects(_p.editorModuleArgs, {entityTitle:_p.entityTitleNew});
                 editorModuleArgs.onClosed = function(args){ _p.refresh(); };
                 if (_p.dataSource && _p.dataSource.staticData)
                     editorModuleArgs.staticData = si4.mergeObjects(_p.dataSource.staticData, editorModuleArgs.staticData);
+                //console.log("editorModuleArgs.mainTab = _p.tabPage", _p.tabPage);
+                if (_p.tabPage) editorModuleArgs.tabPage = _p.tabPage;
                 si4.loadModule(editorModuleArgs);
             });
         }
@@ -397,7 +400,7 @@ si4.widget.si4DataTable = function(args)
     };
 
     this.rowReprValue = function(row, entityTitle, primaryKey){
-        if (!entityTitle) entityTitle = _p.entityTitle;
+        if (!entityTitle) entityTitle = _p.entityTitleEdit;
         if (!primaryKey) primaryKey = _p.primaryKey;
         var reprValue = "";
         //var row = _p.getValue();
@@ -579,7 +582,7 @@ si4.widget.si4DataTable = function(args)
             if (_p.hideNoData) {
                 _p.table.displayNone();
             } else {
-                _p.info('No data for this table.');
+                _p.info(si4.translate("dataTable_noData"));
             }
         }
     };
@@ -707,12 +710,12 @@ si4.widget.si4DataTable = function(args)
 
             //var tabName = args.row.reprValue();
             editorModuleArgs = si4.mergeObjects({
-                entityTitle: _p.entityTitle,
+                entityTitle: _p.entityTitleEdit,
                 primaryKey: _p.primaryKey
             }, editorModuleArgs);
 
             editorModuleArgs = si4.mergeObjects(editorModuleArgs, {
-                newTab: _p.rowReprValue(row, editorModuleArgs.entityTitle, editorModuleArgs.primaryKey),
+                //newTab: _p.rowReprValue(row, editorModuleArgs.entityTitle, editorModuleArgs.primaryKey),
                 row: row
             });
 
@@ -727,6 +730,8 @@ si4.widget.si4DataTable = function(args)
                     editorModuleArgs[_p.primaryKey[pkIdx]] = row[_p.primaryKey[pkIdx]];
                 }
 
+            if (_p.tabPage) editorModuleArgs.tabPage = _p.tabPage;
+            //console.log(editorModuleArgs);
             si4.loadModule(editorModuleArgs);
         });
     }

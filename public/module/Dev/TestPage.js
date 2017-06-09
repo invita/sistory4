@@ -1,10 +1,9 @@
 var F = function(args){
-    var mainTab = new si4.widget.si4TabPage({
-        name: "Test",
-        parent: si4.data.mainTab,
-    });
 
-    var panel = new si4.widget.si4Panel({parent:mainTab.content.selector});
+    args.createMainTab();
+    args.createContentTab();
+
+    var panel = new si4.widget.si4Panel({parent:args.contentTab.content.selector});
     var panelGroupLoading = panel.addGroup("Tests");
     var formLoading = new si4.widget.si4Form({parent:panelGroupLoading.content.selector, captionWidth:"90px", inputClass:"searchInput"});
 
@@ -31,8 +30,9 @@ var F = function(args){
     var panelGroup2 = panel.addGroup("Test group 2");
     var form2 = new si4.widget.si4Form({parent:panelGroup2.content.selector, captionWidth:"90px", inputClass:"searchInput"});
 
-    var button3 = form2.addInput({value:"Test3", type:"button", caption:"Test3"});
+    var button3 = form2.addInput({value:"Open Tab", type:"button", caption:"Test3"});
     button3.selector.click(function(){
+        si4.loadModule({moduleName:'Dev/TestPage', tabPage: args.contentTab });
     });
 
 

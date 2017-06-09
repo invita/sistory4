@@ -1,25 +1,25 @@
 var F = function(args){
-    var mainTab = new si4.widget.si4TabPage({
-        name: "Seznam entitet",
-        parent: si4.data.mainTab,
-    });
+
+    args.createMainTab();
+    args.createContentTab();
 
     var dataTable = new si4.widget.si4DataTable({
-        parent: mainTab.content.selector,
+        parent: args.contentTab.content.selector,
         primaryKey: ['id'],
-        entityTitle: "Entity %id% - %name%",
+        entityTitleNew: si4.lookup.entity.entityTitleNew, // "Entity %id% - %name%",
+        entityTitleEdit: si4.lookup.entity.entityTitleEdit, // "Entity %id% - %name%",
         //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
             moduleName:"Pub/PubSearch",
-            staticData : { bla: "blabla" },
+            //staticData : { bla: "blabla" },
             pageCount: 10
         }),
         editorModuleArgs: {
             moduleName:"Entities/EntityDetails",
         },
-        canInsert: false,
+        canInsert: true,
         canDelete: false,
-        tabPage: mainTab,
+        tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },
             name: { caption: "Naziv" },

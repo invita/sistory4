@@ -184,12 +184,14 @@ si4.widget.si4Input = function(args)
         }
     };
 
-    this.getValue = function(){
+    this.getValue = function() {
         var val = _p.input.selector.val();
         if (_p.type == "checkbox")
             val = _p.input.selector.prop("checked");
         else if (_p.type == "flat")
             val = _p.input.selector.html();
+        else if (_p.type == "file")
+            val = _p.input.selector[0].files[0];
         else if (_p.type == "codemirror") val = _p.codemirror.getValue();
 
         if (_p.withCode)

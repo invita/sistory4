@@ -130,16 +130,10 @@ si4.widget.si4Form = function(args)
 
     // Get value as FormData
     this.getValueAsFormData = function(){
-
         var formData = new FormData();
-        for (var i in _p.inputs) {
-            if (_p.skipTypes.indexOf(_p.inputs[i].type) != -1) continue;
-            var key = _p.inputs[i].name;
-            if (key[0] == "_") continue;
-            var val = _p.inputs[i].getValue();
-            if (_p.inputs[i].type == "file") val = _p.inputs[i].input.selector[0].files[0];
-            console.log("append",key, val);
-            formData.append(key, val);
+        var val = _p.getValue();
+        for (var key in val) {
+            formData.append(key, val[key]);
         }
         return formData;
 

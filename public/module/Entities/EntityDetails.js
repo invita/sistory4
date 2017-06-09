@@ -1,21 +1,33 @@
 var F = function(args){
-    console.log("EntityDetails", args);
-    var mainTab = new si4.widget.si4TabPage({
-        name: args.entityTitle,
-        parent: si4.data.mainTab,
-    });
+    //console.log("EntityDetails", args);
 
-    var panel = new si4.widget.si4Panel({parent:mainTab.content.selector});
-    var panelGroup = panel.addGroup("Entity: "+JSON.stringify(args.row));
+    args.createMainTab(args.entityTitle);
+    args.createContentTab("Urejanje");
 
-    var actionsForm = new si4.widget.si4Form({parent:panelGroup.content.selector, captionWidth:"90px", inputClass:"searchInput"});
+    var rowValue = args.row ? args.row : {};
+    if (!rowValue.id) rowValue.id = "";
+    if (!rowValue.entity_type_id) rowValue.entity_type_id = "";
 
-    var fieldId = actionsForm.addInput({name:"entity_id", value:""+args.row.id, type:"text", caption:"Id"});
-    var fieldEntityTypeId = actionsForm.addInput({name:"entity_type_id", value:""+args.row.entity_type_id, type:"text", caption:"Entity Type Id"});
-    var fieldName = actionsForm.addInput({name:"name", value:args.row.name, type:"text", caption:"Name"});
-    var fieldDesc = actionsForm.addInput({name:"description", value:args.row.description, type:"text", caption:"Description"});
+    var panel = new si4.widget.si4Panel({parent:args.contentTab.content.selector});
+    var panelGroup = panel.addGroup();
+    //var panelGroup = panel.addGroup("Entity: "+JSON.stringify(args.row));
+
+    var actionsForm = new si4.widget.si4Form({parent:panelGroup.content.selector, captionWidth:"90px" });
+
+    var fieldId = actionsForm.addInput({name:"entity_id", value:rowValue.id, type:"text", caption:"Id", readOnly: true});
+    var fieldEntityTypeId = actionsForm.addInput({name:"entity_type_id", value:rowValue.entity_type_id, type:"text", caption:"Entity Type Id"});
+    var fieldName = actionsForm.addInput({name:"name", value:rowValue.name, type:"text", caption:"Name"});
+    var fieldDesc = actionsForm.addInput({name:"description", value:rowValue.description, type:"text", caption:"Description"});
 
     var fieldFile = actionsForm.addInput({name:"file", value:"", type:"file", caption:"File"});
+
+
+    var initialXml = "<test>\n" +
+        "  <neki value=\"1\">Test XML</neki>\n" +
+        "</test>\n\n\n\n\n\n\n";
+    var fieldXml = actionsForm.addInput({name:"xml", value:initialXml, type:"codemirror", caption:false});
+    fieldXml.selector.css("margin-left", "100px").css("margin-bottom", "2px");
+    //fieldXml.selector.css("width", ($(window).width()*0.9)+"px");
 
 
     var saveButton = actionsForm.addInput({value:"Save entity", type:"submit", caption:"Akcije"});
@@ -34,19 +46,25 @@ var F = function(args){
          console.log("sent");
          });
         */
-        console.log("actionsForm", actionsForm.getValueAsFormData());
+        //console.log("actionsForm", actionsForm.getValueAsFormData());
 
+        //si4.api.uploadEntity(actionsForm.getValueAsFormData(), function() {});
+        //var fu = new si4.object.si4FileUploader();
+        //fu.chooseFile();
+
+        /*
         $.ajax({
             type: "POST",
             url: si4.config.uploadApis.entity,
             data: actionsForm.getValueAsFormData(),
-            contentType: false,
             processData: false,
             success: function() {
                 console.log("sent");
             }
         });
+        */
 
+        si4.api.mockedEntityList({}, function() {});
     });
 
 
