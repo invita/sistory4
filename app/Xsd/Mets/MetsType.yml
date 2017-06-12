@@ -1,0 +1,133 @@
+App\Xsd\Mets\MetsType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        OBJIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: OBJID
+            accessor:
+                getter: getOBJIDAttrName
+                setter: setOBJIDAttrName
+            xml_attribute: true
+            type: string
+        LABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LABEL
+            accessor:
+                getter: getLABELAttrName
+                setter: setLABELAttrName
+            xml_attribute: true
+            type: string
+        TYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: TYPE
+            accessor:
+                getter: getTYPEAttrName
+                setter: setTYPEAttrName
+            xml_attribute: true
+            type: string
+        PROFILEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: PROFILE
+            accessor:
+                getter: getPROFILEAttrName
+                setter: setPROFILEAttrName
+            xml_attribute: true
+            type: string
+        metsHdrElName:
+            expose: true
+            access_type: public_method
+            serialized_name: metsHdr
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getMetsHdrElName
+                setter: setMetsHdrElName
+            type: App\Xsd\Mets\MetsType\MetsHdrAType
+        dmdSecElName:
+            expose: true
+            access_type: public_method
+            serialized_name: dmdSec
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getDmdSecElName
+                setter: setDmdSecElName
+            xml_list:
+                inline: true
+                entry_name: dmdSec
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\MdSecType>
+        amdSecElName:
+            expose: true
+            access_type: public_method
+            serialized_name: amdSec
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getAmdSecElName
+                setter: setAmdSecElName
+            xml_list:
+                inline: true
+                entry_name: amdSec
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\AmdSecType>
+        fileSecElName:
+            expose: true
+            access_type: public_method
+            serialized_name: fileSec
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getFileSecElName
+                setter: setFileSecElName
+            type: App\Xsd\Mets\MetsType\FileSecAType
+        structMapElName:
+            expose: true
+            access_type: public_method
+            serialized_name: structMap
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getStructMapElName
+                setter: setStructMapElName
+            xml_list:
+                inline: true
+                entry_name: structMap
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\StructMapType>
+        structLinkElName:
+            expose: true
+            access_type: public_method
+            serialized_name: structLink
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getStructLinkElName
+                setter: setStructLinkElName
+            type: App\Xsd\Mets\MetsType\StructLinkAType
+        behaviorSecElName:
+            expose: true
+            access_type: public_method
+            serialized_name: behaviorSec
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getBehaviorSecElName
+                setter: setBehaviorSecElName
+            xml_list:
+                inline: true
+                entry_name: behaviorSec
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\BehaviorSecType>

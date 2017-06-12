@@ -1,0 +1,25 @@
+App\Xsd\Mets\MetsType\FileSecAType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        fileGrpElName:
+            expose: true
+            access_type: public_method
+            serialized_name: fileGrp
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getFileGrpElName
+                setter: setFileGrpElName
+            xml_list:
+                inline: true
+                entry_name: fileGrp
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\MetsType\FileSecAType\FileGrpAType>

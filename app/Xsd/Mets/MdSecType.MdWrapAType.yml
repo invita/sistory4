@@ -1,0 +1,112 @@
+App\Xsd\Mets\MdSecType\MdWrapAType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        MDTYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: MDTYPE
+            accessor:
+                getter: getMDTYPEAttrName
+                setter: setMDTYPEAttrName
+            xml_attribute: true
+            type: string
+        OTHERMDTYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: OTHERMDTYPE
+            accessor:
+                getter: getOTHERMDTYPEAttrName
+                setter: setOTHERMDTYPEAttrName
+            xml_attribute: true
+            type: string
+        MDTYPEVERSIONAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: MDTYPEVERSION
+            accessor:
+                getter: getMDTYPEVERSIONAttrName
+                setter: setMDTYPEVERSIONAttrName
+            xml_attribute: true
+            type: string
+        MIMETYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: MIMETYPE
+            accessor:
+                getter: getMIMETYPEAttrName
+                setter: setMIMETYPEAttrName
+            xml_attribute: true
+            type: string
+        SIZEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: SIZE
+            accessor:
+                getter: getSIZEAttrName
+                setter: setSIZEAttrName
+            xml_attribute: true
+            type: integer
+        CREATEDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CREATED
+            accessor:
+                getter: getCREATEDAttrName
+                setter: setCREATEDAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\XMLSchema\DateTime
+        CHECKSUMAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CHECKSUM
+            accessor:
+                getter: getCHECKSUMAttrName
+                setter: setCHECKSUMAttrName
+            xml_attribute: true
+            type: string
+        CHECKSUMTYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CHECKSUMTYPE
+            accessor:
+                getter: getCHECKSUMTYPEAttrName
+                setter: setCHECKSUMTYPEAttrName
+            xml_attribute: true
+            type: string
+        LABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LABEL
+            accessor:
+                getter: getLABELAttrName
+                setter: setLABELAttrName
+            xml_attribute: true
+            type: string
+        binDataElName:
+            expose: true
+            access_type: public_method
+            serialized_name: binData
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getBinDataElName
+                setter: setBinDataElName
+            type: App\Xsd\AnySimpleTypeHandler
+        xmlDataElName:
+            expose: true
+            access_type: public_method
+            serialized_name: xmlData
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getXmlDataElName
+                setter: setXmlDataElName
+            type: App\Xsd\Mets\MdSecType\MdWrapAType\XmlDataAType

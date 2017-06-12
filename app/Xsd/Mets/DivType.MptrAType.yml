@@ -1,0 +1,105 @@
+App\Xsd\Mets\DivType\MptrAType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        LOCTYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LOCTYPE
+            accessor:
+                getter: getLOCTYPEAttrName
+                setter: setLOCTYPEAttrName
+            xml_attribute: true
+            type: string
+        OTHERLOCTYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: OTHERLOCTYPE
+            accessor:
+                getter: getOTHERLOCTYPEAttrName
+                setter: setOTHERLOCTYPEAttrName
+            xml_attribute: true
+            type: string
+        typeAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: type
+            accessor:
+                getter: getTypeAttrName
+                setter: setTypeAttrName
+            xml_attribute: true
+            type: string
+        hrefPropName:
+            expose: true
+            access_type: public_method
+            serialized_name: href
+            accessor:
+                getter: getHrefPropName
+                setter: setHrefPropName
+            xml_attribute: true
+            type: string
+        rolePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: role
+            accessor:
+                getter: getRolePropName
+                setter: setRolePropName
+            xml_attribute: true
+            type: string
+        arcrolePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: arcrole
+            accessor:
+                getter: getArcrolePropName
+                setter: setArcrolePropName
+            xml_attribute: true
+            type: string
+        titlePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: title
+            accessor:
+                getter: getTitlePropName
+                setter: setTitlePropName
+            xml_attribute: true
+            type: string
+        showPropName:
+            expose: true
+            access_type: public_method
+            serialized_name: show
+            accessor:
+                getter: getShowPropName
+                setter: setShowPropName
+            xml_attribute: true
+            type: string
+        actuatePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: actuate
+            accessor:
+                getter: getActuatePropName
+                setter: setActuatePropName
+            xml_attribute: true
+            type: string
+        CONTENTIDSAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CONTENTIDS
+            accessor:
+                getter: getCONTENTIDSAttrName
+                setter: setCONTENTIDSAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\Jms\SimpleListOf<string>
+            xml_list:
+                inline: false
+                entry_name: anyURI
+                entry_namespace: 'http://www.loc.gov/METS/'

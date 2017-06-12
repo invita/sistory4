@@ -1,0 +1,85 @@
+App\Xsd\Mets\BehaviorType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        STRUCTIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: STRUCTID
+            accessor:
+                getter: getSTRUCTIDAttrName
+                setter: setSTRUCTIDAttrName
+            xml_attribute: true
+            type: string
+        BTYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: BTYPE
+            accessor:
+                getter: getBTYPEAttrName
+                setter: setBTYPEAttrName
+            xml_attribute: true
+            type: string
+        CREATEDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CREATED
+            accessor:
+                getter: getCREATEDAttrName
+                setter: setCREATEDAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\XMLSchema\DateTime
+        LABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LABEL
+            accessor:
+                getter: getLABELAttrName
+                setter: setLABELAttrName
+            xml_attribute: true
+            type: string
+        GROUPIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: GROUPID
+            accessor:
+                getter: getGROUPIDAttrName
+                setter: setGROUPIDAttrName
+            xml_attribute: true
+            type: string
+        ADMIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ADMID
+            accessor:
+                getter: getADMIDAttrName
+                setter: setADMIDAttrName
+            xml_attribute: true
+            type: string
+        interfaceDefElName:
+            expose: true
+            access_type: public_method
+            serialized_name: interfaceDef
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getInterfaceDefElName
+                setter: setInterfaceDefElName
+            type: App\Xsd\Mets\ObjectType
+        mechanismElName:
+            expose: true
+            access_type: public_method
+            serialized_name: mechanism
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getMechanismElName
+                setter: setMechanismElName
+            type: App\Xsd\Mets\ObjectType

@@ -1,0 +1,129 @@
+App\Xsd\Mets\DivType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        ORDERAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ORDER
+            accessor:
+                getter: getORDERAttrName
+                setter: setORDERAttrName
+            xml_attribute: true
+            type: integer
+        ORDERLABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ORDERLABEL
+            accessor:
+                getter: getORDERLABELAttrName
+                setter: setORDERLABELAttrName
+            xml_attribute: true
+            type: string
+        LABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LABEL
+            accessor:
+                getter: getLABELAttrName
+                setter: setLABELAttrName
+            xml_attribute: true
+            type: string
+        DMDIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: DMDID
+            accessor:
+                getter: getDMDIDAttrName
+                setter: setDMDIDAttrName
+            xml_attribute: true
+            type: string
+        ADMIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ADMID
+            accessor:
+                getter: getADMIDAttrName
+                setter: setADMIDAttrName
+            xml_attribute: true
+            type: string
+        TYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: TYPE
+            accessor:
+                getter: getTYPEAttrName
+                setter: setTYPEAttrName
+            xml_attribute: true
+            type: string
+        CONTENTIDSAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CONTENTIDS
+            accessor:
+                getter: getCONTENTIDSAttrName
+                setter: setCONTENTIDSAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\Jms\SimpleListOf<string>
+            xml_list:
+                inline: false
+                entry_name: anyURI
+                entry_namespace: 'http://www.loc.gov/METS/'
+        labelPropName:
+            expose: true
+            access_type: public_method
+            serialized_name: label
+            accessor:
+                getter: getLabelPropName
+                setter: setLabelPropName
+            xml_attribute: true
+            type: string
+        mptrElName:
+            expose: true
+            access_type: public_method
+            serialized_name: mptr
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getMptrElName
+                setter: setMptrElName
+            xml_list:
+                inline: true
+                entry_name: mptr
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\DivType\MptrAType>
+        fptrElName:
+            expose: true
+            access_type: public_method
+            serialized_name: fptr
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getFptrElName
+                setter: setFptrElName
+            xml_list:
+                inline: true
+                entry_name: fptr
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\DivType\FptrAType>
+        divElName:
+            expose: true
+            access_type: public_method
+            serialized_name: div
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getDivElName
+                setter: setDivElName
+            xml_list:
+                inline: true
+                entry_name: div
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\DivType>

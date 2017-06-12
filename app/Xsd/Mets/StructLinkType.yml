@@ -1,0 +1,39 @@
+App\Xsd\Mets\StructLinkType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        smLinkElName:
+            expose: true
+            access_type: public_method
+            serialized_name: smLink
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getSmLinkElName
+                setter: setSmLinkElName
+            xml_list:
+                inline: true
+                entry_name: smLink
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\StructLinkType\SmLinkAType>
+        smLinkGrpElName:
+            expose: true
+            access_type: public_method
+            serialized_name: smLinkGrp
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getSmLinkGrpElName
+                setter: setSmLinkGrpElName
+            xml_list:
+                inline: true
+                entry_name: smLinkGrp
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\StructLinkType\SmLinkGrpAType>

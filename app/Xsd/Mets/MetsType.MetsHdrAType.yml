@@ -1,0 +1,85 @@
+App\Xsd\Mets\MetsType\MetsHdrAType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        ADMIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ADMID
+            accessor:
+                getter: getADMIDAttrName
+                setter: setADMIDAttrName
+            xml_attribute: true
+            type: string
+        CREATEDATEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CREATEDATE
+            accessor:
+                getter: getCREATEDATEAttrName
+                setter: setCREATEDATEAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\XMLSchema\DateTime
+        LASTMODDATEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LASTMODDATE
+            accessor:
+                getter: getLASTMODDATEAttrName
+                setter: setLASTMODDATEAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\XMLSchema\DateTime
+        RECORDSTATUSAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: RECORDSTATUS
+            accessor:
+                getter: getRECORDSTATUSAttrName
+                setter: setRECORDSTATUSAttrName
+            xml_attribute: true
+            type: string
+        agentElName:
+            expose: true
+            access_type: public_method
+            serialized_name: agent
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getAgentElName
+                setter: setAgentElName
+            xml_list:
+                inline: true
+                entry_name: agent
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\MetsType\MetsHdrAType\AgentAType>
+        altRecordIDElName:
+            expose: true
+            access_type: public_method
+            serialized_name: altRecordID
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getAltRecordIDElName
+                setter: setAltRecordIDElName
+            xml_list:
+                inline: true
+                entry_name: altRecordID
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\MetsType\MetsHdrAType\AltRecordIDAType>
+        metsDocumentIDElName:
+            expose: true
+            access_type: public_method
+            serialized_name: metsDocumentID
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getMetsDocumentIDElName
+                setter: setMetsDocumentIDElName
+            type: App\Xsd\Mets\MetsType\MetsHdrAType\MetsDocumentIDAType

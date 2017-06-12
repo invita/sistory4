@@ -1,0 +1,67 @@
+App\Xsd\Mets\MdSecType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        GROUPIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: GROUPID
+            accessor:
+                getter: getGROUPIDAttrName
+                setter: setGROUPIDAttrName
+            xml_attribute: true
+            type: string
+        ADMIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ADMID
+            accessor:
+                getter: getADMIDAttrName
+                setter: setADMIDAttrName
+            xml_attribute: true
+            type: string
+        CREATEDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CREATED
+            accessor:
+                getter: getCREATEDAttrName
+                setter: setCREATEDAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\XMLSchema\DateTime
+        STATUSAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: STATUS
+            accessor:
+                getter: getSTATUSAttrName
+                setter: setSTATUSAttrName
+            xml_attribute: true
+            type: string
+        mdRefElName:
+            expose: true
+            access_type: public_method
+            serialized_name: mdRef
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getMdRefElName
+                setter: setMdRefElName
+            type: App\Xsd\Mets\MdSecType\MdRefAType
+        mdWrapElName:
+            expose: true
+            access_type: public_method
+            serialized_name: mdWrap
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getMdWrapElName
+                setter: setMdWrapElName
+            type: App\Xsd\Mets\MdSecType\MdWrapAType

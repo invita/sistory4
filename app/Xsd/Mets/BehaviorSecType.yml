@@ -1,0 +1,57 @@
+App\Xsd\Mets\BehaviorSecType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        CREATEDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CREATED
+            accessor:
+                getter: getCREATEDAttrName
+                setter: setCREATEDAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\XMLSchema\DateTime
+        LABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LABEL
+            accessor:
+                getter: getLABELAttrName
+                setter: setLABELAttrName
+            xml_attribute: true
+            type: string
+        behaviorSecElName:
+            expose: true
+            access_type: public_method
+            serialized_name: behaviorSec
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getBehaviorSecElName
+                setter: setBehaviorSecElName
+            xml_list:
+                inline: true
+                entry_name: behaviorSec
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\BehaviorSecType>
+        behaviorElName:
+            expose: true
+            access_type: public_method
+            serialized_name: behavior
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getBehaviorElName
+                setter: setBehaviorElName
+            xml_list:
+                inline: true
+                entry_name: behavior
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\BehaviorType>

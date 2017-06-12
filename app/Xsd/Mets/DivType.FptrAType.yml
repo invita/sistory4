@@ -1,0 +1,63 @@
+App\Xsd\Mets\DivType\FptrAType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        FILEIDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: FILEID
+            accessor:
+                getter: getFILEIDAttrName
+                setter: setFILEIDAttrName
+            xml_attribute: true
+            type: string
+        CONTENTIDSAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: CONTENTIDS
+            accessor:
+                getter: getCONTENTIDSAttrName
+                setter: setCONTENTIDSAttrName
+            xml_attribute: true
+            type: GoetasWebservices\Xsd\XsdToPhp\Jms\SimpleListOf<string>
+            xml_list:
+                inline: false
+                entry_name: anyURI
+                entry_namespace: 'http://www.loc.gov/METS/'
+        parElName:
+            expose: true
+            access_type: public_method
+            serialized_name: par
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getParElName
+                setter: setParElName
+            type: App\Xsd\Mets\ParType
+        seqElName:
+            expose: true
+            access_type: public_method
+            serialized_name: seq
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getSeqElName
+                setter: setSeqElName
+            type: App\Xsd\Mets\SeqType
+        areaElName:
+            expose: true
+            access_type: public_method
+            serialized_name: area
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getAreaElName
+                setter: setAreaElName
+            type: App\Xsd\Mets\AreaType

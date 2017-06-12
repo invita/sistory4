@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\EntityType;
 use Illuminate\Http\UploadedFile;
 
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\Handler\HandlerRegistryInterface;
+
+use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\BaseTypesHandler;
+use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\XmlSchemaDateHandler;
+
+
 /**
  * App\Models\Entity
  *
@@ -49,6 +56,26 @@ class Entity extends Model
     public function dataSchemaValidate() : bool
     {
         return self::xmlStringSchemaValidate($this->data);
+    }
+
+    public function dataToObject()
+    {
+        $serializerBuilder = SerializerBuilder::create();
+        $serializerBuilder->addMetadataDir(app_path("Xsd/Mets"), 'App\Xsd\Mets');
+        $serializerBuilder->configureHandlers(function (HandlerRegistryInterface $handler) use ($serializerBuilder) {
+            $serializerBuilder->addDefaultHandlers();
+            $handler->registerSubscribingHandler(new BaseTypesHandler()); // XMLSchema List handling
+            $handler->registerSubscribingHandler(new XmlSchemaDateHandler()); // XMLSchema date handling
+
+            // $handler->registerSubscribingHandler(new YourhandlerHere());
+        });
+
+        $serializer = $serializerBuilder->build();
+
+        // deserialize the XML into Demo\MyObject object
+        $object = $serializer->deserialize($this->data, 'App\Xsd\Mets\Mets', 'xml');
+        $array = $object->toArray();
+
     }
 
     /**

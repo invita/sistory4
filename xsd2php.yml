@@ -1,0 +1,21 @@
+# config.yml
+# Linux Users: PHP Namespaces use back slash \ rather than a forward slash /
+# So for destinations_php, the namespace would be TestNs\MyApp
+
+xsd2php:
+  namespaces:
+    'http://www.loc.gov/METS/': 'App/Xsd/Mets'
+  destinations_php:
+    'App\Xsd\Mets': app/Xsd/Mets/
+  destinations_jms:
+    'App\Xsd\Mets': app/Xsd/Mets/
+  aliases: # optional
+    'http://www.loc.gov/METS/':
+      MyCustomXSDType:  'XsdMets'
+      anyType: 'App\Xsd\AnyTypeHandler'
+      anySimpleType: 'App\Xsd\AnySimpleTypeHandler'
+    'http://www.w3.org/2001/XMLSchema':
+      anyType: 'App\Xsd\AnyTypeHandler'
+      anySimpleType: 'App\Xsd\AnySimpleTypeHandler'
+  naming_strategy: short # optional and default
+  path_generator: psr4 # optional and default

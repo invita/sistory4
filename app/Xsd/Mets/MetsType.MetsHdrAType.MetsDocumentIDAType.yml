@@ -1,0 +1,28 @@
+App\Xsd\Mets\MetsType\MetsHdrAType\MetsDocumentIDAType:
+    properties:
+        __value:
+            expose: true
+            xml_value: true
+            access_type: public_method
+            accessor:
+                getter: value
+                setter: value
+            type: string
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        TYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: TYPE
+            accessor:
+                getter: getTYPEAttrName
+                setter: setTYPEAttrName
+            xml_attribute: true
+            type: string

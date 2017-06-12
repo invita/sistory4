@@ -1,0 +1,101 @@
+App\Xsd\Mets\ObjectType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        LABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LABEL
+            accessor:
+                getter: getLABELAttrName
+                setter: setLABELAttrName
+            xml_attribute: true
+            type: string
+        LOCTYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LOCTYPE
+            accessor:
+                getter: getLOCTYPEAttrName
+                setter: setLOCTYPEAttrName
+            xml_attribute: true
+            type: string
+        OTHERLOCTYPEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: OTHERLOCTYPE
+            accessor:
+                getter: getOTHERLOCTYPEAttrName
+                setter: setOTHERLOCTYPEAttrName
+            xml_attribute: true
+            type: string
+        typeAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: type
+            accessor:
+                getter: getTypeAttrName
+                setter: setTypeAttrName
+            xml_attribute: true
+            type: string
+        hrefPropName:
+            expose: true
+            access_type: public_method
+            serialized_name: href
+            accessor:
+                getter: getHrefPropName
+                setter: setHrefPropName
+            xml_attribute: true
+            type: string
+        rolePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: role
+            accessor:
+                getter: getRolePropName
+                setter: setRolePropName
+            xml_attribute: true
+            type: string
+        arcrolePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: arcrole
+            accessor:
+                getter: getArcrolePropName
+                setter: setArcrolePropName
+            xml_attribute: true
+            type: string
+        titlePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: title
+            accessor:
+                getter: getTitlePropName
+                setter: setTitlePropName
+            xml_attribute: true
+            type: string
+        showPropName:
+            expose: true
+            access_type: public_method
+            serialized_name: show
+            accessor:
+                getter: getShowPropName
+                setter: setShowPropName
+            xml_attribute: true
+            type: string
+        actuatePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: actuate
+            accessor:
+                getter: getActuatePropName
+                setter: setActuatePropName
+            xml_attribute: true
+            type: string

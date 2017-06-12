@@ -11,8 +11,35 @@
 |
 */
 
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/test', function () {
+
+    $entity = \App\Models\Entity::find(104);
+    $entity->dataToObject();
+
+    /*
+    $process = new Process(realpath(__DIR__."/../vendor/goetas-webservices/xsd2php/bin/xsd2php")
+        ." convert " .realpath(__DIR__."/../xsd2php.yml")." ".realpath(__DIR__."/../resources/assets/xsd/mets.xsd"));
+    $process->run();
+    */
+
+    /*
+    $_SERVER['argv'] = [
+        realpath(__DIR__."/../vendor/goetas-webservices/xsd2php/bin/xsd2php"),
+        "convert",
+        realpath(__DIR__."/../xsd2php.yml"),
+        realpath(__DIR__."/../resources/assets/xsd/mets.xsd")
+    ];
+    */
+
+   // include realpath(__DIR__."/../vendor/goetas-webservices/xsd2php/bin/xsd2php");
+    //passthru("vendor/goetas-webservices/xsd2php/bin/xsd2php convert xsd2php.yml resources/assets/xsd/mets.xsd");
 });
 
 Route::group(['prefix' => 'admin'], function () {

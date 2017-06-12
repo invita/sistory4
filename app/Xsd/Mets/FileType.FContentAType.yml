@@ -1,0 +1,40 @@
+App\Xsd\Mets\FileType\FContentAType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        USEAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: USE
+            accessor:
+                getter: getUSEAttrName
+                setter: setUSEAttrName
+            xml_attribute: true
+            type: string
+        binDataElName:
+            expose: true
+            access_type: public_method
+            serialized_name: binData
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getBinDataElName
+                setter: setBinDataElName
+            type: App\Xsd\AnySimpleTypeHandler
+        xmlDataElName:
+            expose: true
+            access_type: public_method
+            serialized_name: xmlData
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getXmlDataElName
+                setter: setXmlDataElName
+            type: App\Xsd\Mets\FileType\FContentAType\XmlDataAType

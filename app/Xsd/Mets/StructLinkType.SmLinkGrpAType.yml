@@ -1,0 +1,75 @@
+App\Xsd\Mets\StructLinkType\SmLinkGrpAType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        ARCLINKORDERAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ARCLINKORDER
+            accessor:
+                getter: getARCLINKORDERAttrName
+                setter: setARCLINKORDERAttrName
+            xml_attribute: true
+            type: string
+        typeAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: type
+            accessor:
+                getter: getTypeAttrName
+                setter: setTypeAttrName
+            xml_attribute: true
+            type: string
+        rolePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: role
+            accessor:
+                getter: getRolePropName
+                setter: setRolePropName
+            xml_attribute: true
+            type: string
+        titlePropName:
+            expose: true
+            access_type: public_method
+            serialized_name: title
+            accessor:
+                getter: getTitlePropName
+                setter: setTitlePropName
+            xml_attribute: true
+            type: string
+        smLocatorLinkElName:
+            expose: true
+            access_type: public_method
+            serialized_name: smLocatorLink
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getSmLocatorLinkElName
+                setter: setSmLocatorLinkElName
+            xml_list:
+                inline: true
+                entry_name: smLocatorLink
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\StructLinkType\SmLinkGrpAType\SmLocatorLinkAType>
+        smArcLinkElName:
+            expose: true
+            access_type: public_method
+            serialized_name: smArcLink
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getSmArcLinkElName
+                setter: setSmArcLinkElName
+            xml_list:
+                inline: true
+                entry_name: smArcLink
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\StructLinkType\SmLinkGrpAType\SmArcLinkAType>

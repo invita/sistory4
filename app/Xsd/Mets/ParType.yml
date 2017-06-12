@@ -1,0 +1,66 @@
+App\Xsd\Mets\ParType:
+    properties:
+        IDAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ID
+            accessor:
+                getter: getIDAttrName
+                setter: setIDAttrName
+            xml_attribute: true
+            type: string
+        ORDERAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ORDER
+            accessor:
+                getter: getORDERAttrName
+                setter: setORDERAttrName
+            xml_attribute: true
+            type: integer
+        ORDERLABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: ORDERLABEL
+            accessor:
+                getter: getORDERLABELAttrName
+                setter: setORDERLABELAttrName
+            xml_attribute: true
+            type: string
+        LABELAttrName:
+            expose: true
+            access_type: public_method
+            serialized_name: LABEL
+            accessor:
+                getter: getLABELAttrName
+                setter: setLABELAttrName
+            xml_attribute: true
+            type: string
+        areaElName:
+            expose: true
+            access_type: public_method
+            serialized_name: area
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getAreaElName
+                setter: setAreaElName
+            xml_list:
+                inline: true
+                entry_name: area
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\AreaType>
+        seqElName:
+            expose: true
+            access_type: public_method
+            serialized_name: seq
+            xml_element:
+                namespace: 'http://www.loc.gov/METS/'
+            accessor:
+                getter: getSeqElName
+                setter: setSeqElName
+            xml_list:
+                inline: true
+                entry_name: seq
+                namespace: 'http://www.loc.gov/METS/'
+            type: array<App\Xsd\Mets\SeqType>

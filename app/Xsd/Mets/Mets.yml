@@ -1,0 +1,4 @@
+App\Xsd\Mets\Mets:
+    xml_root_name: mets
+    xml_root_namespace: 'http://www.loc.gov/METS/'
+    properties: {  }
