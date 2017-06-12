@@ -19,6 +19,7 @@ class ApiController extends Controller
         $entity = new Entity();
         $entity->entity_type_id = $request->input("entity_type_id");
         $entity->data = $request->input("xml");
+        $entity->save();
 
         return ["status" => true, "error" =>  null];
     }
