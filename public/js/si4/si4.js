@@ -20,7 +20,7 @@ si4.loadModule = function(loadArgs) {
 
     si4.loading.show();
 
-    //console.log("si4.loadModule", loadArgs);
+    console.log("si4.loadModule", loadArgs);
 
     var moduleName = si4.getArg(loadArgs, "moduleName", null); // Module Name
     var newTab = si4.getArg(loadArgs, "newTab", null); // new TabPage Name string
@@ -199,19 +199,4 @@ si4.mouse.loadingMove = function() {
     si4.mouse.loadingGif2.css("left", (si4.mouse.x+5)+"px").css("top", (si4.mouse.y+5)+"px");
 };
 
-
-$(document).ready(function() {
-    si4.data.contentElement = $('div#pageHolder');
-    si4.data.mainTab = new si4.widget.si4TabPage({
-        name: "si4",
-        parent: si4.data.contentElement,
-        canClose: false
-    });
-    var primaryPage = $('#primaryPage');
-    if (primaryPage)
-        si4.data.mainTab.content.selector.append(primaryPage);
-
-
-    //si4.loadModule({moduleName:'Dev/TestPage' });
-});
 

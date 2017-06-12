@@ -13,27 +13,43 @@ si4.api.getTestTable = function(args, callback) {
 
     //console.log("request", args);
     //console.log("getTestTable", args);
-    var offset = args.pageStart;
-    var data = [];
-    for (var i = offset; i < offset+args.pageCount; i++) {
-        data.push({
-            id: i,
-            entity_type_id: 1,
-            name: "test"+i,
-            description: "Some description..."
-        });
+
+    switch (args.moduleName) {
+
+        case "Entities/EntityList":
+            var offset = args.pageStart;
+            var data = [];
+            for (var i = offset; i < offset+args.pageCount; i++) {
+                data.push({
+                    id: i,
+                    entity_type_id: 1,
+                    name: "test"+i,
+                    description: "Some description..."
+                });
+            }
+            var response = {
+                data: data,
+                rowCount: 1000,
+            };
+            break;
+
+        case "System/UserList":
+            var offset = args.pageStart;
+            var data = [];
+            for (var i = offset; i < offset+args.pageCount; i++) {
+                data.push({
+                    id: i,
+                    name: "user"+i,
+                    email: "user"+i+"@example.com",
+                });
+            }
+            var response = {
+                data: data,
+                rowCount: 1000,
+            };
+            break;
+
     }
-    var response = {
-        data: data,
-        rowCount: 1000,
-    };
-    /*
-    var response = {
-        data: [],
-        rowCount: 0,
-    };
-     */
-    //console.log("response", response);
 
     callback(response);
 };
