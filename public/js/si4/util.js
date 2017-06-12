@@ -51,8 +51,20 @@ si4.captionize = function(strVal) {
     return result;
 };
 
+si4.moduleNameNormalize = function(moduleName) {
+    var components = moduleName.split("/");
+    for (var i in components)
+        components[i] = components[i].slice(0,1).toLowerCase()+components[i].slice(1);
+    var result = components.join("_");
+    return result;
+};
+
+
 si4.mergePlaceholders = function(str, valueMapObj) {
+    //console.log("mergePlaceholders", str, valueMapObj);
     if (!str) return "";
+    if (typeof(str) != "string") return "";
+
     if (typeof(valueMapObj) == "object") {
         for (var key in valueMapObj) {
             var searchRegEx = new RegExp('%'+key+'%', 'ig');
@@ -72,21 +84,6 @@ si4.mergePlaceholders = function(str, valueMapObj) {
     }
     while (str.indexOf('%') != -1) str = str.replace('%', '[').replace('%', '=?]');
     return str;
-};
-
-si4.removeStarsFromObject = function(obj, recursive) {
-    for (var key in obj) {
-        if (typeof(obj[key]) == "string")
-            obj[key] = obj[key].replace(/\*/g, "");
-        if (typeof(obj[key]) == "object" && !Array.isArray(obj[key]) && typeof(obj[key].value) == "string")
-            obj[key].value = obj[key].value.replace(/\*/g, "");
-
-        // Recursive
-        if (recursive && typeof(obj[key]) == "object" && Array.isArray(obj[key])) {
-            obj[key] = si4.removeStarsFromObject(obj[key]);
-        }
-    }
-    return obj;
 };
 
 si4.replacePipes = function(value, newSeparator, depth) {
@@ -128,29 +125,6 @@ si4.attachCopyToClipboard = function(sel, text, afterCopyF) {
 
 };
 
-si4.solrSpecialChars = ["+", "-", "!", "(", ")", "{", "}", "[", "]", "^", '"', "~", "*", "?", ":", "\\", ","];
-si4.stripSolrSpecialChars = function(text) {
-    /*
-     // Escape Solr chars
-     for (var cIdx in si4.solrSpecialChars) {
-     var solrChar = si4.solrSpecialChars[cIdx];
-     var searchRegEx = new RegExp("\\"+solrChar, 'ig');
-     text = text.replace(searchRegEx, "\\"+solrChar);
-     }
-     */
-
-    // Strip Solr chars
-    for (var cIdx in si4.solrSpecialChars) {
-        var solrChar = si4.solrSpecialChars[cIdx];
-        var searchRegEx = new RegExp("\\"+solrChar, 'g');
-        text = text.replace(searchRegEx, " ");
-    }
-
-    if (text.length > 80)
-        text = text.substring(0, 80);
-
-    return text;
-};
 
 si4.elasticReplaceMap = {" ": "+"};
 si4.stripElasticSpecialChars = function(text) {
@@ -167,54 +141,6 @@ si4.stripElasticSpecialChars = function(text) {
     //text = "+"+text+"+";
 
     return text;
-};
-
-si4.dump = function(obj, depth, nl, spaceChar) {
-    alert(si4.debug(obj, depth, nl, spaceChar));
-};
-
-si4.debug = function(obj, depth, nl, spaceChar) {
-
-    if (typeof(obj) == "string") return obj;
-    if (typeof(obj) == "number" ||
-        typeof(obj) == "boolean") return new String(obj);
-    //if (typeof(obj) == "undefined") return "undefined";
-
-    var dumpRc = function(obj, depth, nl, spaces){
-        if (depth == -1){
-            if (typeof(obj) == "object")
-                return "{...}"+nl;
-            else if (typeof(obj) == "function") {
-                var args = "";
-                for (var i=0; i<obj.length; i++){ if (args) args += ", "; args += "..."; }
-                return "function ("+args+")"+nl;
-            }
-            //else if (typeof(obj) == "undefined") {
-            //    return nl;
-            //}
-            else
-                return new String(obj)+nl;
-        }
-
-        var result = "";
-        for (var key in obj) {
-            result += spaces+"["+key+"]"+spaceChar+"="+spaceChar;
-            if (typeof(obj[key]) == "object"){
-                if (depth > 0) result += nl;
-                result += dumpRc(obj[key], depth -1, nl, spaces+spacesChars);
-            } else {
-                result += dumpRc(obj[key], -1, nl, "");
-            }
-        }
-        return result;
-    };
-
-    if (typeof(depth) == "undefined") depth = 2;
-    if (typeof(nl) == "undefined") nl = "\n";
-    if (typeof(spaceChar) == "undefined") spaceChar = " ";
-    var spacesChars = spaceChar+spaceChar+spaceChar+spaceChar;
-
-    return dumpRc(obj, depth, nl, "")
 };
 
 si4.findKeyByValue = function(dict, value) {

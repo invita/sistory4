@@ -3,29 +3,27 @@ var F = function(args){
     args.createMainTab();
     args.createContentTab();
 
-    var name = "entity";
+    var name = "user";
     var dataTable = new si4.widget.si4DataTable({
         parent: args.contentTab.content.selector,
         primaryKey: ['id'],
         entityTitleNew: si4.lookup[name].entityTitleNew,
         entityTitleEdit: si4.lookup[name].entityTitleEdit,
-        //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
-            moduleName:"Entities/EntityList",
+            moduleName:"System/UserList",
             //staticData : { bla: "blabla" },
             pageCount: 10
         }),
         editorModuleArgs: {
-            moduleName:"Entities/EntityDetails",
+            moduleName:"System/UserDetails",
         },
         canInsert: true,
-        canDelete: false,
+        canDelete: true,
         tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },
             name: { caption: "Naziv" },
-            description: { caption: "Opis" },
-//            pub_id: { caption:"Entity&nbsp;Id", hintF: function(args) { sic.hint.publication(args.row.lastRowData.pub_id); } },
+            email: { caption: "Email" },
         }
     });
 

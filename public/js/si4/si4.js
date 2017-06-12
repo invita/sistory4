@@ -23,6 +23,26 @@ si4.loadModule = function(loadArgs) {
     console.log("si4.loadModule", loadArgs);
 
     var moduleName = si4.getArg(loadArgs, "moduleName", null); // Module Name
+    var newTab = si4.getArg(loadArgs, "newTab", null); // new TabPage Name string
+
+    loadArgs.createMainTab = function(name) {
+        if (!name) name = si4.translate(si4.moduleNameNormalize(moduleName)+"_mainTab_text");
+        loadArgs.mainTab = new si4.widget.si4TabPage({
+            name: si4.mergePlaceholders(name, loadArgs.row),
+            //name: name,
+            parent: loadArgs.tabPage ? loadArgs.tabPage : si4.data.mainTab,
+        });
+        return loadArgs.mainTab;
+    };
+    loadArgs.createContentTab = function(name) {
+        if (!name) name = si4.translate(si4.moduleNameNormalize(moduleName)+"_contentTab_text");
+        loadArgs.contentTab = new si4.widget.si4TabPage({
+            name: name,
+            parent: loadArgs.mainTab.content.selector,
+        });
+        return loadArgs.contentTab;
+    };
+
     $.get(si4.config.modulePath+moduleName+".js", function(data) {
         eval(data);
         if (F && typeof(F) == "function") F(loadArgs);
@@ -93,8 +113,9 @@ si4.loadModule = function(loadArgs) {
     */
 };
 
+
 si4.callMethod = function(args, f) {
-    return si4.api.abstractCall(args, f);
+    //return si4.api.abstractCall(args, f);
     /*
     si4.loading.show();
 
@@ -178,18 +199,4 @@ si4.mouse.loadingMove = function() {
     si4.mouse.loadingGif2.css("left", (si4.mouse.x+5)+"px").css("top", (si4.mouse.y+5)+"px");
 };
 
-
-$(document).ready(function() {
-    si4.data.contentElement = $('div#pageHolder');
-    si4.data.mainTab = new si4.widget.si4TabPage({
-        name: "si4",
-        parent: si4.data.contentElement,
-        canClose: false
-    });
-    var primaryPage = $('#primaryPage');
-    if (primaryPage)
-        si4.data.mainTab.content.selector.append(primaryPage);
-
-    si4.loadModule({moduleName:'Dev/TestPage' });
-});
 

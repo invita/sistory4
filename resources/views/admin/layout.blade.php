@@ -17,6 +17,8 @@
     <script src="/js/si4/codes.js"></script>
     <script src="/js/si4/lookup.js"></script>
     <script src="/js/si4/api.js"></script>
+    <script src="/js/si4/translate/translate.js"></script>
+    <script src="/js/si4/translate/languages/svn.js"></script>
     <script src="/js/si4/object/si4EventBase.js"></script>
     <script src="/js/si4/object/si4FileUploader.js"></script>
     <script src="/js/si4/widget/si4Element.js"></script>
@@ -31,7 +33,7 @@
     <script src="/js/si4/widget/si4HtmlTable.js"></script>
     <script src="/js/si4/widget/si4Hint.js"></script>
     <script src="/js/si4/widget/si4AutoComplete.js"></script>
-    <script src="/js/si4/hint.js"></script>
+    <script src="/js/si4/init.js"></script>
 
     <link rel="stylesheet" href="/lib/zurb/css/normalize.css" />
     <link rel="stylesheet" href="/lib/zurb/css/foundation.css" />

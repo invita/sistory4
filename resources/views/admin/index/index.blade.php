@@ -16,19 +16,7 @@
         <div id="initLoader" class="initLoader">Loading...</div>
         <div id="navigation" class="navigation" style="display:none;">
             <div>
-                <ul class="navigationUl">
-
-                    <li class="mainMenuList">
-                        <a href="javascript:si4.loadModule({moduleName:'Dev/TestPage' });">TestPage</a>
-                    </li>
-
-                    <li class="mainMenuList">
-                        <a href="javascript:si4.loadModule({moduleName:'System/Dashboard' });">Sistem</a>
-                    </li>
-
-                    <li class="mainMenuList">
-                        <a href="javascript:si4.loadModule({moduleName:'Entities/EntityList' });">Seznam entitet</a>
-                    </li>
+                <ul class="navigationUl" id="navContainer">
 
                 </ul>
             </div>

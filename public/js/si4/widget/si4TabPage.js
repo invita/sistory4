@@ -73,7 +73,7 @@ si4.widget.si4TabPage = function(args)
 
         _p.tabButton.selector.click(function(e){
             _p.selectTab();
-            //alert("("+_p.uniqId+") Child Tabs:\n"+si4.debug(_p.childTabs, 0));
+            //console.log("("+_p.uniqId+") Child Tabs:\n"+si4.debug(_p.childTabs, 0));
         });
     };
 
@@ -146,14 +146,14 @@ si4.widget.si4TabPage = function(args)
         _p.tabButton.captionSpan.selector.html(newCaption);
     };
 
-    this.alertMode = false;
+    this.debugMode = false;
     this.appendTo = function(parent, insertInFront) {
 
         var contentParent;
         if (parent.isTabPage){
 
             // Appending to parent si4TabPage
-            if (_p.alertMode) alert("append "+_p.name+" to "+_p.parent.name);
+            if (_p.debugMode) console.log("append "+_p.name+" to "+_p.parent.name);
             _p.header = parent.header;
             contentParent = parent.header.parent;
 
@@ -165,7 +165,7 @@ si4.widget.si4TabPage = function(args)
         } else if (parent.isTabPageHeader){
 
             // Appending to parent si4TabPageHeader
-            if (_p.alertMode) alert("append "+_p.name+" to another tabPage header");
+            if (_p.debugMode) console.log("append "+_p.name+" to another tabPage header");
             _p.header = parent;
             contentParent = parent.parent;
 
@@ -178,13 +178,13 @@ si4.widget.si4TabPage = function(args)
 
             // Appending to parent si4Element
             if (parent.issi4Element) {
-                if (_p.alertMode) alert("append "+_p.name+" to si4Element");
+                if (_p.debugMode) console.log("append "+_p.name+" to si4Element");
                 parent = parent.selector;
             }
             contentParent = parent;
 
             // Appending to an element (jquery)
-            if (_p.alertMode) alert("append "+_p.name+" to jQuery selector");
+            if (_p.debugMode) console.log("append "+_p.name+" to jQuery selector");
             _p._createHeader(parent);
 
             if (parent.hasClass("si4TabContent") && parent.si4TabPage) {
@@ -195,7 +195,7 @@ si4.widget.si4TabPage = function(args)
         }
 
         //si4.dump(contentParent);
-        //alert(contentParent+" "+parent.isTabPage);
+        //console.log(contentParent+" "+parent.isTabPage);
 
         var pageWithThatName = _p.header.findPageByName(_p.name);
 
@@ -272,7 +272,7 @@ si4.widget.si4TabPageHeader = function(args){
             if (i == uniqId) break;
             result = _p.pages[i];
         }
-        //if (!result) alert(Object.keys(_p.pages));
+        //if (!result) console.log(Object.keys(_p.pages));
         if (!result && Object.keys(_p.pages).length > 1) result = _p.pages[Object.keys(_p.pages)[1]];
 
         return result;
