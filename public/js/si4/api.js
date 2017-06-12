@@ -9,9 +9,44 @@ si4.api.abstractCall = function(args, callback) {
     });
 };
 
+si4.api.getTable = function(args, callback) {
+    var postData = {
+
+    };
+    switch (args.moduleName) {
+        case "Entities/EntityList":
+
+            $.post(si4.config.apiUrl, JSON.stringify(args), function(data) {
+                console.log("post callback", data);
+                if (typeof(callback) == "function") callback(data);
+            });
+            break;
+
+        case "System/UserList":
+            var offset = args.pageStart;
+            var data = [];
+            for (var i = offset; i < offset+args.pageCount; i++) {
+                data.push({
+                    id: i,
+                    name: "user"+i,
+                    email: "user"+i+"@example.com",
+                });
+            }
+            var response = {
+                data: data,
+                rowCount: 1000,
+            };
+            console.log("response", response);
+            break;
+
+    }
+
+    callback(response);
+};
+
 si4.api.getTestTable = function(args, callback) {
 
-    //console.log("request", args);
+    console.log("request", args);
     //console.log("getTestTable", args);
 
     switch (args.moduleName) {
@@ -54,6 +89,13 @@ si4.api.getTestTable = function(args, callback) {
     callback(response);
 };
 
+si4.api.getTestEntity = function(args, callback) {
+    var response = si4.mergeObjects(args);
+    response.name = "Duhec was here";
+    setTimeout(function() { callback(response); }, 1500);
+    //callback(response);
+};
+
 
 si4.api.mockedEntityList = function(args, callback) {
     $.post(si4.config.apis.entityList, JSON.stringify(args), function(data) {
@@ -81,3 +123,19 @@ si4.api.uploadEntity = function(formData, callback) {
         success: callback
     });
 }
+
+
+si4.api.entityList = function(data, callback) {
+    $.post(si4.config.apis.entityList, JSON.stringify(data), function(resp) {
+        console.log("saveEntity callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+
+si4.api.saveEntity = function(data, callback) {
+    $.post(si4.config.apis.saveEntity, JSON.stringify(data), function(resp) {
+        console.log("saveEntity callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+

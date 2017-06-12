@@ -5,6 +5,7 @@ si4.config.uploadApiUrl = "/admin/upload";
 si4.config.apiUrl = "/admin/api";
 
 si4.config.apis = {
+    saveEntity: si4.config.apiUrl+"/save-entity",
     entityList: si4.config.apiUrl+"/entity-list",
 };
 

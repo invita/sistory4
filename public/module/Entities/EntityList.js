@@ -11,9 +11,10 @@ var F = function(args){
         entityTitleEdit: si4.lookup[name].entityTitleEdit,
         //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
-            moduleName:"Entities/EntityList",
+            select: si4.api.entityList,
+            //moduleName:"Entities/EntityList",
             //staticData : { bla: "blabla" },
-            pageCount: 10
+            pageCount: 200
         }),
         editorModuleArgs: {
             moduleName:"Entities/EntityDetails",

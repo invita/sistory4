@@ -719,7 +719,7 @@ si4.widget.si4DataTable = function(args)
                 row: row
             });
 
-            editorModuleArgs.onClosed = function (args) {
+            editorModuleArgs.onClosed = function(args) {
                 _p.refresh();
             };
 
@@ -1248,6 +1248,9 @@ si4.widget.si4DataTableDataSource = function(args) {
     this.moduleName = si4.getArg(args, "moduleName", null);
     this.methodNames = si4.getArg(args, "methodNames", { select:'dataTableSelect', delete:'dataTableDelete',
         updateRow:'dataTableUpdateRow', exportXls:'dataTableExportXls', exportCsv:'dataTableExportCsv' });
+
+    this.selectF = si4.getArg(args, "select", null);
+
     this.filter = si4.getArg(args, "filter", {});
     this.filterMode = si4.getArg(args, "filterMode", "normal");
     this.sortField = si4.getArg(args, "sortField", null);
@@ -1283,7 +1286,11 @@ si4.widget.si4DataTableDataSource = function(args) {
     }
 
     this.select = function(args) {
-        si4.api.getTestTable(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
+        _p.selectF(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
+        //si4.api.entityList(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
+        //si4.api.getTestTable(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
+
+        //si4.api.getTable(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
         //return si4.callMethod(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
     }
 

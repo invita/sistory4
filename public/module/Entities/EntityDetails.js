@@ -14,21 +14,20 @@ var F = function(args){
 
     var actionsForm = new si4.widget.si4Form({parent:panelGroup.content.selector, captionWidth:"90px" });
 
-    var fieldId = actionsForm.addInput({name:"entity_id", value:rowValue.id, type:"text", caption:"Id", readOnly: true});
+    var fieldId = actionsForm.addInput({name:"entity_id", value:rowValue.id, type:"text", caption:"Id" /*, readOnly: true */});
     var fieldEntityTypeId = actionsForm.addInput({name:"entity_type_id", value:rowValue.entity_type_id, type:"text", caption:"Entity Type Id"});
-    var fieldName = actionsForm.addInput({name:"name", value:rowValue.name, type:"text", caption:"Name"});
-    var fieldDesc = actionsForm.addInput({name:"description", value:rowValue.description, type:"text", caption:"Description"});
+    //var fieldName = actionsForm.addInput({name:"name", value:rowValue.name, type:"text", caption:"Name"});
+    //var fieldData = actionsForm.addInput({name:"data", value:rowValue.data, type:"text", caption:"Xml"});
 
     var fieldFile = actionsForm.addInput({name:"file", value:"", type:"file", caption:"File"});
 
 
-    var initialXml = "<test>\n" +
-        "  <neki value=\"1\">Test XML</neki>\n" +
-        "</test>\n\n\n\n\n\n\n";
-    var fieldXml = actionsForm.addInput({name:"xml", value:initialXml, type:"codemirror", caption:false});
+    //var initialXml = "<test>\n" +
+    //    "  <neki value=\"1\">Test XML</neki>\n" +
+    //    "</test>\n\n\n\n\n\n\n";
+    var fieldXml = actionsForm.addInput({name:"xml", value:rowValue.data, type:"codemirror", caption:false});
     fieldXml.selector.css("margin-left", "100px").css("margin-bottom", "2px");
     //fieldXml.selector.css("width", ($(window).width()*0.9)+"px");
-
 
     var saveButton = actionsForm.addInput({value:"Save entity", type:"submit", caption:"Akcije"});
     saveButton.selector.click(function(){
@@ -64,8 +63,22 @@ var F = function(args){
         });
         */
 
-        si4.api.mockedEntityList({}, function() {});
+        //si4.api.mockedEntityList({}, function() {});
+
+        var formValue = actionsForm.getValue();
+        console.log("formValue", formValue);
+        si4.api.saveEntity(actionsForm.getValue(), function(data) {
+            console.log("saveEntity callback", data);
+        });
     });
+
+
+    /*
+    si4.api.getTestEntity(args.row, function(data) {
+        //console.log("actionsForm", actionsForm);
+        actionsForm.setValue(data);
+    });
+    */
 
 
 };
