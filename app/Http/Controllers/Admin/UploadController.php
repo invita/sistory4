@@ -20,4 +20,11 @@ class UploadController extends Controller
 
         return ["status" => true, "data" => $entity->data, "error" =>  null];
     }
+
+    public function showContent(Request $request)
+    {
+        $file = $request->file("file");
+
+        return ["status" => true, "data" => file_get_contents($file->getPathname()), "error" =>  null];
+    }
 }
