@@ -21,11 +21,11 @@ var F = function(args){
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
-            id: { caption: "Id" },
-            username: { caption: "Username" },
-            email: { caption: "Email" },
-            firstname: { caption: "Ime" },
-            lastname: { caption: "Priimek" },
+            id: { caption: si4.translate("field_id") },
+            name: { caption: si4.translate("field_username") },
+            email: { caption: si4.translate("field_email") },
+            firstname: { caption: si4.translate("field_firstname") },
+            lastname: { caption: si4.translate("field_lastname") },
         }
     });
 

@@ -14,7 +14,7 @@ var F = function(args){
 
     var actionsForm = new si4.widget.si4Form({parent:panelGroup.content.selector, captionWidth:"90px" });
 
-    var fieldId = actionsForm.addInput({name:"id", value:rowValue.id, type:"text", caption:"Id" /*, readOnly: true */});
+    var fieldId = actionsForm.addInput({name:"id", value:rowValue.id, type:"text", caption:si4.translate("field_id"), readOnly: true});
 
     /*
     var fieldEntityTypeId = actionsForm.addInput({
@@ -23,15 +23,15 @@ var F = function(args){
     });
     */
     var fieldEntityTypeId = actionsForm.addInput({
-        name:"entity_type_id", value:rowValue.entity_type_id, type:"select", caption:"Entity Type",
+        name:"entity_type_id", value:rowValue.entity_type_id, type:"select", caption:si4.translate("field_entityType"),
         values: si4.codes.entityTypeIds });
 
 
-    var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:"Title"});
-    var fieldYear = actionsForm.addInput({name:"year", value:rowValue.year, type:"text", caption:"Year"});
-    var fieldAuthor = actionsForm.addInput({name:"author", value:rowValue.author, type:"text", caption:"Author"});
+    var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:si4.translate("field_title")});
+    var fieldYear = actionsForm.addInput({name:"year", value:rowValue.year, type:"text", caption:si4.translate("field_year")});
+    var fieldAuthor = actionsForm.addInput({name:"author", value:rowValue.author, type:"text", caption:si4.translate("field_author")});
 
-    var fieldFile = actionsForm.addInput({name:"file", value:"", type:"file", caption:"Xml"});
+    var fieldFile = actionsForm.addInput({name:"file", value:"", type:"file", caption:si4.translate("field_xml")});
 
 
     //var initialXml = "<test>\n" +
@@ -41,10 +41,10 @@ var F = function(args){
     fieldXml.selector.css("margin-left", "100px").css("margin-bottom", "2px");
     //fieldXml.selector.css("width", ($(window).width()*0.9)+"px");
 
-    var entityIndexed = actionsForm.addInput({name:"indexed", value:rowValue.indexed, type:"checkbox", caption:"Indexed"});
-    var entityEnabled = actionsForm.addInput({name:"enabled", value:rowValue.enabled, type:"checkbox", caption:"Enabled"});
+    var entityIndexed = actionsForm.addInput({name:"indexed", value:rowValue.indexed, type:"checkbox", caption:si4.translate("field_indexed")});
+    var entityEnabled = actionsForm.addInput({name:"enabled", value:rowValue.enabled, type:"checkbox", caption:si4.translate("field_enabled")});
 
-    var saveButton = actionsForm.addInput({value:"Save entity", type:"submit", caption:"Akcije"});
+    var saveButton = actionsForm.addInput({value:si4.translate("button_save"), type:"submit", caption:si4.translate("field_actions")});
     saveButton.selector.click(function(){
         //si4.loading.show();
 

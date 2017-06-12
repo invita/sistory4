@@ -28,5 +28,27 @@ si4.translations = {
     dev_testPage_mainTab_text: "Test mainTab",
     dev_testPage_contentTab_text: "Test contentTab",
 
+
+    // Fields
+    field_id: "Id",
+    field_title: "Naslov",
+    field_author: "Avtor",
+    field_year: "Leto",
+    field_entityType: "Tip entitete",
+    field_xml: "Xml",
+
+    field_email: "Email",
+    field_username: "Uporabnik",
+    field_password: "Geslo",
+    field_firstname: "Ime",
+    field_lastname: "Priimek",
+
+    field_enabled: "Omogočena",
+    field_indexed: "Indeksirana",
+
+    field_actions: "Akcije",
+
+
+
 };
 
