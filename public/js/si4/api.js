@@ -127,7 +127,7 @@ si4.api.uploadEntity = function(formData, callback) {
 
 si4.api.entityList = function(data, callback) {
     $.post(si4.config.apis.entityList, JSON.stringify(data), function(resp) {
-        console.log("saveEntity callback", resp);
+        console.log("entityList callback", resp);
         if (typeof(callback) == "function") callback(resp);
     });
 };
@@ -135,6 +135,20 @@ si4.api.entityList = function(data, callback) {
 si4.api.saveEntity = function(data, callback) {
     $.post(si4.config.apis.saveEntity, JSON.stringify(data), function(resp) {
         console.log("saveEntity callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+
+si4.api.userList = function(data, callback) {
+    $.post(si4.config.apis.userList, JSON.stringify(data), function(resp) {
+        console.log("userList callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+
+si4.api.saveUser = function(data, callback) {
+    $.post(si4.config.apis.saveUser, JSON.stringify(data), function(resp) {
+        console.log("saveUser callback", resp);
         if (typeof(callback) == "function") callback(resp);
     });
 };

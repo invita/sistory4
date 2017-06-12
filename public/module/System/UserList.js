@@ -10,9 +10,9 @@ var F = function(args){
         entityTitleNew: si4.lookup[name].entityTitleNew,
         entityTitleEdit: si4.lookup[name].entityTitleEdit,
         dataSource: new si4.widget.si4DataTableDataSource({
-            moduleName:"System/UserList",
-            //staticData : { bla: "blabla" },
-            pageCount: 10
+            select: si4.api.userList,
+            //moduleName:"System/UserList",
+            pageCount: 200
         }),
         editorModuleArgs: {
             moduleName:"System/UserDetails",
@@ -22,8 +22,10 @@ var F = function(args){
         tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },
-            name: { caption: "Naziv" },
+            username: { caption: "Username" },
             email: { caption: "Email" },
+            firstname: { caption: "Ime" },
+            lastname: { caption: "Priimek" },
         }
     });
 

@@ -12,3 +12,10 @@ si4.codes = {
         });
     }
 };
+
+
+si4.codes.entityTypeIds = {
+    0:'',
+    1:'publication',
+    2:'menu'
+};

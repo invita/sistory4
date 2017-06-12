@@ -7,6 +7,9 @@ si4.config.apiUrl = "/admin/api";
 si4.config.apis = {
     saveEntity: si4.config.apiUrl+"/save-entity",
     entityList: si4.config.apiUrl+"/entity-list",
+
+    userList: si4.config.apiUrl+"/user-list",
+    saveUser: si4.config.apiUrl+"/save-user",
 };
 
 si4.config.uploadApis = {

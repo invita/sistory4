@@ -15,12 +15,14 @@ si4.widget.si4Input = function(args)
     this.inputType = this.type;
     switch(this.type){
         case "textarea":case "codemirror": this.inputTagName = "textarea"; break;
+        case "select": this.inputTagName = "select"; break;
         case "flat": this.inputTagName = "div"; this.inputType = null; break;
         default: this.inputTagName = "input"; break;
     }
 
     this.name = si4.getArg(args, "name", null);
     this.value = si4.getArg(args, "value", "");
+    this.values = si4.getArg(args, "values", {});
     this.placeholder = si4.getArg(args, "placeholder", "");
     this.withCode = si4.getArg(args, "withCode", null);
     this.readOnly = si4.getArg(args, "readOnly", false);
@@ -67,6 +69,11 @@ si4.widget.si4Input = function(args)
     if (this.type == "flat") {
         this.input.selector.addClass("flat");
         this.selector.addClass("inline");
+    }
+
+    if (this.type == "select") {
+        for (var i in this.values)
+            this.input.selector.append($('<option>', {value: i, text: this.values[i]}));
     }
 
     if (this.readOnly)

@@ -71,6 +71,9 @@ si4.widget.si4Form = function(args)
             _p._submitInput = input;
             _p._submitInput.selector.click(_p._onSubmit);
         }
+        if (args.type == "select") {
+
+        }
         _p.inputs[input.name] = input;
         return input;
     };
