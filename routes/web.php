@@ -53,6 +53,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::group(['prefix' => 'api'], function () {
             Route::post('entity-list', "Admin\\ApiController@entityList")->name("admin.api.entity-list#post");
+            Route::post('save-entity', "Admin\\ApiController@saveEntity")->name("admin.api.save-entity#post");
         });
 
         Route::group(['prefix' => 'upload'], function () {
