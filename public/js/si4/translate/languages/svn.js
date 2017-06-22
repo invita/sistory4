@@ -28,6 +28,11 @@ si4.translations = {
     dev_testPage_mainTab_text: "Test mainTab",
     dev_testPage_contentTab_text: "Test contentTab",
 
+    // ElasticTools
+    dev_elasticTools_mainTab_text: "Elastic Dev",
+    dev_elasticTools_indexingTab_text: "Indexing tools",
+    dev_elasticTools_searchTab_text: "Search",
+
 
     // Fields
     field_id: "Id",

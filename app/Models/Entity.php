@@ -75,7 +75,7 @@ class Entity extends Model
         // deserialize the XML into Demo\MyObject object
         $object = $serializer->deserialize($this->data, 'App\Xsd\Mets\Mets', 'xml');
         $array = $object->toArray();
-
+        return $array;
     }
 
     /**

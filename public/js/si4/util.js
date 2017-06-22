@@ -61,13 +61,13 @@ si4.moduleNameNormalize = function(moduleName) {
 
 
 si4.mergePlaceholders = function(str, valueMapObj) {
-    //console.log("mergePlaceholders", str, valueMapObj);
+    console.log("mergePlaceholders", str, valueMapObj);
     if (!str) return "";
     if (typeof(str) != "string") return "";
 
     if (typeof(valueMapObj) == "object") {
         for (var key in valueMapObj) {
-            var searchRegEx = new RegExp('%'+key+'%', 'ig');
+            var searchRegEx = new RegExp('\\[\\['+key+'\\]\\]', 'ig');
             var replaceVal = undefined;
             if (typeof(valueMapObj[key]) == "string" || typeof(valueMapObj[key]) == "number") replaceVal = valueMapObj[key];
             else if (valueMapObj[key] && typeof(valueMapObj[key]) == "object" && Object.keys(valueMapObj).length) {

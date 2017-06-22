@@ -19,6 +19,10 @@ $(document).ready(function() {
             caption: "TestPage",
         },
         {
+            loadArgs: { moduleName:'Dev/ElasticTools' },
+            caption: "ElasticTools",
+        },
+        {
             loadArgs: { moduleName:'System/Dashboard' },
             caption: "Sistem",
         },

@@ -18,3 +18,9 @@ si4.translate = function(key, replaceMap) {
     return result;
 };
 
+si4.translateTab = function(moduleName, name) {
+    var key = si4.moduleNameNormalize(moduleName)+"_"+name+"_text";
+    //console.log("translateTab", moduleName, name, "->", key);
+    return si4.translate(key);
+};
+

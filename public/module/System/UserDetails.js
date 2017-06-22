@@ -1,8 +1,8 @@
 var F = function(args){
     //console.log("EntityDetails", args);
 
-    args.createMainTab(args.entityTitle);
-    args.createContentTab("Urejanje");
+    args.createMainTab();
+    args.createContentTab();
 
     var rowValue = args.row ? args.row : {};
     if (!rowValue.id) rowValue.id = "";

@@ -26,7 +26,7 @@ si4.loadModule = function(loadArgs) {
     var newTab = si4.getArg(loadArgs, "newTab", null); // new TabPage Name string
 
     loadArgs.createMainTab = function(name) {
-        if (!name) name = si4.translate(si4.moduleNameNormalize(moduleName)+"_mainTab_text");
+        name = si4.translateTab(moduleName, name ? name : "mainTab");
         loadArgs.mainTab = new si4.widget.si4TabPage({
             name: si4.mergePlaceholders(name, loadArgs.row),
             //name: name,
@@ -34,12 +34,13 @@ si4.loadModule = function(loadArgs) {
         });
         return loadArgs.mainTab;
     };
-    loadArgs.createContentTab = function(name) {
-        if (!name) name = si4.translate(si4.moduleNameNormalize(moduleName)+"_contentTab_text");
-        loadArgs.contentTab = new si4.widget.si4TabPage({
+    loadArgs.createContentTab = function(name, args) {
+        name = si4.translateTab(moduleName, name ? name : "contentTab");
+        loadArgs.contentTab = new si4.widget.si4TabPage(si4.mergeObjects({
             name: name,
-            parent: loadArgs.mainTab.content.selector,
-        });
+            parent: loadArgs.contentTab ? loadArgs.contentTab : loadArgs.mainTab.content.selector,
+            autoActive: !loadArgs.contentTab,
+        }, args));
         return loadArgs.contentTab;
     };
 

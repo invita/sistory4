@@ -56,6 +56,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('save-entity', "Admin\\ApiController@saveEntity")->name("admin.api.save-entity#post");
             Route::post('user-list', "Admin\\ApiController@userList")->name("admin.api.entity-list#post");
             Route::post('save-user', "Admin\\ApiController@saveUser")->name("admin.api.save-user#post");
+            Route::post('dev-tools', "Admin\\ApiController@devTools")->name("admin.api.dev-tools#post");
         });
 
         Route::group(['prefix' => 'upload'], function () {

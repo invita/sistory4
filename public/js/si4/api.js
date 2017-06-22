@@ -153,3 +153,10 @@ si4.api.saveUser = function(data, callback) {
     });
 };
 
+si4.api.devTools = function(data, callback) {
+    $.post(si4.config.apis.devTools, JSON.stringify(data), function(resp) {
+        console.log("devTools callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+

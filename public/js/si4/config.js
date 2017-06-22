@@ -10,6 +10,8 @@ si4.config.apis = {
 
     userList: si4.config.apiUrl+"/user-list",
     saveUser: si4.config.apiUrl+"/save-user",
+
+    devTools: si4.config.apiUrl+"/dev-tools",
 };
 
 si4.config.uploadApis = {
