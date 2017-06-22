@@ -95,7 +95,6 @@ var F = function(args){
         dataTable.refresh();
     });
 
-    var name = "entity";
     var dataTable = new si4.widget.si4DataTable({
         parent: searchTab.content.selector,
         filter: { enabled: false },
@@ -113,8 +112,6 @@ var F = function(args){
                     callback({data: data});
                 });
             },
-            //moduleName:"Entities/EntityList",
-            //staticData : { bla: "blabla" },
             pageCount: 200
         }),
         editorModuleArgs: {
