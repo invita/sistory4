@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Xsd\AnySimpleTypeHandler;
+use App\Xsd\AnyTypeHandler;
+use App\Xsd\XmlDataATypeHandler;
+use Illuminate\Contracts\Logging\Log;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\EntityType;
 use Illuminate\Http\UploadedFile;
@@ -11,6 +15,7 @@ use JMS\Serializer\Handler\HandlerRegistryInterface;
 
 use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\BaseTypesHandler;
 use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\XmlSchemaDateHandler;
+use Psr\Log\Test\LoggerInterfaceTest;
 
 
 /**
@@ -31,6 +36,7 @@ use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\XmlSchemaDateHandler;
  */
 class Entity extends Model
 {
+
     /**
      * The attributes that are mass assignable.
      *
@@ -67,7 +73,11 @@ class Entity extends Model
             $handler->registerSubscribingHandler(new BaseTypesHandler()); // XMLSchema List handling
             $handler->registerSubscribingHandler(new XmlSchemaDateHandler()); // XMLSchema date handling
 
+            //$handler->registerSubscribingHandler(new XmlDataATypeHandler());
             // $handler->registerSubscribingHandler(new YourhandlerHere());
+            //$handler->registerSubscribingHandler(new AnySimpleTypeHandler());
+            //$handler->registerSubscribingHandler(new AnyTypeHandler());
+
         });
 
         $serializer = $serializerBuilder->build();
@@ -75,6 +85,8 @@ class Entity extends Model
         // deserialize the XML into Demo\MyObject object
         $object = $serializer->deserialize($this->data, 'App\Xsd\Mets\Mets', 'xml');
         $array = $object->toArray();
+
+
         return $array;
     }
 

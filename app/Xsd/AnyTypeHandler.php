@@ -32,10 +32,14 @@ class AnyTypeHandler implements SubscribingHandlerInterface
     public function serializeAnyType(XmlSerializationVisitor $visitor, $data, array $type, Context $context)
     {
         // serialize your object here
+        //$i=1;
+        //echo "serializeAnyType"; print_r($data);
     }
 
     public function deserializeAnyType(XmlDeserializationVisitor $visitor, $data, array $type)
     {
         // deserialize your object here
+        //$i=1;
+        //echo "deserializeAnyType"; print_r($data);
     }
 }

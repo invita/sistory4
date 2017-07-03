@@ -217,37 +217,9 @@ mptr and area elements for mapping MPEG21 DII Identifier values
 	2.	Also added xsd:anyAttribute with namespace ##other and processContents lax to these elements.  This will allow arbitrary new attributes to be added to these elements to support local needs.	
 -->
 
-
-<!--
-<xsd:schema
-        targetNamespace="http://www.loc.gov/METS/"
-        xmlns="http://www.loc.gov/METS/"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:dc="http://purl.org/dc/elements/1.1/"
-        elementFormDefault="qualified"
-        attributeFormDefault="unqualified">
+<xsd:schema targetNamespace="http://www.loc.gov/METS/" xmlns="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd"/>
-
-    <xsd:import namespace="http://purl.org/dc/terms/" schemaLocation="http://www.dublincore.org/schemas/xmls/qdc/dcterms.xsd" />
-
--->
-
-<xsd:schema
-        targetNamespace="http://www.loc.gov/METS/"
-        xmlns="http://www.loc.gov/METS/"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns:dcterms="http://purl.org/dc/terms/"
-        elementFormDefault="qualified"
-        attributeFormDefault="unqualified">
-	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd"/>
-
-    <xsd:import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="http://www.dublincore.org/schemas/xmls/qdc/dc.xsd" />
-    <xsd:import namespace="http://purl.org/dc/terms/" schemaLocation="http://www.dublincore.org/schemas/xmls/qdc/dcterms.xsd" />
-    <xsd:import namespace="http://purl.org/dc/dcmitype/" schemaLocation="http://www.dublincore.org/schemas/xmls/qdc/dcmitype.xsd" />
-
+	
 	<xsd:element name="mets">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">METS: Metadata Encoding and Transmission Standard.
@@ -1290,51 +1262,18 @@ TCF.
 									The binary data wrapper element &lt;binData&gt; is used to contain Base64 encoded metadata.												</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-
-                        <xsd:element name="xmlData" minOccurs="0">
-                            <xsd:annotation>
-                                <xsd:documentation xml:lang="en">
-                                    The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element.
-                                </xsd:documentation>
-                            </xsd:annotation>
-                            <xsd:complexType >
-                                <xsd:sequence >
-                                    <xsd:element ref="dc:any" maxOccurs="unbounded" />
-                                </xsd:sequence>
-                            </xsd:complexType>
-                        </xsd:element>
-
-                        <!--
-                        <xsd:element name="xmlData" minOccurs="0">
-                            <xsd:annotation>
-                                <xsd:documentation xml:lang="en">
-                                    The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element.
-                                </xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-
-						<xsd:element name="xmlData" minOccurs="0" type="dc:elementContainer">
+						<xsd:element name="xmlData" minOccurs="0">
 							<xsd:annotation>
 								<xsd:documentation xml:lang="en">
-									The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element.
+									The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element. 												
 								</xsd:documentation>
 							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:any namespace="##any" maxOccurs="unbounded" processContents="lax"/>
+								</xsd:sequence>
+							</xsd:complexType>
 						</xsd:element>
-						-->
-                        <!--
-                        <xsd:element name="xmlData" minOccurs="0">
-							<xsd:annotation>
-								<xsd:documentation xml:lang="en">
-									The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element.
-								</xsd:documentation>
-							</xsd:annotation>
-                            <xsd:complexType>
-                                <xsd:sequence>
-                                    <xsd:any namespace="##any" maxOccurs="unbounded" processContents="lax"/>
-                                </xsd:sequence>
-                            </xsd:complexType>
-						</xsd:element>
-						-->
 					</xsd:choice>
 					<xsd:attribute name="ID" type="xsd:ID" use="optional">
 						<xsd:annotation>

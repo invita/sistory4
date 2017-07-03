@@ -32,10 +32,14 @@ class AnySimpleTypeHandler implements SubscribingHandlerInterface
     public function serializeAnySimpleType(XmlSerializationVisitor $visitor, $data, array $type, Context $context)
     {
         // serialize your object here
+        //$i=1;
+        //echo "serializeAnyType S"; print_r($data);
     }
 
     public function deserializeAnySimpleType(XmlDeserializationVisitor $visitor, $data, array $type)
     {
         // deserialize your object here
+        //$i=1;
+        //echo "deserializeAnyType S"; print_r($data);
     }
 }

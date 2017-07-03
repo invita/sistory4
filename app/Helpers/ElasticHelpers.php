@@ -46,5 +46,4 @@ class ElasticHelpers
         ];
         return \Elasticsearch::connection()->search($requestArgs);
     }
-
 }
