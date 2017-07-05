@@ -12,7 +12,46 @@ class ApiController extends Controller
 {
     public function entityList(Request $request)
     {
-        $entities = Entity::all();
+        $entitiesDb = Entity::all();
+
+        $entityIds = [];
+        $dbData = [];
+        foreach($entitiesDb as $e) {
+            $entityIds[] = $e["id"];
+            $dbData[$e["id"]] = $e;
+        }
+
+        $dataElastic = ElasticHelpers::searchByIdArray($entityIds);
+        //print_r($dataElastic);
+
+        $hits = [];
+        foreach ($dataElastic["hits"]["hits"] as $hit) $hits[$hit["_id"]] = $hit["_source"];
+
+        $entities = [];
+        foreach ($entityIds as $entityId) {
+
+            $IDAttr = "";
+            $title = "";
+            $creator = "";
+
+            if (isset($hits[$entityId])) {
+                $eData = $hits[$entityId];
+                $dcXmlData = $eData["DmdSecElName"][1]["MdWrapElName"]["XmlDataElName"];
+
+                $IDAttr = isset($eData["IDAttrName"]) ? $eData["IDAttrName"] : "";
+                $title = isset($dcXmlData["TitlePropName"]) ? join(", ", $dcXmlData["TitlePropName"]) : "";
+                $creator = isset($dcXmlData["CreatorPropName"]) ? join(",", $dcXmlData["CreatorPropName"]) : "";
+            }
+
+            $entities[] = [
+                "id" => $entityId,
+                "entity_type_id" => $dbData[$entityId]["entity_type_id"],
+                "IdAttr" => $IDAttr,
+                "title" => $title,
+                "creator" => $creator,
+                "data" => $dbData[$entityId]["data"],
+            ];
+        }
 
         return ["status" => true, "data" => $entities, "error" =>  null];
     }

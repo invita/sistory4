@@ -26,6 +26,7 @@ var F = function(args){
             id: { caption: "Id" },
             name: { caption: "Naziv" },
             description: { caption: "Opis" },
+            data: { visible: false },
 //            pub_id: { caption:"Entity&nbsp;Id", hintF: function(args) { sic.hint.publication(args.row.lastRowData.pub_id); } },
         }
     });

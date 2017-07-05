@@ -46,4 +46,20 @@ class ElasticHelpers
         ];
         return \Elasticsearch::connection()->search($requestArgs);
     }
+
+    public static function searchByIdArray($idArray)
+    {
+        $requestArgs = [
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+            "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
+            "body" => [
+                "query" => [
+                    "ids" => [
+                        "values" => $idArray
+                    ]
+                ]
+            ]
+        ];
+        return \Elasticsearch::connection()->search($requestArgs);
+    }
 }
