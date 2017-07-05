@@ -10,3 +10,8 @@ Homestead.yaml
 .env
 .DS_Store
 notes.txt
+out.txt
+/app/Xsd/Dc
+/app/Xsd/Mets
+/app/Xsd/Mods
+/app/Xsd/Premis

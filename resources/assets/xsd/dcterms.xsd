@@ -72,21 +72,21 @@
    <xs:import namespace="http://purl.org/dc/dcmitype/"
               schemaLocation="dcmitype.xsd"/>
 
-   <xs:element name="title" substitutionGroup="dc:title"/>
-   <xs:element name="creator" substitutionGroup="dc:creator"/>
-   <xs:element name="subject" substitutionGroup="dc:subject"/>
-   <xs:element name="description" substitutionGroup="dc:description"/>
-   <xs:element name="publisher" substitutionGroup="dc:publisher"/>
-   <xs:element name="contributor" substitutionGroup="dc:contributor"/>
-   <xs:element name="date" substitutionGroup="dc:date"/>
-   <xs:element name="type" substitutionGroup="dc:type"/>
-   <xs:element name="format" substitutionGroup="dc:format"/>
-   <xs:element name="identifier" substitutionGroup="dc:identifier"/>
-   <xs:element name="source" substitutionGroup="dc:source"/>
-   <xs:element name="language" substitutionGroup="dc:language"/>
-   <xs:element name="relation" substitutionGroup="dc:relation"/>
-   <xs:element name="coverage" substitutionGroup="dc:coverage"/>
-   <xs:element name="rights" substitutionGroup="dc:rights"/>
+   <xs:element name="title" substitutionGroup="dc:title" type="dc:SimpleLiteral" />
+   <xs:element name="creator" substitutionGroup="dc:creator" type="dc:SimpleLiteral" />
+   <xs:element name="subject" substitutionGroup="dc:subject" type="dc:SimpleLiteral" />
+   <xs:element name="description" substitutionGroup="dc:description" type="dc:SimpleLiteral" />
+   <xs:element name="publisher" substitutionGroup="dc:publisher" type="dc:SimpleLiteral" />
+   <xs:element name="contributor" substitutionGroup="dc:contributor" type="dc:SimpleLiteral" />
+   <xs:element name="date" substitutionGroup="dc:date" type="dc:SimpleLiteral" />
+   <xs:element name="type" substitutionGroup="dc:type" type="dc:SimpleLiteral" />
+   <xs:element name="format" substitutionGroup="dc:format" type="dc:SimpleLiteral" />
+   <xs:element name="identifier" substitutionGroup="dc:identifier" type="dc:SimpleLiteral" />
+   <xs:element name="source" substitutionGroup="dc:source" type="dc:SimpleLiteral" />
+   <xs:element name="language" substitutionGroup="dc:language" type="dc:SimpleLiteral" />
+   <xs:element name="relation" substitutionGroup="dc:relation" type="dc:SimpleLiteral" />
+   <xs:element name="coverage" substitutionGroup="dc:coverage" type="dc:SimpleLiteral" />
+   <xs:element name="rights" substitutionGroup="dc:rights" type="dc:SimpleLiteral" />
 
    <xs:element name="alternative" substitutionGroup="title"/>
 

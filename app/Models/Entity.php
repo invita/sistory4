@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Xsd\AnySimpleTypeHandler;
 use App\Xsd\AnyTypeHandler;
 use App\Xsd\XmlDataATypeHandler;
+use App\Xsd\DcTypeHandler;
 use Illuminate\Contracts\Logging\Log;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\EntityType;
@@ -76,7 +77,8 @@ class Entity extends Model
             //$handler->registerSubscribingHandler(new XmlDataATypeHandler());
             // $handler->registerSubscribingHandler(new YourhandlerHere());
             //$handler->registerSubscribingHandler(new AnySimpleTypeHandler());
-            //$handler->registerSubscribingHandler(new AnyTypeHandler());
+            $handler->registerSubscribingHandler(new DcTypeHandler());
+            $handler->registerSubscribingHandler(new AnyTypeHandler());
 
         });
 

@@ -8,24 +8,26 @@ xsd2php:
     'http://purl.org/dc/elements/1.1/': 'App/Xsd/Dc/Elements'
     'http://purl.org/dc/terms/': 'App/Xsd/Dc/Terms'
     'http://purl.org/dc/dcmitype/': 'App/Xsd/Dc/DcmiType'
+    'http://www.loc.gov/standards/premis/v1': 'App/Xsd/Premis'
+    'http://www.loc.gov/mods/v3': 'App/Xsd/Mods'
   destinations_php:
     'App\Xsd\Mets': app/Xsd/Mets
     'App\Xsd\Dc': app/Xsd/Dc
+    'App\Xsd\Premis': app/Xsd/Premis
+    'App\Xsd\Mods': app/Xsd/Mods
   destinations_jms:
     'App\Xsd\Mets': app/Xsd/Mets
     'App\Xsd\Dc': app/Xsd/Dc
+    'App\Xsd\Premis': app/Xsd/Premis
+    'App\Xsd\Mods': app/Xsd/Mods
 
   aliases: # optional
-    #'http://www.loc.gov/METS/':
-    #  MyCustomXSDType:  'XsdMets'
-    #  anyType: 'App\Xsd\AnyTypeHandler'
-    #  anySimpleType: 'App\Xsd\AnySimpleTypeHandler'
     'http://www.w3.org/2001/XMLSchema':
-      anyType: 'App\Xsd\AnyTypeHandler'
       anySimpleType: 'App\Xsd\AnySimpleTypeHandler'
-    #'http://purl.org/dc/elements/1.1/':
-    #  anyType: 'App\Xsd\AnyTypeHandler'
-    #  anySimpleType: 'App\Xsd\AnySimpleTypeHandler'
+      anyType: 'App\Xsd\AnyTypeHandler'
+
+    'http://purl.org/dc/elements/1.1/':
+      SimpleLiteral: 'App\Xsd\DcTypeHandler'
 
   naming_strategy: short # optional and default
   path_generator: psr4 # optional and default
