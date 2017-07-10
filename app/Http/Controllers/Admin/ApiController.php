@@ -67,6 +67,7 @@ class ApiController extends Controller
         $entity->data = $postJson["xml"];
 
         $entityXmlParsed = $entity->dataToObject();
+        //print_r($entityXmlParsed);
         $elasticResponse = ElasticHelpers::indexEntity($postJson["id"], $entityXmlParsed);
 
         $entity->save();

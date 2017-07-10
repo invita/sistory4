@@ -209,7 +209,10 @@ si4.widget.si4DataTable = function(args)
                 var row = _p.createEmptyRow();
                 var tabName = si4.mergePlaceholders(_p.entityTitleNew, row);
                 var editorModuleArgs = si4.mergeObjects(_p.editorModuleArgs, {entityTitle:_p.entityTitleNew});
-                editorModuleArgs.onClosed = function(args){ _p.refresh(); };
+                editorModuleArgs.onClosed = function(args){
+                    _p.refresh();
+                    window.scrollTo(0,0);
+                };
                 if (_p.dataSource && _p.dataSource.staticData)
                     editorModuleArgs.staticData = si4.mergeObjects(_p.dataSource.staticData, editorModuleArgs.staticData);
                 //console.log("editorModuleArgs.mainTab = _p.tabPage", _p.tabPage);
@@ -721,6 +724,7 @@ si4.widget.si4DataTable = function(args)
 
             editorModuleArgs.onClosed = function(args) {
                 _p.refresh();
+                window.scrollTo(0,0);
             };
 
             if (_p.dataSource && _p.dataSource.staticData)
@@ -987,6 +991,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
     this.editorType = si4.getArg(args, "editorType", "text");
     this.updateOnEnter = si4.getArg(args, "updateOnEnter", true);
     this.displayType = si4.getArg(args, "displayType", "");
+    this.maxCharLength = si4.getArg(args, "maxCharLength", null);
 
     this.headerField = si4.getArg(args, "headerField", this.row ? this.row.headerRow : false);
     this.filterField = si4.getArg(args, "filterField", this.row ? this.row.filterRow : false);
@@ -1158,6 +1163,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
             // Replace pipes
             var fVal = _p.fieldValue;
             if (_p.autoSplitPipes) fVal = si4.replacePipes(fVal, _p.autoSplitPipes, 0);
+            if (_p.maxCharLength) fVal = si4.clipString(fVal, _p.maxCharLength);
 
             if (_p.editable && _p.dataField) {
                 _p.input.setValue(fVal);

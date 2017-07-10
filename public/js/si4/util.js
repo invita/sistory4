@@ -51,6 +51,12 @@ si4.captionize = function(strVal) {
     return result;
 };
 
+si4.clipString = function(dataString, maxLen) {
+    if (!dataString || typeof(dataString) != "string") return "";
+    if (dataString.length <= maxLen) return dataString;
+    return dataString.substr(0, maxLen -3)+"...";
+};
+
 si4.moduleNameNormalize = function(moduleName) {
     var components = moduleName.split("/");
     for (var i in components)

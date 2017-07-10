@@ -54,6 +54,10 @@ si4.translations = {
     field_actions: "Akcije",
 
 
+    saved_confirm_close: "Operation successful. Close?",
+
+    // Errors
+    ERR_API_STATUS_FALSE: "Failed to save."
 
 };
 

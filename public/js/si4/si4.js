@@ -29,9 +29,12 @@ si4.loadModule = function(loadArgs) {
         name = si4.translateTab(moduleName, name ? name : "mainTab");
         loadArgs.mainTab = new si4.widget.si4TabPage({
             name: si4.mergePlaceholders(name, loadArgs.row),
-            //name: name,
             parent: loadArgs.tabPage ? loadArgs.tabPage : si4.data.mainTab,
         });
+
+        if (loadArgs.onClose && typeof(loadArgs.onClose) == "function") loadArgs.mainTab.onClose(loadArgs.onClose);
+        if (loadArgs.onClosed && typeof(loadArgs.onClosed) == "function") loadArgs.mainTab.onClosed(loadArgs.onClosed);
+
         return loadArgs.mainTab;
     };
     loadArgs.createContentTab = function(name, args) {
@@ -165,6 +168,15 @@ si4.callMethod = function(args, f) {
     */
 };
 
+
+si4.error = {
+    ERR_API_STATUS_FALSE: "ERR_API_STATUS_FALSE",
+
+    show: function(text, code) {
+        var codeStr = code ? "["+code+"]" : "";
+        alert("Error "+codeStr+"\n"+text);
+    }
+};
 
 // Loading Animation
 si4.loading = {

@@ -22,78 +22,39 @@ var F = function(args){
         inputConstruct: si4.widget.si4MultiSelect,  values:['publication', 'menu'], multiSelect: false
     });
     */
+
     var fieldEntityTypeId = actionsForm.addInput({
         name:"entity_type_id", value:rowValue.entity_type_id, type:"select", caption:si4.translate("field_entityType"),
         values: si4.codes.entityTypeIds });
 
 
-    var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:si4.translate("field_title")});
-    var fieldYear = actionsForm.addInput({name:"year", value:rowValue.year, type:"text", caption:si4.translate("field_year")});
-    var fieldAuthor = actionsForm.addInput({name:"author", value:rowValue.author, type:"text", caption:si4.translate("field_author")});
+    var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:si4.translate("field_title"), readOnly: true});
+    var fieldYear = actionsForm.addInput({name:"year", value:rowValue.year, type:"text", caption:si4.translate("field_year"), readOnly: true});
+    var fieldAuthor = actionsForm.addInput({name:"author", value:rowValue.author, type:"text", caption:si4.translate("field_author"), readOnly: true});
 
     var fieldFile = actionsForm.addInput({name:"file", value:"", type:"file", caption:si4.translate("field_xml")});
 
 
-    //var initialXml = "<test>\n" +
-    //    "  <neki value=\"1\">Test XML</neki>\n" +
-    //    "</test>\n\n\n\n\n\n\n";
     var fieldXml = actionsForm.addInput({name:"xml", value:rowValue.data, type:"codemirror", caption:false});
     fieldXml.selector.css("margin-left", "100px").css("margin-bottom", "2px");
-    //fieldXml.selector.css("width", ($(window).width()*0.9)+"px");
 
     var entityIndexed = actionsForm.addInput({name:"indexed", value:rowValue.indexed, type:"checkbox", caption:si4.translate("field_indexed")});
     var entityEnabled = actionsForm.addInput({name:"enabled", value:rowValue.enabled, type:"checkbox", caption:si4.translate("field_enabled")});
 
     var saveButton = actionsForm.addInput({value:si4.translate("button_save"), type:"submit", caption:si4.translate("field_actions")});
     saveButton.selector.click(function(){
-        //si4.loading.show();
-
-        /*
-        $.post(si4.config.apis.entityList, JSON.stringify(args), function(data) {
-            console.log("post callback", data);
-            if (typeof(callback) == "function") callback(data);
-        });
-        */
-        /*
-         $.post(si4.config.uploadApis.entity, actionsForm.getValueAsFormData(), function() {
-         // callback
-         console.log("sent");
-         });
-        */
-        //console.log("actionsForm", actionsForm.getValueAsFormData());
-
-        //si4.api.uploadEntity(actionsForm.getValueAsFormData(), function() {});
-        //var fu = new si4.object.si4FileUploader();
-        //fu.chooseFile();
-
-        /*
-        $.ajax({
-            type: "POST",
-            url: si4.config.uploadApis.entity,
-            data: actionsForm.getValueAsFormData(),
-            processData: false,
-            success: function() {
-                console.log("sent");
-            }
-        });
-        */
-
-        //si4.api.mockedEntityList({}, function() {});
 
         var formValue = actionsForm.getValue();
         console.log("formValue", formValue);
         si4.api.saveEntity(actionsForm.getValue(), function(data) {
-            console.log("saveEntity callback", data);
+            if (data.status) {
+                if (confirm(si4.translate("saved_confirm_close"))) {
+                    args.mainTab.destroyTab();
+                }
+            } else {
+                si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE)
+            }
+            //console.log("saveEntity callback", data);
         });
     });
-
-
-    /*
-    si4.api.getTestEntity(args.row, function(data) {
-        //console.log("actionsForm", actionsForm);
-        actionsForm.setValue(data);
-    });
-    */
-
-
 };

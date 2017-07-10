@@ -24,8 +24,10 @@ var F = function(args){
         tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },
-            name: { caption: "Naziv" },
-            description: { caption: "Opis" },
+            //name: { caption: "Naziv" },
+            //description: { caption: "Opis" },
+            title: { caption: "Title", maxCharLength: 50 },
+            creator: { caption: "Creators", maxCharLength: 50 },
             data: { visible: false },
 //            pub_id: { caption:"Entity&nbsp;Id", hintF: function(args) { sic.hint.publication(args.row.lastRowData.pub_id); } },
         }
