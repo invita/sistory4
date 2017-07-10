@@ -4,7 +4,7 @@
 
 <div id="header" class="">
     <div class="inline vtop">
-        <a href="/" title="Sistory 4 - Admin"><img src="/img/logo2.png" class="logoImage"/>
+        <a href="/" title="Sistory 4 - Admin"><img src="/img/logo3.png" class="logoImage"/>
             <img src="/img/loading-book.gif" class="loadingGif" id="loadingGif" style="display:none;">
             <div class="mainTitle">Sistory 4</div>
         </a>
