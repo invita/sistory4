@@ -51,12 +51,10 @@ class DcTypeHandler implements SubscribingHandlerInterface
         $result = new DcTypeHandler();
         $result->elName = $elName;
         $result->elValue = $elValue;
-        file_put_contents("/Users/maticvrscaj/www/sistory4/out.txt", "Creating ".$elName.", values:".count($elValue)."\n", FILE_APPEND);
         return $result;
     }
 
     public function toArray() {
-        file_put_contents("/Users/maticvrscaj/www/sistory4/out.txt", "toArray ".$this->elName.", values:".count($this->elValue)."\n", FILE_APPEND);
         return $this->elValue;
     }
 }
