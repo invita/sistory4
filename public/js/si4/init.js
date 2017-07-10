@@ -14,6 +14,7 @@ $(document).ready(function() {
 
     var navContainer = $("#navContainer");
     var menuItems = [
+        /*
         {
             loadArgs: { moduleName:'Dev/TestPage' },
             caption: si4.translate("dev_testPage_mainTab_text"),
@@ -22,6 +23,7 @@ $(document).ready(function() {
             loadArgs: { moduleName:'Dev/ElasticTools' },
             caption: si4.translate("dev_elasticTools_mainTab_text"),
         },
+        */
         {
             loadArgs: { moduleName:'System/Dashboard' },
             caption: si4.translate("system_dashboard_mainTab_text"),

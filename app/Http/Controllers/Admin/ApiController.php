@@ -29,6 +29,7 @@ class ApiController extends Controller
             $IDAttr = "";
             $title = "";
             $creator = "";
+            $date = "";
 
             if (isset($hits[$entityId])) {
                 $eData = $hits[$entityId];
@@ -37,6 +38,7 @@ class ApiController extends Controller
                 $IDAttr = isset($eData["IDAttrName"]) ? $eData["IDAttrName"] : "";
                 $title = isset($dcXmlData["TitlePropName"]) ? join(", ", $dcXmlData["TitlePropName"]) : "";
                 $creator = isset($dcXmlData["CreatorPropName"]) ? join(",", $dcXmlData["CreatorPropName"]) : "";
+                $date = isset($dcXmlData["CreatorPropName"]) ? join(",", $dcXmlData["CreatorPropName"]) : "";
             }
 
             $entityTypeName = isset($entityTypesDb[$entity["entity_type_id"]]) ?
@@ -49,6 +51,7 @@ class ApiController extends Controller
                 "IdAttr" => $IDAttr,
                 "title" => $title,
                 "creator" => $creator,
+                "date" => $date,
                 "data" => $entity["data"],
             ];
         }
