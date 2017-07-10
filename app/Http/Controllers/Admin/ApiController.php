@@ -38,7 +38,7 @@ class ApiController extends Controller
                 $IDAttr = isset($eData["IDAttrName"]) ? $eData["IDAttrName"] : "";
                 $title = isset($dcXmlData["TitlePropName"]) ? join(", ", $dcXmlData["TitlePropName"]) : "";
                 $creator = isset($dcXmlData["CreatorPropName"]) ? join(",", $dcXmlData["CreatorPropName"]) : "";
-                $date = isset($dcXmlData["CreatorPropName"]) ? join(",", $dcXmlData["CreatorPropName"]) : "";
+                $date = isset($dcXmlData["DatePropName"]) ? join(",", $dcXmlData["DatePropName"]) : "";
             }
 
             $entityTypeName = isset($entityTypesDb[$entity["entity_type_id"]]) ?

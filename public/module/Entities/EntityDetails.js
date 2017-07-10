@@ -32,7 +32,7 @@ var F = function(args){
 
     var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:si4.translate("field_title"), readOnly: true});
     var fieldAuthor = actionsForm.addInput({name:"author", value:rowValue.creator, type:"text", caption:si4.translate("field_creators"), readOnly: true});
-    var fieldYear = actionsForm.addInput({name:"year", value:rowValue.year, type:"text", caption:si4.translate("field_year"), readOnly: true});
+    var fieldYear = actionsForm.addInput({name:"year", value:rowValue.date, type:"text", caption:si4.translate("field_year"), readOnly: true});
 
     var fieldFile = actionsForm.addInput({name:"file", value:"", type:"file", caption:si4.translate("field_xml")});
 
