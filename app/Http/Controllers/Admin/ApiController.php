@@ -5,6 +5,7 @@ use App\Helpers\ElasticHelpers;
 use App\Helpers\EntityHelpers;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
+use App\Models\EntityType;
 use App\Models\User;
 use \Illuminate\Http\Request;
 
@@ -12,23 +13,18 @@ class ApiController extends Controller
 {
     public function entityList(Request $request)
     {
-        $entitiesDb = Entity::all();
+        $entitiesDb = Entity::all()->keyBy("id");
+        $entityTypesDb = EntityType::all()->keyBy("id");
 
-        $entityIds = [];
-        $dbData = [];
-        foreach($entitiesDb as $e) {
-            $entityIds[] = $e["id"];
-            $dbData[$e["id"]] = $e;
-        }
 
-        $dataElastic = ElasticHelpers::searchByIdArray($entityIds);
+        $dataElastic = ElasticHelpers::searchByIdArray($entitiesDb->keys());
         //print_r($dataElastic);
 
         $hits = [];
         foreach ($dataElastic["hits"]["hits"] as $hit) $hits[$hit["_id"]] = $hit["_source"];
 
         $entities = [];
-        foreach ($entityIds as $entityId) {
+        foreach ($entitiesDb as $entityId => $entity) {
 
             $IDAttr = "";
             $title = "";
@@ -43,13 +39,17 @@ class ApiController extends Controller
                 $creator = isset($dcXmlData["CreatorPropName"]) ? join(",", $dcXmlData["CreatorPropName"]) : "";
             }
 
+            $entityTypeName = isset($entityTypesDb[$entity["entity_type_id"]]) ?
+                $entityTypesDb[$entity["entity_type_id"]]["name"] : "";
+
             $entities[] = [
                 "id" => $entityId,
-                "entity_type_id" => $dbData[$entityId]["entity_type_id"],
+                "entity_type_id" => $entity["entity_type_id"],
+                "entity_type_name" => $entityTypeName,
                 "IdAttr" => $IDAttr,
                 "title" => $title,
                 "creator" => $creator,
-                "data" => $dbData[$entityId]["data"],
+                "data" => $entity["data"],
             ];
         }
 
@@ -97,6 +97,14 @@ class ApiController extends Controller
         return ["status" => true, "error" =>  null];
     }
 
+    public function initialData(Request $request) {
+        $entityTypes = EntityType::all(["id", "name"])->toArray();
+        return [
+            "entityTypes" => $entityTypes,
+            "status" => true,
+            "error" =>  null
+        ];
+    }
 
     public function devTools(Request $request) {
         $postJson = json_decode(file_get_contents("php://input"), true);

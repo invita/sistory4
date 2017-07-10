@@ -1,14 +1,6 @@
 si4.api = {};
 
 
-
-si4.api.abstractCall = function(args, callback) {
-    $.post(si4.config.apiUrl, JSON.stringify(args), function(data) {
-        console.log("post callback", data);
-        if (typeof(callback) == "function") callback(data);
-    });
-};
-
 si4.api.getTable = function(args, callback) {
     var postData = {
 
@@ -149,6 +141,13 @@ si4.api.userList = function(data, callback) {
 si4.api.saveUser = function(data, callback) {
     $.post(si4.config.apis.saveUser, JSON.stringify(data), function(resp) {
         console.log("saveUser callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+
+si4.api.initialData = function(data, callback) {
+    $.post(si4.config.apis.initialData, JSON.stringify(data), function(resp) {
+        console.log("initialData callback", resp);
         if (typeof(callback) == "function") callback(resp);
     });
 };

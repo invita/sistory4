@@ -24,10 +24,14 @@ var F = function(args){
         tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },
+            entity_type_name: { caption: si4.translate("field_entityType") },
+
             //name: { caption: "Naziv" },
             //description: { caption: "Opis" },
-            title: { caption: "Title", maxCharLength: 50 },
-            creator: { caption: "Creators", maxCharLength: 50 },
+            title: { maxCharLength: 100 },
+            creator: { caption: si4.translate("field_creators"), maxCharLength: 50 },
+
+            entity_type_id: { visible: false },
             data: { visible: false },
 //            pub_id: { caption:"Entity&nbsp;Id", hintF: function(args) { sic.hint.publication(args.row.lastRowData.pub_id); } },
         }

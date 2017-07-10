@@ -52,6 +52,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/', "Admin\\IndexController@index")->name("admin.index.index#get");
 
         Route::group(['prefix' => 'api'], function () {
+
+            Route::post('initial-data', "Admin\\ApiController@initialData")->name("admin.api.initial-data#post");
+
             Route::post('entity-list', "Admin\\ApiController@entityList")->name("admin.api.entity-list#post");
             Route::post('save-entity', "Admin\\ApiController@saveEntity")->name("admin.api.save-entity#post");
             Route::post('user-list', "Admin\\ApiController@userList")->name("admin.api.entity-list#post");

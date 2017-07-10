@@ -35,10 +35,12 @@
     <div id="primaryPage">
         <div class="formTitle">Sistory 4 Admin</div>
         <div>
-            <b>Kaj je novega:</b>
+            <b>What's new:</b>
             <ul class="simpleList">
-                <li>Nov uporabniški vmesnik</li>
-                <li>Prenovljen entitetno-relacijski model</li>
+                <li>New user interface</li>
+                <li>Entity-relation model</li>
+                <li>Standard metadata encoding (METS) support</li>
+                <li>Elastic search</li>
             </ul>
         </div>
     </div>

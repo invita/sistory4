@@ -16,39 +16,58 @@ $(document).ready(function() {
     var menuItems = [
         {
             loadArgs: { moduleName:'Dev/TestPage' },
-            caption: "TestPage",
+            caption: si4.translate("dev_testPage_mainTab_text"),
         },
         {
             loadArgs: { moduleName:'Dev/ElasticTools' },
-            caption: "ElasticTools",
+            caption: si4.translate("dev_elasticTools_mainTab_text"),
         },
         {
             loadArgs: { moduleName:'System/Dashboard' },
-            caption: "Sistem",
+            caption: si4.translate("system_dashboard_mainTab_text"),
         },
         {
             loadArgs: { moduleName:'System/UserList' },
-            caption: "Uporabniki",
+            caption: si4.translate("system_userList_mainTab_text"),
         },
         {
             loadArgs: { moduleName:'Entities/EntityList' },
-            caption: "Seznam entitet",
+            caption: si4.translate("entities_entityList_mainTab_text"),
         },
     ];
 
-    for (var i in menuItems) {
-        var menuItem = menuItems[i];
+    si4.loading.show();
 
-        var li = document.createElement("li");
-        li.className = "mainMenuList";
+    si4.api.initialData(null, function(response){
 
-        var a = document.createElement("a");
-        a.innerHTML =  menuItem.caption;
-        a.href = "javascript:si4.loadModule("+JSON.stringify(menuItem.loadArgs)+");";
+        if (response.status) {
+            //response.entityTypes.map(function(e))
+            var entityTypes = {};
+            for (var etIdx in response.entityTypes) {
+                var et = response.entityTypes[etIdx];
+                var etTranslateKey = "et_"+et.name.replace(/\s/g, "");
+                entityTypes[et.id] = si4.translate(etTranslateKey);
+            }
+            si4.data.entityTypes = entityTypes;
+        }
 
-        li.appendChild(a);
-        navContainer.append(li);
-    }
+        // Append menus
+        for (var i in menuItems) {
+            var menuItem = menuItems[i];
+
+            var li = document.createElement("li");
+            li.className = "mainMenuList";
+
+            var a = document.createElement("a");
+            a.innerHTML =  menuItem.caption;
+            a.href = "javascript:si4.loadModule("+JSON.stringify(menuItem.loadArgs)+");";
+
+            li.appendChild(a);
+            navContainer.append(li);
+        }
+
+        si4.loading.hide();
+    });
 
     //si4.loadModule({moduleName:'Dev/TestPage' });
 });

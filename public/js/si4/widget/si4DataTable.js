@@ -201,7 +201,7 @@ si4.widget.si4DataTable = function(args)
         _p.insertButton.img.selector.addClass("icon16");
         _p.insertButton.img.selector.attr("src", "/img/insert.png");
         _p.insertButton.span = new si4.widget.si4Element({parent:_p.insertButton.selector, tagName:"span"});
-        _p.insertButton.span.selector.html("Insert");
+        _p.insertButton.span.selector.html(si4.translate("dataTable_insert"));
         if (typeof(_p.customInsert) == "function") {
             _p.insertButton.selector.click(function(e) { _p.customInsert(_p) });
         } else {
@@ -236,7 +236,7 @@ si4.widget.si4DataTable = function(args)
         _p[cpName].firstPageImg = new si4.widget.si4Element({parent:_p[cpName].firstPage.selector, tagName:"img", tagClass:"icon8 vmid"});
         _p[cpName].firstPageImg.selector.attr("src", "/img/icon/dataTable_prev.png");
         _p[cpName].firstPageSpan = new si4.widget.si4Element({parent:_p[cpName].firstPage.selector, tagName:"span", tagClass:"vmid"});
-        _p[cpName].firstPageSpan.selector.html("Začetek");
+        _p[cpName].firstPageSpan.selector.html(si4.translate("dataTable_navFirst"));
         _p[cpName].firstPage.selector.click(function(){ _p.switchPage(1); });
 
         // Prev page button
@@ -244,7 +244,7 @@ si4.widget.si4DataTable = function(args)
         _p[cpName].prevPageImg = new si4.widget.si4Element({parent:_p[cpName].prevPage.selector, tagName:"img", tagClass:"icon8 vmid"});
         _p[cpName].prevPageImg.selector.attr("src", "/img/icon/dataTable_prev.png");
         _p[cpName].prevPageSpan = new si4.widget.si4Element({parent:_p[cpName].prevPage.selector, tagName:"span", tagClass:"vmid"});
-        _p[cpName].prevPageSpan.selector.html("Nazaj");
+        _p[cpName].prevPageSpan.selector.html(si4.translate("dataTable_navPrev"));
         _p[cpName].prevPage.selector.click(function(){ _p.switchPage(_p.currentPage-1); });
 
         // Page inputs
@@ -267,7 +267,7 @@ si4.widget.si4DataTable = function(args)
         // Next page button
         _p[cpName].nextPage = new si4.widget.si4Element({parent:_p[cpName].selector, tagClass:"inline nextButton vmid"});
         _p[cpName].nextPageSpan = new si4.widget.si4Element({parent:_p[cpName].nextPage.selector, tagName:"span", tagClass:"vmid"});
-        _p[cpName].nextPageSpan.selector.html("Naprej");
+        _p[cpName].nextPageSpan.selector.html(si4.translate("dataTable_navNext"));
         _p[cpName].nextPageImg = new si4.widget.si4Element({parent:_p[cpName].nextPage.selector, tagName:"img", tagClass:"icon8 vmid"});
         _p[cpName].nextPageImg.selector.attr("src", "/img/icon/dataTable_next.png");
         _p[cpName].nextPage.selector.click(function(){ _p.switchPage(_p.currentPage+1); });
@@ -275,7 +275,7 @@ si4.widget.si4DataTable = function(args)
         // Last page button
         _p[cpName].lastPage = new si4.widget.si4Element({parent:_p[cpName].selector, tagClass:"inline lastButton vmid"});
         _p[cpName].lastPageSpan = new si4.widget.si4Element({parent:_p[cpName].lastPage.selector, tagName:"span", tagClass:"vmid"});
-        _p[cpName].lastPageSpan.selector.html("Konec");
+        _p[cpName].lastPageSpan.selector.html(si4.translate("dataTable_navLast"));
         _p[cpName].lastPageImg = new si4.widget.si4Element({parent:_p[cpName].lastPage.selector, tagName:"img", tagClass:"icon8 vmid"});
         _p[cpName].lastPageImg.selector.attr("src", "/img/icon/dataTable_next.png");
         _p[cpName].lastPage.selector.click(function(){ _p.switchPage(_p.currentPageCount); });
@@ -292,7 +292,7 @@ si4.widget.si4DataTable = function(args)
         _p[cpName].recsPerPageInput.selector.val(_p.dataSource.pageCount);
 
         _p[cpName].recsPerPageText = new si4.widget.si4Element({parent:_p[cpName].selector, tagClass:"inline vmid"});
-        _p[cpName].recsPerPageText.selector.html(' / stran');
+        _p[cpName].recsPerPageText.selector.html(si4.translate("dataTable_perPage"));
 
 
         // Export
@@ -519,7 +519,7 @@ si4.widget.si4DataTable = function(args)
             var fieldName = '_delete';
             var fieldBP = si4.mergeObjects({}, _p.fields[fieldName]);
             fieldBP.fieldKey = fieldName;
-            fieldBP.fieldLabel = 'Delete';
+            fieldBP.fieldLabel = si4.translate("dataTable_columnDelete");
             fieldBP.fieldType = 'delete';
             fieldBP.canSort = false;
             fieldBP.canFilter = false;

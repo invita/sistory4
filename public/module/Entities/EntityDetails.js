@@ -25,7 +25,7 @@ var F = function(args){
 
     var fieldEntityTypeId = actionsForm.addInput({
         name:"entity_type_id", value:rowValue.entity_type_id, type:"select", caption:si4.translate("field_entityType"),
-        values: si4.codes.entityTypeIds });
+        values: si4.data.entityTypes });
 
 
     var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:si4.translate("field_title"), readOnly: true});
