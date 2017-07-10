@@ -39,11 +39,13 @@ si4.translations = {
     dev_elasticTools_searchTab_text: "Search",
 
 
+    panel_entityData: "Entity data",
+    panel_relations: "Relations",
+
     // Fields
     field_id: "Id",
     field_title: "Title",
     field_creators: "Creators",
-    field_author: "Author",
     field_year: "Year",
     field_entityType: "Entity type",
     field_xml: "Xml",
@@ -53,9 +55,10 @@ si4.translations = {
     field_password: "Password",
     field_firstname: "First name",
     field_lastname: "Last name",
-
     field_enabled: "Enabled",
     field_indexed: "Indexed",
+    field_parent: "Parent",
+    field_children: "Children",
 
     field_actions: "Actions",
 

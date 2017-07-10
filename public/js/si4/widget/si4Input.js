@@ -52,6 +52,7 @@ si4.widget.si4Input = function(args)
     this.input.selector.addClass("si4Input");
     if (this.inputType == "codemirror")
         this.input.selector.addClass("si4CodeMirror");
+
     this.inputs = [this.input];
 
     // Implementation
@@ -86,6 +87,15 @@ si4.widget.si4Input = function(args)
         this.input.selector.focus();
 
     if (this.lookup) {
+        this.lookupButton = new si4.widget.si4Element({ parent:this.selector, tagName:"div" });
+        this.lookupButton.selector.addClass("inputButton lookupButton");
+        this.lookupButton.lookupImg = new si4.widget.si4Element({ parent:this.lookupButton.selector,
+            tagName:"img", attr: { src: "/img/icon/lookup.png" } });
+        this.lookupButton.selector.click(function(e){
+            _p.lookup(_p);
+        });
+
+        /*
         var placeHolder = "";
         if (_p.lookup.resolve && _p.lookup.resolve.emptyValue) placeHolder = _p.lookup.resolve.emptyValue;
         this.input.selector.addClass("lookupKey");
@@ -179,6 +189,7 @@ si4.widget.si4Input = function(args)
         });
 
         this.inputs.push(this.lookupInput);
+        */
     }
 
     this.setPlaceholder = function(newPlaceholder){
@@ -217,6 +228,7 @@ si4.widget.si4Input = function(args)
             _p.input.selector.prop("checked", value);
         } else if (_p.type == "codemirror") {
             _p.codemirror.setValue(value);
+            _p.codemirror.refresh();
         } else if (_p.type == "flat") {
             _p.input.selector.html(value);
         } else if (_p.type == "file") {
@@ -226,8 +238,7 @@ si4.widget.si4Input = function(args)
         }
         _p.origValue = value;
         _p._onChange();
-        if (_p.lookup)
-            _p.lookupResolve();
+        //if (_p.lookup) _p.lookupResolve();
     };
 
     this.clear = function() {
@@ -239,6 +250,8 @@ si4.widget.si4Input = function(args)
             _p.input.selector.val('');
 
         _p.origValue = '';
+
+        if (_p.type == "codemirror") _p.codemirror.refresh();
     };
 
     this.getCodeId = function(){
@@ -283,12 +296,14 @@ si4.widget.si4Input = function(args)
 
     this._onChange = function() {
         if (_p.lookup) {
+            /*
             var value = _p.getValue();
             if (jQuery.isNumeric(value)) value = parseInt(value);
             if (value)
                 _p.editButton.display();
             else
                 _p.editButton.displayNone();
+            */
         }
     };
 
@@ -374,12 +389,13 @@ si4.widget.si4Input = function(args)
     if (this.withCode) {
         this.codeSelect = new si4.widget.si4Element({parent:this.captionDiv.selector, tagName:"select", tagClass:"codeSelect"});
         for (var idx in this.withCode) {
-            var optionLabel = this.caption+" - "+this.withCode[idx];
+            var optionLabel = this.caption ? (this.caption+" - "+this.withCode[idx]) : this.withCode[idx];
+            console.log("optionLabel", optionLabel);
             this.codeSelect.selector.append('<option value="'+idx+'">'+optionLabel+'</option>');
         }
     }
 
-    if (typeof(this.caption) != "string" || !this.caption)
+    if (!this.withCode && (typeof(this.caption) != "string" || !this.caption))
         this.captionDiv.displayNone();
 
     if (this.placeholder) this.setPlaceholder(this.placeholder);
@@ -389,6 +405,7 @@ si4.widget.si4Input = function(args)
         this.codemirror = CodeMirror.fromTextArea(this.input.selector[0], {
             lineNumbers: true,
             //mode: "text/html",
+            lineWrapping: true,
             matchBrackets: true
         });
     }
