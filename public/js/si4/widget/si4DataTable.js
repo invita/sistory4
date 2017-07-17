@@ -634,6 +634,7 @@ si4.widget.si4DataTable = function(args)
 
     this.feedData = function(args) {
 
+        console.log("feedData", args);
         _p.trigger('dataFeed', args);
 
         _p.reconstruct(args);
@@ -744,7 +745,7 @@ si4.widget.si4DataTable = function(args)
     if (_p.canDelete) {
         _p.onFieldClick(function(args){
             if (args.field.fieldKey == "_delete") {
-                if (confirm('Are you sure you want to delete record "'+args.row.reprValue()+'"?')) {
+                if (confirm(si4.translate("dataTable_confirmDelete", {record:args.row.reprValue()}))) {
                     var response = _p.dataSource.delete(args.row.getValue());
                     if (response) _p.setValue(response.data);
                 }
@@ -1255,7 +1256,8 @@ si4.widget.si4DataTableDataSource = function(args) {
     this.methodNames = si4.getArg(args, "methodNames", { select:'dataTableSelect', delete:'dataTableDelete',
         updateRow:'dataTableUpdateRow', exportXls:'dataTableExportXls', exportCsv:'dataTableExportCsv' });
 
-    this.selectF = si4.getArg(args, "select", null);
+    this.selectF = si4.getArg(args, "select", function(){});
+    this.deleteF = si4.getArg(args, "delete", function(){});
 
     this.filter = si4.getArg(args, "filter", {});
     this.filterMode = si4.getArg(args, "filterMode", "normal");
@@ -1293,15 +1295,10 @@ si4.widget.si4DataTableDataSource = function(args) {
 
     this.select = function(args) {
         _p.selectF(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
-        //si4.api.entityList(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
-        //si4.api.getTestTable(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
-
-        //si4.api.getTable(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
-        //return si4.callMethod(_p.getMethodCallData(_p.methodNames.select, args), _p.callbacks.feedData);
     }
 
     this.delete = function(args) {
-        return si4.callMethod(_p.getMethodCallData(_p.methodNames.delete, args), _p.callbacks.feedData);
+        _p.deleteF(_p.getMethodCallData(_p.methodNames.delete, args), _p.callbacks.feedData);
     }
 
     this.updateRow = function(args) {

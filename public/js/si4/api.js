@@ -114,7 +114,8 @@ si4.api.uploadEntity = function(formData, callback) {
         processData: false,
         success: callback
     });
-}
+};
+
 
 
 si4.api.entityList = function(data, callback) {
@@ -131,6 +132,23 @@ si4.api.saveEntity = function(data, callback) {
     });
 };
 
+si4.api.reserveEntityId = function(data, callback) {
+    $.post(si4.config.apis.reserveEntityId, JSON.stringify(data), function(resp) {
+        console.log("reserveEntityId callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+
+si4.api.deleteEntity = function(data, callback) {
+    $.post(si4.config.apis.deleteEntity, JSON.stringify(data), function(resp) {
+        console.log("deleteEntity callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+
+
+
+
 si4.api.userList = function(data, callback) {
     $.post(si4.config.apis.userList, JSON.stringify(data), function(resp) {
         console.log("userList callback", resp);
@@ -144,6 +162,15 @@ si4.api.saveUser = function(data, callback) {
         if (typeof(callback) == "function") callback(resp);
     });
 };
+
+si4.api.deleteUser = function(data, callback) {
+    $.post(si4.config.apis.deleteUser, JSON.stringify(data), function(resp) {
+        console.log("deleteUser callback", resp);
+        if (typeof(callback) == "function") callback(resp);
+    });
+};
+
+
 
 si4.api.initialData = function(data, callback) {
     $.post(si4.config.apis.initialData, JSON.stringify(data), function(resp) {

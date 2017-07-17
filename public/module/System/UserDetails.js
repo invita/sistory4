@@ -26,7 +26,13 @@ var F = function(args){
         var formValue = actionsForm.getValue();
         console.log("formValue", formValue);
         si4.api.saveUser(actionsForm.getValue(), function(data) {
-            console.log("saveEntity callback", data);
+            if (data.status) {
+                if (confirm(si4.translate("saved_confirm_close"))) {
+                    args.mainTab.destroyTab();
+                }
+            } else {
+                si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE, data);
+            }
         });
     });
 

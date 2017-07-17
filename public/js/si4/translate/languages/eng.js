@@ -11,6 +11,8 @@ si4.translations = {
     // EntityList
     entities_entityList_mainTab_text: "Entity list",
     entities_entityList_contentTab_text: "List",
+    entities_entityTitleNew: "New entity",
+    entities_entityTitleEdit: "Entity [[id]]",
 
     // EntityDetails
     entities_entityDetails_mainTab_text: "Entity [[id]]",
@@ -19,6 +21,8 @@ si4.translations = {
     // UserList
     system_userList_mainTab_text: "User list",
     system_userList_contentTab_text: "List",
+    system_userTitleNew: "New user",
+    system_userTitleEdit: "blabla User [[id]] - [[name]]",
 
     // UserDetails
     system_userDetails_mainTab_text: "User [[id]] - [[name]]",
@@ -71,6 +75,7 @@ si4.translations = {
     dataTable_perPage: " / page",
     dataTable_insert: "Insert",
     dataTable_columnDelete: "Delete",
+    dataTable_confirmDelete: "Are you sure you want to delete record [[record]]?",
 
     saved_confirm_close: "Operation successful. Close?",
 
@@ -82,6 +87,7 @@ si4.translations = {
     // Enum: Entity Types
     et_MenuItem: "Menu item",
     et_Publication: "Publication",
+
 
 
 };

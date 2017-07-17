@@ -1,10 +1,10 @@
 si4.lookup = {
     entity: {
-        entityTitleNew: "Nova entiteta",
-        entityTitleEdit: "Entiteta %id% - %name%",
+        entityTitleNew: si4.translate("entities_entityTitleNew"),
+        entityTitleEdit: si4.translate("entities_entityTitleEdit"),
     },
     user: {
-        entityTitleNew: "Nov uporabnik",
-        entityTitleEdit: "Uporabnik %id% - %name%",
+        entityTitleNew: si4.translate("system_userTitleNew"),
+        entityTitleEdit: si4.translate("system_userTitleEdit"),
     },
 };

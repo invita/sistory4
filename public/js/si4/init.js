@@ -51,6 +51,9 @@ $(document).ready(function() {
                 entityTypes[et.id] = si4.translate(etTranslateKey);
             }
             si4.data.entityTypes = entityTypes;
+
+            si4.data.currentUser = response.currentUser;
+
         }
 
         // Append menus

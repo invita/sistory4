@@ -1,4 +1,4 @@
-var si4 = { object:{}, widget:{}, data:{}, defaults:{} };
+var si4 = { object:{}, widget:{}, data:{}, defaults:{}, entity:{} };
 
 si4.defaults = {
     fadeTime: 600,
@@ -172,9 +172,10 @@ si4.callMethod = function(args, f) {
 si4.error = {
     ERR_API_STATUS_FALSE: "ERR_API_STATUS_FALSE",
 
-    show: function(text, code) {
+    show: function(text, code, context) {
         var codeStr = code ? "["+code+"]" : "";
         alert("Error "+codeStr+"\n"+text);
+        console.log("Error context", context);
     }
 };
 

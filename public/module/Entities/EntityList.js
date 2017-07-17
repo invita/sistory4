@@ -12,6 +12,7 @@ var F = function(args){
         //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
             select: si4.api.entityList,
+            delete: si4.api.deleteEntity,
             //moduleName:"Entities/EntityList",
             //staticData : { bla: "blabla" },
             pageCount: 200
@@ -20,7 +21,7 @@ var F = function(args){
             moduleName:"Entities/EntityDetails",
         },
         canInsert: true,
-        canDelete: false,
+        canDelete: true,
         tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },

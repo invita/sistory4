@@ -88,7 +88,7 @@ si4.mergePlaceholders = function(str, valueMapObj) {
             }
         }
     }
-    while (str.indexOf('%') != -1) str = str.replace('%', '[').replace('%', '=?]');
+    while (str.indexOf('[[') != -1) str = str.replace('[[', '[').replace(']]', '=?]');
     return str;
 };
 
@@ -155,4 +155,21 @@ si4.findKeyByValue = function(dict, value) {
         if (dict[i] == value) return i;
     }
     return 0;
-}
+};
+
+
+
+si4.dateToISOString = function(date) {
+    function pad(number) {
+        if (number < 10) {return '0' + number; }
+        return number;
+    }
+    if (!date) date = new Date();
+    return date.getUTCFullYear() +
+    '-' + pad(date.getUTCMonth() + 1) +
+    '-' + pad(date.getUTCDate()) +
+    'T' + pad(date.getUTCHours()) +
+    ':' + pad(date.getUTCMinutes()) +
+    ':' + pad(date.getUTCSeconds()) +
+    'Z';
+};

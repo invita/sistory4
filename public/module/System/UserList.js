@@ -11,6 +11,7 @@ var F = function(args){
         entityTitleEdit: si4.lookup[name].entityTitleEdit,
         dataSource: new si4.widget.si4DataTableDataSource({
             select: si4.api.userList,
+            delete: si4.api.deleteUser,
             //moduleName:"System/UserList",
             pageCount: 200
         }),

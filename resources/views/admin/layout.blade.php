@@ -15,10 +15,11 @@
     <script src="/js/si4/config.js"></script>
     <script src="/js/si4/util.js"></script>
     <script src="/js/si4/codes.js"></script>
-    <script src="/js/si4/lookup.js"></script>
     <script src="/js/si4/api.js"></script>
     <script src="/js/si4/translate/translate.js"></script>
     <script src="/js/si4/translate/languages/eng.js"></script>
+    <script src="/js/si4/lookup.js"></script>
+    <script src="/js/si4/entity/template.js"></script>
     <script src="/js/si4/object/si4EventBase.js"></script>
     <script src="/js/si4/object/si4FileUploader.js"></script>
     <script src="/js/si4/widget/si4Element.js"></script>

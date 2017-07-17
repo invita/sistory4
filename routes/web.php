@@ -51,15 +51,21 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'auth'], function(){
         Route::get('/', "Admin\\IndexController@index")->name("admin.index.index#get");
 
+        // API routes
         Route::group(['prefix' => 'api'], function () {
 
-            Route::post('initial-data', "Admin\\ApiController@initialData")->name("admin.api.initial-data#post");
+            Route::post('initial-data', "Admin\\Api\\Initial@initialData")->name("admin.api.initial-data#post");
 
-            Route::post('entity-list', "Admin\\ApiController@entityList")->name("admin.api.entity-list#post");
-            Route::post('save-entity', "Admin\\ApiController@saveEntity")->name("admin.api.save-entity#post");
-            Route::post('user-list', "Admin\\ApiController@userList")->name("admin.api.entity-list#post");
-            Route::post('save-user', "Admin\\ApiController@saveUser")->name("admin.api.save-user#post");
-            Route::post('dev-tools', "Admin\\ApiController@devTools")->name("admin.api.dev-tools#post");
+            Route::post('entity-list', "Admin\\Api\\Entities@entityList")->name("admin.api.entity-list#post");
+            Route::post('reserve-entity-id', "Admin\\Api\\Entities@reserveEntityId")->name("admin.api.reserve-entity-id#post");
+            Route::post('save-entity', "Admin\\Api\\Entities@saveEntity")->name("admin.api.save-entity#post");
+            Route::post('delete-entity', "Admin\\Api\\Entities@deleteEntity")->name("admin.api.delete-entity#post");
+
+            Route::post('user-list', "Admin\\Api\\Users@userList")->name("admin.api.entity-list#post");
+            Route::post('save-user', "Admin\\Api\\Users@saveUser")->name("admin.api.save-user#post");
+            Route::post('delete-user', "Admin\\Api\\Users@deleteUser")->name("admin.api.delete-user#post");
+
+            Route::post('dev-tools', "Admin\\Api\\Dev@devTools")->name("admin.api.dev-tools#post");
         });
 
         Route::group(['prefix' => 'upload'], function () {
