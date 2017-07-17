@@ -17,6 +17,7 @@ si4.translations = {
     // EntityDetails
     entities_entityDetails_mainTab_text: "Entity [[id]]",
     entities_entityDetails_contentTab_text: "Edit",
+    entities_entityDetails_relationsTab_text: "Relations",
 
     // UserList
     system_userList_mainTab_text: "User list",
@@ -66,6 +67,10 @@ si4.translations = {
 
     field_actions: "Actions",
 
+    field_firstEntity: "First entity",
+    field_relationType: "Relation type",
+    field_secondEntity: "Second entity",
+
 
     // Datatable
     dataTable_navFirst: "First",
@@ -87,6 +92,9 @@ si4.translations = {
     // Enum: Entity Types
     et_MenuItem: "Menu item",
     et_Publication: "Publication",
+
+    // Enum: Relation Types
+    rel_isChildOf: "Is child of",
 
 
 

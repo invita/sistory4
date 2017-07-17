@@ -21,7 +21,7 @@ var F = function(args){
 
     var jsonTestButton = formLoading.addInput({value:"Send", type:"button", caption:"Json Test"});
     jsonTestButton.selector.click(function(){
-        si4.api.getEntityList({
+        si4.api["getEntityList"]({
         });
     });
 

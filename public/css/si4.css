@@ -165,10 +165,12 @@ div.si4DataTable > table.si4DataTable_table tbody > tr > td.hoverable:hover { cu
 div.si4DataTable > table.si4DataTable_table tbody > tr > td.si4DataTable_shortText > div { color:gray; font-size:11px; }
 div.si4DataTable > table.si4DataTable_table tbody > tr > td.dataTable_td_button { padding:0px; }
 div.si4DataTable > table.si4DataTable_table tbody > tr > td.dataTable_td_button > div { display:block; text-align: center;
-    padding: 4px; border-style:solid; border-color:#bbb #888 #666 #aaa; aborder-width:2px 2px 2px 2px; }
+    padding: 5px; border-style:solid; border-color:#bbb #888 #666 #aaa; border-width:1px 1px 1px 1px;
+    border-radius: 8px; }
 div.si4DataTable > table.si4DataTable_table tbody > tr > td.dataTableCheckboxCell { text-align: center; }
 div.si4DataTable > table.si4DataTable_table tbody > tr > td.dataTableCheckboxCell input { width:auto !important; }
 
+div.si4DataTable > table.si4DataTable_table tbody > tr > td.dataTable_deleteField { }
 
 div.si4DataTable > div > button.insertButton { margin-bottom:5px; cursor:pointer; background:none; border:none;
     padding:0px; }
@@ -195,6 +197,7 @@ div.si4DataTable > div.dsControl > div.exportButton { margin-left:16px; cursor:p
 div.si4DataTable > div.dsControl > input.dataTable_pageInput { width:35px; text-align:center; color:#444; border:none; }
 div.si4DataTable > div.dsControl > input.dataTable_pageCount { width:35px; text-align:center; color:#444; border:none; }
 div.si4DataTable > div.dsControl > input.dataTable_recsPerPageInput { width:35px; text-align:center; color:#444; border:none; }
+
 
 /* dataTableFilterInput */
 div.dataTableFilterInput { padding:0px; }

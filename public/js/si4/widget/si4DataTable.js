@@ -446,11 +446,15 @@ si4.widget.si4DataTable = function(args)
             fields: {}
         };
 
-        if (!tableData || !tableData.length) {
+        if (!tableData ||
+            Array.isArray(tableData) && !tableData.length ||
+            typeof(tableData) == "object" && !Object.keys(tableData).length)
+        {
             if (_p._lastTableData)
                 tableData = _p._lastTableData;
-            else
+            else {
                 bluePrint.noData = true;
+            }
         }
 
         // Is bluePrint Modified
@@ -524,6 +528,7 @@ si4.widget.si4DataTable = function(args)
             fieldBP.canSort = false;
             fieldBP.canFilter = false;
             fieldBP.editable = false;
+            fieldBP.tagClass = "dataTable_deleteField";
             fieldBP.initValue = _p.getInitValueForType(fieldBP.fieldType);
             bluePrint.fields[fieldName] = fieldBP;
         }
@@ -574,6 +579,7 @@ si4.widget.si4DataTable = function(args)
     }
 
     this.reconstruct = function(args){
+        console.log("dataTable reconstruct");
         _p.bluePrint = _p.createBluePrintFromData(args.data);
         if (_p.bluePrint.modified || !_p.constructed) {
             _p.createTable();
@@ -1002,12 +1008,20 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
     this.cellDataTable = si4.getArg(args, "cellDataTable", null);
     this.formView = si4.getArg(args, "formView", null);
     this.actions = si4.getArg(args, "actions", null);
-    this.autoSplitPipes = si4.getArg(args, "autoSplitPipes", ", ");
+
+    this.format = si4.getArg(args, "format", null);
+
+    //this.autoSplitPipes = si4.getArg(args, "autoSplitPipes", ", ");
 
     if (!this.subRowField) {
         this.valueDiv = new si4.widget.si4Element({parent:this.selector, tagClass:"inline"});
         if (this.displayType == "button" && this.dataField)
-            this.valueDiv.setGradient("blue");
+            this.valueDiv.setGradient("red");
+
+        if (this.width) {
+            this.selector.css("width", this.width+"px");
+            this.valueDiv.selector.css("width", this.width+"px");
+        }
     }
 
     if (this.displayType == "button")
@@ -1163,7 +1177,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
         } else {
             // Replace pipes
             var fVal = _p.fieldValue;
-            if (_p.autoSplitPipes) fVal = si4.replacePipes(fVal, _p.autoSplitPipes, 0);
+            //if (_p.autoSplitPipes) fVal = si4.replacePipes(fVal, _p.autoSplitPipes, 0);
             if (_p.maxCharLength) fVal = si4.clipString(fVal, _p.maxCharLength);
 
             if (_p.editable && _p.dataField) {
@@ -1171,8 +1185,10 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
                 _p.input.calcModified();
                 //_p.valueDiv.selector.html(fVal);
             } else {
-                if (!_p.subRowField)
+                if (!_p.subRowField) {
+                    if (typeof(_p.format) == "function") fVal = _p.format(fVal, _p);
                     _p.valueDiv.selector.html(fVal);
+                }
             }
         }
     };

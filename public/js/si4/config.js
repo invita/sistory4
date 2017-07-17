@@ -4,6 +4,21 @@ si4.config.modulePath = "/module/";
 si4.config.uploadApiUrl = "/admin/upload";
 si4.config.apiUrl = "/admin/api";
 
+si4.config.apiNames = [
+    "entityList", "saveEntity", "reserveEntityId", "deleteEntity",
+    "entityRelationsList", "saveEntityRelation", "deleteEntityRelation",
+    "userList", "saveUser", "deleteUser",
+    "initialData",
+    "devTools"
+];
+
+/*
+si4.config.apis = {};
+for (var i in si4.config.apiNames) {
+    var apiName = si4.config.apiNames[i];
+    //si4.config.apis[apiName] = si4.config.apiUrl+"/"+si4.apiUrlFromName(apiName);
+}
+
 si4.config.apis = {
     initialData: si4.config.apiUrl+"/initial-data",
 
@@ -18,6 +33,7 @@ si4.config.apis = {
 
     devTools: si4.config.apiUrl+"/dev-tools",
 };
+*/
 
 si4.config.uploadApis = {
     entity: si4.config.uploadApiUrl+"/entity",

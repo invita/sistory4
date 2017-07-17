@@ -25,7 +25,7 @@ var F = function(args){
         //si4.api.mockedEntityList({}, function() {});
         var formValue = actionsForm.getValue();
         console.log("formValue", formValue);
-        si4.api.saveUser(actionsForm.getValue(), function(data) {
+        si4.api["saveUser"](actionsForm.getValue(), function(data) {
             if (data.status) {
                 if (confirm(si4.translate("saved_confirm_close"))) {
                     args.mainTab.destroyTab();

@@ -1,6 +1,6 @@
 si4.api = {};
 
-
+/*
 si4.api.getTable = function(args, callback) {
     var postData = {
 
@@ -80,7 +80,9 @@ si4.api.getTestTable = function(args, callback) {
 
     callback(response);
 };
+*/
 
+/*
 si4.api.getTestEntity = function(args, callback) {
     var response = si4.mergeObjects(args);
     response.name = "Duhec was here";
@@ -116,7 +118,24 @@ si4.api.uploadEntity = function(formData, callback) {
     });
 };
 
+*/
 
+
+for (var i in si4.config.apiNames) {
+    var apiName = si4.config.apiNames[i];
+    var createF = function(apiName) {
+        si4.api[apiName] = function(data, callback) {
+            var apiUrl = si4.config.apiUrl+"/"+si4.apiUrlFromName(apiName);
+            $.post(apiUrl+"?_="+Math.random(), JSON.stringify(data), function(resp) {
+                console.log(apiName+" callback", resp);
+                if (typeof(callback) == "function") callback(resp);
+            });
+        };
+    }
+    createF(apiName);
+}
+
+/*
 
 si4.api.entityList = function(data, callback) {
     $.post(si4.config.apis.entityList+"?_="+Math.random(), JSON.stringify(data), function(resp) {
@@ -145,8 +164,6 @@ si4.api.deleteEntity = function(data, callback) {
         if (typeof(callback) == "function") callback(resp);
     });
 };
-
-
 
 
 si4.api.userList = function(data, callback) {
@@ -186,3 +203,4 @@ si4.api.devTools = function(data, callback) {
     });
 };
 
+*/

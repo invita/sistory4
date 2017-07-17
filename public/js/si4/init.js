@@ -40,7 +40,7 @@ $(document).ready(function() {
 
     si4.loading.show();
 
-    si4.api.initialData(null, function(response){
+    si4.api["initialData"](null, function(response){
 
         if (response.status) {
             //response.entityTypes.map(function(e))
@@ -51,6 +51,14 @@ $(document).ready(function() {
                 entityTypes[et.id] = si4.translate(etTranslateKey);
             }
             si4.data.entityTypes = entityTypes;
+
+            var relationTypes = {};
+            for (var relIdx in response.relationTypes) {
+                var rel = response.relationTypes[relIdx];
+                var relTranslateKey = "rel_"+rel.name.replace(/\s/g, "");
+                relationTypes[rel.id] = si4.translate(relTranslateKey);
+            }
+            si4.data.relationTypes = relationTypes;
 
             si4.data.currentUser = response.currentUser;
 

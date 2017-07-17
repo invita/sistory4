@@ -11,7 +11,7 @@ var F = function(args){
 
     var listIndicesButton = formGlobal.addInput({value:"List indices", type:"button"});
     listIndicesButton.selector.click(function(){
-        si4.api.devTools({
+        si4.api["devTools"]({
             action: "elasticListIndices"
         }, responseToOutput);
     });
@@ -27,7 +27,7 @@ var F = function(args){
     createIndexButton.selector.click(function(){
         var indexName = indexNameField.getValue();
         var docType = docTypeField.getValue();
-        si4.api.devTools({
+        si4.api["devTools"]({
             action: "elasticCreateIndex",
             indexName: indexName,
             docType: docType
@@ -37,7 +37,7 @@ var F = function(args){
     var deleteIndexButton = formPerIndex.addInput({value:"Delete index", type:"button"});
     deleteIndexButton.selector.click(function(){
         var indexName = indexNameField.getValue();
-        si4.api.devTools({
+        si4.api["devTools"]({
             action: "elasticDeleteIndex",
             indexName: indexName
         }, responseToOutput);
@@ -47,7 +47,7 @@ var F = function(args){
     indexTestDocButton.selector.click(function(){
         var indexName = indexNameField.getValue();
         var docType = docTypeField.getValue();
-        si4.api.devTools({
+        si4.api["devTools"]({
             action: "elasticIndexTestDoc",
             indexName: indexName,
             docType: docType,
@@ -59,7 +59,7 @@ var F = function(args){
     searchAllButton.selector.click(function(){
         var indexName = indexNameField.getValue();
         var docType = docTypeField.getValue();
-        si4.api.devTools({
+        si4.api["devTools"]({
             action: "elasticSearchAll",
             indexName: indexName,
             docType: docType,
@@ -100,7 +100,7 @@ var F = function(args){
         filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
             select: function(data, callback) {
-                si4.api.devTools({
+                si4.api["devTools"]({
                     action: "elasticSearch",
                     query: searchQueryField.getValue()
                 }, function(response) {

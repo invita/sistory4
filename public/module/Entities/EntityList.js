@@ -11,8 +11,8 @@ var F = function(args){
         entityTitleEdit: si4.lookup[name].entityTitleEdit,
         //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
-            select: si4.api.entityList,
-            delete: si4.api.deleteEntity,
+            select: si4.api["entityList"],
+            delete: si4.api["deleteEntity"],
             //moduleName:"Entities/EntityList",
             //staticData : { bla: "blabla" },
             pageCount: 200
@@ -34,7 +34,6 @@ var F = function(args){
 
             entity_type_id: { visible: false },
             data: { visible: false },
-//            pub_id: { caption:"Entity&nbsp;Id", hintF: function(args) { sic.hint.publication(args.row.lastRowData.pub_id); } },
         }
     });
 

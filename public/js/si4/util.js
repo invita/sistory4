@@ -173,3 +173,11 @@ si4.dateToISOString = function(date) {
     ':' + pad(date.getUTCSeconds()) +
     'Z';
 };
+
+
+si4.apiUrlFromName = function(apiName) {
+    if (!apiName) return "";
+    return apiName.replace(/\.?([A-Z])/g, function (x,y){ return "-" + y.toLowerCase()}).replace(/^_/, "");
+};
+
+
