@@ -999,6 +999,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
     this.updateOnEnter = si4.getArg(args, "updateOnEnter", true);
     this.displayType = si4.getArg(args, "displayType", "");
     this.maxCharLength = si4.getArg(args, "maxCharLength", null);
+    this.valueTranslatePrefix = si4.getArg(args, "valueTranslatePrefix", null);
 
     this.headerField = si4.getArg(args, "headerField", this.row ? this.row.headerRow : false);
     this.filterField = si4.getArg(args, "filterField", this.row ? this.row.filterRow : false);
@@ -1186,6 +1187,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
                 //_p.valueDiv.selector.html(fVal);
             } else {
                 if (!_p.subRowField) {
+                    if (_p.valueTranslatePrefix && fVal) fVal = si4.translate(_p.valueTranslatePrefix+fVal);
                     if (typeof(_p.format) == "function") fVal = _p.format(fVal, _p);
                     _p.valueDiv.selector.html(fVal);
                 }

@@ -67,6 +67,7 @@ class Entity extends Model
 
     public function dataToObject()
     {
+        if (!$this->data) return null;
         $serializerBuilder = SerializerBuilder::create();
         $serializerBuilder->addMetadataDir(app_path("Xsd/Mets"), 'App\Xsd\Mets');
         $serializerBuilder->configureHandlers(function (HandlerRegistryInterface $handler) use ($serializerBuilder) {

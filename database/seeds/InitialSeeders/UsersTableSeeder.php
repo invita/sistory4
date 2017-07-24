@@ -1,5 +1,5 @@
 <?php
-namespace CommonSeeders;
+namespace InitialSeeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -19,6 +19,13 @@ class UsersTableSeeder extends Seeder
             "email" => "test@test.com",
             "firstname" => "Firstname",
             "lastname" => "Lastname"
+        ]);
+        User::create([
+            "name" => "Duhec",
+            "password" => "$2y$10$8Tc6Nq/MZfrK7ODRG3/grOA3PMMQlDago00/QDV0SMqcrdoFYOXUi",
+            "email" => "matic.vrscaj@gmail.com",
+            "firstname" => "Matic",
+            "lastname" => "Vrscaj"
         ]);
     }
 }

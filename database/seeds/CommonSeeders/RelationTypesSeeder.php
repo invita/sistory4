@@ -13,6 +13,7 @@ class RelationTypesSeeder extends Seeder
      */
     public function run()
     {
+        RelationType::truncate();
         RelationType::create(["name" => "isChildOf"]);
     }
 }

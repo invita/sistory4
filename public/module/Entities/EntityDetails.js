@@ -7,7 +7,7 @@ var F = function(args){
         args.createMainTab();
         args.createContentTab();
 
-        //console.log("entity rowValue", rowValue);
+        console.log("entity args", args);
 
         //if (!rowValue.id) rowValue.id = "";
         //if (!rowValue.entity_type_id) rowValue.entity_type_id = "";
@@ -30,7 +30,7 @@ var F = function(args){
 
         var fieldEntityTypeId = actionsForm.addInput({
             name:"entity_type_id", value:rowValue.entity_type_id, type:"select", caption:si4.translate("field_entityType"),
-            values: si4.mergeObjects(si4.data.entityTypes, {"0":""}) });
+            values: si4.data.entityTypes, value: args.caller == "collectionList" ? 2 : 1 });
 
 
         var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:si4.translate("field_title"), readOnly: true});

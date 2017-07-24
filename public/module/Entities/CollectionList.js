@@ -3,30 +3,37 @@ var F = function(args){
     args.createMainTab();
     args.createContentTab();
 
-    var name = "user";
+    var name = "entity";
     var dataTable = new si4.widget.si4DataTable({
         parent: args.contentTab.content.selector,
         primaryKey: ['id'],
         entityTitleNew: si4.lookup[name].entityTitleNew,
         entityTitleEdit: si4.lookup[name].entityTitleEdit,
+        //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
-            select: si4.api["userList"],
-            delete: si4.api["deleteUser"],
-            //moduleName:"System/UserList",
+            select: si4.api["entityList"],
+            delete: si4.api["deleteEntity"],
+            staticData : { entity_type_id: 2 },
             pageCount: 200
         }),
         editorModuleArgs: {
-            moduleName:"System/UserDetails"
+            moduleName:"Entities/EntityDetails",
+            caller: "collectionList"
         },
         canInsert: true,
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
-            id: { caption: si4.translate("field_id") },
-            name: { caption: si4.translate("field_username") },
-            email: { caption: si4.translate("field_email") },
-            firstname: { caption: si4.translate("field_firstname") },
-            lastname: { caption: si4.translate("field_lastname") }
+            id: { caption: "Id" },
+            entity_type_name: { caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
+
+            //name: { caption: "Naziv" },
+            //description: { caption: "Opis" },
+            title: { maxCharLength: 100 },
+            creator: { caption: si4.translate("field_creators"), maxCharLength: 50 },
+
+            entity_type_id: { visible: false },
+            data: { visible: false },
         },
         cssClass_table: "si4DataTable_table width100percent"
     });

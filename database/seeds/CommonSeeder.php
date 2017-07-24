@@ -11,7 +11,6 @@ class CommonSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CommonSeeders\UsersTableSeeder::class);
         $this->call(CommonSeeders\EntityTypesSeeder::class);
         $this->call(CommonSeeders\RelationTypesSeeder::class);
     }

@@ -14,6 +14,14 @@ si4.translations = {
     entities_entityTitleNew: "New entity",
     entities_entityTitleEdit: "Entity [[id]]",
 
+    // CollectionList
+    entities_collectionList_mainTab_text: "Collection list",
+    entities_collectionList_contentTab_text: "List",
+
+    // DbEntityList
+    entities_dbEntityList_mainTab_text: "Database entity list",
+    entities_dbEntityList_contentTab_text: "List",
+
     // EntityDetails
     entities_entityDetails_mainTab_text: "Entity [[id]]",
     entities_entityDetails_contentTab_text: "Edit",
@@ -90,8 +98,8 @@ si4.translations = {
     // Enums
 
     // Enum: Entity Types
-    et_MenuItem: "Menu item",
-    et_Publication: "Publication",
+    et_entity: "Entity",
+    et_collection: "Collection",
 
     // Enum: Relation Types
     rel_isChildOf: "Is child of",

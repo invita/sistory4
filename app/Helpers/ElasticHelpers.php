@@ -11,8 +11,8 @@ class ElasticHelpers
 {
     /**
      * Sends a document to elastic search to be indexed
-     * @param $entityId Entity Id to be index
-     * @param $body Data to index
+     * @param $entityId Integer entity id to index
+     * @param $body Array body to index
      * @return array
      */
     public static function indexEntity($entityId, $body)
@@ -37,11 +37,25 @@ class ElasticHelpers
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
             "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
             "body" => [
-                "query" => [
+                "query" => $query,
+                "sort" => "id"
+                /*
+                [
+                "term" => [ "user" => "kimchy" ]
                     "match" => [
                         "_all" => $query
                     ]
                 ]
+                */
+                /*
+"sort" : [
+        { "post_date" : {"order" : "asc"}},
+        "user",
+        { "name" : "desc" },
+        { "age" : "desc" },
+        "_score"
+    ],
+                */
             ]
         ];
         return \Elasticsearch::connection()->search($requestArgs);
@@ -60,6 +74,33 @@ class ElasticHelpers
                 ]
             ]
         ];
-        return \Elasticsearch::connection()->search($requestArgs);
+        $dataElastic = \Elasticsearch::connection()->search($requestArgs);
+        return self::mergeElasticResultAndIdArray($dataElastic, $idArray);
+    }
+
+
+
+    public static function elasticResultToAssocArray($dataElastic) {
+        $result = [];
+        if (isset($dataElastic["hits"]) && isset($dataElastic["hits"]["hits"])) {
+            foreach ($dataElastic["hits"]["hits"] as $hit){
+                $result[$hit["_id"]] = [
+                    "id" => $hit["_id"],
+                    "_source" => $hit["_source"],
+                ];
+            }
+        }
+        return $result;
+    }
+
+    public static function mergeElasticResultAndIdArray($dataElastic, $idArray) {
+        $hits = self::elasticResultToAssocArray($dataElastic);
+
+        $result = [];
+        foreach ($idArray as $id) $result[$id] = ["id" => $id];
+        foreach ($result as $i => $val) {
+            if (isset($hits[$i])) $result[$i]["_source"] = $hits[$i]["_source"];
+        }
+        return $result;
     }
 }

@@ -152,7 +152,8 @@ div.si4MultiSelect > .buttonsContainer > hr { margin:4px 2px; }
 /* si4DataTable */
 img.dataTableSortIcon { margin-left:6px; }
 div.si4DataTable { margin:5px; }
-div.si4DataTable > table.si4DataTable_table { width:100%; margin-bottom:5px }
+div.si4DataTable > table.si4DataTable_table { margin-bottom:5px }
+div.si4DataTable > table.si4DataTable_table.width100percent { width:100%; }
 div.si4DataTable > table.si4DataTable_table thead > tr {  }
 div.si4DataTable > table.si4DataTable_table thead > tr > td.sortable:hover { cursor:pointer; background:#DDEEFF; }
 div.si4DataTable > table.si4DataTable_table tbody > tr { cursor:pointer; height:28px; }

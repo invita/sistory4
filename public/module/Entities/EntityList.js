@@ -13,19 +13,19 @@ var F = function(args){
         dataSource: new si4.widget.si4DataTableDataSource({
             select: si4.api["entityList"],
             delete: si4.api["deleteEntity"],
-            //moduleName:"Entities/EntityList",
-            //staticData : { bla: "blabla" },
+            staticData : { entity_type_id: 1 },
             pageCount: 200
         }),
         editorModuleArgs: {
             moduleName:"Entities/EntityDetails",
+            caller: "entityList"
         },
         canInsert: true,
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },
-            entity_type_name: { caption: si4.translate("field_entityType") },
+            entity_type_name: { caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
 
             //name: { caption: "Naziv" },
             //description: { caption: "Opis" },
@@ -34,7 +34,8 @@ var F = function(args){
 
             entity_type_id: { visible: false },
             data: { visible: false },
-        }
+        },
+        cssClass_table: "si4DataTable_table width100percent"
     });
 
     dataTable.onDataFeedComplete(function(args){

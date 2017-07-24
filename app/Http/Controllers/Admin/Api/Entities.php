@@ -3,58 +3,109 @@ namespace App\Http\Controllers\Admin\Api;
 
 use App\Helpers\ElasticHelpers;
 use App\Helpers\EntityHelpers;
+use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
 use App\Models\EntityType;
 use \Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class Entities extends Controller
 {
     public function entityList(Request $request)
     {
-        $entitiesDb = Entity::all()->where("reservation_only", false)->keyBy("id");
-        $entityTypesDb = EntityType::all()->keyBy("id");
+        $postJson = json_decode(file_get_contents("php://input"), true);
+        $staticData = Si4Util::getArg($postJson, "staticData", []);
+        $entity_type_id  = Si4Util::getArg($staticData, "entity_type_id", 0);
 
-        $dataElastic = ElasticHelpers::searchByIdArray($entitiesDb->keys());
-        //print_r($dataElastic);
+        // Map entity types
+        $entityTypesDb = EntityType::all();
+        $entityTypes = [];
+        foreach ($entityTypesDb as $et) $entityTypes[$et["id"]] = $et["name"];
+        //print_r($entityTypes);
 
-        $hits = [];
-        foreach ($dataElastic["hits"]["hits"] as $hit) $hits[$hit["_id"]] = $hit["_source"];
 
-        $entities = [];
-        foreach ($entitiesDb as $entityId => $entity) {
+        if (!$entity_type_id) {
+            // All Entities
+            //$entitiesDb = Entity::all->keyBy("id");
+            $entityIds = Entity::select(["id"])->orderBy("id")->offset(0)->limit(10)->get()->keyBy("id")->keys()->toArray();
+            //$entitiesDb = Entity::select()->offset(0)->limit(10)->get()->keyBy("id");
+            //print_r($entitiesDb->keys()->toArray());
+            $hits = ElasticHelpers::searchByIdArray($entityIds);
+            //print_r($entityIds);
+            //print_r($hits);
+
+            /*
+            [
+                [#id] => [
+                    id: #id,
+                    _source: [
+                        entity_type_id: #,
+                        xml: ...,
+                        data: [ IDAttrName: ... ]
+                    ]
+                ]
+            ]
+            */
+
+
+        } else {
+            // Only Entities of specific entity_type
+            $dataElastic = ElasticHelpers::search([
+                "term" => [ "entity_type_id" => $entity_type_id ]
+            ]);
+            $hits = ElasticHelpers::elasticResultToAssocArray($dataElastic);
+            //print_r($hits);
+        }
+
+        $result = [];
+        foreach ($hits as $id => $hit) {
+
+            //print_r($entity);
 
             $IDAttr = "";
             $title = "";
             $creator = "";
             $date = "";
+            $xml = "";
 
-            if (isset($hits[$entityId])) {
-                $eData = $hits[$entityId];
-                $dcXmlData = $eData["DmdSecElName"][1]["MdWrapElName"]["XmlDataElName"];
+            $entityTypeId = 0;
+            $entityTypeName = "";
 
-                $IDAttr = isset($eData["IDAttrName"]) ? $eData["IDAttrName"] : "";
-                $title = isset($dcXmlData["TitlePropName"]) ? join(", ", $dcXmlData["TitlePropName"]) : "";
-                $creator = isset($dcXmlData["CreatorPropName"]) ? join(",", $dcXmlData["CreatorPropName"]) : "";
-                $date = isset($dcXmlData["DatePropName"]) ? join(",", $dcXmlData["DatePropName"]) : "";
+            $_source = Si4Util::getArg($hit, "_source", null);
+
+            if ($_source) {
+
+                $entityTypeId = Si4Util::getArg($_source, "entity_type_id", 0);
+                $entityTypeName = Si4Util::getArg($entityTypes, $entityTypeId, "");
+                //print_r($entityTypeId." ".$entityTypeName."\n");
+
+                $data = Si4Util::getArg($_source, "data", null);
+                $xml = Si4Util::getArg($_source, "xml", "");
+
+                $dcXmlData = Si4Util::pathArg($data, "DmdSecElName/1/MdWrapElName/XmlDataElName", []);
+                $IDAttr = Si4Util::getArg($data, "IDAttrName", "");
+                $title = isset($dcXmlData["TitlePropName"]) ? join(" : ", $dcXmlData["TitlePropName"]) : "";
+                $creator = isset($dcXmlData["CreatorPropName"]) ? join("; ", $dcXmlData["CreatorPropName"]) : "";
+                $date = isset($dcXmlData["DatePropName"]) ? join("; ", $dcXmlData["DatePropName"]) : "";
+
+
+
             }
 
-            $entityTypeName = isset($entityTypesDb[$entity["entity_type_id"]]) ?
-                $entityTypesDb[$entity["entity_type_id"]]["name"] : "";
-
-            $entities[] = [
-                "id" => $entityId,
-                "entity_type_id" => $entity["entity_type_id"],
+            $result[] = [
+                "id" => $id,
+                "entity_type_id" => $entityTypeId,
                 "entity_type_name" => $entityTypeName,
                 "IdAttr" => $IDAttr,
                 "title" => $title,
                 "creator" => $creator,
                 "date" => $date,
-                "data" => $entity["data"],
+                "data" => $xml,
             ];
         }
 
-        return ["status" => true, "data" => $entities, "error" => null];
+        return ["status" => true, "data" => $result, "error" => null];
     }
 
     public function reserveEntityId(Request $request)
@@ -67,7 +118,6 @@ class Entities extends Controller
         $entity = Entity::findOrNew($newEntityId);
         $entity->id = $newEntityId;
         $entity->entity_type_id = 0;
-        $entity->reservation_only = true;
         $entity->save();
         return ["status" => $status, "error" => $error, "data" => $newEntityId];
     }
@@ -79,15 +129,25 @@ class Entities extends Controller
         $error = null;
 
         $entity = Entity::findOrNew($postJson["id"]);
-        $entity->reservation_only = false;
         $entity->entity_type_id = $postJson["entity_type_id"];
         $entity->data = $postJson["xml"];
 
+        /*
         $entityXmlParsed = $entity->dataToObject();
         //print_r($entityXmlParsed);
-        $elasticResponse = ElasticHelpers::indexEntity($postJson["id"], $entityXmlParsed);
+
+        $indexBody = [
+            "entity_type_id" => $postJson["entity_type_id"],
+            "xml" => $postJson["xml"],
+            "data" => $entityXmlParsed
+        ];
+        $elasticResponse = ElasticHelpers::indexEntity($postJson["id"], $indexBody);
+        */
 
         $entity->save();
+
+        Artisan::call("reindex:entity", ["entityId" => $postJson["id"]]);
+
 
         return ["status" => $status, "error" => $error];
     }

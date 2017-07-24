@@ -13,7 +13,8 @@ class EntityTypesSeeder extends Seeder
      */
     public function run()
     {
-        EntityType::create(["name" => "Menu Item"]);
-        EntityType::create(["name" => "Publication"]);
+        EntityType::truncate();
+        EntityType::create(["name" => "entity"]);
+        EntityType::create(["name" => "collection"]);
     }
 }

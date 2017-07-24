@@ -13,30 +13,6 @@ $(document).ready(function() {
         si4.data.mainTab.content.selector.append(primaryPage);
 
     var navContainer = $("#navContainer");
-    var menuItems = [
-        /*
-        {
-            loadArgs: { moduleName:'Dev/TestPage' },
-            caption: si4.translate("dev_testPage_mainTab_text"),
-        },
-        {
-            loadArgs: { moduleName:'Dev/ElasticTools' },
-            caption: si4.translate("dev_elasticTools_mainTab_text"),
-        },
-        */
-        {
-            loadArgs: { moduleName:'System/Dashboard' },
-            caption: si4.translate("system_dashboard_mainTab_text"),
-        },
-        {
-            loadArgs: { moduleName:'System/UserList' },
-            caption: si4.translate("system_userList_mainTab_text"),
-        },
-        {
-            loadArgs: { moduleName:'Entities/EntityList' },
-            caption: si4.translate("entities_entityList_mainTab_text"),
-        },
-    ];
 
     si4.loading.show();
 
@@ -62,21 +38,58 @@ $(document).ready(function() {
 
             si4.data.currentUser = response.currentUser;
 
-        }
 
-        // Append menus
-        for (var i in menuItems) {
-            var menuItem = menuItems[i];
+            // Append menus
 
-            var li = document.createElement("li");
-            li.className = "mainMenuList";
+            var menuItems = [];
+            var isAdmin = si4.data.currentUser.name == "Duhec";
 
-            var a = document.createElement("a");
-            a.innerHTML =  menuItem.caption;
-            a.href = "javascript:si4.loadModule("+JSON.stringify(menuItem.loadArgs)+");";
+            if (isAdmin) {
+                menuItems.push({
+                    loadArgs: { moduleName:'Dev/TestPage' },
+                    caption: si4.translate("dev_testPage_mainTab_text"),
+                });
+                menuItems.push({
+                    loadArgs: { moduleName:'Dev/ElasticTools' },
+                    caption: si4.translate("dev_elasticTools_mainTab_text"),
+                });
+                menuItems.push({
+                    loadArgs: { moduleName:'Entities/DbEntityList' },
+                    caption: si4.translate("entities_dbEntityList_mainTab_text"),
+                });
+            }
 
-            li.appendChild(a);
-            navContainer.append(li);
+            menuItems.push({
+                loadArgs: { moduleName:'System/Dashboard' },
+                caption: si4.translate("system_dashboard_mainTab_text"),
+            });
+            menuItems.push({
+                loadArgs: { moduleName:'System/UserList' },
+                caption: si4.translate("system_userList_mainTab_text"),
+            });
+            menuItems.push({
+                loadArgs: { moduleName:'Entities/EntityList' },
+                caption: si4.translate("entities_entityList_mainTab_text"),
+            });
+            menuItems.push({
+                loadArgs: { moduleName:'Entities/CollectionList' },
+                caption: si4.translate("entities_collectionList_mainTab_text"),
+            });
+
+            for (var i in menuItems) {
+                var menuItem = menuItems[i];
+
+                var li = document.createElement("li");
+                li.className = "mainMenuList";
+
+                var a = document.createElement("a");
+                a.innerHTML =  menuItem.caption;
+                a.href = "javascript:si4.loadModule("+JSON.stringify(menuItem.loadArgs)+");";
+
+                li.appendChild(a);
+                navContainer.append(li);
+            }
+
         }
 
         si4.loading.hide();
