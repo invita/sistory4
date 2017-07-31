@@ -29,16 +29,20 @@ class ElasticHelpers
     /**
      * Retrieves all matching documents from elastic search
      * @param $query String to match
+     * @param $offset Integer offset
+     * @param $limit Integer limit
      * @return array
      */
-    public static function search($query)
+    public static function search($query, $offset = 0, $limit = 10)
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
             "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
             "body" => [
                 "query" => $query,
-                "sort" => "id"
+                "sort" => "id",
+                "from" => $offset,
+                "size" => $limit,
                 /*
                 [
                 "term" => [ "user" => "kimchy" ]

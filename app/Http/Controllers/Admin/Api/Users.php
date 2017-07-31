@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Helpers\EntityHelpers;
+use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use \Illuminate\Http\Request;
@@ -10,8 +11,15 @@ class Users extends Controller
 {
     public function userList(Request $request)
     {
-        $users = User::all();
-        return ["status" => true, "data" => $users, "error" =>  null];
+        $postJson = json_decode(file_get_contents("php://input"), true);
+        $pageStart = Si4Util::getArg($postJson, "pageStart", 0);
+        $pageCount = Si4Util::getArg($postJson, "pageCount", 20);
+
+        $query = User::query();
+        $rowCount = $query->select()->count();
+
+        $users = $query->offset($pageStart)->limit($pageCount)->get();
+        return ["status" => true, "data" => $users, "rowCount" => $rowCount, "error" =>  null];
     }
 
     public function saveUser(Request $request)

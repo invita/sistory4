@@ -27,6 +27,11 @@ class RelationType extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
+        'name_rev'
     ];
+
+    public static function loadAll() {
+
+    }
 }

@@ -21,11 +21,13 @@
                 </ul>
             </div>
         </div>
-
     </div>
 
     <div class="floatRight vtop identityDiv">
-        <span class="loginName">Username (<a href="{{ route("admin.logout.index#get") }}">Logout</a>)</span>
+        <span class="loginName">
+            @if (Auth::check()){{{ Auth::user()->name }}}@endif
+             (<a href="{{ route("admin.logout.index#get") }}">Logout</a>)
+        </span>
     </div>
 
 </div>

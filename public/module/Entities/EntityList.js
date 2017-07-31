@@ -14,7 +14,7 @@ var F = function(args){
             select: si4.api["entityList"],
             delete: si4.api["deleteEntity"],
             staticData : { entity_type_id: 1 },
-            pageCount: 200
+            pageCount: 20
         }),
         editorModuleArgs: {
             moduleName:"Entities/EntityDetails",

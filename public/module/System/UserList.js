@@ -13,7 +13,7 @@ var F = function(args){
             select: si4.api["userList"],
             delete: si4.api["deleteUser"],
             //moduleName:"System/UserList",
-            pageCount: 200
+            pageCount: 20
         }),
         editorModuleArgs: {
             moduleName:"System/UserDetails"

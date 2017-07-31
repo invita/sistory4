@@ -856,7 +856,7 @@ si4.widget.si4DataTableRow = function(tableSectionWnd, args){
         _p.lastRowData = rowData;
 
         for (var fieldName in rowData) {
-            if (_p.fields[fieldName]) _p.fields[fieldName].setValue(rowData[fieldName]);
+            if (_p.fields[fieldName]) _p.fields[fieldName].setValue(rowData[fieldName], rowData);
         }
 
         _p.dataTable.trigger('rowSetValue', si4.mergeObjects(_p.getEventArgs(), {rowData:rowData}));
@@ -996,6 +996,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
     this.editable = si4.getArg(args, "editable", this.dataTable.editable);
     this.colSpan = si4.getArg(args, "colSpan", null);
     this.editorType = si4.getArg(args, "editorType", "text");
+    this.selectOptions = si4.getArg(args, "selectOptions", null);
     this.updateOnEnter = si4.getArg(args, "updateOnEnter", true);
     this.displayType = si4.getArg(args, "displayType", "");
     this.maxCharLength = si4.getArg(args, "maxCharLength", null);
@@ -1057,9 +1058,11 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
 
             if (this.editorType == "checkbox")
                 this.selector.addClass('dataTableCheckboxCell');
+            if (this.editorType == "input")
+                this.selector.addClass('dataTableInputCell');
 
             this.input = new si4.widget.si4Input({parent:this.valueDiv.selector, name:this.fieldKey,
-                caption:false, showModified:true, type:this.editorType });
+                caption:false, showModified:true, type:this.editorType, values:this.selectOptions });
             this.input.selector.addClass('dataTableValueInput');
 
             this.input.onModified(function(modArgs) {
@@ -1068,13 +1071,15 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
 
             if (this.editorType == "checkbox") {
                 this.input.selector.click(function(e) {
-
                     //$(this).prop('checked', true);
                     //si4.dump($._data( $(this)[0], "events" ), 10);
                     //var foo = $._data( $(this)[0], "events" );
                     //si4.dump(foo.click[0].handler, 10);
                     //$(this).prop("checked", !$(this).prop("checked"));
                 });
+            }
+
+            if (this.editorType == "input") {
             }
 
             //if (!this.canEdit) this.input.selector.addClass('disabled');
@@ -1102,7 +1107,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
         field.sortImg.selector.css("display", "inline-table");
     };
 
-    this.setValue = function(fieldValue){
+    this.setValue = function(fieldValue, rowValue){
         _p.fieldValue = fieldValue;
 
         if (_p.dataField && _p.cellDataTable) {
@@ -1171,6 +1176,8 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
                 _p.valueDiv.actions[aKey] = action;
             }
             //_p.valueDiv.selector.html('Actions!');
+        //} else if (_p.dataField && _p.editorType == "input") {
+
         } else if (_p.filterField) {
 
         } else if (_p.headerField) {
@@ -1188,7 +1195,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
             } else {
                 if (!_p.subRowField) {
                     if (_p.valueTranslatePrefix && fVal) fVal = si4.translate(_p.valueTranslatePrefix+fVal);
-                    if (typeof(_p.format) == "function") fVal = _p.format(fVal, _p);
+                    if (typeof(_p.format) == "function") fVal = _p.format(fVal, rowValue, _p);
                     _p.valueDiv.selector.html(fVal);
                 }
             }
@@ -1221,7 +1228,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
     };
 
     this._recalcInputWidth = function(){
-        if (_p.hasInput) {
+        if (_p.hasInput && _p.editorType != "select") {
             _p.input.input.selector.css("width", "");
             var newWidth = _p.selector.width()+7;
             if (_p.width && newWidth < _p.width) newWidth = _p.width;
@@ -1276,6 +1283,7 @@ si4.widget.si4DataTableDataSource = function(args) {
 
     this.selectF = si4.getArg(args, "select", function(){});
     this.deleteF = si4.getArg(args, "delete", function(){});
+    this.updateRowF = si4.getArg(args, "updateRow", function(){});
 
     this.filter = si4.getArg(args, "filter", {});
     this.filterMode = si4.getArg(args, "filterMode", "normal");
@@ -1320,7 +1328,8 @@ si4.widget.si4DataTableDataSource = function(args) {
     }
 
     this.updateRow = function(args) {
-        return si4.callMethod(_p.getMethodCallData(_p.methodNames.updateRow, args), _p.callbacks.feedData);
+        _p.updateRowF(_p.getMethodCallData(_p.methodNames.updateRow, args), _p.callbacks.feedData);
+        //return si4.callMethod(_p.getMethodCallData(_p.methodNames.updateRow, args), _p.callbacks.feedData);
     }
 
     this.exportXls = function(args) {

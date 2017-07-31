@@ -29,12 +29,20 @@ $(document).ready(function() {
             si4.data.entityTypes = entityTypes;
 
             var relationTypes = {};
+            var relationTypesSelOpts = {};
             for (var relIdx in response.relationTypes) {
                 var rel = response.relationTypes[relIdx];
                 var relTranslateKey = "rel_"+rel.name.replace(/\s/g, "");
-                relationTypes[rel.id] = si4.translate(relTranslateKey);
+                var relRevTranslateKey = "rel_"+rel.name_rev.replace(/\s/g, "");
+                relationTypes[rel.id] = {
+                    name: si4.translate(relTranslateKey),
+                    name_rev: si4.translate(relRevTranslateKey)
+                };
+                relationTypesSelOpts[rel.id+"n"] = si4.translate(relTranslateKey);
+                relationTypesSelOpts[rel.id+"r"] = si4.translate(relRevTranslateKey);
             }
             si4.data.relationTypes = relationTypes;
+            si4.data.relationTypesSelOpts = relationTypesSelOpts;
 
             si4.data.currentUser = response.currentUser;
 

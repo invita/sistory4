@@ -14,6 +14,7 @@ class RelationTypesSeeder extends Seeder
     public function run()
     {
         RelationType::truncate();
-        RelationType::create(["name" => "isChildOf"]);
+        RelationType::create(["name" => "isChildOf", "name_rev" => "isParentOf"]);
+        RelationType::create(["name" => "cites", "name_rev" => "isCitedIn"]);
     }
 }

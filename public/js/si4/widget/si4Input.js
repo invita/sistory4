@@ -75,6 +75,10 @@ si4.widget.si4Input = function(args)
     if (this.type == "select") {
         for (var i in this.values)
             this.input.selector.append($('<option>', {value: i, text: this.values[i]}));
+        this.input.selector.change(function(){
+            if (_p.showModified) _p.calcModified();
+        });
+
     }
 
     if (this.readOnly)

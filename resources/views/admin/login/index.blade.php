@@ -6,12 +6,12 @@
     <div class="inline vtop">
         <a href="/" title="Sistory 4 - Admin"><img src="/img/logo2.png" class="logoImage"/>
             <img src="/img/loading-book.gif" class="loadingGif" id="loadingGif" style="display:none;">
-            <div class="mainTitle">Sistory 4</div>
+            <div class="mainTitle"></div>
         </a>
     </div>
 
     <div class="floatRight vtop identityDiv">
-        <a href="/login">Login</a>
+        <a href="/admin/login">Login</a>
     </div>
 
 </div>
@@ -37,7 +37,10 @@
                 <input class="si4Input" type="text" name="name" placeholder="Username" />
                 <input class="si4Input" type="password" name="password" placeholder="Password" />
                 <input class="si4Input gradRed" type="submit" value="Login" />
-                <input class="si4Input" type="checkbox" name="remember" /> Remember me
+                <div style="margin-top:7px;display:inline-table;">
+                    <input class="si4Input" type="checkbox" name="remember" id="chk_remember" />
+                    <label style="display:inline" for="chk_remember"> Remember me</label>
+                </div>
             </form>
         </div>
     </div>

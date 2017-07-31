@@ -12,7 +12,7 @@ class Initial extends Controller
     public function initialData(Request $request) {
         $currentUser = \Auth::user();
         $entityTypes = EntityType::all(["id", "name"])->toArray();
-        $relationTypes = RelationType::all(["id", "name"])->toArray();
+        $relationTypes = RelationType::all(["id", "name", "name_rev"])->toArray();
         return [
             "currentUser" => $currentUser,
             "entityTypes" => $entityTypes,

@@ -16,6 +16,8 @@ class Entities extends Controller
     {
         $postJson = json_decode(file_get_contents("php://input"), true);
         $staticData = Si4Util::getArg($postJson, "staticData", []);
+        $pageStart = Si4Util::getArg($postJson, "pageStart", 0);
+        $pageCount = Si4Util::getArg($postJson, "pageCount", 20);
         $entity_type_id  = Si4Util::getArg($staticData, "entity_type_id", 0);
 
         // Map entity types
@@ -24,11 +26,18 @@ class Entities extends Controller
         foreach ($entityTypesDb as $et) $entityTypes[$et["id"]] = $et["name"];
         //print_r($entityTypes);
 
+        $rowCount = 0;
 
         if (!$entity_type_id) {
             // All Entities
             //$entitiesDb = Entity::all->keyBy("id");
-            $entityIds = Entity::select(["id"])->orderBy("id")->offset(0)->limit(10)->get()->keyBy("id")->keys()->toArray();
+
+            $entityIdsQuery = Entity::query();
+            $entityIdsQuery->select(["id"]);
+            $rowCount = $entityIdsQuery->count();
+
+            $entityIds = $entityIdsQuery->orderBy("id")->offset($pageStart)->limit($pageCount)->get()->keyBy("id")->keys()->toArray();
+            //$entityIds = Entity::select(["id"])->orderBy("id")->offset($pageStart)->limit($pageCount)->get()->keyBy("id")->keys()->toArray();
             //$entitiesDb = Entity::select()->offset(0)->limit(10)->get()->keyBy("id");
             //print_r($entitiesDb->keys()->toArray());
             $hits = ElasticHelpers::searchByIdArray($entityIds);
@@ -53,7 +62,9 @@ class Entities extends Controller
             // Only Entities of specific entity_type
             $dataElastic = ElasticHelpers::search([
                 "term" => [ "entity_type_id" => $entity_type_id ]
-            ]);
+            ], $pageStart, $pageCount);
+
+            $rowCount = Si4Util::pathArg($dataElastic, "hits/total", 0);
             $hits = ElasticHelpers::elasticResultToAssocArray($dataElastic);
             //print_r($hits);
         }
@@ -75,7 +86,6 @@ class Entities extends Controller
             $_source = Si4Util::getArg($hit, "_source", null);
 
             if ($_source) {
-
                 $entityTypeId = Si4Util::getArg($_source, "entity_type_id", 0);
                 $entityTypeName = Si4Util::getArg($entityTypes, $entityTypeId, "");
                 //print_r($entityTypeId." ".$entityTypeName."\n");
@@ -88,9 +98,6 @@ class Entities extends Controller
                 $title = isset($dcXmlData["TitlePropName"]) ? join(" : ", $dcXmlData["TitlePropName"]) : "";
                 $creator = isset($dcXmlData["CreatorPropName"]) ? join("; ", $dcXmlData["CreatorPropName"]) : "";
                 $date = isset($dcXmlData["DatePropName"]) ? join("; ", $dcXmlData["DatePropName"]) : "";
-
-
-
             }
 
             $result[] = [
@@ -105,7 +112,7 @@ class Entities extends Controller
             ];
         }
 
-        return ["status" => true, "data" => $result, "error" => null];
+        return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
     }
 
     public function reserveEntityId(Request $request)

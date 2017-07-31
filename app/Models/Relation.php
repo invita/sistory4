@@ -34,7 +34,9 @@ class Relation extends Model
     protected $fillable = [
         "first_entity_id",
         "relation_type_id",
-        "second_entity_id"
+        "second_entity_id",
+
+        "reverse"
     ];
 
     /**

@@ -79,9 +79,10 @@ var F = function(args){
                 dataSource: new si4.widget.si4DataTableDataSource({
                     select: si4.api["entityRelationsList"],
                     delete: si4.api["deleteEntityRelation"],
+                    updateRow: si4.api["saveEntityRelation"],
                     //moduleName:"Entities/EntityList",
                     staticData : { entityId: rowValue.id },
-                    pageCount: 200
+                    pageCount: 50
                 }),
                 //editorModuleArgs: {
                 //    moduleName:"Entities/EntityDetails",
@@ -93,8 +94,8 @@ var F = function(args){
                     si4.api["saveEntityRelation"]({
                         id: null,
                         first_entity_id: rowValue.id,
-                        relation_type_id: 1,
-                        second_entity_id: rowValue.id,
+                        relation_type_id: 0,
+                        second_entity_id: 0,
                         staticData: { entityId: rowValue.id }
                     }, function(response) {
                         //console.log("response", response);
@@ -108,59 +109,22 @@ var F = function(args){
                 tabPage: args.relationsTab,
                 fields: {
                     id: { editable: false },
-                    first_entity_id: { caption: si4.translate("field_firstEntity"), displayType: "button" },
+                    related_entity_id: { caption: si4.translate("field_relatedEntity"), editable: true, editorType: "input" },
                     relation_type_id: {
                         caption: si4.translate("field_relationType"),
                         width: 100,
-                        format: function(val) {
-                            return "("+val+") " +(si4.data.relationTypes[val] || "");
-                        }
+                        editable: true,
+                        editorType: "select",
+                        selectOptions: si4.data.relationTypesSelOpts,
                     },
-                    second_entity_id: { caption: si4.translate("field_secondEntity"), displayType: "button" },
 
-                    _delete: { width: 50 },
+                    //_delete: { width: 50 },
                     created_at: { visible: false },
                     updated_at: { visible: false }
                 }
             });
         });
-
-
-
-
-
-
-
-
-
-        /*
-         var panelGroupRelations = panel.addGroup(si4.translate("panel_relations"));
-         var relationsForm = new si4.widget.si4Form({parent:panelGroupRelations.content.selector, captionWidth:"90px", inputClass: "short" });
-
-         var rels = {
-         "1": "parentOf",
-         "2": "childOf",
-         "3": "memberOf",
-         "4": "derivedFrom",
-         "5": "reviewOf",
-         };
-
-         //var relParent = relationsForm.addInput({name:"parent", value:15, type:"text", caption:si4.translate("field_parent"),
-         //  lookup: function(self){} });
-
-         var relChildren = relationsForm.addInput({name:"relations", type:"text", caption: "", //caption:si4.translate("field_children"),
-         isArray:true, lookup: function(self){ console.log("lookup", self); }, withCode:rels});
-
-         relChildren.setValue([
-         {codeId: 2, value: 1},
-         {codeId: 1, value: 2},
-         {codeId: 1, value: 3},
-         {codeId: 1, value: 4},
-         {codeId: 5, value: 5},
-         ]);
-         */
     };
-
 
 
     if (!args.row || !args.row.id) {

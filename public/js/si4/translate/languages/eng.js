@@ -75,9 +75,8 @@ si4.translations = {
 
     field_actions: "Actions",
 
-    field_firstEntity: "First entity",
+    field_relatedEntity: "Related entity",
     field_relationType: "Relation type",
-    field_secondEntity: "Second entity",
 
 
     // Datatable
@@ -103,6 +102,9 @@ si4.translations = {
 
     // Enum: Relation Types
     rel_isChildOf: "Is child of",
+    rel_isParentOf: "Is parent of",
+    rel_isCitedIn: "Is cited in",
+    rel_cites: "Cites"
 
 
 
