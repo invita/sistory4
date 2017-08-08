@@ -7,8 +7,9 @@ use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
 use App\Models\EntityType;
-use \Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 
 class Entities extends Controller
 {
@@ -164,7 +165,11 @@ class Entities extends Controller
         $id = $postJson["data"]["id"];
 
         $entity = Entity::find($id);
-        if ($entity) $entity->delete();
+        if ($entity) {
+            $entity->delete();
+        }
+
+        Artisan::call("reindex:entity", ["entityId" => $id]);
 
         return $this->entityList($request);
     }

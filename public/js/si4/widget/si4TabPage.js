@@ -31,18 +31,29 @@ si4.widget.si4TabPage = function(args)
     this.parent = si4.getArg(args, "parent", null);
     this.name = si4.getArg(args, "name", this.uniqId);
     this.caption = si4.getArg(args, "caption", args.name ? this.name : "newTab");
+
+    this.type = si4.getArg(args, "type", "tab");
+    this.isButton = this.type == "button";
+
     this.autoActive = si4.getArg(args, "autoActive", true);
     this.unique = si4.getArg(args, "unique", false);
-    this.canClose = si4.getArg(args, "canClose", true);
+    this.canClose = si4.getArg(args, "canClose", !this.isButton);
     this.canCloseFirstTab = si4.getArg(args, "canCloseFirstTab", false);
     this.contentText = si4.getArg(args, "contentText", "");
     this.fadeTime = si4.getArg(args, "fadeTime", si4.defaults.fadeTime);
     this.hideHeader = si4.getArg(args, "hideHeader", false);
     this.cropCaptionLength = si4.getArg(args, "cropCaptionLength", 30);
 
-    this.activeGrad = si4.getArg(args, "activeGrad", si4.defaults.tabActiveGrad);
-    this.inactiveGrad = si4.getArg(args, "inactiveGrad", si4.defaults.tabInactiveGrad);
-
+    switch (this.type) {
+        case "tab":
+            this.activeGrad = si4.getArg(args, "activeGrad", si4.defaults.tabActiveGrad);
+            this.inactiveGrad = si4.getArg(args, "inactiveGrad", si4.defaults.tabInactiveGrad);
+            break;
+        case "button":
+            this.activeGrad = si4.getArg(args, "activeGrad", si4.defaults.tabActiveGrad);
+            this.inactiveGrad = si4.getArg(args, "inactiveGrad", si4.defaults.buttonGrad);
+            break;
+    }
 
     // Events
     this.onClose = function(f) { _p.subscribe("onClose", f); };
@@ -99,16 +110,18 @@ si4.widget.si4TabPage = function(args)
     };
 
     this.selectTab = function(){
-        if (_p.tabButton.selector.hasClass("active")) return;
-        for (var i in _p.header.pages) {
-            var page = _p.header.pages[i];
-            page.tabButton.selector.removeClass("active");
-            page.tabButton.setGradient(_p.inactiveGrad, true, true);
-            page.content.selector.css("display", "none");
+        if (!_p.isButton) {
+            if (_p.tabButton.selector.hasClass("active")) return;
+            for (var i in _p.header.pages) {
+                var page = _p.header.pages[i];
+                page.tabButton.selector.removeClass("active");
+                page.tabButton.setGradient(page.inactiveGrad, true, true);
+                page.content.selector.css("display", "none");
+            }
+            _p.tabButton.selector.addClass("active");
+            _p.tabButton.setGradient(_p.activeGrad, true, true);
+            _p.content.selector.fadeIn(_p.fadeTime);
         }
-        _p.tabButton.selector.addClass("active");
-        _p.tabButton.setGradient(_p.activeGrad, true, true);
-        _p.content.selector.fadeIn(_p.fadeTime);
         _p.trigger("onActive", {tabPage:_p});
     };
 

@@ -37,6 +37,7 @@ si4.widget.si4Input = function(args)
     this.inputArray = si4.getArg(args, "inputArray", null);
     this.inputClass = si4.getArg(args, "inputClass", "");
     this.autoComplete = si4.getArg(args, "autoComplete", null);
+    this.accept = si4.getArg(args, "accept", null);
 
     // Events
     this.onKeyDown = function(f) { _p.subscribe("onKeyDown", f); };
@@ -63,6 +64,9 @@ si4.widget.si4Input = function(args)
 
     if (this.name)
         this.input.selector.attr("name", this.name);
+
+    if (this.accept)
+        this.input.selector.attr("accept", this.accept);
 
     if (this.type == "button" && !this.value)
         this.value = this.name;

@@ -11,6 +11,8 @@ si4.translations = {
     // EntityList
     entities_entityList_mainTab_text: "Entity list",
     entities_entityList_contentTab_text: "List",
+    entities_entityList_importTab_text: "Import",
+    entities_entityList_exportTab_text: "Export",
     entities_entityTitleNew: "New entity",
     entities_entityTitleEdit: "Entity [[id]]",
 

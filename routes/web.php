@@ -75,6 +75,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::group(['prefix' => 'upload'], function () {
             Route::post('entity', "Admin\\UploadController@entity")->name("admin.upload.entity#post");
             Route::post('show-content', "Admin\\UploadController@showContent")->name("admin.upload.show-content#post");
+            Route::post('import', "Admin\\UploadController@import")->name("admin.upload.import#post");
         });
     });
 

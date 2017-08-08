@@ -9,6 +9,35 @@ namespace App\Helpers;
  */
 class ElasticHelpers
 {
+
+    /**
+     * Delete and create index
+     * @param $entityId Integer entity id to index
+     * @param $body Array body to index
+     * @return array
+     */
+    public static function recreateIndex()
+    {
+
+        $deleteIndexArgs = [
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+            "type" => "",
+            "id" => "",
+        ];
+        \Elasticsearch::connection()->delete($deleteIndexArgs);
+
+        /*
+        $createIndexArgs = [
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+            "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
+            "id" => "",
+            "body" => []
+        ];
+        return @\Elasticsearch::connection()->create($createIndexArgs);
+        */
+    }
+
+
     /**
      * Sends a document to elastic search to be indexed
      * @param $entityId Integer entity id to index
@@ -24,6 +53,21 @@ class ElasticHelpers
             "body" => $body
         ];
         return \Elasticsearch::connection()->index($requestArgs);
+    }
+
+    /**
+     * Delete a document from elastic search index
+     * @param $entityId Integer entity id to delete
+     * @return array
+     */
+    public static function deleteEntity($entityId)
+    {
+        $requestArgs = [
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+            "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
+            "id" => $entityId,
+        ];
+        return \Elasticsearch::connection()->delete($requestArgs);
     }
 
     /**

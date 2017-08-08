@@ -44,15 +44,18 @@ class ReindexEntity extends Command
         $this->info("Indexing entity {$entityId}");
 
         $entity = Entity::find($entityId);
-        $entityXmlParsed = $entity->dataToObject();
-
-        $indexBody = [
-            "id" => $entityId,
-            "entity_type_id" => $entity["entity_type_id"],
-            "xml" => $entity["data"],
-            "data" => $entityXmlParsed
-        ];
-        ElasticHelpers::indexEntity($entity["id"], $indexBody);
+        if ($entity) {
+            $entityXmlParsed = $entity->dataToObject();
+            $indexBody = [
+                "id" => $entityId,
+                "entity_type_id" => $entity["entity_type_id"],
+                "xml" => $entity["data"],
+                "data" => $entityXmlParsed
+            ];
+            ElasticHelpers::indexEntity($entityId, $indexBody);
+        } else {
+            ElasticHelpers::deleteEntity($entityId);
+        }
 
         //print_r($entity);
         //$this->info("Indexing {$entity["entity_type_id"]->toArray()}");

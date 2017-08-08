@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\ElasticHelpers;
 use App\Models\Entity;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -42,6 +43,10 @@ class ReindexEntities extends Command
     {
 
         if ($this->confirm('Are you sure you wish to reindex all entities?', true)) {
+
+            // TODO...
+            //ElasticHelpers::recreateIndex();
+
             $entities = Entity::all();
             $cnt = 0;
             foreach ($entities as $entity) {
@@ -49,6 +54,7 @@ class ReindexEntities extends Command
                 Artisan::call("reindex:entity", ["entityId" => $entity["id"]]);
                 $cnt++;
             }
+
             $this->info("All done! Entities reindexed: {$cnt}");
         }
     }

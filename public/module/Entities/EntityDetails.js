@@ -38,6 +38,29 @@ var F = function(args){
         var fieldYear = actionsForm.addInput({name:"year", value:rowValue.date, type:"text", caption:si4.translate("field_year"), readOnly: true});
 
         var fieldFile = actionsForm.addInput({name:"file", value:"", type:"file", caption:si4.translate("field_xml")});
+        fieldFile.selector.change(function() {
+            console.log("change", fieldFile.getValue());
+            //$.post()
+
+            var url = "/admin/upload/show-content";
+            var formData = new FormData();
+            formData.append("file", fieldFile.getValue());
+
+            console.log("post ", url, formData);
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    console.log("callback", response);
+                    if (response.status)
+                        fieldXml.setValue(response.data);
+                }
+            });
+        });
 
 
         var fieldXml = actionsForm.addInput({name:"xml", value:rowValue.data, type:"codemirror", caption:false });
