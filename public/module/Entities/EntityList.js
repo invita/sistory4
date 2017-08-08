@@ -69,7 +69,7 @@ var F = function(args){
                 setTimeout(function() {
                     dataTable.refresh();
                     si4.loading.hide();
-                }, 1000);
+                }, 2000);
             }
         });
 
