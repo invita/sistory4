@@ -37,6 +37,8 @@ si4.widget.si4DataTable = function(args)
     this.canExportXls = si4.getArg(args, "canExportXls", false);
     this.canExportCsv = si4.getArg(args, "canExportCsv", false);
     this.filterHint = si4.getArg(args, "filterHint", true);
+    this.customControlls = si4.getArg(args, "customControlls", null);
+
 
     this.rowsPerPage = si4.getArg(args, "rowsPerPage", si4.defaults.dataTableRowsPerPage); // Ignored if dataSource is given
 
@@ -323,6 +325,10 @@ si4.widget.si4DataTable = function(args)
             _p[cpName].filterSpan = new si4.widget.si4Element({parent:_p[cpName].filterDiv.selector, tagName:"span", tagClass:"vmid"});
             _p[cpName].filterSpan.selector.html("Filter");
             _p[cpName].filterDiv.selector.click(function(){ _p.toggleFilter(); });
+        }
+
+        if (_p.customControlls) {
+            _p.customControlls(_p, cpName);
         }
     };
 

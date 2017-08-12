@@ -1,3 +1,4 @@
+var foo = {};
 $(document).ready(function() {
 
     si4.data.contentElement = $('div#pageHolder');
@@ -30,6 +31,7 @@ $(document).ready(function() {
 
             var relationTypes = {};
             var relationTypesSelOpts = {};
+            var relationTypesMap = {};
             for (var relIdx in response.relationTypes) {
                 var rel = response.relationTypes[relIdx];
                 var relTranslateKey = "rel_"+rel.name.replace(/\s/g, "");
@@ -40,9 +42,13 @@ $(document).ready(function() {
                 };
                 relationTypesSelOpts[rel.id+"n"] = si4.translate(relTranslateKey);
                 relationTypesSelOpts[rel.id+"r"] = si4.translate(relRevTranslateKey);
+
+                relationTypesMap[rel.id+"n"] = rel.name;
+                relationTypesMap[rel.id+"r"] = rel.name_rev;
             }
             si4.data.relationTypes = relationTypes;
             si4.data.relationTypesSelOpts = relationTypesSelOpts;
+            si4.data.relationTypesMap = relationTypesMap;
 
             si4.data.currentUser = response.currentUser;
 

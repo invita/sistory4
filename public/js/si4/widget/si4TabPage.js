@@ -283,6 +283,7 @@ si4.widget.si4TabPageHeader = function(args){
         var result = null;
         for (var i in _p.pages){
             if (i == uniqId) break;
+            if (_p.pages[i].isButton) continue;
             result = _p.pages[i];
         }
         //if (!result) console.log(Object.keys(_p.pages));

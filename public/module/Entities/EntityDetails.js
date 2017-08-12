@@ -5,7 +5,7 @@ var F = function(args){
         var rowValue = args.row ? args.row : {};
 
         args.createMainTab();
-        args.createContentTab();
+        args.dataTab = args.createContentTab();
 
         console.log("entity args", args);
 
@@ -13,7 +13,7 @@ var F = function(args){
         //if (!rowValue.entity_type_id) rowValue.entity_type_id = "";
 
 
-        var panel = new si4.widget.si4Panel({parent:args.contentTab.content.selector});
+        var panel = new si4.widget.si4Panel({parent:args.dataTab.content.selector});
         var panelGroupData = panel.addGroup(si4.translate("panel_entityData"));
         //var panelGroup = panel.addGroup("Entity: "+JSON.stringify(args.row));
 
@@ -65,7 +65,7 @@ var F = function(args){
 
         var fieldXml = actionsForm.addInput({name:"xml", value:rowValue.data, type:"codemirror", caption:false });
         fieldXml.selector.css("margin-bottom", "5px").css("margin-left", "100px");
-        fieldXml.codemirror.setSize($(window).width() -350);
+        fieldXml.codemirror.setSize($(window).width() -110);
 
         var entityIndexed = actionsForm.addInput({name:"indexed", value:rowValue.indexed, type:"checkbox", caption:si4.translate("field_indexed")});
         var entityEnabled = actionsForm.addInput({name:"enabled", value:rowValue.enabled, type:"checkbox", caption:si4.translate("field_enabled")});
@@ -110,6 +110,9 @@ var F = function(args){
                 //editorModuleArgs: {
                 //    moduleName:"Entities/EntityDetails",
                 //},
+                filter: {
+                    enabled: false
+                },
                 canInsert: true,
                 canDelete: true,
                 //editable: true,
@@ -129,6 +132,70 @@ var F = function(args){
                     });
                     //console.log("insert");
                 },
+                customControlls: function(dt, cpName) {
+                    dt[cpName].relsToXmlDiv = new si4.widget.si4Element({parent:dt[cpName].selector, tagClass:"inline filterButton vmid"});
+                    dt[cpName].relsToXmlImg = new si4.widget.si4Element({parent:dt[cpName].relsToXmlDiv.selector, tagName:"img", tagClass:"icon12 vmid"});
+                    dt[cpName].relsToXmlImg.selector.attr("src", "/img/icon/apply.png");
+                    dt[cpName].relsToXmlSpan = new si4.widget.si4Element({parent:dt[cpName].relsToXmlDiv.selector, tagName:"span", tagClass:"vmid"});
+                    dt[cpName].relsToXmlSpan.selector.html("Save relations to XML");
+                    dt[cpName].relsToXmlDiv.selector.click(function(){
+                        // TODO
+
+                        var parser = new DOMParser();
+                        var xml = fieldXml.getValue();
+                        var xmlDoc = parser.parseFromString(xml,"text/xml");
+
+                        console.log("xml", xml);
+                        console.log("xmlDoc", xmlDoc);
+
+                        foo = xmlDoc;
+                        // xmlDoc.getElementsByTagName("METS:metsHdr")[0]
+                        // xmlDoc.getElementsByTagName("METS:dmdSec")[1]
+
+                        var xmlData = xmlDoc
+                            .getElementsByTagName("METS:dmdSec")[1]
+                            .getElementsByTagName("METS:mdWrap")[0]
+                            .getElementsByTagName("METS:xmlData")[0];
+
+                        var dcRels = xmlData.getElementsByTagName("dcterms:relation");
+                        for (var i = 0; i < dcRels.length; i++) {
+                            xmlData.removeChild(dcRels[i]);
+                            //console.log(dcRels[i])
+                        }
+
+                        console.log(dt);
+                        console.log("dt.getValue()", dt.getValue());
+
+//                        <dcterms:relation type="isParentOf">123</dcterms:relation>
+                        // TODO: Force xml path
+
+                        var dtRels = dt.getValue();
+                        for (var i in dtRels) {
+                            var rel = xmlDoc.createElement("dcterms:relation");
+                            var relType = si4.data.relationTypesMap[dtRels[i].relation_type_id];
+                            rel.setAttribute("type", relType);
+                            rel.innerHTML = "http://hdl.handle.net/11686/"+dtRels[i].related_entity_id;
+
+                            console.log("rel", rel);
+
+                            xmlData.appendChild(rel);
+                            //xmlData.append("\n");
+
+                            // dtRels[i].related_entity_id
+                            // dtRels[i].relation_type_id
+                        }
+
+
+                        var xmlText = new XMLSerializer().serializeToString(xmlDoc);
+                        var xmlTextPretty = vkbeautify.xml(xmlText);
+                        fieldXml.setValue(xmlTextPretty);
+                        //console.log(xmlText);
+
+                        args.dataTab.selectTab();
+                        fieldXml.codemirror.refresh();
+
+                    });
+                },
                 tabPage: args.relationsTab,
                 fields: {
                     id: { editable: false },
@@ -142,6 +209,7 @@ var F = function(args){
                     },
 
                     //_delete: { width: 50 },
+                    id: { visible: false },
                     created_at: { visible: false },
                     updated_at: { visible: false }
                 }

@@ -10,6 +10,7 @@
     <script src="/lib/jquery/jquery.zclip.js"></script>
     <script src="/lib/codemirror/codemirror.js"></script>
     <script src="/lib/codemirror/codemirror.mode.xml.js"></script>
+    <script src="/lib/vkbeautify.js"></script>
 
     <script src="/js/si4/si4.js"></script>
     <script src="/js/si4/config.js"></script>
