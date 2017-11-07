@@ -16,7 +16,7 @@ class Si4Util {
     public static function pathArg($array, $path, $defaultValue = null) {
         $keys = explode("/", $path);
         foreach ($keys as $key) {
-            if (!is_array($array) || !isset($array[$key])) return $defaultValue;
+            if (/* !is_array($array) || */ !isset($array[$key])) return $defaultValue;
             $array = $array[$key];
         }
         return $array;

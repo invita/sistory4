@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ReindexEntity::class,
         Commands\ReindexEntities::class,
+        Commands\EntityTestElasticConvert::class,
     ];
 
     /**

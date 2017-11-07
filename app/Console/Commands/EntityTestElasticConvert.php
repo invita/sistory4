@@ -3,26 +3,26 @@
 namespace App\Console\Commands;
 
 use App\Helpers\ElasticHelpers;
-use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
+use App\Models\Elastic\EntityElastic;
 use Illuminate\Console\Command;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-class ReindexEntity extends Command
+class EntityTestElasticConvert extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'reindex:entity {entityId}';
+    protected $signature = 'entityTest:elasticConvert {entityId}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Reindex a single entity';
+    protected $description = 'Test entity to elastic conversion';
 
     /**
      * Create a new command instance.
@@ -42,29 +42,16 @@ class ReindexEntity extends Command
     public function handle()
     {
         $entityId = $this->argument('entityId');
-        $this->info("Indexing entity {$entityId}");
+
+        $this->info("Entity {$entityId}");
 
         $entity = Entity::find($entityId);
         if ($entity) {
             $entityXmlParsed = $entity->dataToObject();
-            //print_r($entityXmlParsed);
-
-            $entityElastic = new EntityElastic($entityXmlParsed);
-
-            $indexBody = [
-                "id" => $entityId,
-                "entity_type_id" => $entity["entity_type_id"],
-                "xml" => $entity["data"],
-                "data" => $entityElastic->getData()
-            ];
-            ElasticHelpers::indexEntity($entityId, $indexBody);
+            $ee = new EntityElastic($entityXmlParsed);
+            print_r($ee->getData());
         } else {
-            ElasticHelpers::deleteEntity($entityId);
+            $this->info("Entity {$entityId} not found");
         }
-
-        //print_r($entity);
-        //$this->info("Indexing {$entity["entity_type_id"]->toArray()}");
-
-
     }
 }

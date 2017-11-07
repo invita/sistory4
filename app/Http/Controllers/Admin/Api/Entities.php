@@ -30,34 +30,15 @@ class Entities extends Controller
         $rowCount = 0;
 
         if (!$entity_type_id) {
+
             // All Entities
-            //$entitiesDb = Entity::all->keyBy("id");
 
             $entityIdsQuery = Entity::query();
             $entityIdsQuery->select(["id"]);
             $rowCount = $entityIdsQuery->count();
 
             $entityIds = $entityIdsQuery->orderBy("id")->offset($pageStart)->limit($pageCount)->get()->keyBy("id")->keys()->toArray();
-            //$entityIds = Entity::select(["id"])->orderBy("id")->offset($pageStart)->limit($pageCount)->get()->keyBy("id")->keys()->toArray();
-            //$entitiesDb = Entity::select()->offset(0)->limit(10)->get()->keyBy("id");
-            //print_r($entitiesDb->keys()->toArray());
             $hits = ElasticHelpers::searchByIdArray($entityIds);
-            //print_r($entityIds);
-            //print_r($hits);
-
-            /*
-            [
-                [#id] => [
-                    id: #id,
-                    _source: [
-                        entity_type_id: #,
-                        xml: ...,
-                        data: [ IDAttrName: ... ]
-                    ]
-                ]
-            ]
-            */
-
 
         } else {
             // Only Entities of specific entity_type
@@ -94,11 +75,20 @@ class Entities extends Controller
                 $data = Si4Util::getArg($_source, "data", null);
                 $xml = Si4Util::getArg($_source, "xml", "");
 
+                //print_r($data);
+
+                $dcMetadata = Si4Util::pathArg($data, "dmd/dc", []);
+                $IDAttr = Si4Util::getArg($data, "id", "");
+                $title = isset($dcMetadata["title"]) ? join(" : ", $dcMetadata["title"]) : "";
+                $creator = isset($dcMetadata["creator"]) ? join("; ", $dcMetadata["creator"]) : "";
+                $date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
+                /*
                 $dcXmlData = Si4Util::pathArg($data, "DmdSecElName/1/MdWrapElName/XmlDataElName", []);
                 $IDAttr = Si4Util::getArg($data, "IDAttrName", "");
                 $title = isset($dcXmlData["TitlePropName"]) ? join(" : ", $dcXmlData["TitlePropName"]) : "";
                 $creator = isset($dcXmlData["CreatorPropName"]) ? join("; ", $dcXmlData["CreatorPropName"]) : "";
                 $date = isset($dcXmlData["DatePropName"]) ? join("; ", $dcXmlData["DatePropName"]) : "";
+                */
             }
 
             $result[] = [
