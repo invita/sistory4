@@ -410,11 +410,96 @@ si4.widget.si4Input = function(args)
     if (this.gradient) this.input.setGradient(this.gradient);
 
     if (this.type == "codemirror") {
+
+        this.codeMirrorCompleteAfter = function(cm, pred) {
+            var cur = cm.getCursor();
+            if (!pred || pred()) setTimeout(function() {
+                if (!cm.state.completionActive)
+                    cm.showHint({completeSingle: false});
+            }, 100);
+            return CodeMirror.Pass;
+        };
+
+        this.codeMirrorCompleteIfAfterLt = function(cm) {
+            return _p.codeMirrorCompleteAfter(cm, function() {
+                var cur = cm.getCursor();
+                return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+            });
+        };
+
+        this.codeMirrorCompleteIfInTag = function(cm) {
+            return _p.codeMirrorCompleteAfter(cm, function() {
+                var tok = cm.getTokenAt(cm.getCursor());
+                if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+                var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+                return inner.tagName;
+            });
+        };
+
+        var dcTermsEl = {
+            attrs: {
+                "xml:lang": ["slv", "eng"],
+            },
+            children: []
+        };
+        this.autoCompleteTags = {
+            "!top": ["METS:metsHdr", "METS:dmdSec", "METS:amdSec", "METS:fileSec", "METS:structMap"],
+            "!attrs": {
+                ID: null,
+                TYPE: null,
+            },
+
+            "METS:dmdSec": {
+                attrs: {
+                    GROUPID: null,
+                },
+                children: ["METS:mdWrap"]
+            },
+            "METS:mdWrap": {
+                attrs: {
+                    MDTYPE: ["PREMIS:OBJECT", "DC", "MODS"],
+                    MIMETYPE: ["text/xml"],
+                },
+                children: ["METS:xmlData"]
+            },
+            "METS:xmlData": {
+                attrs: {},
+                children: ["dcterms:title", "dcterms:creator", "dcterms:description", "dcterms:subject",
+                    "dcterms:publisher", "dcterms:contributor", "dcterms:date", "dcterms:type", "dcterms:identifier",
+                    "dcterms:language", "dcterms:coverage", "dcterms:license" ],
+            },
+            "dcterms:title": dcTermsEl,
+            "dcterms:creator": dcTermsEl,
+            "dcterms:description": dcTermsEl,
+            "dcterms:subject": dcTermsEl,
+            "dcterms:publisher": dcTermsEl,
+            "dcterms:contributor": dcTermsEl,
+            "dcterms:date": dcTermsEl,
+            "dcterms:type": dcTermsEl,
+            "dcterms:identifier": dcTermsEl,
+            "dcterms:language": dcTermsEl,
+            "dcterms:coverage": dcTermsEl,
+            "dcterms:license": dcTermsEl,
+
+        };
+
         this.codemirror = CodeMirror.fromTextArea(this.input.selector[0], {
             lineNumbers: true,
+            mode: "xml",
             //mode: "text/html",
             lineWrapping: true,
-            matchBrackets: true
+            matchBrackets: true,
+            indentUnit: 3,
+            extraKeys: {
+                "'<'": this.codeMirrorCompleteAfter,
+                "'/'": this.codeMirrorCompleteIfAfterLt,
+                "' '": this.codeMirrorCompleteIfInTag,
+                "'='": this.codeMirrorCompleteIfInTag,
+                "Ctrl-Space": "autocomplete",
+                "F11": function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen")); },
+                "Esc": function(cm) { if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false); },
+            },
+            hintOptions: { schemaInfo: this.autoCompleteTags }
         });
     }
 

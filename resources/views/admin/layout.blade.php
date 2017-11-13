@@ -10,6 +10,9 @@
     <script src="/lib/jquery/jquery.zclip.js"></script>
     <script src="/lib/codemirror/codemirror.js"></script>
     <script src="/lib/codemirror/codemirror.mode.xml.js"></script>
+    <script src="/lib/codemirror/addon.show-hint.js"></script>
+    <script src="/lib/codemirror/addon.xml-hint.js"></script>
+    <script src="/lib/codemirror/addon.fullscreen.js"></script>
     <script src="/lib/vkbeautify.js"></script>
 
     <script src="/js/si4/si4.js"></script>
@@ -40,6 +43,8 @@
     <link rel="stylesheet" href="/lib/zurb/css/normalize.css" />
     <link rel="stylesheet" href="/lib/zurb/css/foundation.css" />
     <link rel="stylesheet" href="/lib/codemirror/codemirror.css">
+    <link rel="stylesheet" href="/lib/codemirror/addon.show-hint.css">
+    <link rel="stylesheet" href="/lib/codemirror/addon.fullscreen.css">
 
     <link rel="stylesheet" href="/css/gradients.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/standard.css" type="text/css" media="screen" />
