@@ -77,14 +77,14 @@ class ElasticHelpers
      * @param $limit Integer limit
      * @return array
      */
-    public static function search($query, $offset = 0, $limit = 10)
+    public static function search($query, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
             "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
             "body" => [
                 "query" => $query,
-                "sort" => "id",
+                "sort" => [$sortField => [ "order" => $sortDir ]],
                 "from" => $offset,
                 "size" => $limit,
                 /*
@@ -150,5 +150,10 @@ class ElasticHelpers
             if (isset($hits[$i])) $result[$i]["_source"] = $hits[$i]["_source"];
         }
         return $result;
+    }
+
+    public static function escapeValue($value) {
+        if (!is_string($value)) return $value;
+        return str_replace(".", "\\.", $value);
     }
 }

@@ -54,10 +54,19 @@ si4.translations = {
     field_actions: "Akcije",
 
 
+    text_confirm_import_entities: "Uvoz bo dodal entitete iz datoteke. Obstoječe entitete z enakimi IDji bodo prepisane. Ali želite nadaljevati?",
+
     saved_confirm_close: "Operation successful. Close?",
 
     // Errors
-    ERR_API_STATUS_FALSE: "Failed to save."
+    ERR_API_STATUS_FALSE: "Failed to save.",
+
+    // Enum: Relation Types
+    rel_isChildOf: "Is child of",
+    rel_isParentOf: "Is parent of",
+    rel_isCitedIn: "Is cited in",
+    rel_cites: "Cites"
+
 
 };
 

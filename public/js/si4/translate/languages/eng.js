@@ -19,6 +19,8 @@ si4.translations = {
     // CollectionList
     entities_collectionList_mainTab_text: "Collection list",
     entities_collectionList_contentTab_text: "List",
+    entities_collectionList_importTab_text: "Import",
+    entities_collectionList_exportTab_text: "Export",
 
     // DbEntityList
     entities_dbEntityList_mainTab_text: "Database entity list",
@@ -92,6 +94,8 @@ si4.translations = {
     dataTable_confirmDelete: "Are you sure you want to delete record [[record]]?",
 
     saved_confirm_close: "Operation successful. Close?",
+
+    text_confirm_import_entities: "Import will add new entities. Existing IDs will be overwritten. Do you want to continue?",
 
     // Errors
     ERR_API_STATUS_FALSE: "Failed to save.",

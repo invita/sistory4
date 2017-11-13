@@ -84,7 +84,8 @@ si4.widget.si4TabPage = function(args)
 
         _p.tabButton.selector.click(function(e){
             _p.selectTab();
-            //console.log("("+_p.uniqId+") Child Tabs:\n"+si4.debug(_p.childTabs, 0));
+            e.preventDefault();
+            //console.log("("+_p.uniqId+") Child Tabs", _p.childTabs);
         });
     };
 
@@ -95,6 +96,7 @@ si4.widget.si4TabPage = function(args)
         _p.tabButton.closeImg.selector.attr("src", _p.tabCloseImgUrl);
         _p.tabButton.closeSpan.selector.click(function(e) {
             _p.destroyTab();
+            e.preventDefault();
         });
     };
 
@@ -142,7 +144,7 @@ si4.widget.si4TabPage = function(args)
         _p.tabButton.selector.remove();
         _p.content.selector.remove();
 
-        if (pageToSelectAfterClose)
+        if (pageToSelectAfterClose && !pageToSelectAfterClose.isButton)
             pageToSelectAfterClose.selectTab();
 
         _p.trigger("onClosed", {tabPage:_p});

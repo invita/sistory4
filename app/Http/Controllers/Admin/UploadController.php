@@ -36,12 +36,12 @@ class UploadController extends Controller
 
         $data = "";
 
-        $archiv = new \ZipArchive();
-        $archiv->open($file, \ZipArchive::CREATE);
+        $archive = new \ZipArchive();
+        $archive->open($file, \ZipArchive::CREATE);
 
-        for($i = 0; $i < $archiv->numFiles; $i++)
+        for($i = 0; $i < $archive->numFiles; $i++)
         {
-            $filePath = $archiv->getNameIndex($i);
+            $filePath = $archive->getNameIndex($i);
             $fileName = basename($filePath);
             //echo "filePath: ".$filePath.", fileName: ".$fileName."\n";
             if (substr($fileName, 0, 1) == ".") {
@@ -49,7 +49,7 @@ class UploadController extends Controller
                 continue;
             }
 
-            $content = $archiv->getFromIndex($i);
+            $content = $archive->getFromIndex($i);
             if (!$content) {
                 // Skip empty content files (mostly directories)
                 continue;
@@ -63,7 +63,7 @@ class UploadController extends Controller
             }
         }
 
-        $archiv->close();
+        $archive->close();
 
         return ["status" => $status, "data" => $data, "error" =>  $error];
     }

@@ -77,6 +77,12 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('show-content', "Admin\\UploadController@showContent")->name("admin.upload.show-content#post");
             Route::post('import', "Admin\\UploadController@import")->name("admin.upload.import#post");
         });
+
+        Route::group(['prefix' => 'download'], function () {
+            Route::post('entity', "Admin\\DownloadController@entity")->name("admin.download.entity#post");
+            Route::post('export', "Admin\\DownloadController@export")->name("admin.download.export#post");
+            //Route::get('export', "Admin\\DownloadController@export")->name("admin.download.export#get");
+        });
     });
 
 });
