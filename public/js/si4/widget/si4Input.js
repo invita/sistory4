@@ -490,6 +490,7 @@ si4.widget.si4Input = function(args)
             lineWrapping: true,
             matchBrackets: true,
             indentUnit: 3,
+            tabSize: 3,
             extraKeys: {
                 "'<'": this.codeMirrorCompleteAfter,
                 "'/'": this.codeMirrorCompleteIfAfterLt,
