@@ -33,7 +33,8 @@ var F = function(args){
             creator: { caption: si4.translate("field_creators"), maxCharLength: 50 },
 
             entity_type_id: { visible: false },
-            data: { visible: false },
+            xmlData: { visible: false },
+            elasticData: { visible: false },
         },
         cssClass_table: "si4DataTable_table width100percent"
     });

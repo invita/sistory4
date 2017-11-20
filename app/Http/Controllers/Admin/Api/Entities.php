@@ -65,5 +65,4 @@ class Entities extends Controller
 
         return $this->entityList($request);
     }
-
 }

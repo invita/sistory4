@@ -1,5 +1,7 @@
 si4.config = {};
 
+si4.config.repositoryName = "SIstory";
+
 si4.config.modulePath = "/module/";
 si4.config.uploadApiUrl = "/admin/upload";
 si4.config.apiUrl = "/admin/api";

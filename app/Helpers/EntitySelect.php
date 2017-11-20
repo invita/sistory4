@@ -25,6 +25,7 @@ class EntitySelect
         $pageCount = Si4Util::getArg($requestData, "pageCount", 20);
         $sortField = Si4Util::getArg($requestData, "sortField", "id");
         $sortOrder = Si4Util::getArg($requestData, "sortOrder", "asc");
+        $entityIds = Si4Util::getArg($requestData, "entityIds", null);
 
         $entity_type_id  = Si4Util::getArg($staticData, "entity_type_id", 0);
 
@@ -46,7 +47,8 @@ class EntitySelect
             $entityIdsQuery->select(["id"]);
             $rowCount = $entityIdsQuery->count();
 
-            $entityIds = $entityIdsQuery->orderBy("id")->offset($pageStart)->limit($pageCount)->get()->keyBy("id")->keys()->toArray();
+            if (!$entityIds)
+                $entityIds = $entityIdsQuery->orderBy("id")->offset($pageStart)->limit($pageCount)->get()->keyBy("id")->keys()->toArray();
             $hits = ElasticHelpers::searchByIdArray($entityIds);
 
         } else {
@@ -139,7 +141,8 @@ class EntitySelect
                 "title" => $title,
                 "creator" => $creator,
                 "date" => $date,
-                "data" => $xml,
+                "xmlData" => $xml,
+                "elasticData" => $data,
             ];
         }
 

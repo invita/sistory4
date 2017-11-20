@@ -32,7 +32,6 @@ var F = function(args){
             name:"entity_type_id", value:rowValue.entity_type_id, type:"select", caption:si4.translate("field_entityType"),
             values: si4.data.entityTypes, value: args.caller == "collectionList" ? 2 : 1 });
 
-
         var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:si4.translate("field_title"), readOnly: true});
         var fieldAuthor = actionsForm.addInput({name:"author", value:rowValue.creator, type:"text", caption:si4.translate("field_creators"), readOnly: true});
         var fieldYear = actionsForm.addInput({name:"year", value:rowValue.date, type:"text", caption:si4.translate("field_year"), readOnly: true});
@@ -63,7 +62,7 @@ var F = function(args){
         });
 
 
-        var fieldXml = actionsForm.addInput({name:"xml", value:rowValue.data, type:"codemirror", caption:false });
+        var fieldXml = actionsForm.addInput({name:"xml", value:rowValue.xmlData, type:"codemirror", caption:false });
         fieldXml.selector.css("margin-bottom", "5px").css("margin-left", "100px");
         fieldXml.codemirror.setSize($(window).width() -110);
 
@@ -139,19 +138,136 @@ var F = function(args){
                     dt[cpName].relsToXmlSpan = new si4.widget.si4Element({parent:dt[cpName].relsToXmlDiv.selector, tagName:"span", tagClass:"vmid"});
                     dt[cpName].relsToXmlSpan.selector.html("Save relations to XML");
                     dt[cpName].relsToXmlDiv.selector.click(function(){
+
                         // TODO
 
                         var parser = new DOMParser();
                         var xml = fieldXml.getValue();
                         var xmlDoc = parser.parseFromString(xml,"text/xml");
 
-                        console.log("xml", xml);
-                        console.log("xmlDoc", xmlDoc);
+                        //console.log("xml", xml);
+                        //console.log("xmlDoc", xmlDoc);
 
-                        foo = xmlDoc;
+                        var metsStructMap;
+                        if (xmlDoc.getElementsByTagName("METS:structMap").length) {
+                            // <METS:structMap> exists
+                            metsStructMap = xmlDoc.getElementsByTagName("METS:structMap")[0];
+                            // Clear structMap children
+                            for (var i = 0; i < metsStructMap.children.length; i++) {
+                                metsStructMap.removeChild(metsStructMap.children[i]);
+                            }
+                        } else {
+                            // <METS:structMap> does not exist
+                            metsStructMap = xmlDoc.createElement("METS:structMap");
+                            xmlDoc.appendChild(metsStructMap);
+                        }
+
+                        var parentId = null;
+                        var childIds = [];
+                        var entityIdsToRequest = [];
+
+                        var entityType = (si4.data.entityTypes[fieldEntityTypeId.getValue()] || "").toLowerCase();
+
+                        var dtRels = dt.getValue();
+                        for (var relIdx = 0; relIdx < dtRels.length; relIdx++) {
+                            var relId = parseInt(dtRels[relIdx].related_entity_id);
+                            var relType = dtRels[relIdx].relation_type_id;
+                            if (relType == "1n") {
+                                // Child of
+                                parentId = relId;
+                                entityIdsToRequest.push(relId);
+                            } else if (relType == "1r") {
+                                // Parent of
+                                childIds.push(relId);
+                                entityIdsToRequest.push(relId);
+                            }
+                        }
+
+                        metsStructMap.setAttribute("TYPE", parentId ? "dependent" : "primary");
+                        metsStructMap.setAttribute("LABEL", si4.config.repositoryName);
+                        metsStructMap.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+
+
+                        // Get related entities from API...
+
+                        //console.log("entityIdsToRequest", entityIdsToRequest);
+                        si4.api.entityList({ entityIds: entityIdsToRequest}, function(response) {
+                            //console.log("response", response);
+
+                            var parentEntity = null;
+                            var childEntities = {};
+                            for (var respIdx = 0; respIdx < response.data.length; respIdx++) {
+                                var relEntity = response.data[respIdx];
+                                if (relEntity.id == parentId)
+                                    parentEntity = relEntity;
+                                else
+                                    childEntities[relEntity.id] = relEntity;
+                            }
+
+                            //console.log("parentEntity", parentEntity);
+                            console.log("childEntities", childEntities);
+
+                            // TODO: parent collection
+                            var metsDiv1 = xmlDoc.createElement("METS:div");
+                            metsDiv1.setAttribute("TYPE", "collection");
+                            metsStructMap.appendChild(metsDiv1);
+
+                            var metsMptr = xmlDoc.createElement("METS:mptr");
+                            metsMptr.setAttribute("LOCTYPE", "HANDLE");
+                            metsMptr.setAttribute("xlink:href", "http://hdl.handle.net/11686/menu76");
+                            metsDiv1.appendChild(metsMptr);
+
+                            var metsDiv2 = xmlDoc.createElement("METS:div");
+                            metsDiv2.setAttribute("TYPE", entityType);
+                            metsDiv2.setAttribute("DMDID", "dc."+args.row.id+" mods."+args.row.id);
+                            metsDiv2.setAttribute("ADMID", "premis."+args.row.id+" entity."+args.row.id);
+                            metsDiv1.appendChild(metsDiv2);
+
+                            // Files
+                            var metsFptr = xmlDoc.createElement("METS:fptr");
+                            metsFptr.setAttribute("FILEID", "thumbnail");
+                            metsDiv2.appendChild(metsFptr);
+
+                            for (var childIdx = 0; childIdx < childIds.length; childIdx++) {
+                                var childId = childIds[childIdx];
+                                var childEntity = childEntities[childId];
+                                var metsChildDiv = xmlDoc.createElement("METS:div");
+                                metsChildDiv.setAttribute("TYPE", childEntity.entity_type_name);
+                                metsChildDiv.setAttribute("ORDER", childIdx);
+
+                                var metsChildMptr = xmlDoc.createElement("METS:mptr");
+                                metsChildMptr.setAttribute("LOCTYPE", "HANDLE");
+                                metsChildMptr.setAttribute("xlink:href", childEntity.elasticData.objId);
+                                metsChildDiv.appendChild(metsChildMptr);
+
+                                metsDiv2.appendChild(metsChildDiv);
+                            }
+
+
+                            // Put xml into editor
+                            var xmlText = new XMLSerializer().serializeToString(xmlDoc);
+                            var xmlTextPretty = vkbeautify.xml(xmlText);
+                            fieldXml.setValue(xmlTextPretty);
+
+                            //console.log(xmlText);
+
+                            args.dataTab.selectTab();
+                            fieldXml.codemirror.refresh();
+
+
+                            window.xmlDoc = xmlDoc;
+                            window.metsStructMap = metsStructMap;
+                            window.dtRels = dtRels;
+
+                        });
+
+                        // .getElementsByTagName("METS:mdWrap")[0]
+                        // .getElementsByTagName("METS:xmlData")[0];
+
                         // xmlDoc.getElementsByTagName("METS:metsHdr")[0]
                         // xmlDoc.getElementsByTagName("METS:dmdSec")[1]
 
+                        /*
                         var xmlData = xmlDoc
                             .getElementsByTagName("METS:dmdSec")[1]
                             .getElementsByTagName("METS:mdWrap")[0]
@@ -184,15 +300,7 @@ var F = function(args){
                             // dtRels[i].related_entity_id
                             // dtRels[i].relation_type_id
                         }
-
-
-                        var xmlText = new XMLSerializer().serializeToString(xmlDoc);
-                        var xmlTextPretty = vkbeautify.xml(xmlText);
-                        fieldXml.setValue(xmlTextPretty);
-                        //console.log(xmlText);
-
-                        args.dataTab.selectTab();
-                        fieldXml.codemirror.refresh();
+                        */
 
                     });
                 },
