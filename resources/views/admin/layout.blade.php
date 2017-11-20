@@ -10,6 +10,7 @@
     <script src="/lib/jquery/jquery.zclip.js"></script>
     <script src="/lib/codemirror/codemirror.js"></script>
     <script src="/lib/codemirror/codemirror.mode.xml.js"></script>
+    <script src="/lib/codemirror/codemirror.mets.autocomplete.js"></script>
     <script src="/lib/codemirror/addon.show-hint.js"></script>
     <script src="/lib/codemirror/addon.xml-hint.js"></script>
     <script src="/lib/codemirror/addon.fullscreen.js"></script>

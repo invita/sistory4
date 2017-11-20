@@ -436,53 +436,6 @@ si4.widget.si4Input = function(args)
             });
         };
 
-        var dcTermsEl = {
-            attrs: {
-                "xml:lang": ["slv", "eng"],
-            },
-            children: []
-        };
-        this.autoCompleteTags = {
-            "!top": ["METS:metsHdr", "METS:dmdSec", "METS:amdSec", "METS:fileSec", "METS:structMap"],
-            "!attrs": {
-                ID: null,
-                TYPE: null,
-            },
-
-            "METS:dmdSec": {
-                attrs: {
-                    GROUPID: null,
-                },
-                children: ["METS:mdWrap"]
-            },
-            "METS:mdWrap": {
-                attrs: {
-                    MDTYPE: ["PREMIS:OBJECT", "DC", "MODS"],
-                    MIMETYPE: ["text/xml"],
-                },
-                children: ["METS:xmlData"]
-            },
-            "METS:xmlData": {
-                attrs: {},
-                children: ["dcterms:title", "dcterms:creator", "dcterms:description", "dcterms:subject",
-                    "dcterms:publisher", "dcterms:contributor", "dcterms:date", "dcterms:type", "dcterms:identifier",
-                    "dcterms:language", "dcterms:coverage", "dcterms:license" ],
-            },
-            "dcterms:title": dcTermsEl,
-            "dcterms:creator": dcTermsEl,
-            "dcterms:description": dcTermsEl,
-            "dcterms:subject": dcTermsEl,
-            "dcterms:publisher": dcTermsEl,
-            "dcterms:contributor": dcTermsEl,
-            "dcterms:date": dcTermsEl,
-            "dcterms:type": dcTermsEl,
-            "dcterms:identifier": dcTermsEl,
-            "dcterms:language": dcTermsEl,
-            "dcterms:coverage": dcTermsEl,
-            "dcterms:license": dcTermsEl,
-
-        };
-
         this.codemirror = CodeMirror.fromTextArea(this.input.selector[0], {
             lineNumbers: true,
             mode: "xml",
@@ -500,7 +453,7 @@ si4.widget.si4Input = function(args)
                 "F11": function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen")); },
                 "Esc": function(cm) { if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false); },
             },
-            hintOptions: { schemaInfo: this.autoCompleteTags }
+            hintOptions: { schemaInfo: codemirrorMets.autoCompleteConfig }
         });
     }
 
