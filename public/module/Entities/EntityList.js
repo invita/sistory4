@@ -13,7 +13,7 @@ var F = function(args){
         dataSource: new si4.widget.si4DataTableDataSource({
             select: si4.api["entityList"],
             delete: si4.api["deleteEntity"],
-            staticData : { entity_type_id: 1 },
+            staticData : { struct_type: "entity" },
             pageCount: 20
         }),
         editorModuleArgs: {
@@ -25,14 +25,14 @@ var F = function(args){
         tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },
-            entity_type_name: { canFilter: false, caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
+            struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
+            entity_type: { canFilter: false, caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
 
             //name: { caption: "Naziv" },
             //description: { caption: "Opis" },
             title: { maxCharLength: 100 },
             creator: { caption: si4.translate("field_creators"), maxCharLength: 50 },
 
-            entity_type_id: { visible: false },
             xmlData: { visible: false },
             elasticData: { visible: false },
         },

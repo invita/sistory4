@@ -20,12 +20,20 @@ $(document).ready(function() {
     si4.api["initialData"](null, function(response){
 
         if (response.status) {
-            //response.entityTypes.map(function(e))
+
+            // structTypes
+            var structTypes = {};
+            for (var stIdx in response.structTypes) {
+                var st = response.structTypes[stIdx];
+                structTypes[st] = si4.translate("st_"+st);
+            }
+            si4.data.structTypes = structTypes;
+
+            // entityTypes
             var entityTypes = {};
             for (var etIdx in response.entityTypes) {
                 var et = response.entityTypes[etIdx];
-                var etTranslateKey = "et_"+et.name.replace(/\s/g, "");
-                entityTypes[et.id] = si4.translate(etTranslateKey);
+                entityTypes[et] = si4.translate("et_"+et);
             }
             si4.data.entityTypes = entityTypes;
 

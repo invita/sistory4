@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin\Api;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\EntityHelpers;
 use App\Helpers\EntitySelect;
+use App\Helpers\Enums;
 use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
-use App\Models\EntityType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
@@ -29,7 +29,8 @@ class Entities extends Controller
         $newEntityId = $lastEntityId ? intval($lastEntityId) + 1 : 1;
         $entity = Entity::findOrNew($newEntityId);
         $entity->id = $newEntityId;
-        $entity->entity_type_id = 0;
+        $entity->struct_type = null;
+        $entity->entity_type = null;
         $entity->save();
         return ["status" => $status, "error" => $error, "data" => $newEntityId];
     }
@@ -37,16 +38,22 @@ class Entities extends Controller
     public function saveEntity(Request $request)
     {
         $postJson = json_decode(file_get_contents("php://input"), true);
+        $id = Si4Util::getArg($postJson, "id", 0);
+        $structType = Si4Util::getArg($postJson, "struct_type", "");
+        $entityType = Si4Util::getArg($postJson, "entity_type", "");
+        $xml = Si4Util::getArg($postJson, "xml", "");
+
         $status = true;
         $error = null;
 
-        $entity = Entity::findOrNew($postJson["id"]);
-        $entity->entity_type_id = $postJson["entity_type_id"];
-        $entity->data = $postJson["xml"];
+        $entity = Entity::findOrNew($id);
+        $entity->struct_type = in_array($structType, Enums::$structTypes) ? $structType : null;
+        $entity->entity_type = in_array($entityType, Enums::$entityTypes) ? $entityType : null;
+        $entity->data = $xml;
 
         $entity->save();
 
-        Artisan::call("reindex:entity", ["entityId" => $postJson["id"]]);
+        Artisan::call("reindex:entity", ["entityId" => $entity->id]);
 
 
         return ["status" => $status, "error" => $error];

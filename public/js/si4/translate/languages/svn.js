@@ -39,7 +39,9 @@ si4.translations = {
     field_title: "Naslov",
     field_author: "Avtor",
     field_year: "Leto",
+    field_structType: "Tip strukture",
     field_entityType: "Tip entitete",
+    field_collectionType: "Tip zbirke",
     field_xml: "Xml",
 
     field_email: "Email",
@@ -48,8 +50,9 @@ si4.translations = {
     field_firstname: "Ime",
     field_lastname: "Priimek",
 
-    field_enabled: "Omogočena",
-    field_indexed: "Indeksirana",
+    field_active: "Aktivna",
+    //field_enabled: "Omogočena",
+    //field_indexed: "Indeksirana",
 
     field_actions: "Akcije",
 
@@ -60,6 +63,16 @@ si4.translations = {
 
     // Errors
     ERR_API_STATUS_FALSE: "Failed to save.",
+
+    // Enums
+
+    // Enum: Structure Types
+    st_entity: "Entity",
+    st_collection: "Collection",
+
+    // Enum: Entity Types
+    et_primary: "Primary",
+    et_dependant: "Dependant",
 
     // Enum: Relation Types
     rel_isChildOf: "Is child of",

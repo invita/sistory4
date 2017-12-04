@@ -6,7 +6,6 @@ use App\Helpers\EntityImport;
 use App\Helpers\EntitySelect;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
-use App\Models\EntityType;
 use App\Models\Relation;
 use Elasticsearch\ClientBuilder;
 use \Illuminate\Http\Request;
@@ -17,7 +16,7 @@ class DownloadController extends Controller
     public function entity(Request $request)
     {
         /*
-        $entityType = EntityType::find($request->input("entity_type_id"));
+        $structType = EntityType::find($request->input("struct_type_id"));
         $file = $request->file("file");
 
         $entity = Entity::createFromUpload($entityType, $file);

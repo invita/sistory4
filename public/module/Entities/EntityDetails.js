@@ -4,49 +4,130 @@ var F = function(args){
     var create = function() {
         var rowValue = args.row ? args.row : {};
 
-        args.createMainTab();
-        args.dataTab = args.createContentTab();
-
         console.log("entity args", args);
+        args.createMainTab();
 
-        //if (!rowValue.id) rowValue.id = "";
-        //if (!rowValue.entity_type_id) rowValue.entity_type_id = "";
+        // *** Basic Tab ***
 
+        // -- System fields
+        args.basicTab = args.createContentTab();
+        args.basicTab.panel = new si4.widget.si4Panel({ parent:args.basicTab.content.selector });
+        args.basicTab.panelGroup = args.basicTab.panel.addGroup(si4.translate("entityGroup_adminFields"));
+        args.basicTab.form = new si4.widget.si4Form({
+            parent: args.basicTab.panelGroup.content.selector,
+            captionWidth: "90px"
+        });
 
-        var panel = new si4.widget.si4Panel({parent:args.dataTab.content.selector});
-        var panelGroupData = panel.addGroup(si4.translate("panel_entityData"));
-        //var panelGroup = panel.addGroup("Entity: "+JSON.stringify(args.row));
+        args.basicTab.fieldId = args.basicTab.form.addInput({
+            name: "id",
+            value: rowValue.id,
+            type: "text",
+            caption: si4.translate("field_id"),
+            readOnly: true,
+        });
 
-        var actionsForm = new si4.widget.si4Form({parent:panelGroupData.content.selector, captionWidth:"90px" });
+        args.basicTab.fieldStructTypeId = args.basicTab.form.addInput({
+            name: "struct_type",
+            value: rowValue.struct_type,
+            type: "select",
+            caption: si4.translate("field_structType"),
+            values: si4.data.structTypes,
+            addEmptyOption: true,
+        });
 
-        var fieldId = actionsForm.addInput({name:"id", value:rowValue.id, type:"text", caption:si4.translate("field_id"), readOnly: true});
+        args.basicTab.fieldEntityTypeId = args.basicTab.form.addInput({
+            name: "entity_type",
+            value: rowValue.entity_type,
+            type: "select",
+            caption: si4.translate("field_entityType"),
+            values: si4.data.entityTypes,
+            addEmptyOption: true,
+        });
 
+        args.basicTab.fieldParent = args.basicTab.form.addInput({
+            name: "parent",
+            value: rowValue.parent,
+            type: "text",
+            caption: si4.translate("field_parent"),
+        });
+
+        args.basicTab.entityActive = args.basicTab.form.addInput({
+            name: "active",
+            value: rowValue.active,
+            type: "checkbox",
+            caption: si4.translate("field_active"),
+            style: { marginTop: "4px" },
+        });
         /*
-         var fieldEntityTypeId = actionsForm.addInput({
-         name:"entity_type_id", value:rowValue.entity_type_id, type:"text", caption:"Entity Type",
-         inputConstruct: si4.widget.si4MultiSelect,  values:['publication', 'menu'], multiSelect: false
-         });
-         */
+        args.basicTab.entityEnabled = args.basicTab.form.addInput({
+            name: "enabled",
+            value: rowValue.enabled,
+            type: "checkbox",
+            caption: si4.translate("field_enabled")
+        });
+        */
 
-        var fieldEntityTypeId = actionsForm.addInput({
-            name:"entity_type_id", value:rowValue.entity_type_id, type:"select", caption:si4.translate("field_entityType"),
-            values: si4.data.entityTypes, value: args.caller == "collectionList" ? 2 : 1 });
+        args.basicTab.saveButton = args.basicTab.form.addInput({
+            caption: si4.translate("field_actions"),
+            value: si4.translate("button_save"),
+            type:"submit",
+        });
+        args.basicTab.saveButton.selector.click(args.saveEntity);
 
-        var fieldTitle = actionsForm.addInput({name:"title", value:rowValue.title, type:"text", caption:si4.translate("field_title"), readOnly: true});
-        var fieldAuthor = actionsForm.addInput({name:"author", value:rowValue.creator, type:"text", caption:si4.translate("field_creators"), readOnly: true});
-        var fieldYear = actionsForm.addInput({name:"year", value:rowValue.date, type:"text", caption:si4.translate("field_year"), readOnly: true});
 
-        var fieldFile = actionsForm.addInput({name:"file", value:"", type:"file", caption:si4.translate("field_xml")});
+        // -- Preview metadata
+        args.basicTab.panelGroupPreview = args.basicTab.panel.addGroup(si4.translate("entityGroup_mdPreview"));
+        args.basicTab.panelGroupPreview.selector.css("margin-left", "20px");
+        args.basicTab.formPreview = new si4.widget.si4Form({
+            parent: args.basicTab.panelGroupPreview.content.selector,
+            captionWidth: "90px"
+        });
+        args.basicTab.fieldTitle = args.basicTab.formPreview.addInput({
+            name:"title",
+            value:rowValue.title,
+            type:"text",
+            caption:si4.translate("field_title"),
+            readOnly: true
+        });
+        args.basicTab.fieldAuthor = args.basicTab.formPreview.addInput({
+            name:"author",
+            value:rowValue.creator,
+            type:"text",
+            caption:si4.translate("field_creators"),
+            readOnly: true
+        });
+        args.basicTab.fieldYear = args.basicTab.formPreview.addInput({
+            name:"year",
+            value:rowValue.date,
+            type:"text",
+            caption:si4.translate("field_year"),
+            readOnly: true
+        });
+
+
+
+        // *** Xml Tab ***
+        args.xmlTab = args.createContentTab("xmlTab", { canClose: false });
+        args.xmlTab.panel = new si4.widget.si4Panel({ parent: args.xmlTab.content.selector });
+        args.xmlTab.panelGroup = args.xmlTab.panel.addGroup();
+        args.xmlTab.form = new si4.widget.si4Form({
+            parent: args.xmlTab.panelGroup.content.selector,
+            captionWidth: "90px"
+        });
+
+        // -- File upload
+        var fieldFile = args.xmlTab.form.addInput({
+            name: "file",
+            value: "",
+            type: "file",
+            caption:si4.translate("field_xmlFromFile"),
+        });
         fieldFile.selector.change(function() {
-            console.log("change", fieldFile.getValue());
-            //$.post()
-
+            //console.log("change", fieldFile.getValue());
             var url = "/admin/upload/show-content";
             var formData = new FormData();
             formData.append("file", fieldFile.getValue());
-
-            console.log("post ", url, formData);
-
+            //console.log("post ", url, formData);
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -56,38 +137,59 @@ var F = function(args){
                 success: function(response){
                     console.log("callback", response);
                     if (response.status)
-                        fieldXml.setValue(response.data);
+                        args.xmlTab.fieldXml.setValue(response.data);
                 }
             });
         });
 
+        // -- Xml editor (codemirror)
+        args.xmlTab.fieldXml = args.xmlTab.form.addInput({
+            name: "xml",
+            value: rowValue.xmlData,
+            type: "codemirror",
+            caption: false
+        });
+        args.xmlTab.fieldXml.selector.css("margin-bottom", "5px");
+            //.css("margin-left", "100px");
+        args.xmlTab.fieldXml.codemirror.setSize($(window).width() -20);
+        args.xmlTab.onActive(function(tabArgs) {
+            args.xmlTab.fieldXml.codemirror.refresh();
+        });
 
-        var fieldXml = actionsForm.addInput({name:"xml", value:rowValue.xmlData, type:"codemirror", caption:false });
-        fieldXml.selector.css("margin-bottom", "5px").css("margin-left", "100px");
-        fieldXml.codemirror.setSize($(window).width() -110);
+        args.xmlTab.saveButton = args.xmlTab.form.addInput({
+            caption: si4.translate("field_actions"),
+            value: si4.translate("button_save"),
+            type:"submit",
+        });
+        args.xmlTab.saveButton.selector.click(args.saveEntity);
 
-        var entityIndexed = actionsForm.addInput({name:"indexed", value:rowValue.indexed, type:"checkbox", caption:si4.translate("field_indexed")});
-        var entityEnabled = actionsForm.addInput({name:"enabled", value:rowValue.enabled, type:"checkbox", caption:si4.translate("field_enabled")});
 
-        var saveButton = actionsForm.addInput({value:si4.translate("button_save"), type:"submit", caption:si4.translate("field_actions")});
-        saveButton.selector.click(function(){
+        // *** Metadata Editor Tab ***
+        args.editorTab = args.createContentTab("mdEditorTab", { canClose: false });
+        args.editorTab.panel = new si4.widget.si4Panel({ parent: args.editorTab.content.selector });
+        args.editorTab.panelGroup = args.editorTab.panel.addGroup("TODO: Kot pri SICI, le da polja dobijo podatke iz XML in tudi shranijo v XML...");
+        args.editorTab.form = new si4.widget.si4Form({
+            parent: args.editorTab.panelGroup.content.selector,
+            captionWidth: "90px"
+        });
 
-            var formValue = actionsForm.getValue();
-            console.log("formValue", formValue);
-            si4.api["saveEntity"](actionsForm.getValue(), function(data) {
-                if (data.status) {
-                    if (confirm(si4.translate("saved_confirm_close"))) {
-                        args.mainTab.destroyTab();
-                    }
-                } else {
-                    si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE, data);
-                }
-                //console.log("saveEntity callback", data);
-            });
+        args.editorTab.fieldTitle = args.editorTab.form.addInput({
+            name: "title",
+            //value: [rowValue.title],
+            type: "text",
+            caption: si4.translate("field_title"),
+            isArray: true,
+        });
+        args.editorTab.fieldTitle = args.editorTab.form.addInput({
+            name: "creator",
+            //value: [rowValue.creator],
+            type: "text",
+            caption: si4.translate("field_creators"),
+            isArray: true,
         });
 
 
-        // Relations Tab
+        // *** Relations Tab ***
         args.relationsTab = args.createContentTab("relationsTab", { canClose: false });
         args.relationsTab.onActive(function(tabArgs) {
             if (args.relationsDataTable) return;
@@ -142,7 +244,7 @@ var F = function(args){
                         // TODO
 
                         var parser = new DOMParser();
-                        var xml = fieldXml.getValue();
+                        var xml = args.xmlTab.fieldXml.getValue();
                         var xmlDoc = parser.parseFromString(xml,"text/xml");
 
                         //console.log("xml", xml);
@@ -166,7 +268,7 @@ var F = function(args){
                         var childIds = [];
                         var entityIdsToRequest = [];
 
-                        var entityType = (si4.data.entityTypes[fieldEntityTypeId.getValue()] || "").toLowerCase();
+                        var structType = (si4.data.structTypes[args.basicTab.fieldStructTypeId.getValue()] || "").toLowerCase();
 
                         var dtRels = dt.getValue();
                         for (var relIdx = 0; relIdx < dtRels.length; relIdx++) {
@@ -218,7 +320,7 @@ var F = function(args){
                             metsDiv1.appendChild(metsMptr);
 
                             var metsDiv2 = xmlDoc.createElement("METS:div");
-                            metsDiv2.setAttribute("TYPE", entityType);
+                            metsDiv2.setAttribute("TYPE", structType);
                             metsDiv2.setAttribute("DMDID", "dc."+args.row.id+" mods."+args.row.id);
                             metsDiv2.setAttribute("ADMID", "premis."+args.row.id+" entity."+args.row.id);
                             metsDiv1.appendChild(metsDiv2);
@@ -232,7 +334,7 @@ var F = function(args){
                                 var childId = childIds[childIdx];
                                 var childEntity = childEntities[childId];
                                 var metsChildDiv = xmlDoc.createElement("METS:div");
-                                metsChildDiv.setAttribute("TYPE", childEntity.entity_type_name);
+                                metsChildDiv.setAttribute("TYPE", childEntity.struct_type_name);
                                 metsChildDiv.setAttribute("ORDER", childIdx);
 
                                 var metsChildMptr = xmlDoc.createElement("METS:mptr");
@@ -247,12 +349,12 @@ var F = function(args){
                             // Put xml into editor
                             var xmlText = new XMLSerializer().serializeToString(xmlDoc);
                             var xmlTextPretty = vkbeautify.xml(xmlText);
-                            fieldXml.setValue(xmlTextPretty);
+                            args.xmlTab.fieldXml.setValue(xmlTextPretty);
 
                             //console.log(xmlText);
 
-                            args.dataTab.selectTab();
-                            fieldXml.codemirror.refresh();
+                            args.xmlTab.selectTab();
+                            args.xmlTab.fieldXml.codemirror.refresh();
 
 
                             window.xmlDoc = xmlDoc;
@@ -323,18 +425,48 @@ var F = function(args){
                 }
             });
         });
+
+
+        // *** Files Tab ***
+        args.filesTab = args.createContentTab("filesTab", { canClose: false });
+        args.filesTab.panel = new si4.widget.si4Panel({ parent: args.filesTab.content.selector });
+        args.filesTab.panelGroup = args.filesTab.panel.addGroup("TODO: Tabela datotek in možnost dodajanja, brisanja.");
+        args.filesTab.form = new si4.widget.si4Form({
+            parent: args.filesTab.panelGroup.content.selector,
+            captionWidth: "90px"
+        });
+    };
+
+
+    args.saveEntity = function(){
+        var basicFormValue = args.basicTab.form.getValue();
+        var xmlFormValue = args.xmlTab.form.getValue();
+
+        var formValue = Object.assign({}, basicFormValue, xmlFormValue);
+        //console.log("formValue", basicFormValue);
+        si4.api["saveEntity"](formValue, function(data) {
+            if (data.status) {
+                if (confirm(si4.translate("saved_confirm_close"))) {
+                    args.mainTab.destroyTab();
+                }
+            } else {
+                si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE, data);
+            }
+            //console.log("saveEntity callback", data);
+        });
     };
 
 
     if (!args.row || !args.row.id) {
         args.row = {};
-        args.row.entity_type_id = "0";
+        args.row.struct_type = args.caller == "collectionList" ? "collection" : "entity";
+        args.row.entity_type = args.caller == "collectionList" ? "primary" : "dependant";
         args.row.indexed = true;
         args.row.enabled = true;
 
         si4.api["reserveEntityId"]({}, function(response) {
             args.row.id = response.data;
-            args.row.data = si4.entity.template.getEmptyMetsXml({ id: args.row.id });
+            args.row.xmlData = si4.entity.template.getEmptyMetsXml({ id: args.row.id });
             create();
         });
     } else {

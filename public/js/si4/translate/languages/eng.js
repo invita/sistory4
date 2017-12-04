@@ -28,8 +28,11 @@ si4.translations = {
 
     // EntityDetails
     entities_entityDetails_mainTab_text: "Entity [[id]]",
-    entities_entityDetails_contentTab_text: "Edit",
+    entities_entityDetails_contentTab_text: "Basic",
+    entities_entityDetails_xmlTab_text: "Mets Xml",
+    entities_entityDetails_mdEditorTab_text: "Metadata Editor",
     entities_entityDetails_relationsTab_text: "Relations",
+    entities_entityDetails_filesTab_text: "Files",
 
     // UserList
     system_userList_mainTab_text: "User list",
@@ -55,25 +58,24 @@ si4.translations = {
     dev_elasticTools_indexingTab_text: "Indexing tools",
     dev_elasticTools_searchTab_text: "Search",
 
-
-    panel_entityData: "Entity data",
-    panel_relations: "Relations",
-
     // Fields
     field_id: "Id",
     field_title: "Title",
     field_creators: "Creators",
     field_year: "Year",
+    field_structType: "Structure type",
     field_entityType: "Entity type",
-    field_xml: "Xml",
+    field_collectionType: "Collection type",
+    field_xmlFromFile: "Load xml from file",
 
     field_email: "Email",
     field_username: "Username",
     field_password: "Password",
     field_firstname: "First name",
     field_lastname: "Last name",
-    field_enabled: "Enabled",
-    field_indexed: "Indexed",
+    field_active: "Active",
+    //field_enabled: "Enabled",
+    //field_indexed: "Indexed",
     field_parent: "Parent",
     field_children: "Children",
 
@@ -81,6 +83,9 @@ si4.translations = {
 
     field_relatedEntity: "Related entity",
     field_relationType: "Relation type",
+
+    entityGroup_adminFields: "Administrative fields",
+    entityGroup_mdPreview: "Metadata preview",
 
 
     // Datatable
@@ -102,9 +107,13 @@ si4.translations = {
 
     // Enums
 
+    // Enum: Structure Types
+    st_entity: "Entity",
+    st_collection: "Collection",
+
     // Enum: Entity Types
-    et_entity: "Entity",
-    et_collection: "Collection",
+    et_primary: "Primary",
+    et_dependant: "Dependant",
 
     // Enum: Relation Types
     rel_isChildOf: "Is child of",

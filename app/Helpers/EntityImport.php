@@ -1,7 +1,6 @@
 <?php
 namespace App\Helpers;
 use App\Models\Entity;
-use App\Models\EntityType;
 use Illuminate\Support\Facades\Artisan;
 
 /**
@@ -34,16 +33,12 @@ class EntityImport
 
         //echo "id: ".$id."\n";
 
-        $entityTypesDb = EntityType::all();
-        $entityTypes = [];
-        foreach ($entityTypesDb as $et) $entityTypes[$et["name"]] = $et["id"];
-        $entityTypeId = isset($entityTypes[$maType]) ? $entityTypes[$maType] : false;
-
-        if ($id && $entityTypeId) {
+        if ($id) {
 
             $entity = Entity::findOrNew($id);
             $entity->id = $id;
-            $entity->entity_type_id = $entityTypeId;
+            $entity->struct_type = in_array($maType, Enums::$structTypes) ? $maType : null;
+            $entity->entity_type = null;
             $entity->data = $xmlContent;
 
             //print_r($entity);

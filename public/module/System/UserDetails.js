@@ -6,7 +6,7 @@ var F = function(args){
 
     var rowValue = args.row ? args.row : {};
     if (!rowValue.id) rowValue.id = "";
-    if (!rowValue.entity_type_id) rowValue.entity_type_id = "";
+    if (!rowValue.struct_type_id) rowValue.struct_type_id = "";
 
     var panel = new si4.widget.si4Panel({parent:args.contentTab.content.selector});
     var panelGroup = panel.addGroup();

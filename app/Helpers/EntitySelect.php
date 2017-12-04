@@ -2,7 +2,6 @@
 namespace App\Helpers;
 
 use App\Models\Entity;
-use App\Models\EntityType;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\EntityHelpers;
 use App\Helpers\Si4Util;
@@ -27,20 +26,13 @@ class EntitySelect
         $sortOrder = Si4Util::getArg($requestData, "sortOrder", "asc");
         $entityIds = Si4Util::getArg($requestData, "entityIds", null);
 
-        $entity_type_id  = Si4Util::getArg($staticData, "entity_type_id", 0);
+        $struct_type  = Si4Util::getArg($staticData, "struct_type", "");
 
         $filter = Si4Util::getArg($requestData, "filter", []);
 
-
-        // Map entity types
-        $entityTypesDb = EntityType::all();
-        $entityTypes = [];
-        foreach ($entityTypesDb as $et) $entityTypes[$et["id"]] = $et["name"];
-        //print_r($entityTypes);
-
         $rowCount = 0;
 
-        if (!$entity_type_id) {
+        if (!$struct_type) {
 
             // All Entities - Admin only
             $entityIdsQuery = Entity::query();
@@ -52,7 +44,7 @@ class EntitySelect
             $hits = ElasticHelpers::searchByIdArray($entityIds);
 
         } else {
-            // Only Entities of specific entity_type
+            // Only Entities of specific struct_type
 
             // Filter map, maps filter fields into elastic keys
             $filterMap = [
@@ -66,9 +58,9 @@ class EntitySelect
             // Must elastic query
             $mustItems = [];
 
-            // Add entity_type_id (entity/collection)
+            // Add struct_type_id (entity/collection)
             $mustItems[] = [
-                "term" => [ "entity_type_id" => $entity_type_id ]
+                "term" => [ "struct_type" => $struct_type ]
             ];
 
             // Add Filter fields, mapped by filterMap
@@ -104,15 +96,14 @@ class EntitySelect
             $date = "";
             $xml = "";
 
-            $entityTypeId = 0;
-            $entityTypeName = "";
+            $structType = "";
+            $entityType = "";
 
             $_source = Si4Util::getArg($hit, "_source", null);
 
             if ($_source) {
-                $entityTypeId = Si4Util::getArg($_source, "entity_type_id", 0);
-                $entityTypeName = Si4Util::getArg($entityTypes, $entityTypeId, "");
-                //print_r($entityTypeId." ".$entityTypeName."\n");
+                $structType = Si4Util::getArg($_source, "struct_type", "");
+                $entityType = Si4Util::getArg($_source, "entity_type", "");
 
                 $data = Si4Util::getArg($_source, "data", null);
                 $xml = Si4Util::getArg($_source, "xml", "");
@@ -135,9 +126,9 @@ class EntitySelect
 
             $result[] = [
                 "id" => $id,
-                "entity_type_id" => $entityTypeId,
-                "entity_type_name" => $entityTypeName,
-                "IdAttr" => $IDAttr,
+                "struct_type" => $structType,
+                "entity_type" => $entityType,
+                //"IdAttr" => $IDAttr,
                 "title" => $title,
                 "creator" => $creator,
                 "date" => $date,

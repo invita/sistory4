@@ -14,8 +14,8 @@ si4.codes = {
 };
 
 
-si4.codes.entityTypeIds = {
+si4.codes.structTypeIds = {
     0:'',
-    1:'publication',
-    2:'menu'
+    1:'entity',
+    2:'collection'
 };

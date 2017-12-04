@@ -8,7 +8,6 @@ use App\Xsd\XmlDataATypeHandler;
 use App\Xsd\DcTypeHandler;
 use Illuminate\Contracts\Logging\Log;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\EntityType;
 use Illuminate\Http\UploadedFile;
 
 use JMS\Serializer\SerializerBuilder;
@@ -23,14 +22,13 @@ use Psr\Log\Test\LoggerInterfaceTest;
  * App\Models\Entity
  *
  * @property int $id
- * @property int $entity_type_id
+ * @property int $struct_type_id
  * @property string $data
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \App\Models\EntityType $entityType
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Entity whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Entity whereData($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Entity whereEntityTypeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Entity whereStructTypeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Entity whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Entity whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -45,17 +43,10 @@ class Entity extends Model
      */
     protected $fillable = [
         'name',
-        "entity_type_id",
-        "data"
+        'struct_type',
+        'entity_type',
+        'data'
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function entityType()
-    {
-        return $this->belongsTo(EntityType::class);
-    }
 
     /**
      * @return bool
@@ -94,14 +85,14 @@ class Entity extends Model
     }
 
     /**
-     * @param \App\Models\EntityType $entityType
+     * @param \App\Models\StructType $structType
      * @param UploadedFile $uploadedFile
      * @return Entity
      */
-    public static function createFromUpload(EntityType $entityType, UploadedFile $uploadedFile) : Entity
+    public static function createFromUpload($structType, UploadedFile $uploadedFile) : Entity
     {
         $entity = new self;
-        $entity->entity_type_id = $entityType->id;
+        $entity->struct_type = $structType;
         $entity->data = file_get_contents($uploadedFile->getPathname());
         $entity->save();
 

@@ -4,7 +4,7 @@ si4.widget.si4Input = function(args)
     var _p = this;
 
     this._cons = si4.widget.si4Element;
-    this._cons({ parent:args.parent, hint:args.hint });
+    this._cons({ parent: args.parent, hint: args.hint, style: args.style });
     this.selector.addClass("si4InputDiv");
 
     this._eventb = si4.object.si4EventBase;
@@ -23,6 +23,7 @@ si4.widget.si4Input = function(args)
     this.name = si4.getArg(args, "name", null);
     this.value = si4.getArg(args, "value", "");
     this.values = si4.getArg(args, "values", {});
+    this.addEmptyOption = si4.getArg(args, "addEmptyOption", false);
     this.placeholder = si4.getArg(args, "placeholder", "");
     this.withCode = si4.getArg(args, "withCode", null);
     this.readOnly = si4.getArg(args, "readOnly", false);
@@ -77,6 +78,8 @@ si4.widget.si4Input = function(args)
     }
 
     if (this.type == "select") {
+        if (this.addEmptyOption)
+            this.input.selector.append($('<option>', {value: "", text: ""}));
         for (var i in this.values)
             this.input.selector.append($('<option>', {value: i, text: this.values[i]}));
         this.input.selector.change(function(){

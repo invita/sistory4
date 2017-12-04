@@ -6,7 +6,6 @@ use App\Helpers\EntityHelpers;
 use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
-use App\Models\EntityType;
 use App\Models\Relation;
 use App\Models\RelationType;
 use \Illuminate\Http\Request;

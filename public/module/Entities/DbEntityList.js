@@ -25,14 +25,14 @@ var F = function(args){
         tabPage: args.contentTab,
         fields: {
             id: { caption: "Id" },
-            entity_type_name: { caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
+            struct_type_name: { caption: si4.translate("field_structType"), valueTranslatePrefix:"et_" },
 
             //name: { caption: "Naziv" },
             //description: { caption: "Opis" },
             title: { maxCharLength: 100 },
             creator: { caption: si4.translate("field_creators"), maxCharLength: 50 },
 
-            entity_type_id: { visible: false },
+            struct_type_id: { visible: false },
             data: { visible: false },
         },
         cssClass_table: "si4DataTable_table width100percent"

@@ -53,7 +53,8 @@ class ReindexEntity extends Command
 
             $indexBody = [
                 "id" => $entityId,
-                "entity_type_id" => $entity["entity_type_id"],
+                "struct_type" => $entity["struct_type"],
+                "entity_type" => $entity["entity_type"],
                 "xml" => $entity["data"],
                 "data" => $entityElastic->getData()
             ];
@@ -63,7 +64,6 @@ class ReindexEntity extends Command
         }
 
         //print_r($entity);
-        //$this->info("Indexing {$entity["entity_type_id"]->toArray()}");
 
 
     }
