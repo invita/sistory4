@@ -42,6 +42,7 @@ class Entity extends Model
      * @var array
      */
     protected $fillable = [
+        'parent',
         'name',
         'struct_type',
         'entity_type',

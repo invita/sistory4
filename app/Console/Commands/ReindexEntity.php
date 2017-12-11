@@ -53,6 +53,7 @@ class ReindexEntity extends Command
 
             $indexBody = [
                 "id" => $entityId,
+                "parent" => $entity["parent"],
                 "struct_type" => $entity["struct_type"],
                 "entity_type" => $entity["entity_type"],
                 "xml" => $entity["data"],
@@ -60,7 +61,9 @@ class ReindexEntity extends Command
             ];
             ElasticHelpers::indexEntity($entityId, $indexBody);
         } else {
-            ElasticHelpers::deleteEntity($entityId);
+            if (ElasticHelpers::entityExists($entityId)) {
+                ElasticHelpers::deleteEntity($entityId);
+            }
         }
 
         //print_r($entity);

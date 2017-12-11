@@ -71,6 +71,29 @@ class ElasticHelpers
     }
 
     /**
+     * Check wether a document exists in elastic index
+     * @param $entityId Integer entity id to be found
+     * @return array
+     */
+    public static function entityExists($entityId)
+    {
+        $requestArgs = [
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+            "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
+            "body" => [
+                "query" => [
+                    "ids" => [
+                        "values" => [$entityId]
+                    ]
+                ]
+            ]
+        ];
+        $elasticData = \Elasticsearch::connection()->search($requestArgs);
+        $rowCount = Si4Util::pathArg($elasticData, "hits/total", 0);
+        return $rowCount > 0;
+    }
+
+    /**
      * Retrieves all matching documents from elastic search
      * @param $query String to match
      * @param $offset Integer offset
@@ -124,6 +147,28 @@ class ElasticHelpers
         ];
         $dataElastic = \Elasticsearch::connection()->search($requestArgs);
         return self::mergeElasticResultAndIdArray($dataElastic, $idArray);
+    }
+
+    public static function searchByParent($parent)
+    {
+        $requestArgs = [
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+            "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
+            "body" => [
+                "query" => [
+                    "match" => [
+                        "parent" => $parent
+                    ]
+                ]
+            ]
+        ];
+
+        $dataElastic = \Elasticsearch::connection()->search($requestArgs);
+
+        //print_r($dataElastic);
+
+        return self::elasticResultToAssocArray($dataElastic);
+        // self::mergeElasticResultAndIdArray($dataElastic, $idArray);
     }
 
 

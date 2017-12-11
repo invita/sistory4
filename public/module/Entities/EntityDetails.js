@@ -4,7 +4,7 @@ var F = function(args){
     var create = function() {
         var rowValue = args.row ? args.row : {};
 
-        console.log("entity args", args);
+        //console.log("entity args", args);
         args.createMainTab();
 
         // *** Basic Tab ***
@@ -191,6 +191,92 @@ var F = function(args){
 
         // *** Relations Tab ***
         args.relationsTab = args.createContentTab("relationsTab", { canClose: false });
+        args.relationsTab.addHierarchyElement = function(hArgs) {
+
+            var rowEl = new si4.widget.si4Element({ parent: hArgs.container, tagClass: "entityHierarchyRow" });
+            if (hArgs.addClass) rowEl.selector.addClass(hArgs.addClass)
+            if (hArgs.entityData.struct_type == "entity") rowEl.selector.addClass("stEntity");
+            if (hArgs.entityData.struct_type == "collection") rowEl.selector.addClass("stCollection");
+            rowEl.selector.css("margin-left", hArgs.indent+"px");
+            var line = '<span class="ehTitle">' +hArgs.entityData.title + '</span>';
+            if (hArgs.entityData.creator) line = '<span class="ehCreator">' +hArgs.entityData.creator+ '</span> : '+ line;
+            if (hArgs.entityData.date) line = line + ' '+'<span class="ehDate">' +hArgs.entityData.date+ '</span>';
+            line = '<span class="ehId">[' +hArgs.entityData.id + ']</span> ' +line;
+            rowEl.selector.html(line);
+
+            rowEl.selector.click(function() {
+                si4.loadModule({
+                    moduleName: "Entities/EntityDetails",
+                    caller: "entityList",
+                    id: hArgs.entityData.id,
+                    row: hArgs.entityData,
+                    tabPage: args.tabPage
+                });
+            });
+        };
+
+        args.relationsTab.rendeHierarchy = function(response) {
+
+            var indentStep = 25;
+
+            var indent = 0;
+
+            args.relationsTab.content.selector.empty();
+            var containerEl = new si4.widget.si4Element({ parent: args.relationsTab.content.selector, tagClass: "entityHierarchyContainer" });
+
+            // Render parents
+            for (var i in response.data.parents) {
+                args.relationsTab.addHierarchyElement({
+                    container: containerEl.selector,
+                    entityData: response.data.parents[i],
+                    addClass: "parent",
+                    indent: indent
+                });
+                indent += indentStep;
+            }
+
+            // Render current
+            args.relationsTab.addHierarchyElement({
+                container: containerEl.selector,
+                entityData: response.data.currentEntity,
+                addClass: "current",
+                indent: indent
+            });
+            indent += indentStep;
+
+            // Render children
+            for (var i in response.data.children) {
+                args.relationsTab.addHierarchyElement({
+                    container: containerEl.selector,
+                    entityData: response.data.children[i],
+                    addClass: "child",
+                    indent: indent
+                });
+                indent += indentStep;
+            }
+
+        };
+
+        args.relationsTab.onActive(function(tabArgs) {
+            si4.api.entityHierarchy({ id: rowValue.id, recursiveUp: true }, function (response) {
+
+                console.log("entityHierarchy response", response);
+
+                if (!response.status) {
+                    args.relationsTab.statusDiv = new si4.widget.si4Element({ parent: args.relationsTab.content.selector });
+                    args.relationsTab.statusDiv.addHtml("Error loading hierarchy.");
+                } else {
+                    args.relationsTab.rendeHierarchy(response);
+
+                    // response.data.children
+                    // response.data.parents
+                    // response.data.currentEntity
+                }
+            });
+        });
+
+
+        /*
         args.relationsTab.onActive(function(tabArgs) {
             if (args.relationsDataTable) return;
             var tableName = "relations";
@@ -369,40 +455,6 @@ var F = function(args){
                         // xmlDoc.getElementsByTagName("METS:metsHdr")[0]
                         // xmlDoc.getElementsByTagName("METS:dmdSec")[1]
 
-                        /*
-                        var xmlData = xmlDoc
-                            .getElementsByTagName("METS:dmdSec")[1]
-                            .getElementsByTagName("METS:mdWrap")[0]
-                            .getElementsByTagName("METS:xmlData")[0];
-
-                        var dcRels = xmlData.getElementsByTagName("dcterms:relation");
-                        for (var i = 0; i < dcRels.length; i++) {
-                            xmlData.removeChild(dcRels[i]);
-                            //console.log(dcRels[i])
-                        }
-
-                        console.log(dt);
-                        console.log("dt.getValue()", dt.getValue());
-
-//                        <dcterms:relation type="isParentOf">123</dcterms:relation>
-                        // TODO: Force xml path
-
-                        var dtRels = dt.getValue();
-                        for (var i in dtRels) {
-                            var rel = xmlDoc.createElement("dcterms:relation");
-                            var relType = si4.data.relationTypesMap[dtRels[i].relation_type_id];
-                            rel.setAttribute("type", relType);
-                            rel.innerHTML = "http://hdl.handle.net/11686/"+dtRels[i].related_entity_id;
-
-                            console.log("rel", rel);
-
-                            xmlData.appendChild(rel);
-                            //xmlData.append("\n");
-
-                            // dtRels[i].related_entity_id
-                            // dtRels[i].relation_type_id
-                        }
-                        */
 
                     });
                 },
@@ -425,6 +477,7 @@ var F = function(args){
                 }
             });
         });
+        */
 
 
         // *** Files Tab ***

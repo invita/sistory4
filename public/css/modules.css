@@ -1,4 +1,26 @@
 
+.entityHierarchyContainer { padding-left: 20px; padding-top: 10px; }
+.entityHierarchyContainer .entityHierarchyRow { font-size: 14px; line-height: 22px; cursor: pointer; }
+
+.entityHierarchyContainer .entityHierarchyRow.stCollection { color: #8e130b; }
+.entityHierarchyContainer .entityHierarchyRow.stEntity { color: darkgoldenrod; }
+
+.entityHierarchyContainer .entityHierarchyRow.parent {  }
+.entityHierarchyContainer .entityHierarchyRow.current { font-weight: bold; }
+.entityHierarchyContainer .entityHierarchyRow.child {  }
+
+.entityHierarchyContainer .entityHierarchyRow .ehId { font-weight: normal; color: silver; }
+.entityHierarchyContainer .entityHierarchyRow .ehTitle {  }
+.entityHierarchyContainer .entityHierarchyRow .ehCreator {  }
+.entityHierarchyContainer .entityHierarchyRow .ehDate { font-weight: normal; color: silver; }
+
+
+
+
+
+
+/* TODO: delete from here down... check to rename if anything is needed */
+
 /* Cobiss */
 .si4TabContent.cobiss select,
 .si4TabContent.cobiss input

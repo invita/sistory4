@@ -60,10 +60,12 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('reserve-entity-id', "Admin\\Api\\Entities@reserveEntityId")->name("admin.api.reserve-entity-id#post");
             Route::post('save-entity', "Admin\\Api\\Entities@saveEntity")->name("admin.api.save-entity#post");
             Route::post('delete-entity', "Admin\\Api\\Entities@deleteEntity")->name("admin.api.delete-entity#post");
+            Route::post('entity-hierarchy', "Admin\\Api\\Entities@entityHierarchy")->name("admin.api.entity-hierarchy#post");
 
-            Route::post('entity-relations-list', "Admin\\Api\\EntityRelations@entityRelationsList")->name("admin.api.entity-relations-list#post");
-            Route::post('save-entity-relation', "Admin\\Api\\EntityRelations@saveEntityRelation")->name("admin.api.save-entity-relation#post");
-            Route::post('delete-entity-relation', "Admin\\Api\\EntityRelations@deleteEntityRelation")->name("admin.api.delete-entity-relation#post");
+            // TODO: Delete...
+            //Route::post('entity-relations-list', "Admin\\Api\\EntityRelations@entityRelationsList")->name("admin.api.entity-relations-list#post");
+            //Route::post('save-entity-relation', "Admin\\Api\\EntityRelations@saveEntityRelation")->name("admin.api.save-entity-relation#post");
+            //Route::post('delete-entity-relation', "Admin\\Api\\EntityRelations@deleteEntityRelation")->name("admin.api.delete-entity-relation#post");
 
             Route::post('user-list', "Admin\\Api\\Users@userList")->name("admin.api.entity-list#post");
             Route::post('save-user', "Admin\\Api\\Users@saveUser")->name("admin.api.save-user#post");

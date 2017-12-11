@@ -24,6 +24,7 @@ class EntitySelect
         $pageCount = Si4Util::getArg($requestData, "pageCount", 20);
         $sortField = Si4Util::getArg($requestData, "sortField", "id");
         $sortOrder = Si4Util::getArg($requestData, "sortOrder", "asc");
+        $parent = Si4Util::getArg($requestData, "parent", null);
         $entityIds = Si4Util::getArg($requestData, "entityIds", null);
 
         $struct_type  = Si4Util::getArg($staticData, "struct_type", "");
@@ -39,10 +40,13 @@ class EntitySelect
             $entityIdsQuery->select(["id"]);
             $rowCount = $entityIdsQuery->count();
 
-            if (!$entityIds)
-                $entityIds = $entityIdsQuery->orderBy("id")->offset($pageStart)->limit($pageCount)->get()->keyBy("id")->keys()->toArray();
-            $hits = ElasticHelpers::searchByIdArray($entityIds);
-
+            if ($parent) {
+                $hits = ElasticHelpers::searchByParent($parent);
+            } else {
+                if (!$entityIds)
+                    $entityIds = $entityIdsQuery->orderBy("id")->offset($pageStart)->limit($pageCount)->get()->keyBy("id")->keys()->toArray();
+                $hits = ElasticHelpers::searchByIdArray($entityIds);
+            }
         } else {
             // Only Entities of specific struct_type
 
@@ -90,11 +94,13 @@ class EntitySelect
 
             //print_r($entity);
 
+            $parent = 0;
             $IDAttr = "";
             $title = "";
             $creator = "";
             $date = "";
             $xml = "";
+            $data = null;
 
             $structType = "";
             $entityType = "";
@@ -105,6 +111,7 @@ class EntitySelect
                 $structType = Si4Util::getArg($_source, "struct_type", "");
                 $entityType = Si4Util::getArg($_source, "entity_type", "");
 
+                $parent = Si4Util::getArg($_source, "parent", 0);
                 $data = Si4Util::getArg($_source, "data", null);
                 $xml = Si4Util::getArg($_source, "xml", "");
 
@@ -115,17 +122,11 @@ class EntitySelect
                 $title = isset($dcMetadata["title"]) ? join(" : ", $dcMetadata["title"]) : "";
                 $creator = isset($dcMetadata["creator"]) ? join("; ", $dcMetadata["creator"]) : "";
                 $date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
-                /*
-                $dcXmlData = Si4Util::pathArg($data, "DmdSecElName/1/MdWrapElName/XmlDataElName", []);
-                $IDAttr = Si4Util::getArg($data, "IDAttrName", "");
-                $title = isset($dcXmlData["TitlePropName"]) ? join(" : ", $dcXmlData["TitlePropName"]) : "";
-                $creator = isset($dcXmlData["CreatorPropName"]) ? join("; ", $dcXmlData["CreatorPropName"]) : "";
-                $date = isset($dcXmlData["DatePropName"]) ? join("; ", $dcXmlData["DatePropName"]) : "";
-                */
             }
 
             $result[] = [
                 "id" => $id,
+                "parent" => $parent,
                 "struct_type" => $structType,
                 "entity_type" => $entityType,
                 //"IdAttr" => $IDAttr,
