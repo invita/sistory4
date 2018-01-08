@@ -30,7 +30,7 @@ var F = function(args){
             //name: { caption: "Naziv" },
             //description: { caption: "Opis" },
             title: { maxCharLength: 100 },
-            creator: { caption: si4.translate("field_creators"), maxCharLength: 50 },
+            creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
 
             struct_type_id: { visible: false },
             data: { visible: false },

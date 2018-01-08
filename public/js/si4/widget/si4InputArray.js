@@ -18,6 +18,7 @@ si4.widget.si4InputArray = function(args)
     this.inputArgs = si4.getArg(args, "inputArgs", {});
     this.autoFocus = si4.getArg(args, "autoFocus", true);
     this.withCode = si4.getArg(args, "withCode", null);
+    this.value = si4.getArg(args, "value", null);
     this.inputConstruct = si4.getArg(args, "inputConstruct", si4.widget.si4Input);
 
     // Events
@@ -138,4 +139,6 @@ si4.widget.si4InputArray = function(args)
         var newInput = _p.addInput();
     });
 
-}
+    if (this.value)
+        this.setValue(this.value);
+};

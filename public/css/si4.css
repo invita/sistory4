@@ -274,3 +274,6 @@ div.CodeMirror { height:auto; }
 
 #primaryPage { padding: 10px; }
 
+.fixedBottomRight { position: fixed; bottom: 3px; right: 3px; z-index: 20; }
+
+.biggerSubmit input.si4Input[type=submit] { padding: 5px 16px; font-size: 14px; }

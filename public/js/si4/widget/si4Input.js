@@ -4,7 +4,7 @@ si4.widget.si4Input = function(args)
     var _p = this;
 
     this._cons = si4.widget.si4Element;
-    this._cons({ parent: args.parent, hint: args.hint, style: args.style });
+    this._cons({ parent: args.parent, hint: args.hint, style: args.style, tagClass: args.tagClass });
     this.selector.addClass("si4InputDiv");
 
     this._eventb = si4.object.si4EventBase;
@@ -401,7 +401,7 @@ si4.widget.si4Input = function(args)
         this.codeSelect = new si4.widget.si4Element({parent:this.captionDiv.selector, tagName:"select", tagClass:"codeSelect"});
         for (var idx in this.withCode) {
             var optionLabel = this.caption ? (this.caption+" - "+this.withCode[idx]) : this.withCode[idx];
-            console.log("optionLabel", optionLabel);
+            //console.log("optionLabel", optionLabel);
             this.codeSelect.selector.append('<option value="'+idx+'">'+optionLabel+'</option>');
         }
     }

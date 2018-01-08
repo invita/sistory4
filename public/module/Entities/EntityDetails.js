@@ -93,7 +93,7 @@ var F = function(args){
             name:"author",
             value:rowValue.creator,
             type:"text",
-            caption:si4.translate("field_creators"),
+            caption:si4.translate("field_creator"),
             readOnly: true
         });
         args.basicTab.fieldYear = args.basicTab.formPreview.addInput({
@@ -157,9 +157,10 @@ var F = function(args){
         });
 
         args.xmlTab.saveButton = args.xmlTab.form.addInput({
-            caption: si4.translate("field_actions"),
+            //caption: si4.translate("field_actions"),
             value: si4.translate("button_save"),
             type:"submit",
+            tagClass: "fixedBottomRight biggerSubmit"
         });
         args.xmlTab.saveButton.selector.click(args.saveEntity);
 
@@ -167,25 +168,136 @@ var F = function(args){
         // *** Metadata Editor Tab ***
         args.editorTab = args.createContentTab("mdEditorTab", { canClose: false });
         args.editorTab.panel = new si4.widget.si4Panel({ parent: args.editorTab.content.selector });
-        args.editorTab.panelGroup = args.editorTab.panel.addGroup("TODO: Kot pri SICI, le da polja dobijo podatke iz XML in tudi shranijo v XML...");
+        args.editorTab.panelGroup = args.editorTab.panel.addGroup();
         args.editorTab.form = new si4.widget.si4Form({
             parent: args.editorTab.panelGroup.content.selector,
             captionWidth: "90px"
         });
 
-        args.editorTab.fieldTitle = args.editorTab.form.addInput({
-            name: "title",
-            //value: [rowValue.title],
-            type: "text",
-            caption: si4.translate("field_title"),
-            isArray: true,
+        args.editorTab.fields = {};
+
+
+        for (var fieldIdx in si4.entity.mdHelper.dcFieldOrder) {
+            var fieldName = si4.entity.mdHelper.dcFieldOrder[fieldIdx];
+            var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+
+            args.editorTab.fields[fieldName] = args.editorTab.form.addInput({
+                name: fieldName,
+                type: fieldBP.inputType,
+                caption: fieldBP.translation,
+                withCode: fieldBP.withCode,
+                values: fieldBP.values,
+                isArray: true,
+            });
+        }
+
+        args.editorTab.saveButton = args.editorTab.form.addInput({
+            caption: si4.translate("field_actions"),
+            value: si4.translate("button_save"),
+            type:"submit",
         });
-        args.editorTab.fieldTitle = args.editorTab.form.addInput({
-            name: "creator",
-            //value: [rowValue.creator],
-            type: "text",
-            caption: si4.translate("field_creators"),
-            isArray: true,
+
+        // Convert DC fields to XML
+        args.editorTab.saveButton.selector.click(function(val) {
+            var formValue = args.editorTab.form.getValue();
+            console.log("formValue", formValue);
+
+            var xmlStr = args.xmlTab.fieldXml.getValue();
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+
+            // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
+            var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
+
+            var fieldNames = si4.entity.mdHelper.dcFieldOrder.reverse();
+            for (var fieldIdx in fieldNames) {
+                var fieldName = fieldNames[fieldIdx];
+                var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+                var fieldValues = formValue[fieldName];
+
+                for (var childIdx = xmlDC.children.length -1; childIdx >= 0; childIdx--)
+                    if (xmlDC.children[childIdx].tagName == "dcterms:"+fieldName)
+                        xmlDC.children[childIdx].remove();
+
+                if (!fieldValues.length || fieldValues.length == 1 && !fieldValues[0]) continue;
+
+                for (var i = fieldValues.length -1; i >= 0; i--) {
+                    var fieldValue = fieldValues[i];
+                    var newEl = xmlDoc.createElement("dcterms:"+fieldName);
+
+                    if (fieldBP.withCode) {
+                        var attr = xmlDoc.createAttribute(fieldBP.codeXmlName);
+                        attr.value = fieldValue.codeId;
+                        newEl.attributes.setNamedItem(attr);
+                        newEl.textContent = fieldValue.value;
+                    } else {
+                        newEl.textContent = fieldValue;
+                    }
+
+                    if (fieldBP.addXmlAttrs) {
+                        for (var i in fieldBP.addXmlAttrs) {
+                            var addAttr = xmlDoc.createAttribute(fieldBP.addXmlAttrs[i].name);
+                            addAttr.value = fieldBP.addXmlAttrs[i].value;
+                            newEl.attributes.setNamedItem(addAttr);
+                        }
+                    }
+
+                    if (xmlDC.children.length) {
+                        xmlDC.insertBefore(newEl, xmlDC.children[0]);
+                    } else {
+                        xmlDC.appendChild(newEl);
+                    }
+                }
+            }
+
+
+            // Put xml into editor
+            var xmlText = new XMLSerializer().serializeToString(xmlDoc);
+            var xmlTextPretty = vkbeautify.xml(xmlText);
+            args.xmlTab.fieldXml.setValue(xmlTextPretty);
+
+            args.xmlTab.selectTab();
+            args.xmlTab.fieldXml.codemirror.refresh();
+
+        });
+
+        // Parse XML to DC fields
+        args.editorTab.onActive(function() {
+            args.editorTab.form.allInputs.clear();
+            var xmlStr = args.xmlTab.fieldXml.getValue();
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+
+            // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
+            var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
+            var formValFromXml = {};
+            for (var i = 0; i < xmlDC.children.length; i++) {
+                var dcElement = xmlDC.children[i];
+                // dcElement.tagName;
+                // dcElement.textContent;
+                // dcElement.attributes;
+
+                if (dcElement.tagName.indexOf(":") == -1) continue;
+                var fieldName = dcElement.tagName.split(":")[1];
+                var fieldValue = dcElement.textContent;
+
+                if (!si4.entity.mdHelper.dcBlueprint[fieldName]) continue;
+                var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+
+                var inputValue;
+                if (fieldBP.withCode) {
+                    inputValue = { codeId: dcElement.attributes.getNamedItem(fieldBP.codeXmlName).value, value: fieldValue };
+                } else {
+                    inputValue = fieldValue;
+                }
+
+                if (!formValFromXml[fieldName]) formValFromXml[fieldName] = [];
+                formValFromXml[fieldName].push(inputValue);
+            }
+
+            window.xmlDoc = xmlDoc;
+            console.log(formValFromXml);
+            args.editorTab.form.setValue(formValFromXml);
         });
 
 
@@ -488,6 +600,7 @@ var F = function(args){
             parent: args.filesTab.panelGroup.content.selector,
             captionWidth: "90px"
         });
+
     };
 
 

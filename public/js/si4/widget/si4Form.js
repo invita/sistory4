@@ -60,7 +60,7 @@ si4.widget.si4Form = function(args)
         args = si4.mergeObjects(defArgs, args);
         if (args.isArray) {
             input = new si4.widget.si4InputArray({ parent:parent, name:args.name, caption:args.caption,
-                    withCode:args.withCode, inputArgs:args });
+                    withCode:args.withCode, value:args.value, inputArgs:args });
         } else {
             input = new args.inputConstruct(args);
         }
