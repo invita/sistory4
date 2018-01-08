@@ -140,4 +140,56 @@ class EntitySelect
 
         return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
     }
+
+    public static function selectEntityHierarchy($requestData) {
+        $id = Si4Util::getArg($requestData, "id", null);
+        $entity = Si4Util::getArg($requestData, "entity", null);
+        $recursiveUp = Si4Util::getArg($requestData, "recursiveUp", false);
+
+        if (!$id) {
+            return ["status" => false, "error" => "No id given"];
+        }
+
+        $parents = [];
+        $children = [];
+
+        // Select current entity by Id
+        if (!$entity) {
+            $entity = EntitySelect::selectEntities([
+                "entityIds" => [$id]
+            ]);
+            $entity = isset($entity["data"]) && isset($entity["data"][0]) ? $entity["data"][0] : null;
+        }
+
+        // Select parent entity
+
+        $parentId = $entity && isset($entity["parent"]) && $entity["parent"] ? $entity["parent"] : false;
+        while ($parentId) {
+            $parentEntity = EntitySelect::selectEntities([
+                "entityIds" => [$parentId]
+            ]);
+            $parentEntity = isset($parentEntity["data"]) && isset($parentEntity["data"][0]) ? $parentEntity["data"][0] : null;
+            if ($parentEntity) {
+                array_unshift($parents, $parentEntity);
+                $parentId = intval($parentEntity["parent"]);
+            } else {
+                $parentId = null;
+            }
+        }
+
+        // Select child entities
+        $children = EntitySelect::selectEntities([
+            "parent" => $id
+        ]);
+        $children = isset($children["data"]) ? $children["data"] : [];
+
+        //print_r(["children" => $children]);
+
+        return ["status" => true, "data" => [
+            "parents" => $parents,
+            "currentEntity" => $entity,
+            "children" => $children,
+        ]];
+    }
+
 }

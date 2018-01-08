@@ -78,51 +78,6 @@ class Entities extends Controller
 
     public function entityHierarchy(Request $request) {
         $postJson = json_decode(file_get_contents("php://input"), true);
-        $id = Si4Util::getArg($postJson, "id", null);
-        $recursiveUp = Si4Util::getArg($postJson, "recursiveUp", false);
-
-        if (!$id) {
-            return ["status" => false, "error" => "No id given"];
-        }
-
-        $entity = null;
-        $parents = [];
-        $children = [];
-
-        // Select current entity by Id
-        $entity = EntitySelect::selectEntities([
-            "entityIds" => [$id]
-        ]);
-        $entity = isset($entity["data"]) && isset($entity["data"][0]) ? $entity["data"][0] : null;
-
-        // Select parent entity
-
-        $parentId = $entity && isset($entity["parent"]) && $entity["parent"] ? $entity["parent"] : false;
-        while ($parentId) {
-            $parentEntity = EntitySelect::selectEntities([
-                "entityIds" => [$parentId]
-            ]);
-            $parentEntity = isset($parentEntity["data"]) && isset($parentEntity["data"][0]) ? $parentEntity["data"][0] : null;
-            if ($parentEntity) {
-                array_unshift($parents, $parentEntity);
-                $parentId = intval($parentEntity["parent"]);
-            } else {
-                $parentId = null;
-            }
-        }
-
-        // Select child entities
-        $children = EntitySelect::selectEntities([
-            "parent" => $id
-        ]);
-        $children = isset($children["data"]) ? $children["data"] : [];
-
-        //print_r(["children" => $children]);
-
-        return ["status" => true, "data" => [
-            "parents" => $parents,
-            "currentEntity" => $entity,
-            "children" => $children,
-        ]];
+        return EntitySelect::selectEntityHierarchy($postJson);
     }
 }

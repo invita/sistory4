@@ -24,7 +24,8 @@ var F = function(args){
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
-            id: { caption: "Id" },
+            id: { caption: "Id", hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            parent: { caption: "Parent", hintF: si4.entity.hintHelper.displayEntityInfoDT },
             struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
             entity_type: { canFilter: false, caption: si4.translate("field_collectionType"), valueTranslatePrefix:"et_" },
 
