@@ -42,6 +42,8 @@ Route::get('/test', function () {
     //passthru("vendor/goetas-webservices/xsd2php/bin/xsd2php convert xsd2php.yml resources/assets/xsd/mets.xsd");
 });
 
+Route::get('/storage/preview', "StorageController@preview")->name("storage.preview#get");
+
 Route::group(['prefix' => 'admin'], function () {
 
     Route::get('login', "Admin\\LoginController@index")->name("admin.login.index#get");
@@ -62,10 +64,9 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('delete-entity', "Admin\\Api\\Entities@deleteEntity")->name("admin.api.delete-entity#post");
             Route::post('entity-hierarchy', "Admin\\Api\\Entities@entityHierarchy")->name("admin.api.entity-hierarchy#post");
 
-            // TODO: Delete...
-            //Route::post('entity-relations-list', "Admin\\Api\\EntityRelations@entityRelationsList")->name("admin.api.entity-relations-list#post");
-            //Route::post('save-entity-relation', "Admin\\Api\\EntityRelations@saveEntityRelation")->name("admin.api.save-entity-relation#post");
-            //Route::post('delete-entity-relation', "Admin\\Api\\EntityRelations@deleteEntityRelation")->name("admin.api.delete-entity-relation#post");
+            Route::post('file-list', "Admin\\Api\\Files@fileList")->name("admin.api.file-list#post");
+            Route::post('save-file', "Admin\\Api\\Files@saveFile")->name("admin.api.save-file#post");
+            Route::post('delete-file', "Admin\\Api\\Files@deleteFile")->name("admin.api.delete-file#post");
 
             Route::post('user-list', "Admin\\Api\\Users@userList")->name("admin.api.entity-list#post");
             Route::post('save-user', "Admin\\Api\\Users@saveUser")->name("admin.api.save-user#post");
@@ -78,6 +79,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('entity', "Admin\\UploadController@entity")->name("admin.upload.entity#post");
             Route::post('show-content', "Admin\\UploadController@showContent")->name("admin.upload.show-content#post");
             Route::post('import', "Admin\\UploadController@import")->name("admin.upload.import#post");
+            Route::post('upload-file', "Admin\\UploadController@uploadFile")->name("admin.upload.upload-file#post");
         });
 
         Route::group(['prefix' => 'download'], function () {

@@ -30,6 +30,7 @@ class Entities extends Controller
         $entity = Entity::findOrNew($newEntityId);
         $entity->id = $newEntityId;
         $entity->parent = 0;
+        $entity->primary = 0;
         $entity->struct_type = null;
         $entity->entity_type = null;
         $entity->save();
@@ -41,6 +42,7 @@ class Entities extends Controller
         $postJson = json_decode(file_get_contents("php://input"), true);
         $id = Si4Util::getArg($postJson, "id", 0);
         $parent = Si4Util::getInt($postJson, "parent", 0);
+        $primary = Si4Util::getInt($postJson, "primary", 0);
         $structType = Si4Util::getArg($postJson, "struct_type", "");
         $entityType = Si4Util::getArg($postJson, "entity_type", "");
         $xml = Si4Util::getArg($postJson, "xml", "");
@@ -50,6 +52,7 @@ class Entities extends Controller
 
         $entity = Entity::findOrNew($id);
         $entity->parent = $parent;
+        $entity->primary = $primary;
         $entity->struct_type = in_array($structType, Enums::$structTypes) ? $structType : null;
         $entity->entity_type = in_array($entityType, Enums::$entityTypes) ? $entityType : null;
         $entity->data = $xml;

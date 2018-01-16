@@ -1,4 +1,6 @@
 
+/* EntityDetails - hierarchy */
+
 .entityHierarchyContainer { padding-left: 20px; padding-top: 10px; }
 .entityHierarchyContainer .entityHierarchyRow { font-size: 14px; line-height: 22px; cursor: pointer; }
 
@@ -14,8 +16,11 @@
 .entityHierarchyContainer .entityHierarchyRow .ehCreator {  }
 .entityHierarchyContainer .entityHierarchyRow .ehDate { font-weight: normal; color: silver; }
 
-
-
+/* FileDetails */
+.filePreviewImg {
+    max-width: 200px;
+    max-height: 200px;
+}
 
 
 

@@ -51,6 +51,13 @@ var F = function(args){
             caption: si4.translate("field_parent"),
         });
 
+        args.basicTab.fieldParent = args.basicTab.form.addInput({
+            name: "primary",
+            value: rowValue.primary,
+            type: "text",
+            caption: si4.translate("field_primary"),
+        });
+
         args.basicTab.entityActive = args.basicTab.form.addInput({
             name: "active",
             value: rowValue.active,

@@ -52,6 +52,7 @@ div.si4Panel { }
 div.si4Panel.si4PanelFlowLayout { display:inline-table; }
 div.si4Panel.si4PanelBlockLayout { display:block; }
 div.si4PanelGroup.si4PanelFlowLayout { display:inline-table; }
+div.si4PanelGroup.si4PanelFlowLayout * { vertical-align: top; }
 div.si4PanelGroup > div.header { font-weight:bold; /*border:silver solid 1px;*/ padding:5px; margin-bottom:6px; }
 div.si4PanelGroup > div.content {}
 

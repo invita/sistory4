@@ -10,6 +10,7 @@ si4.config.apiNames = [
     "entityList", "saveEntity", "reserveEntityId", "deleteEntity", "entityHierarchy",
     "entityRelationsList", "saveEntityRelation", "deleteEntityRelation",
     "userList", "saveUser", "deleteUser",
+    "fileList", "saveFile", "deleteFile",
     "initialData",
     "devTools"
 ];

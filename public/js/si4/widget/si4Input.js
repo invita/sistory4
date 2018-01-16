@@ -55,6 +55,9 @@ si4.widget.si4Input = function(args)
     if (this.inputType == "codemirror")
         this.input.selector.addClass("si4CodeMirror");
 
+    if (this.inputType == "hidden")
+        this.selector.hide();
+
     this.inputs = [this.input];
 
     // Implementation

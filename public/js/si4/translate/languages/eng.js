@@ -34,11 +34,21 @@ si4.translations = {
     entities_entityDetails_relationsTab_text: "Relations",
     entities_entityDetails_filesTab_text: "Files",
 
+    // FileList
+    files_fileList_mainTab_text: "File list",
+    files_fileList_contentTab_text: "List",
+    file_fileTitleNew: "New file",
+    file_fileTitleEdit: "File [[id]] - [[name]]",
+
+    // FileDetails
+    files_fileDetails_mainTab_text: "File [[id]] - [[name]]",
+    files_fileDetails_contentTab_text: "Edit",
+
     // UserList
     system_userList_mainTab_text: "User list",
     system_userList_contentTab_text: "List",
     system_userTitleNew: "New user",
-    system_userTitleEdit: "blabla User [[id]] - [[name]]",
+    system_userTitleEdit: "User [[id]] - [[name]]",
 
     // UserDetails
     system_userDetails_mainTab_text: "User [[id]] - [[name]]",
@@ -92,8 +102,13 @@ si4.translations = {
     //field_indexed: "Indexed",
     field_parent: "Parent",
     field_children: "Children",
+    field_primary: "Primary",
 
     field_actions: "Actions",
+
+    field_name: "Name",
+    field_path: "Path",
+    field_file: "File",
 
     field_relatedEntity: "Related entity",
     field_relationType: "Relation type",

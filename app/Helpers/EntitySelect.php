@@ -95,6 +95,7 @@ class EntitySelect
             //print_r($entity);
 
             $parent = 0;
+            $primary = 0;
             $IDAttr = "";
             $title = "";
             $creator = "";
@@ -112,6 +113,7 @@ class EntitySelect
                 $entityType = Si4Util::getArg($_source, "entity_type", "");
 
                 $parent = Si4Util::getArg($_source, "parent", 0);
+                $primary = Si4Util::getArg($_source, "primary", 0);
                 $data = Si4Util::getArg($_source, "data", null);
                 $xml = Si4Util::getArg($_source, "xml", "");
 
@@ -127,6 +129,7 @@ class EntitySelect
             $result[] = [
                 "id" => $id,
                 "parent" => $parent,
+                "primary" => $primary,
                 "struct_type" => $structType,
                 "entity_type" => $entityType,
                 //"IdAttr" => $IDAttr,

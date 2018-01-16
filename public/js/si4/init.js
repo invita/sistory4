@@ -97,6 +97,10 @@ $(document).ready(function() {
                 loadArgs: { moduleName:'Entities/CollectionList' },
                 caption: si4.translate("entities_collectionList_mainTab_text"),
             });
+            menuItems.push({
+                loadArgs: { moduleName:'Files/FileList' },
+                caption: si4.translate("files_fileList_mainTab_text"),
+            });
 
             for (var i in menuItems) {
                 var menuItem = menuItems[i];

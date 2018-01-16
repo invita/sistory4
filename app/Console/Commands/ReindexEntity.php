@@ -54,6 +54,7 @@ class ReindexEntity extends Command
             $indexBody = [
                 "id" => $entityId,
                 "parent" => $entity["parent"],
+                "primary" => $entity["primary"],
                 "struct_type" => $entity["struct_type"],
                 "entity_type" => $entity["entity_type"],
                 "xml" => $entity["data"],

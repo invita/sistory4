@@ -3,7 +3,7 @@ var F = function(args){
     args.createMainTab();
     args.createContentTab();
 
-    var name = "entity";
+    var name = "file";
     var dataTable = new si4.widget.si4DataTable({
         parent: args.contentTab.content.selector,
         primaryKey: ['id'],
@@ -11,34 +11,25 @@ var F = function(args){
         entityTitleEdit: si4.lookup[name].entityTitleEdit,
         //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
-            select: si4.api["entityList"],
-            delete: si4.api["deleteEntity"],
-            staticData : { struct_type: "entity" },
+            select: si4.api["fileList"],
+            delete: si4.api["deleteFile"],
+            staticData : { },
             pageCount: 20
         }),
         editorModuleArgs: {
-            moduleName:"Entities/EntityDetails",
-            caller: "entityList"
+            moduleName:"Files/FileDetails",
         },
         canInsert: true,
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
-            id: { caption: "Id" },
-            struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
-            entity_type: { canFilter: false, caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
-
-            //name: { caption: "Naziv" },
-            //description: { caption: "Opis" },
-            title: { maxCharLength: 100 },
-            creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
-
-            xmlData: { visible: false },
-            elasticData: { visible: false },
+            //id: { caption: "Id" },
+            url: { visible: false },
         },
         cssClass_table: "si4DataTable_table width100percent"
     });
 
+    /*
     var importForm = new si4.widget.si4Form({parent:si4.data.contentElement });
     var importFile = importForm.addInput({name:"file", value:"", type:"file", accept: ".zip" });
     importFile.displayNone();
@@ -98,4 +89,5 @@ var F = function(args){
 
         exportForm.submit();
     });
+    */
 };

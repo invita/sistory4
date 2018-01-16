@@ -8,6 +8,7 @@ use App\Models\Relation;
 use Elasticsearch\ClientBuilder;
 use \Illuminate\Http\Request;
 use Elasticsearch;
+use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
@@ -64,6 +65,26 @@ class UploadController extends Controller
 
         $archive->close();
 
+        return ["status" => $status, "data" => $data, "error" =>  $error];
+    }
+
+    public function uploadFile(Request $request) {
+        $status = true;
+        $error = null;
+
+        $realFileName = $request->file->getClientOriginalName();
+        $fileExplode = explode(".", $realFileName);
+        $ext = end($fileExplode);
+        $today = date("Y-m-d.H-i-s."); // 2018-01-15--23-21-15-
+        $tempFileName = $today.random_int(1000000, 9999999).".".$ext;
+
+        $request->file->storeAs('public/temp', $tempFileName);
+
+        $data = [
+            "tempFileName" => $tempFileName,
+            "realFileName" => $realFileName,
+            "url" => "/storage/preview/?path=temp/".$tempFileName
+        ];
         return ["status" => $status, "data" => $data, "error" =>  $error];
     }
 }
