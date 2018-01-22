@@ -30,7 +30,7 @@ si4.entity.mdHelper.dcBlueprint = {
     title: {
         translation: si4.translate("field_title"),
         inputType: "text",
-        withCode: si4.entity.mdHelper.dcLangCodes,
+        //withCode: si4.entity.mdHelper.dcLangCodes,
         codeXmlName: "xml:lang",
     },
     creator: {
@@ -57,13 +57,13 @@ si4.entity.mdHelper.dcBlueprint = {
     coverage: {
         translation: si4.translate("field_coverage"),
         inputType: "text",
-        withCode: si4.entity.mdHelper.dcLangCodes,
+        //withCode: si4.entity.mdHelper.dcLangCodes,
         codeXmlName: "xml:lang",
     },
     language: {
         translation: si4.translate("field_language"),
         inputType: "select",
-        values: si4.entity.mdHelper.dcLangCodes,
+        //values: si4.entity.mdHelper.dcLangCodes,
         addXmlAttrs: [{ name: "xsi:type", value: "dcterms:ISO639-3" }],
     },
     identifier: {
@@ -89,7 +89,7 @@ si4.entity.mdHelper.dcBlueprint = {
     subject: {
         translation: si4.translate("field_subject"),
         inputType: "text",
-        withCode: si4.entity.mdHelper.dcLangCodes,
+        //withCode: si4.entity.mdHelper.dcLangCodes,
         codeXmlName: "xml:lang",
     },
     type: {

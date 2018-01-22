@@ -46,14 +46,11 @@ class Files extends Controller
         $error = null;
         $file = File::findOrNew($id);
 
-        /*
-         * // TODO: Crkne pri novem fajlu
-        if ($file && $path != $file->path || $type != $file->type || $name !== $file->name) {
+        if ($file && $file->name && ($path != $file->path || $type != $file->type || $name !== $file->name)) {
             $oldFile = $file->getStorageName();
             $newFile = File::makeStorageName($type, $path, $name);
             Storage::move($oldFile, $newFile);
         }
-        */
 
         $tempFileName = Si4Util::getArg($postJson, "tempFileName", "");
         $tempStorageName = "public/temp/".$tempFileName;
@@ -63,6 +60,7 @@ class Files extends Controller
                 Storage::delete($targetStorageName);
             }
             Storage::move($tempStorageName, $targetStorageName);
+            $file->checksum = md5_file(storage_path('app')."/".$targetStorageName);
         }
 
         $file->name = $name;

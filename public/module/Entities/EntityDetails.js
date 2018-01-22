@@ -265,7 +265,6 @@ var F = function(args){
 
             args.xmlTab.selectTab();
             args.xmlTab.fieldXml.codemirror.refresh();
-
         });
 
         // Parse XML to DC fields
