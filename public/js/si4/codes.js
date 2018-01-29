@@ -19,3 +19,8 @@ si4.codes.structTypeIds = {
     1:'entity',
     2:'collection'
 };
+
+si4.codes.filePurposes = {
+    entity: 'entity',
+    other: 'other'
+};

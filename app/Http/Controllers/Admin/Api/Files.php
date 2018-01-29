@@ -49,6 +49,7 @@ class Files extends Controller
         if ($file && $file->name && ($path != $file->path || $type != $file->type || $name !== $file->name)) {
             $oldFile = $file->getStorageName();
             $newFile = File::makeStorageName($type, $path, $name);
+            if (Storage::exists($newFile)) Storage::delete($newFile);
             Storage::move($oldFile, $newFile);
         }
 
@@ -61,6 +62,8 @@ class Files extends Controller
             }
             Storage::move($tempStorageName, $targetStorageName);
             $file->checksum = md5_file(storage_path('app')."/".$targetStorageName);
+            $file->size = Storage::size($targetStorageName);
+            $file->mimeType = Storage::mimeType($targetStorageName);
         }
 
         $file->name = $name;

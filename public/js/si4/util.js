@@ -180,4 +180,18 @@ si4.apiUrlFromName = function(apiName) {
     return apiName.replace(/\.?([A-Z])/g, function (x,y){ return "-" + y.toLowerCase()}).replace(/^_/, "");
 };
 
+si4.friendlyFileSize = function(sizeInBytes) {
+    var units = ["B", "KB", "MB", "GB"];
+    var unitDivider = 1024;
+    var unitIdx = 0;
+
+    if (typeof(sizeInBytes) != "number") return sizeInBytes+"?";
+
+    while (sizeInBytes > unitDivider || unitIdx == units.length -1) {
+        sizeInBytes = sizeInBytes / unitDivider;
+        unitIdx++;
+    }
+
+    return sizeInBytes.toFixed(2) +" "+ units[unitIdx];
+};
 

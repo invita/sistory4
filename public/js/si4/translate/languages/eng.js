@@ -109,6 +109,9 @@ si4.translations = {
     field_name: "Name",
     field_path: "Path",
     field_file: "File",
+    field_filePurpose: "Purpose",
+    field_size: "Size",
+    field_mimeType: "Format",
 
     field_relatedEntity: "Related entity",
     field_relationType: "Relation type",

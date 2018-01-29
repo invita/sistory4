@@ -12,11 +12,22 @@ var F = function(args){
 
     var form = new si4.widget.si4Form({parent:dataPanelGroup.content.selector, captionWidth:"90px" });
 
-    var fieldId = form.addInput({name:"id", value:rowValue.id, type:"text", caption:si4.translate("field_id"), readOnly: true});
+    var fieldId = form.addInput({name:"id", value:rowValue.id, type:"text", caption:si4.translate("field_id"),
+        readOnly: true});
     var fieldFile = form.addInput({name:"file", type:"file", caption:si4.translate("field_file")});
     var fieldName = form.addInput({name:"name", value:rowValue.name, type:"text", caption:si4.translate("field_name")});
-    var fieldType = form.addInput({name:"type", value:rowValue.type, type:"text", caption:si4.translate("field_type")});
-    var fieldPath = form.addInput({name:"path", value:rowValue.path, type:"text", caption:si4.translate("field_path")});
+    var fieldSize = form.addInput({name:"size", value:si4.friendlyFileSize(rowValue.size), type:"text",
+        caption:si4.translate("field_size"), readOnly: true});
+    var fieldMimeType = form.addInput({name:"mimeType", value:rowValue.mimeType, type:"text", caption:si4.translate("field_mimeType"),
+        readOnly: true});
+
+    var fieldType = form.addInput({name:"type", value:rowValue.type, type:"select",
+        caption:si4.translate("field_filePurpose"), values: si4.codes.filePurposes });
+    var fieldPath = form.addInput({name:"path", value:rowValue.path, type:"text",
+        caption:si4.translate("field_path"), readOnly: true });
+
+    //var fieldUrl = form.addInput({name:"url", value:rowValue.url, type:"text",
+    //    caption:si4.translate("field_url"), readOnly: true });
 
     var fieldTempFileName = form.addInput({name: "tempFileName", value: "", type: "hidden"});
 
