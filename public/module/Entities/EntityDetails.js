@@ -263,8 +263,10 @@ var F = function(args){
             var xmlTextPretty = vkbeautify.xml(xmlText);
             args.xmlTab.fieldXml.setValue(xmlTextPretty);
 
-            args.xmlTab.selectTab();
+            //args.xmlTab.selectTab();
             args.xmlTab.fieldXml.codemirror.refresh();
+
+            args.saveEntity();
         });
 
         // Parse XML to DC fields
