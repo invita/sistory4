@@ -43,7 +43,7 @@ class Entities extends Controller
 
 
         $entity->struct_type = $struct_type;
-        $entity->entity_type = null;
+        $entity->entity_type = "";
         $entity->save();
         return [
             "status" => $status,
