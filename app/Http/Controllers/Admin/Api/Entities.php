@@ -5,12 +5,15 @@ use App\Helpers\ElasticHelpers;
 use App\Helpers\EntityHelpers;
 use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
+use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
+use App\Models\EntityHandleSeq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class Entities extends Controller
 {
@@ -22,19 +25,34 @@ class Entities extends Controller
 
     public function reserveEntityId(Request $request)
     {
+
+        $postJson = json_decode(file_get_contents("php://input"), true);
+        $struct_type = Si4Util::getArg($postJson, "struct_type", "entity");
+
         $status = true;
         $error = null;
         $lastEntityId = Entity::select("id")->orderBy('id', 'desc')->pluck("id")[0];
         //print_r($lastEntityId);
         $newEntityId = $lastEntityId ? intval($lastEntityId) + 1 : 1;
+
         $entity = Entity::findOrNew($newEntityId);
         $entity->id = $newEntityId;
+        $entity->handle_id = EntityHandleSeq::nextNumSeq($struct_type);
         $entity->parent = 0;
         $entity->primary = 0;
-        $entity->struct_type = null;
+
+
+        $entity->struct_type = $struct_type;
         $entity->entity_type = null;
         $entity->save();
-        return ["status" => $status, "error" => $error, "data" => $newEntityId];
+        return [
+            "status" => $status,
+            "error" => $error,
+            "data" => [
+                "id" => $newEntityId,
+                "handle_id" => $entity->handle_id
+            ]
+        ];
     }
 
     public function saveEntity(Request $request)
@@ -49,6 +67,16 @@ class Entities extends Controller
 
         $status = true;
         $error = null;
+
+        // File
+        $realFileName = Si4Util::getArg($postJson, "realFileName", "");
+        $tempFileName = Si4Util::getArg($postJson, "tempFileName", "");
+        if ($tempFileName && $realFileName) {
+            $tempStorageName = "public/temp/".$tempFileName;
+            $destStorageName = FileHelpers::getStorageName($id, $realFileName);
+            if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
+            Storage::move($tempStorageName, $destStorageName);
+        }
 
         $entity = Entity::findOrNew($id);
         $entity->parent = $parent;

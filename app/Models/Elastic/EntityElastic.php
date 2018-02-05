@@ -144,6 +144,8 @@ class EntityElastic
         $this->data["files"] = [];
 
         $fileSecGroups = $this->getFromAssoc("FileSecElName/FileGrpElName");
+        //print_r($fileSecGroups);
+
         foreach ($fileSecGroups as $gIdx => $fileSecGroup) {
             $use = strtolower(self::get($fileSecGroup, "USEAttrName", ""));
             $files = self::get($fileSecGroup, "FileElName", []);
@@ -163,6 +165,7 @@ class EntityElastic
                 $fileData = [
                     "id" => self::get($file, "IDAttrName"),
                     "mime" => self::get($file, "MIMETYPEAttrName"),
+                    "size" => self::get($file, "SIZEAttrName"),
                     "ownerId" => self::get($file, "OWNERIDAttrName"),
                     "locations" => $locations
                 ];

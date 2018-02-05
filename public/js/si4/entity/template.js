@@ -11,7 +11,7 @@ si4.entity.template.emptyMetsXmlTemplate =
     xmlns:premis="http://www.loc.gov/standards/premis/v1"\r\
     xmlns:mods="http://www.loc.gov/mods/v3"\r\
     xmlns:entity="http://sistory.si/schema/sistory/v3/entity"\r\
-    TYPE="entity"\r\
+    TYPE="[[[structType]]]"\r\
     ID="SISTORY.ID.[[[id]]]"\r\
     OBJID="[[[handleUrl]]]"\r\
     xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd http://purl.org/dc/terms/ http://dublincore.org/schemas/xmls/qdc/dcterms.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-0.xsd http://www.loc.gov/standards/premis/v1 http://www.loc.gov/standards/premis/v1/PREMIS-v1-1.xsd">\r\
@@ -35,7 +35,7 @@ si4.entity.template.emptyMetsXmlTemplate =
                         <premis:objectIdentifierType>hdl</premis:objectIdentifierType>\r\
                         <premis:objectIdentifierValue>[[[handleUrl]]]</premis:objectIdentifierValue>\r\
                     </premis:objectIdentifier>\r\
-                    <premis:objectCategory>Entity</premis:objectCategory>\r\
+                    <premis:objectCategory>[[[structType]]]</premis:objectCategory>\r\
                 </premis:object>\r\
             </METS:xmlData>\r\
         </METS:mdWrap>\r\
@@ -60,7 +60,8 @@ si4.entity.template.emptyMetsXmlTemplate =
 si4.entity.template.getReplaceMap = function(data) {
     return {
         id: data.id,
-        handleUrl: "http://hdl.handle.net/11686/"+data.id,
+        handleUrl: "http://hdl.handle.net/11686/"+data.handleId,
+        structType: data.structType,
         userId: si4.data.currentUser.id,
         timestamp: si4.dateToISOString(),
     };

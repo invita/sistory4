@@ -98,8 +98,8 @@ $(document).ready(function() {
                 caption: si4.translate("entities_collectionList_mainTab_text"),
             });
             menuItems.push({
-                loadArgs: { moduleName:'Files/FileList' },
-                caption: si4.translate("files_fileList_mainTab_text"),
+                loadArgs: { moduleName:'Entities/FileList' },
+                caption: si4.translate("entities_fileList_mainTab_text"),
             });
 
             for (var i in menuItems) {

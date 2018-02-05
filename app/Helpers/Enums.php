@@ -8,6 +8,6 @@ namespace App\Helpers;
  * @author   Matic Vrscaj
  */
 class Enums {
-    public static $structTypes = ["entity", "collection"];
+    public static $structTypes = ["entity", "collection", "file"];
     public static $entityTypes = ["primary", "dependant"];
 }

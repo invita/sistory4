@@ -26,13 +26,21 @@ var F = function(args){
             readOnly: true,
         });
 
+        args.basicTab.fieldId = args.basicTab.form.addInput({
+            name: "handle_id",
+            value: rowValue.handle_id,
+            type: "text",
+            caption: si4.translate("field_handleId"),
+            readOnly: true,
+        });
+
         args.basicTab.fieldStructTypeId = args.basicTab.form.addInput({
             name: "struct_type",
             value: rowValue.struct_type,
             type: "select",
             caption: si4.translate("field_structType"),
             values: si4.data.structTypes,
-            addEmptyOption: true,
+            disabled: true,
         });
 
         args.basicTab.fieldEntityTypeId = args.basicTab.form.addInput({
@@ -74,6 +82,97 @@ var F = function(args){
         });
         */
 
+        if (rowValue.struct_type == "file") {
+            args.basicTab.physicalFile = args.basicTab.form.addInput({
+                name: "physicalFile",
+                value: "",
+                type: "file",
+                caption: si4.translate("field_physicalFile")
+            });
+            args.basicTab.realFileName = args.basicTab.form.addInput({ name: "realFileName", value: "", type: "hidden" });
+            args.basicTab.tempFileName = args.basicTab.form.addInput({ name: "tempFileName", value: "", type: "hidden" });
+
+            args.basicTab.physicalFile.selector.change(function() {
+                //console.log("change", fieldFile.getValue());
+                var url = "/admin/upload/upload-file";
+                var formData = new FormData();
+                formData.append("file", args.basicTab.physicalFile.getValue());
+                //console.log("post ", url, formData);
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response){
+                        console.log("callback", response);
+                        if (response.status) {
+                            args.uploadedFile = response.data;
+                            args.basicTab.realFileName.setValue(response.data.realFileName);
+                            args.basicTab.tempFileName.setValue(response.data.tempFileName);
+
+                            // File Preview
+                            var fileExt = response.data.realFileName.split(".").pop();
+                            if (["jpg", "jpeg", "png"].indexOf(fileExt.toLowerCase()) != -1) {
+                                args.basicTab.filePreviewImg.selector.attr("src", response.data.url);
+                            }
+
+
+                            // Put to XML...
+                            var xmlStr = args.xmlTab.fieldXml.getValue();
+                            var parser = new DOMParser();
+                            var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+
+                            // Find <METS:fileSec>
+                            var xmlFileSec = xmlDoc.querySelector("fileSec");
+
+                            // Remove all children from fileSec
+                            for (var i = xmlFileSec.children.length -1; i >= 0; i--)
+                                xmlFileSec.removeChild(xmlFileSec.children[i]);
+
+                            // METS:fileGrp
+                            var fileGrpEl = xmlDoc.createElement("METS:fileGrp");
+                            fileGrpEl.setAttribute("USE", "DEFAULT");
+                            xmlFileSec.appendChild(fileGrpEl);
+
+                            // METS:file
+                            var fileEl = xmlDoc.createElement("METS:file");
+                            fileEl.setAttribute("ID", response.data.realFileName);
+                            fileEl.setAttribute("USE", "DEFAULT");
+                            fileEl.setAttribute("CREATED", new Date().toISOString());
+                            fileEl.setAttribute("SIZE", response.data.size);
+                            fileEl.setAttribute("CHECKSUM", response.data.checksum);
+                            fileEl.setAttribute("CHECKSUMTYPE", "md5");
+                            fileEl.setAttribute("MIMETYPE", response.data.mimeType);
+                            fileEl.setAttribute("OWNERID", si4.data.currentUser.id);
+                            fileGrpEl.appendChild(fileEl);
+
+                            // METS:FLocat
+                            var fLocatEl = xmlDoc.createElement("METS:FLocat");
+                            fLocatEl.setAttribute("ID", args.row.handle_id);
+                            fLocatEl.setAttribute("USE", "HTTP");
+                            fLocatEl.setAttribute("LOCTYPE", "URL");
+                            fLocatEl.setAttribute("title", response.data.realFileName);
+                            fLocatEl.setAttribute("href", "http://hdl.handle.net/11686/"+args.row.handle_id);
+                            fileEl.appendChild(fLocatEl);
+
+
+                            // Put xml into editor
+                            var xmlText = new XMLSerializer().serializeToString(xmlDoc);
+                            var xmlTextPretty = vkbeautify.xml(xmlText);
+                            args.xmlTab.fieldXml.setValue(xmlTextPretty);
+
+                            //args.xmlTab.selectTab();
+                            args.xmlTab.fieldXml.codemirror.refresh();
+
+                            //args.saveEntity(true);
+
+                        }
+                    }
+                });
+            });
+        }
+
         args.basicTab.saveButton = args.basicTab.form.addInput({
             caption: si4.translate("field_actions"),
             value: si4.translate("button_save"),
@@ -111,6 +210,25 @@ var F = function(args){
             readOnly: true
         });
 
+        if (rowValue.struct_type == "file") {
+            args.basicTab.filePreviewDiv = new si4.widget.si4Element({
+                parent: args.basicTab.panelGroupPreview.content.selector });
+            args.basicTab.filePreviewImg = new si4.widget.si4Element({
+                parent: args.basicTab.filePreviewDiv.selector, tagName: "img" });
+            args.basicTab.filePreviewImg.selector.css({
+                marginTop: "10px", maxWidth: "256px"
+            });
+
+            // File Preview
+            var fileName = rowValue.fileName;
+            if (fileName) {
+                var fileUrl = rowValue.fileUrl;
+                var fileExt = fileName.split(".").pop();
+                if (["jpg", "jpeg", "png"].indexOf(fileExt.toLowerCase()) != -1) {
+                    args.basicTab.filePreviewImg.selector.attr("src", fileUrl);
+                }
+            }
+        }
 
 
         // *** Xml Tab ***
@@ -396,210 +514,6 @@ var F = function(args){
         });
 
 
-        /*
-        args.relationsTab.onActive(function(tabArgs) {
-            if (args.relationsDataTable) return;
-            var tableName = "relations";
-            args.relationsDataTable = new si4.widget.si4DataTable({
-                parent: args.relationsTab.content.selector,
-                primaryKey: ['id'],
-                //entityTitleNew: si4.lookup[tableName].entityTitleNew,
-                //entityTitleEdit: si4.lookup[tableName].entityTitleEdit,
-                //filter: { enabled: false },
-                dataSource: new si4.widget.si4DataTableDataSource({
-                    select: si4.api["entityRelationsList"],
-                    delete: si4.api["deleteEntityRelation"],
-                    updateRow: si4.api["saveEntityRelation"],
-                    //moduleName:"Entities/EntityList",
-                    staticData : { entityId: rowValue.id },
-                    pageCount: 50
-                }),
-                //editorModuleArgs: {
-                //    moduleName:"Entities/EntityDetails",
-                //},
-                filter: {
-                    enabled: false
-                },
-                canInsert: true,
-                canDelete: true,
-                //editable: true,
-                customInsert: function() {
-                    si4.api["saveEntityRelation"]({
-                        id: null,
-                        first_entity_id: rowValue.id,
-                        relation_type_id: 0,
-                        second_entity_id: 0,
-                        staticData: { entityId: rowValue.id }
-                    }, function(response) {
-                        //console.log("response", response);
-                        if (response.status) {
-                            args.relationsDataTable.feedData(response);
-                            //args.relationsDataTable.refresh();
-                        }
-                    });
-                    //console.log("insert");
-                },
-                customControlls: function(dt, cpName) {
-                    dt[cpName].relsToXmlDiv = new si4.widget.si4Element({parent:dt[cpName].selector, tagClass:"inline filterButton vmid"});
-                    dt[cpName].relsToXmlImg = new si4.widget.si4Element({parent:dt[cpName].relsToXmlDiv.selector, tagName:"img", tagClass:"icon12 vmid"});
-                    dt[cpName].relsToXmlImg.selector.attr("src", "/img/icon/apply.png");
-                    dt[cpName].relsToXmlSpan = new si4.widget.si4Element({parent:dt[cpName].relsToXmlDiv.selector, tagName:"span", tagClass:"vmid"});
-                    dt[cpName].relsToXmlSpan.selector.html("Save relations to XML");
-                    dt[cpName].relsToXmlDiv.selector.click(function(){
-
-                        // TODO
-
-                        var parser = new DOMParser();
-                        var xml = args.xmlTab.fieldXml.getValue();
-                        var xmlDoc = parser.parseFromString(xml,"text/xml");
-
-                        //console.log("xml", xml);
-                        //console.log("xmlDoc", xmlDoc);
-
-                        var metsStructMap;
-                        if (xmlDoc.getElementsByTagName("METS:structMap").length) {
-                            // <METS:structMap> exists
-                            metsStructMap = xmlDoc.getElementsByTagName("METS:structMap")[0];
-                            // Clear structMap children
-                            for (var i = 0; i < metsStructMap.children.length; i++) {
-                                metsStructMap.removeChild(metsStructMap.children[i]);
-                            }
-                        } else {
-                            // <METS:structMap> does not exist
-                            metsStructMap = xmlDoc.createElement("METS:structMap");
-                            xmlDoc.appendChild(metsStructMap);
-                        }
-
-                        var parentId = null;
-                        var childIds = [];
-                        var entityIdsToRequest = [];
-
-                        var structType = (si4.data.structTypes[args.basicTab.fieldStructTypeId.getValue()] || "").toLowerCase();
-
-                        var dtRels = dt.getValue();
-                        for (var relIdx = 0; relIdx < dtRels.length; relIdx++) {
-                            var relId = parseInt(dtRels[relIdx].related_entity_id);
-                            var relType = dtRels[relIdx].relation_type_id;
-                            if (relType == "1n") {
-                                // Child of
-                                parentId = relId;
-                                entityIdsToRequest.push(relId);
-                            } else if (relType == "1r") {
-                                // Parent of
-                                childIds.push(relId);
-                                entityIdsToRequest.push(relId);
-                            }
-                        }
-
-                        metsStructMap.setAttribute("TYPE", parentId ? "dependent" : "primary");
-                        metsStructMap.setAttribute("LABEL", si4.config.repositoryName);
-                        metsStructMap.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-
-
-                        // Get related entities from API...
-
-                        //console.log("entityIdsToRequest", entityIdsToRequest);
-                        si4.api.entityList({ entityIds: entityIdsToRequest}, function(response) {
-                            //console.log("response", response);
-
-                            var parentEntity = null;
-                            var childEntities = {};
-                            for (var respIdx = 0; respIdx < response.data.length; respIdx++) {
-                                var relEntity = response.data[respIdx];
-                                if (relEntity.id == parentId)
-                                    parentEntity = relEntity;
-                                else
-                                    childEntities[relEntity.id] = relEntity;
-                            }
-
-                            //console.log("parentEntity", parentEntity);
-                            console.log("childEntities", childEntities);
-
-                            // TODO: parent collection
-                            var metsDiv1 = xmlDoc.createElement("METS:div");
-                            metsDiv1.setAttribute("TYPE", "collection");
-                            metsStructMap.appendChild(metsDiv1);
-
-                            var metsMptr = xmlDoc.createElement("METS:mptr");
-                            metsMptr.setAttribute("LOCTYPE", "HANDLE");
-                            metsMptr.setAttribute("xlink:href", "http://hdl.handle.net/11686/menu76");
-                            metsDiv1.appendChild(metsMptr);
-
-                            var metsDiv2 = xmlDoc.createElement("METS:div");
-                            metsDiv2.setAttribute("TYPE", structType);
-                            metsDiv2.setAttribute("DMDID", "dc."+args.row.id+" mods."+args.row.id);
-                            metsDiv2.setAttribute("ADMID", "premis."+args.row.id+" entity."+args.row.id);
-                            metsDiv1.appendChild(metsDiv2);
-
-                            // Files
-                            var metsFptr = xmlDoc.createElement("METS:fptr");
-                            metsFptr.setAttribute("FILEID", "thumbnail");
-                            metsDiv2.appendChild(metsFptr);
-
-                            for (var childIdx = 0; childIdx < childIds.length; childIdx++) {
-                                var childId = childIds[childIdx];
-                                var childEntity = childEntities[childId];
-                                var metsChildDiv = xmlDoc.createElement("METS:div");
-                                metsChildDiv.setAttribute("TYPE", childEntity.struct_type_name);
-                                metsChildDiv.setAttribute("ORDER", childIdx);
-
-                                var metsChildMptr = xmlDoc.createElement("METS:mptr");
-                                metsChildMptr.setAttribute("LOCTYPE", "HANDLE");
-                                metsChildMptr.setAttribute("xlink:href", childEntity.elasticData.objId);
-                                metsChildDiv.appendChild(metsChildMptr);
-
-                                metsDiv2.appendChild(metsChildDiv);
-                            }
-
-
-                            // Put xml into editor
-                            var xmlText = new XMLSerializer().serializeToString(xmlDoc);
-                            var xmlTextPretty = vkbeautify.xml(xmlText);
-                            args.xmlTab.fieldXml.setValue(xmlTextPretty);
-
-                            //console.log(xmlText);
-
-                            args.xmlTab.selectTab();
-                            args.xmlTab.fieldXml.codemirror.refresh();
-
-
-                            window.xmlDoc = xmlDoc;
-                            window.metsStructMap = metsStructMap;
-                            window.dtRels = dtRels;
-
-                        });
-
-                        // .getElementsByTagName("METS:mdWrap")[0]
-                        // .getElementsByTagName("METS:xmlData")[0];
-
-                        // xmlDoc.getElementsByTagName("METS:metsHdr")[0]
-                        // xmlDoc.getElementsByTagName("METS:dmdSec")[1]
-
-
-                    });
-                },
-                tabPage: args.relationsTab,
-                fields: {
-                    id: { editable: false },
-                    related_entity_id: { caption: si4.translate("field_relatedEntity"), editable: true, editorType: "input" },
-                    relation_type_id: {
-                        caption: si4.translate("field_relationType"),
-                        width: 100,
-                        editable: true,
-                        editorType: "select",
-                        selectOptions: si4.data.relationTypesSelOpts,
-                    },
-
-                    //_delete: { width: 50 },
-                    id: { visible: false },
-                    created_at: { visible: false },
-                    updated_at: { visible: false }
-                }
-            });
-        });
-        */
-
-
         // *** Files Tab ***
         args.filesTab = args.createContentTab("filesTab", { canClose: false });
         args.filesTab.panel = new si4.widget.si4Panel({ parent: args.filesTab.content.selector });
@@ -609,10 +523,22 @@ var F = function(args){
             captionWidth: "90px"
         });
 
+
+        /*
+        // *** Files Tab ***
+        args.filesTab = args.createContentTab("filesTab", { canClose: false });
+        args.filesTab.panel = new si4.widget.si4Panel({ parent: args.filesTab.content.selector });
+        args.filesTab.panelGroup = args.filesTab.panel.addGroup("TODO: Tabela datotek in možnost dodajanja, brisanja.");
+        args.filesTab.form = new si4.widget.si4Form({
+            parent: args.filesTab.panelGroup.content.selector,
+            captionWidth: "90px"
+        });
+        */
+
     };
 
 
-    args.saveEntity = function(){
+    args.saveEntity = function(keepOpen){
         var basicFormValue = args.basicTab.form.getValue();
         var xmlFormValue = args.xmlTab.form.getValue();
 
@@ -620,7 +546,7 @@ var F = function(args){
         //console.log("formValue", basicFormValue);
         si4.api["saveEntity"](formValue, function(data) {
             if (data.status) {
-                if (confirm(si4.translate("saved_confirm_close"))) {
+                if (!keepOpen && confirm(si4.translate("saved_confirm_close"))) {
                     args.mainTab.destroyTab();
                 }
             } else {
@@ -633,14 +559,31 @@ var F = function(args){
 
     if (!args.row || !args.row.id) {
         args.row = {};
-        args.row.struct_type = args.caller == "collectionList" ? "collection" : "entity";
-        args.row.entity_type = args.caller == "collectionList" ? "primary" : "dependant";
+        switch (args.caller) {
+            case "entityList":default:
+                args.row.struct_type = "entity";
+                args.row.entity_type = "dependant";
+                break;
+            case "collectionList":
+                args.row.struct_type = "collection";
+                args.row.entity_type = "primary";
+                break;
+            case "fileList":
+                args.row.struct_type = "file";
+                args.row.entity_type = "primary";
+                break;
+        }
         args.row.indexed = true;
         args.row.enabled = true;
 
-        si4.api["reserveEntityId"]({}, function(response) {
-            args.row.id = response.data;
-            args.row.xmlData = si4.entity.template.getEmptyMetsXml({ id: args.row.id });
+        si4.api["reserveEntityId"]({ struct_type: args.row.struct_type }, function(response) {
+            args.row.id = response.data.id;
+            args.row.handle_id = response.data.handle_id;
+            args.row.xmlData = si4.entity.template.getEmptyMetsXml({
+                id: args.row.id,
+                handleId: args.row.handle_id,
+                structType: args.row.struct_type,
+            });
             create();
         });
     } else {

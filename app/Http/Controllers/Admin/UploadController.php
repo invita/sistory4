@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\EntityImport;
+use App\Helpers\FileHelpers;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
 use App\Models\Relation;
@@ -78,12 +79,20 @@ class UploadController extends Controller
         $today = date("Y-m-d.H-i-s."); // 2018-01-15--23-21-15-
         $tempFileName = $today.random_int(1000000, 9999999).".".$ext;
 
-        $request->file->storeAs('public/temp', $tempFileName);
+        $tempStorageName = "public/temp/".$tempFileName;
+        $request->file->storeAs("public/temp", $tempFileName);
+
+        $checksum = md5_file(storage_path('app')."/".$tempStorageName);
+        $size = Storage::size($tempStorageName);
+        $mimeType = Storage::mimeType($tempStorageName);
 
         $data = [
             "tempFileName" => $tempFileName,
             "realFileName" => $realFileName,
-            "url" => "/storage/preview/?path=temp/".$tempFileName
+            "url" => "/storage/preview/?path=temp/".$tempFileName,
+            "checksum" => $checksum,
+            "size" => $size,
+            "mimeType" => $mimeType,
         ];
         return ["status" => $status, "data" => $data, "error" =>  $error];
     }

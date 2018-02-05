@@ -2,7 +2,7 @@
 namespace App\Helpers;
 
 /**
- * Class ElasticHelper
+ * Class ElasticHelpers
  *
  * @package  Sistory4
  * @author   Matic Vrscaj

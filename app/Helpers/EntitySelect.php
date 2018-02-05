@@ -94,6 +94,7 @@ class EntitySelect
 
             //print_r($entity);
 
+            $handle_id = "";
             $parent = 0;
             $primary = 0;
             $IDAttr = "";
@@ -102,6 +103,9 @@ class EntitySelect
             $date = "";
             $xml = "";
             $data = null;
+
+            $fileName = "";
+            $fileUrl = "";
 
             $structType = "";
             $entityType = "";
@@ -112,6 +116,7 @@ class EntitySelect
                 $structType = Si4Util::getArg($_source, "struct_type", "");
                 $entityType = Si4Util::getArg($_source, "entity_type", "");
 
+                $handle_id = Si4Util::getArg($_source, "handle_id", "");
                 $parent = Si4Util::getArg($_source, "parent", 0);
                 $primary = Si4Util::getArg($_source, "primary", 0);
                 $data = Si4Util::getArg($_source, "data", null);
@@ -124,10 +129,15 @@ class EntitySelect
                 $title = isset($dcMetadata["title"]) ? join(" : ", $dcMetadata["title"]) : "";
                 $creator = isset($dcMetadata["creator"]) ? join("; ", $dcMetadata["creator"]) : "";
                 $date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
+
+                $fileName = Si4Util::pathArg($data, "files/0/id", "");
+                if ($fileName) $fileUrl = FileHelpers::getPreviewUrl($id, $fileName);
+
             }
 
             $result[] = [
                 "id" => $id,
+                "handle_id" => $handle_id,
                 "parent" => $parent,
                 "primary" => $primary,
                 "struct_type" => $structType,
@@ -136,6 +146,8 @@ class EntitySelect
                 "title" => $title,
                 "creator" => $creator,
                 "date" => $date,
+                "fileName" => $fileName,
+                "fileUrl" => $fileUrl,
                 "xmlData" => $xml,
                 "elasticData" => $data,
             ];

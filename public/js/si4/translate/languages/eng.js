@@ -22,6 +22,19 @@ si4.translations = {
     entities_collectionList_importTab_text: "Import",
     entities_collectionList_exportTab_text: "Export",
 
+    // FileList
+    entities_fileList_mainTab_text: "File list",
+    entities_fileList_contentTab_text: "List",
+    entities_fileList_importTab_text: "Import",
+    entities_fileList_exportTab_text: "Export",
+    entities_fileTitleNew: "New file",
+    entities_fileTitleEdit: "File [[id]] - [[name]]",
+
+    // FileDetails
+    //files_fileDetails_mainTab_text: "File [[id]] - [[name]]",
+    //files_fileDetails_contentTab_text: "Edit",
+
+
     // DbEntityList
     entities_dbEntityList_mainTab_text: "Database entity list",
     entities_dbEntityList_contentTab_text: "List",
@@ -33,16 +46,6 @@ si4.translations = {
     entities_entityDetails_mdEditorTab_text: "Metadata Editor",
     entities_entityDetails_relationsTab_text: "Relations",
     entities_entityDetails_filesTab_text: "Files",
-
-    // FileList
-    files_fileList_mainTab_text: "File list",
-    files_fileList_contentTab_text: "List",
-    file_fileTitleNew: "New file",
-    file_fileTitleEdit: "File [[id]] - [[name]]",
-
-    // FileDetails
-    files_fileDetails_mainTab_text: "File [[id]] - [[name]]",
-    files_fileDetails_contentTab_text: "Edit",
 
     // UserList
     system_userList_mainTab_text: "User list",
@@ -70,6 +73,7 @@ si4.translations = {
 
     // Fields
     field_id: "Id",
+    field_handleId: "Handle Id",
     field_title: "Title",
     field_creator: "Creators",
     field_contributor: "Contributors",
@@ -85,6 +89,7 @@ si4.translations = {
     field_source: "Source",
     field_subject: "Subject",
     field_type: "Type",
+    field_physicalFile: "Physical file",
 
     field_year: "Year",
     field_structType: "Structure type",
@@ -142,6 +147,7 @@ si4.translations = {
     // Enum: Structure Types
     st_entity: "Entity",
     st_collection: "Collection",
+    st_file: "File",
 
     // Enum: Entity Types
     et_primary: "Primary",
