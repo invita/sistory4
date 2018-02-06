@@ -538,7 +538,7 @@ var F = function(args){
     };
 
 
-    args.saveEntity = function(keepOpen){
+    args.saveEntity = function(){
         var basicFormValue = args.basicTab.form.getValue();
         var xmlFormValue = args.xmlTab.form.getValue();
 
@@ -546,7 +546,9 @@ var F = function(args){
         //console.log("formValue", basicFormValue);
         si4.api["saveEntity"](formValue, function(data) {
             if (data.status) {
-                if (!keepOpen && confirm(si4.translate("saved_confirm_close"))) {
+                args.basicTab.realFileName.setValue("");
+                args.basicTab.tempFileName.setValue("");
+                if (confirm(si4.translate("saved_confirm_close"))) {
                     args.mainTab.destroyTab();
                 }
             } else {
