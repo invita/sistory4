@@ -334,7 +334,8 @@ var F = function(args){
             // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
             var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
 
-            var fieldNames = si4.entity.mdHelper.dcFieldOrder.reverse();
+            var fieldNames = si4.entity.mdHelper.dcFieldOrder.slice(0); // Clone
+            fieldNames.reverse();
             for (var fieldIdx in fieldNames) {
                 var fieldName = fieldNames[fieldIdx];
                 var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
@@ -453,7 +454,7 @@ var F = function(args){
             });
         };
 
-        args.relationsTab.rendeHierarchy = function(response) {
+        args.relationsTab.renderHierarchy = function(response) {
 
             var indentStep = 25;
 
@@ -504,7 +505,7 @@ var F = function(args){
                     args.relationsTab.statusDiv = new si4.widget.si4Element({ parent: args.relationsTab.content.selector });
                     args.relationsTab.statusDiv.addHtml("Error loading hierarchy.");
                 } else {
-                    args.relationsTab.rendeHierarchy(response);
+                    args.relationsTab.renderHierarchy(response);
 
                     // response.data.children
                     // response.data.parents
@@ -546,8 +547,10 @@ var F = function(args){
         //console.log("formValue", basicFormValue);
         si4.api["saveEntity"](formValue, function(data) {
             if (data.status) {
-                args.basicTab.realFileName.setValue("");
-                args.basicTab.tempFileName.setValue("");
+                if (args.row.struct_type == "file") {
+                    args.basicTab.realFileName.setValue("");
+                    args.basicTab.tempFileName.setValue("");
+                }
                 if (confirm(si4.translate("saved_confirm_close"))) {
                     args.mainTab.destroyTab();
                 }
