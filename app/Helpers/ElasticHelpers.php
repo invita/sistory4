@@ -24,10 +24,8 @@ class ElasticHelpers
         if ($indexExists) {
             $deleteIndexArgs = [
                 "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
-                "type" => "",
-                "id" => "",
             ];
-            \Elasticsearch::connection()->delete($deleteIndexArgs);
+            \Elasticsearch::connection()->indices()->delete($deleteIndexArgs);
         }
 
         $createIndexArgs = [
@@ -47,8 +45,7 @@ class ElasticHelpers
 }
 HERE;
 
-        //return @\Elasticsearch::connection()->create($createIndexArgs);
-        return @\Elasticsearch::connection()->indices()->create($createIndexArgs);
+        return \Elasticsearch::connection()->indices()->create($createIndexArgs);
     }
 
 
