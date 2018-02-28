@@ -3,8 +3,11 @@ var F = function(args){
 
     var create = function() {
         var rowValue = args.row ? args.row : {};
-
         //console.log("entity args", args);
+        console.log("rowValue", rowValue);
+
+        var struct_type = rowValue.struct_type;
+
         args.createMainTab();
 
         // *** Basic Tab ***
@@ -46,7 +49,7 @@ var F = function(args){
         args.basicTab.fieldEntityTypeId = args.basicTab.form.addInput({
             name: "entity_type",
             value: rowValue.entity_type,
-            type: "select",
+            type: struct_type == "file" ? "hidden" : "select",
             caption: si4.translate("field_entityType"),
             values: si4.data.entityTypes,
             addEmptyOption: true,
@@ -57,12 +60,13 @@ var F = function(args){
             value: rowValue.parent,
             type: "text",
             caption: si4.translate("field_parent"),
+            readOnly: struct_type == "file"
         });
 
         args.basicTab.fieldParent = args.basicTab.form.addInput({
             name: "primary",
             value: rowValue.primary,
-            type: "text",
+            type: struct_type == "file" ? "hidden" : "text",
             caption: si4.translate("field_primary"),
         });
 
@@ -188,29 +192,50 @@ var F = function(args){
             parent: args.basicTab.panelGroupPreview.content.selector,
             captionWidth: "90px"
         });
-        args.basicTab.fieldTitle = args.basicTab.formPreview.addInput({
-            name:"title",
-            value:rowValue.title,
-            type:"text",
-            caption:si4.translate("field_title"),
-            readOnly: true
-        });
-        args.basicTab.fieldAuthor = args.basicTab.formPreview.addInput({
-            name:"author",
-            value:rowValue.creator,
-            type:"text",
-            caption:si4.translate("field_creator"),
-            readOnly: true
-        });
-        args.basicTab.fieldYear = args.basicTab.formPreview.addInput({
-            name:"year",
-            value:rowValue.date,
-            type:"text",
-            caption:si4.translate("field_year"),
-            readOnly: true
-        });
 
-        if (rowValue.struct_type == "file") {
+        if (struct_type == "file") {
+            args.basicTab.fieldFileName = args.basicTab.formPreview.addInput({
+                name:"fileName",
+                value:rowValue.fileName,
+                type:"text",
+                caption:si4.translate("field_name"),
+                readOnly: true
+            });
+            args.basicTab.fieldFileFormat = args.basicTab.formPreview.addInput({
+                name:"format",
+                value:"",//rowValue.format,
+                type:"text",
+                caption:si4.translate("field_mimeType"),
+                readOnly: true
+            });
+            args.basicTab.fieldFileSize = args.basicTab.formPreview.addInput({
+                name:"fileSize",
+                value:"",//rowValue.date,
+                type:"text",
+                caption:si4.translate("field_size"),
+                readOnly: true
+            });
+            args.basicTab.fieldFileTimestamp = args.basicTab.formPreview.addInput({
+                name:"fileTimestamp",
+                value:"",
+                type:"text",
+                caption:si4.translate("field_timestamp"),
+                readOnly: true
+            });
+            args.basicTab.fieldFileChecksum = args.basicTab.formPreview.addInput({
+                name:"fileChecksum",
+                value:"",
+                type:"text",
+                caption:si4.translate("field_checksum"),
+                readOnly: true
+            });
+            args.basicTab.fieldFileChecksumAlgo = args.basicTab.formPreview.addInput({
+                name:"fileChecksumAlgo",
+                value:"MD5",
+                type:"text",
+                caption:si4.translate("field_checksumAlgo"),
+                readOnly: true
+            });
             args.basicTab.filePreviewDiv = new si4.widget.si4Element({
                 parent: args.basicTab.panelGroupPreview.content.selector });
             args.basicTab.filePreviewImg = new si4.widget.si4Element({
@@ -228,6 +253,28 @@ var F = function(args){
                     args.basicTab.filePreviewImg.selector.attr("src", fileUrl);
                 }
             }
+        } else {
+            args.basicTab.fieldTitle = args.basicTab.formPreview.addInput({
+                name:"title",
+                value:rowValue.title,
+                type:"text",
+                caption:si4.translate("field_title"),
+                readOnly: true
+            });
+            args.basicTab.fieldAuthor = args.basicTab.formPreview.addInput({
+                name:"author",
+                value:rowValue.creator,
+                type:"text",
+                caption:si4.translate("field_creator"),
+                readOnly: true
+            });
+            args.basicTab.fieldYear = args.basicTab.formPreview.addInput({
+                name:"year",
+                value:rowValue.date,
+                type:"text",
+                caption:si4.translate("field_year"),
+                readOnly: true
+            });
         }
 
 
@@ -291,238 +338,247 @@ var F = function(args){
 
 
         // *** Metadata Editor Tab ***
-        args.editorTab = args.createContentTab("mdEditorTab", { canClose: false });
-        args.editorTab.panel = new si4.widget.si4Panel({ parent: args.editorTab.content.selector });
-        args.editorTab.panelGroup = args.editorTab.panel.addGroup();
-        args.editorTab.form = new si4.widget.si4Form({
-            parent: args.editorTab.panelGroup.content.selector,
-            captionWidth: "90px"
-        });
+        if (struct_type != "file") {
+            args.editorTab = args.createContentTab("mdEditorTab", {canClose: false});
+            args.editorTab.panel = new si4.widget.si4Panel({parent: args.editorTab.content.selector});
+            args.editorTab.panelGroup = args.editorTab.panel.addGroup();
+            args.editorTab.form = new si4.widget.si4Form({
+                parent: args.editorTab.panelGroup.content.selector,
+                captionWidth: "90px"
+            });
 
-        args.editorTab.fields = {};
+            args.editorTab.fields = {};
 
 
-        for (var fieldIdx in si4.entity.mdHelper.dcFieldOrder) {
-            var fieldName = si4.entity.mdHelper.dcFieldOrder[fieldIdx];
-            var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+            for (var fieldIdx in si4.entity.mdHelper.dcFieldOrder) {
+                var fieldName = si4.entity.mdHelper.dcFieldOrder[fieldIdx];
+                var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
 
-            args.editorTab.fields[fieldName] = args.editorTab.form.addInput({
-                name: fieldName,
-                type: fieldBP.inputType,
-                caption: fieldBP.translation,
-                withCode: fieldBP.withCode,
-                values: fieldBP.values,
-                isArray: true,
+                args.editorTab.fields[fieldName] = args.editorTab.form.addInput({
+                    name: fieldName,
+                    type: fieldBP.inputType,
+                    caption: fieldBP.translation,
+                    withCode: fieldBP.withCode,
+                    values: fieldBP.values,
+                    isArray: true,
+                });
+            }
+
+            args.editorTab.saveButton = args.editorTab.form.addInput({
+                caption: si4.translate("field_actions"),
+                value: si4.translate("button_save"),
+                type: "submit",
+            });
+
+            // Convert DC fields to XML
+            args.editorTab.saveButton.selector.click(function (val) {
+                var formValue = args.editorTab.form.getValue();
+                console.log("formValue", formValue);
+
+                var xmlStr = args.xmlTab.fieldXml.getValue();
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+
+                // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
+                var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
+
+                var fieldNames = si4.entity.mdHelper.dcFieldOrder.slice(0); // Clone
+                fieldNames.reverse();
+                for (var fieldIdx in fieldNames) {
+                    var fieldName = fieldNames[fieldIdx];
+                    var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+                    var fieldValues = formValue[fieldName];
+
+                    for (var childIdx = xmlDC.children.length - 1; childIdx >= 0; childIdx--)
+                        if (xmlDC.children[childIdx].tagName == "dcterms:" + fieldName)
+                            xmlDC.children[childIdx].remove();
+
+                    if (!fieldValues.length || fieldValues.length == 1 && !fieldValues[0]) continue;
+
+                    for (var i = fieldValues.length - 1; i >= 0; i--) {
+                        var fieldValue = fieldValues[i];
+                        var newEl = xmlDoc.createElement("dcterms:" + fieldName);
+
+                        if (fieldBP.withCode) {
+                            var attr = xmlDoc.createAttribute(fieldBP.codeXmlName);
+                            attr.value = fieldValue.codeId;
+                            newEl.attributes.setNamedItem(attr);
+                            newEl.textContent = fieldValue.value;
+                        } else {
+                            newEl.textContent = fieldValue;
+                        }
+
+                        if (fieldBP.addXmlAttrs) {
+                            for (var i in fieldBP.addXmlAttrs) {
+                                var addAttr = xmlDoc.createAttribute(fieldBP.addXmlAttrs[i].name);
+                                addAttr.value = fieldBP.addXmlAttrs[i].value;
+                                newEl.attributes.setNamedItem(addAttr);
+                            }
+                        }
+
+                        if (xmlDC.children.length) {
+                            xmlDC.insertBefore(newEl, xmlDC.children[0]);
+                        } else {
+                            xmlDC.appendChild(newEl);
+                        }
+                    }
+                }
+
+
+                // Put xml into editor
+                var xmlText = new XMLSerializer().serializeToString(xmlDoc);
+                var xmlTextPretty = vkbeautify.xml(xmlText);
+                args.xmlTab.fieldXml.setValue(xmlTextPretty);
+
+                //args.xmlTab.selectTab();
+                args.xmlTab.fieldXml.codemirror.refresh();
+
+                args.saveEntity();
+            });
+
+            // Parse XML to DC fields
+            args.editorTab.onActive(function () {
+                args.editorTab.form.allInputs.clear();
+                var xmlStr = args.xmlTab.fieldXml.getValue();
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+
+                // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
+                var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
+                var formValFromXml = {};
+                for (var i = 0; i < xmlDC.children.length; i++) {
+                    var dcElement = xmlDC.children[i];
+                    // dcElement.tagName;
+                    // dcElement.textContent;
+                    // dcElement.attributes;
+
+                    if (dcElement.tagName.indexOf(":") == -1) continue;
+                    var fieldName = dcElement.tagName.split(":")[1];
+                    var fieldValue = dcElement.textContent;
+
+                    if (!si4.entity.mdHelper.dcBlueprint[fieldName]) continue;
+                    var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+
+                    var inputValue;
+                    if (fieldBP.withCode) {
+                        inputValue = {
+                            codeId: dcElement.attributes.getNamedItem(fieldBP.codeXmlName).value,
+                            value: fieldValue
+                        };
+                    } else {
+                        inputValue = fieldValue;
+                    }
+
+                    if (!formValFromXml[fieldName]) formValFromXml[fieldName] = [];
+                    formValFromXml[fieldName].push(inputValue);
+                }
+
+                window.xmlDoc = xmlDoc;
+                console.log(formValFromXml);
+                args.editorTab.form.setValue(formValFromXml);
             });
         }
 
-        args.editorTab.saveButton = args.editorTab.form.addInput({
-            caption: si4.translate("field_actions"),
-            value: si4.translate("button_save"),
-            type:"submit",
-        });
-
-        // Convert DC fields to XML
-        args.editorTab.saveButton.selector.click(function(val) {
-            var formValue = args.editorTab.form.getValue();
-            console.log("formValue", formValue);
-
-            var xmlStr = args.xmlTab.fieldXml.getValue();
-            var parser = new DOMParser();
-            var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
-
-            // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
-            var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
-
-            var fieldNames = si4.entity.mdHelper.dcFieldOrder.slice(0); // Clone
-            fieldNames.reverse();
-            for (var fieldIdx in fieldNames) {
-                var fieldName = fieldNames[fieldIdx];
-                var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
-                var fieldValues = formValue[fieldName];
-
-                for (var childIdx = xmlDC.children.length -1; childIdx >= 0; childIdx--)
-                    if (xmlDC.children[childIdx].tagName == "dcterms:"+fieldName)
-                        xmlDC.children[childIdx].remove();
-
-                if (!fieldValues.length || fieldValues.length == 1 && !fieldValues[0]) continue;
-
-                for (var i = fieldValues.length -1; i >= 0; i--) {
-                    var fieldValue = fieldValues[i];
-                    var newEl = xmlDoc.createElement("dcterms:"+fieldName);
-
-                    if (fieldBP.withCode) {
-                        var attr = xmlDoc.createAttribute(fieldBP.codeXmlName);
-                        attr.value = fieldValue.codeId;
-                        newEl.attributes.setNamedItem(attr);
-                        newEl.textContent = fieldValue.value;
-                    } else {
-                        newEl.textContent = fieldValue;
-                    }
-
-                    if (fieldBP.addXmlAttrs) {
-                        for (var i in fieldBP.addXmlAttrs) {
-                            var addAttr = xmlDoc.createAttribute(fieldBP.addXmlAttrs[i].name);
-                            addAttr.value = fieldBP.addXmlAttrs[i].value;
-                            newEl.attributes.setNamedItem(addAttr);
-                        }
-                    }
-
-                    if (xmlDC.children.length) {
-                        xmlDC.insertBefore(newEl, xmlDC.children[0]);
-                    } else {
-                        xmlDC.appendChild(newEl);
-                    }
-                }
-            }
-
-
-            // Put xml into editor
-            var xmlText = new XMLSerializer().serializeToString(xmlDoc);
-            var xmlTextPretty = vkbeautify.xml(xmlText);
-            args.xmlTab.fieldXml.setValue(xmlTextPretty);
-
-            //args.xmlTab.selectTab();
-            args.xmlTab.fieldXml.codemirror.refresh();
-
-            args.saveEntity();
-        });
-
-        // Parse XML to DC fields
-        args.editorTab.onActive(function() {
-            args.editorTab.form.allInputs.clear();
-            var xmlStr = args.xmlTab.fieldXml.getValue();
-            var parser = new DOMParser();
-            var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
-
-            // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
-            var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
-            var formValFromXml = {};
-            for (var i = 0; i < xmlDC.children.length; i++) {
-                var dcElement = xmlDC.children[i];
-                // dcElement.tagName;
-                // dcElement.textContent;
-                // dcElement.attributes;
-
-                if (dcElement.tagName.indexOf(":") == -1) continue;
-                var fieldName = dcElement.tagName.split(":")[1];
-                var fieldValue = dcElement.textContent;
-
-                if (!si4.entity.mdHelper.dcBlueprint[fieldName]) continue;
-                var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
-
-                var inputValue;
-                if (fieldBP.withCode) {
-                    inputValue = { codeId: dcElement.attributes.getNamedItem(fieldBP.codeXmlName).value, value: fieldValue };
-                } else {
-                    inputValue = fieldValue;
-                }
-
-                if (!formValFromXml[fieldName]) formValFromXml[fieldName] = [];
-                formValFromXml[fieldName].push(inputValue);
-            }
-
-            window.xmlDoc = xmlDoc;
-            console.log(formValFromXml);
-            args.editorTab.form.setValue(formValFromXml);
-        });
-
 
         // *** Relations Tab ***
-        args.relationsTab = args.createContentTab("relationsTab", { canClose: false });
-        args.relationsTab.addHierarchyElement = function(hArgs) {
+        if (struct_type != "file") {
+            args.relationsTab = args.createContentTab("relationsTab", { canClose: false });
+            args.relationsTab.addHierarchyElement = function(hArgs) {
 
-            var rowEl = new si4.widget.si4Element({ parent: hArgs.container, tagClass: "entityHierarchyRow" });
-            if (hArgs.addClass) rowEl.selector.addClass(hArgs.addClass)
-            if (hArgs.entityData.struct_type == "entity") rowEl.selector.addClass("stEntity");
-            if (hArgs.entityData.struct_type == "collection") rowEl.selector.addClass("stCollection");
-            rowEl.selector.css("margin-left", hArgs.indent+"px");
-            var line = '<span class="ehTitle">' +hArgs.entityData.title + '</span>';
-            if (hArgs.entityData.creator) line = '<span class="ehCreator">' +hArgs.entityData.creator+ '</span> : '+ line;
-            if (hArgs.entityData.date) line = line + ' '+'<span class="ehDate">' +hArgs.entityData.date+ '</span>';
-            line = '<span class="ehId">[' +hArgs.entityData.id + ']</span> ' +line;
-            rowEl.selector.html(line);
+                var rowEl = new si4.widget.si4Element({ parent: hArgs.container, tagClass: "entityHierarchyRow" });
+                if (hArgs.addClass) rowEl.selector.addClass(hArgs.addClass)
+                if (hArgs.entityData.struct_type == "entity") rowEl.selector.addClass("stEntity");
+                if (hArgs.entityData.struct_type == "collection") rowEl.selector.addClass("stCollection");
+                rowEl.selector.css("margin-left", hArgs.indent+"px");
+                var line = '<span class="ehTitle">' +hArgs.entityData.title + '</span>';
+                if (hArgs.entityData.creator) line = '<span class="ehCreator">' +hArgs.entityData.creator+ '</span> : '+ line;
+                if (hArgs.entityData.date) line = line + ' '+'<span class="ehDate">' +hArgs.entityData.date+ '</span>';
+                line = '<span class="ehId">[' +hArgs.entityData.id + ']</span> ' +line;
+                rowEl.selector.html(line);
 
-            rowEl.selector.click(function() {
-                si4.loadModule({
-                    moduleName: "Entities/EntityDetails",
-                    caller: "entityList",
-                    id: hArgs.entityData.id,
-                    row: hArgs.entityData,
-                    tabPage: args.tabPage
+                rowEl.selector.click(function() {
+                    si4.loadModule({
+                        moduleName: "Entities/EntityDetails",
+                        caller: "entityList",
+                        id: hArgs.entityData.id,
+                        row: hArgs.entityData,
+                        tabPage: args.tabPage
+                    });
                 });
-            });
-        };
+            };
 
-        args.relationsTab.renderHierarchy = function(response) {
+            args.relationsTab.renderHierarchy = function(response) {
 
-            var indentStep = 25;
+                var indentStep = 25;
 
-            var indent = 0;
+                var indent = 0;
 
-            args.relationsTab.content.selector.empty();
-            var containerEl = new si4.widget.si4Element({ parent: args.relationsTab.content.selector, tagClass: "entityHierarchyContainer" });
+                args.relationsTab.content.selector.empty();
+                var containerEl = new si4.widget.si4Element({ parent: args.relationsTab.content.selector, tagClass: "entityHierarchyContainer" });
 
-            // Render parents
-            for (var i in response.data.parents) {
-                args.relationsTab.addHierarchyElement({
-                    container: containerEl.selector,
-                    entityData: response.data.parents[i],
-                    addClass: "parent",
-                    indent: indent
-                });
-                indent += indentStep;
-            }
-
-            // Render current
-            args.relationsTab.addHierarchyElement({
-                container: containerEl.selector,
-                entityData: response.data.currentEntity,
-                addClass: "current",
-                indent: indent
-            });
-            indent += indentStep;
-
-            // Render children
-            for (var i in response.data.children) {
-                args.relationsTab.addHierarchyElement({
-                    container: containerEl.selector,
-                    entityData: response.data.children[i],
-                    addClass: "child",
-                    indent: indent
-                });
-                indent += indentStep;
-            }
-
-        };
-
-        args.relationsTab.onActive(function(tabArgs) {
-            si4.api.entityHierarchy({ id: rowValue.id, recursiveUp: true }, function (response) {
-
-                console.log("entityHierarchy response", response);
-
-                if (!response.status) {
-                    args.relationsTab.statusDiv = new si4.widget.si4Element({ parent: args.relationsTab.content.selector });
-                    args.relationsTab.statusDiv.addHtml("Error loading hierarchy.");
-                } else {
-                    args.relationsTab.renderHierarchy(response);
-
-                    // response.data.children
-                    // response.data.parents
-                    // response.data.currentEntity
+                // Render parents
+                for (var i in response.data.parents) {
+                    args.relationsTab.addHierarchyElement({
+                        container: containerEl.selector,
+                        entityData: response.data.parents[i],
+                        addClass: "parent",
+                        indent: indent
+                    });
+                    indent += indentStep;
                 }
+
+                // Render current
+                args.relationsTab.addHierarchyElement({
+                    container: containerEl.selector,
+                    entityData: response.data.currentEntity,
+                    addClass: "current",
+                    indent: indent
+                });
+                indent += indentStep;
+
+                // Render children
+                for (var i in response.data.children) {
+                    args.relationsTab.addHierarchyElement({
+                        container: containerEl.selector,
+                        entityData: response.data.children[i],
+                        addClass: "child",
+                        indent: indent
+                    });
+                    indent += indentStep;
+                }
+
+            };
+
+            args.relationsTab.onActive(function(tabArgs) {
+                si4.api.entityHierarchy({ id: rowValue.id, recursiveUp: true }, function (response) {
+
+                    console.log("entityHierarchy response", response);
+
+                    if (!response.status) {
+                        args.relationsTab.statusDiv = new si4.widget.si4Element({ parent: args.relationsTab.content.selector });
+                        args.relationsTab.statusDiv.addHtml("Error loading hierarchy.");
+                    } else {
+                        args.relationsTab.renderHierarchy(response);
+
+                        // response.data.children
+                        // response.data.parents
+                        // response.data.currentEntity
+                    }
+                });
             });
-        });
+        }
 
 
         // *** Files Tab ***
-        args.filesTab = args.createContentTab("filesTab", { canClose: false });
-        args.filesTab.panel = new si4.widget.si4Panel({ parent: args.filesTab.content.selector });
-        args.filesTab.panelGroup = args.filesTab.panel.addGroup("TODO: Tabela datotek in možnost dodajanja, brisanja.");
-        args.filesTab.form = new si4.widget.si4Form({
-            parent: args.filesTab.panelGroup.content.selector,
-            captionWidth: "90px"
-        });
+        if (struct_type != "file") {
+            args.filesTab = args.createContentTab("filesTab", {canClose: false});
+            args.filesTab.panel = new si4.widget.si4Panel({parent: args.filesTab.content.selector});
+            args.filesTab.panelGroup = args.filesTab.panel.addGroup("TODO: Tabela datotek in možnost dodajanja, brisanja.");
+            args.filesTab.form = new si4.widget.si4Form({
+                parent: args.filesTab.panelGroup.content.selector,
+                captionWidth: "90px"
+            });
+        }
 
 
         /*

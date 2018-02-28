@@ -31,15 +31,13 @@ class Entities extends Controller
 
         $status = true;
         $error = null;
-        $lastEntityId = Entity::select("id")->orderBy('id', 'desc')->pluck("id")[0];
-        //print_r($lastEntityId);
-        $newEntityId = $lastEntityId ? intval($lastEntityId) + 1 : 1;
 
+        $newEntityId = Si4Util::nextEntityId();
         $entity = Entity::findOrNew($newEntityId);
         $entity->id = $newEntityId;
         $entity->handle_id = EntityHandleSeq::nextNumSeq($struct_type);
-        $entity->parent = 0;
-        $entity->primary = 0;
+        $entity->parent = "";
+        $entity->primary = "";
 
 
         $entity->struct_type = $struct_type;
@@ -59,8 +57,8 @@ class Entities extends Controller
     {
         $postJson = json_decode(file_get_contents("php://input"), true);
         $id = Si4Util::getArg($postJson, "id", 0);
-        $parent = Si4Util::getInt($postJson, "parent", 0);
-        $primary = Si4Util::getInt($postJson, "primary", 0);
+        $parent = Si4Util::getArg($postJson, "parent", "");
+        $primary = Si4Util::getArg($postJson, "primary", "");
         $structType = Si4Util::getArg($postJson, "struct_type", "");
         $entityType = Si4Util::getArg($postJson, "entity_type", "");
         $xml = Si4Util::getArg($postJson, "xml", "");

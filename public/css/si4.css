@@ -89,6 +89,7 @@ input.si4Input.lookupValue { width:140px; }
 
 .si4InputCaption { display:inline-table; /* width:100px; */ margin:5px; color:#888; font-size:11px; }
 div.si4InputDiv > .si4Input { display:inline-table; }
+div.si4InputDiv > textarea.si4Input { overflow: hidden; }
 div.si4InputDiv > .si4Input.lookupKey { border-right: silver dotted 1px; }
 div.si4InputDiv > .si4Input.lookupValue { border-left:none; }
 

@@ -119,6 +119,9 @@ si4.translations = {
     field_filePurpose: "Purpose",
     field_size: "Size",
     field_mimeType: "Format",
+    field_timestamp: "Timestamp",
+    field_checksum: "Checksum",
+    field_checksumAlgo: "Algorithm",
 
     field_relatedEntity: "Related entity",
     field_relationType: "Relation type",

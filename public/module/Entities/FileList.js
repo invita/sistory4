@@ -28,6 +28,7 @@ var F = function(args){
             parent: { caption: "Parent", hintF: si4.entity.hintHelper.displayEntityInfoDT },
             struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
             entity_type: { visible: false },
+            primary: { visible: false },
 
             //name: { caption: "Naziv" },
             //description: { caption: "Opis" },
