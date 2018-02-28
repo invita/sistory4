@@ -18,23 +18,37 @@ class ElasticHelpers
      */
     public static function recreateIndex()
     {
+        $indexExists = \Elasticsearch::connection()->indices()->exists([
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities")
+        ]);
+        if ($indexExists) {
+            $deleteIndexArgs = [
+                "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+                "type" => "",
+                "id" => "",
+            ];
+            \Elasticsearch::connection()->delete($deleteIndexArgs);
+        }
 
-        $deleteIndexArgs = [
-            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
-            "type" => "",
-            "id" => "",
-        ];
-        \Elasticsearch::connection()->delete($deleteIndexArgs);
-
-        /*
         $createIndexArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
-            "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
-            "id" => "",
-            "body" => []
         ];
-        return @\Elasticsearch::connection()->create($createIndexArgs);
-        */
+        $createIndexArgs["body"] = <<<HERE
+{
+    "settings": {
+        "number_of_shards": 1,
+        "number_of_replicas": 0
+    },
+    "mappings": {
+        "entity": {
+            "date_detection": false
+        }
+    }
+}
+HERE;
+
+        //return @\Elasticsearch::connection()->create($createIndexArgs);
+        return @\Elasticsearch::connection()->indices()->create($createIndexArgs);
     }
 
 

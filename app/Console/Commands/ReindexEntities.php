@@ -44,8 +44,8 @@ class ReindexEntities extends Command
 
         if ($this->confirm('Are you sure you wish to reindex all entities?', true)) {
 
-            // TODO...
-            //ElasticHelpers::recreateIndex();
+            $this->info("Recreate index...");
+            ElasticHelpers::recreateIndex();
 
             $entities = Entity::all();
             $cnt = 0;

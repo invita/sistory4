@@ -125,6 +125,10 @@ class EntityElastic
     private function populateDCData($xmlData) {
         foreach ($xmlData as $key => $val) {
             $keyRepl = strtolower(str_replace("PropName", "", $key));
+            if ($val && count($val)) {
+                // Convert CDATA to string
+                foreach ($val as $i => $v) $val[$i] = (string)$v;
+            }
             $this->data["dmd"]["dc"][$keyRepl] = $val;
         }
     }
@@ -144,6 +148,7 @@ class EntityElastic
         $this->data["files"] = [];
 
         $fileSecGroups = $this->getFromAssoc("FileSecElName/FileGrpElName");
+        if (!$fileSecGroups) return;
         //print_r($fileSecGroups);
 
         foreach ($fileSecGroups as $gIdx => $fileSecGroup) {

@@ -55,7 +55,7 @@ class Entity extends Model
      */
     public function dataSchemaValidate() : bool
     {
-        return self::xmlStringSchemaValidate($this->data);
+        return self::xmlStringSchemaValidate($this->data, $this->struct_type);
     }
 
     public function dataToObject()
@@ -78,7 +78,7 @@ class Entity extends Model
 
         $serializer = $serializerBuilder->build();
 
-        // deserialize the XML into Demo\MyObject object
+        // deserialize the XML into object
         $object = $serializer->deserialize($this->data, 'App\Xsd\Mets\Mets', 'xml');
         $array = $object->toArray();
 
@@ -106,14 +106,30 @@ class Entity extends Model
      * @param array $errors
      * @return bool
      */
-    public static function xmlStringSchemaValidate(string $xmlContent, array &$errors = []) : bool
+    public static function xmlStringSchemaValidate(string $xmlContent, string $structType, array &$errors = []) : bool
     {
         libxml_clear_errors();
         libxml_use_internal_errors(true);
 
+        /*
+        switch ($structType) {
+            case "entity": default:
+                $schemaFile = "mets_entity.xsd";
+                break;
+            case "collection":
+                $schemaFile = "mets_collection.xsd";
+                break;
+            case "file":
+                $schemaFile = "mets_entity.xsd";
+                break;
+        }
+        */
+        $schemaFile = "mets.xsd";
+
         $xml = new \DOMDocument();
         $xml->loadXML($xmlContent);
-        $valid = $xml->schemaValidate(asset("xsd/mets.xsd"));
+        //$valid = $xml->schemaValidate(asset("xsd/mets.xsd"));
+        $valid = $xml->schemaValidate(asset("xsd/".$schemaFile));
         if(!$valid){
             $errors = libxml_get_errors();
         }

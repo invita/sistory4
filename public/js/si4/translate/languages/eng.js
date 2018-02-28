@@ -14,13 +14,15 @@ si4.translations = {
     entities_entityList_importTab_text: "Import",
     entities_entityList_exportTab_text: "Export",
     entities_entityTitleNew: "New entity",
-    entities_entityTitleEdit: "Entity [[id]]",
+    entities_entityTitleEdit: "Entity [[handle_id]]",
 
     // CollectionList
     entities_collectionList_mainTab_text: "Collection list",
     entities_collectionList_contentTab_text: "List",
     entities_collectionList_importTab_text: "Import",
     entities_collectionList_exportTab_text: "Export",
+    //entities_collectionTitleNew: "New collection",
+    //entities_collectionTitleEdit: "Collection [[handle_id]]",
 
     // FileList
     entities_fileList_mainTab_text: "File list",
@@ -28,7 +30,7 @@ si4.translations = {
     entities_fileList_importTab_text: "Import",
     entities_fileList_exportTab_text: "Export",
     entities_fileTitleNew: "New file",
-    entities_fileTitleEdit: "File [[id]] - [[name]]",
+    entities_fileTitleEdit: "File [[handle_id]] - [[name]]",
 
     // FileDetails
     //files_fileDetails_mainTab_text: "File [[id]] - [[name]]",
@@ -40,7 +42,7 @@ si4.translations = {
     entities_dbEntityList_contentTab_text: "List",
 
     // EntityDetails
-    entities_entityDetails_mainTab_text: "Entity [[id]]",
+    entities_entityDetails_mainTab_text: "Entity [[handle_id]]",
     entities_entityDetails_contentTab_text: "Basic",
     entities_entityDetails_xmlTab_text: "Mets Xml",
     entities_entityDetails_mdEditorTab_text: "Metadata Editor",

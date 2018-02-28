@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\Models\Entity;
 
 /**
  * Class Si4Util
@@ -23,6 +24,12 @@ class Si4Util {
             $array = $array[$key];
         }
         return $array;
+    }
+
+    public static function nextEntityId() {
+        $lastEntityId = Entity::select("id")->orderBy('id', 'desc')->pluck("id");
+        if (!$lastEntityId || !isset($lastEntityId[0])) return 1;
+        return $lastEntityId[0] ? intval($lastEntityId[0]) + 1 : 1;
     }
 
 }

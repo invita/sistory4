@@ -88,5 +88,4 @@ Route::group(['prefix' => 'admin'], function () {
             //Route::get('export', "Admin\\DownloadController@export")->name("admin.download.export#get");
         });
     });
-
 });
