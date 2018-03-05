@@ -43,7 +43,12 @@ class UploadController extends Controller
         for($i = 0; $i < $archive->numFiles; $i++)
         {
             $filePath = $archive->getNameIndex($i);
-            $fileName = basename($filePath);
+            $pathExplode = explode("/", $filePath);
+
+            $fileName = array_pop($pathExplode);
+            $handleId = array_pop($pathExplode);
+
+            //$fileName = basename($filePath);
             //echo "filePath: ".$filePath.", fileName: ".$fileName."\n";
             if (substr($fileName, 0, 1) == ".") {
                 // Skip file names starting with .
@@ -60,7 +65,7 @@ class UploadController extends Controller
 
             if ($fileName == "mets.xml") {
                 // echo $fileName.", content:\n"; print_r($content); echo "\n";
-                EntityImport::importEntity($content);
+                EntityImport::importEntity($handleId, $content);
             }
         }
 

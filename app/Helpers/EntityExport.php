@@ -25,9 +25,10 @@ class EntityExport
         $archive->open($fileName, \ZipArchive::CREATE);
 
         foreach ($entityList["data"] as $entity) {
-            $id = $entity["id"];
-            $xml = $entity["data"];
-            $archive->addFromString($pathPrefix.$id."/mets.xml", $xml);
+            $handle_id = $entity["handle_id"];
+
+            $xml = $entity["xmlData"];
+            $archive->addFromString($pathPrefix.$handle_id."/mets.xml", $xml);
         }
 
         $archive->setArchiveComment('Created '.date('Y-M-d'));

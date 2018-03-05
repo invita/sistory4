@@ -42,11 +42,17 @@ class TestTest extends Command
     public function handle()
     {
 
+        //$entity = Entity::where(["handle_id" => "1"])->first();
+        //print_r($entity);
+
         // Calculate primary
+        /*
         $entity = Entity::findOrNew(7);
         $entity->calculatePrimary();
         echo "Calc EntityType: ".$entity->entity_type."\n";
         echo "Calc Primary: ".$entity->primary."\n";
+        */
+
 
         // EntitySelect
         /*

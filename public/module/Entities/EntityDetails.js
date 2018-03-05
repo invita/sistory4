@@ -25,7 +25,7 @@ var F = function(args){
             name: "id",
             value: rowValue.id,
             type: "text",
-            caption: si4.translate("field_id"),
+            caption: si4.translate("field_systemId"),
             readOnly: true,
         });
 

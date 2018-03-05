@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Artisan;
  */
 class EntityImport
 {
-    public static function importEntity($xmlContent) {
+    public static function importEntity($handleId, $xmlContent) {
 
         $xml = simplexml_load_string($xmlContent);
 
@@ -29,24 +29,30 @@ class EntityImport
         $maId = (string)$metsAttributes["ID"];
         $maObjId = (string)$metsAttributes["OBJID"];
 
-        $id = explode(".", $maId)[2];
 
+        $existing = Entity::where(["handle_id" => $handleId])->first();
+        if ($existing) $existing->delete();
+
+        //$id = explode(".", $maId)[2];
         //echo "id: ".$id."\n";
 
-        if ($id) {
+        $newEntityId = Si4Util::nextEntityId();
+        $entity = Entity::findOrNew($newEntityId);
+        $entity->handle_id = $handleId;
+        $entity->struct_type = "entity";
 
-            $entity = Entity::findOrNew($id);
-            $entity->id = $id;
-            $entity->struct_type = in_array($maType, Enums::$structTypes) ? $maType : null;
-            $entity->entity_type = null;
-            $entity->data = $xmlContent;
+        $entity->parent = "";
+        //$entity->calculatePrimary();
+        $entity->entity_type = "";
+        $entity->primary = "";
 
-            //print_r($entity);
+        $entity->data = $xmlContent;
 
-            $entity->save();
+        //print_r($entity);
 
-            Artisan::call("reindex:entity", ["entityId" => $id]);
-        }
+        $entity->save();
+
+        Artisan::call("reindex:entity", ["entityId" => $newEntityId]);
 
         return true;
 

@@ -28,6 +28,7 @@ class DownloadController extends Controller
     public function export(Request $request)
     {
         $postJson = json_decode($request->input("data"), true);
+
         $entityList = EntitySelect::selectEntities($postJson);
 
         $tmpFile = EntityExport::exportEntities($entityList);
