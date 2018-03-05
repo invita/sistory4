@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Helpers\EntitySelect;
+use App\Helpers\Enums;
+use App\Helpers\Si4Util;
 use App\Xsd\AnySimpleTypeHandler;
 use App\Xsd\AnyTypeHandler;
 use App\Xsd\XmlDataATypeHandler;
@@ -47,13 +50,15 @@ class Entity extends Model
         'name',
         'struct_type',
         'entity_type',
-        'data'
+        'data',
+        'active'
     ];
 
     /**
      * @return bool
      */
-    public function dataSchemaValidate() : bool
+    // public function dataSchemaValidate() : bool
+    public function dataSchemaValidate()
     {
         return self::xmlStringSchemaValidate($this->data, $this->struct_type);
     }
@@ -86,12 +91,56 @@ class Entity extends Model
         return $array;
     }
 
+    // Calculates primary entity
+    public function calculatePrimary() {
+
+        switch ($this->struct_type) {
+            case "collection":
+                if ($this->parent) {
+                    $this->entity_type = "dependant";
+                    $hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
+                    $parents = Si4Util::pathArg($hierarchy, "data/parents", []);
+                    $parents[] = Si4Util::pathArg($hierarchy, "data/currentEntity", []);
+                    $this->primary = $parents[0]["handle_id"];
+                } else {
+                    $this->entity_type = "primary";
+                    $this->primary = "";
+                }
+                break;
+
+            case "file":
+                $this->entity_type = "primary";
+                $this->primary = "";
+                break;
+
+            case "entity": default:
+                $this->entity_type = "primary";
+                $this->primary = "";
+                if ($this->parent) {
+                    $hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
+                    $parents = Si4Util::pathArg($hierarchy, "data/parents", []);
+                    $parents[] = Si4Util::pathArg($hierarchy, "data/currentEntity", []);
+                    // Find first entity parent
+                    foreach ($parents as $parent) {
+                        if ($parent["struct_type"] == "entity") {
+                            $this->entity_type = "dependant";
+                            $this->primary = $parent["handle_id"];
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+
     /**
      * @param \App\Models\StructType $structType
      * @param UploadedFile $uploadedFile
      * @return Entity
      */
-    public static function createFromUpload($structType, UploadedFile $uploadedFile) : Entity
+    // public static function createFromUpload($structType, UploadedFile $uploadedFile) : Entity
+    public static function createFromUpload($structType, UploadedFile $uploadedFile)
     {
         $entity = new self;
         $entity->struct_type = $structType;
@@ -106,7 +155,8 @@ class Entity extends Model
      * @param array $errors
      * @return bool
      */
-    public static function xmlStringSchemaValidate(string $xmlContent, string $structType, array &$errors = []) : bool
+    //public static function xmlStringSchemaValidate(string $xmlContent, string $structType, array &$errors = []) : bool
+    public static function xmlStringSchemaValidate(string $xmlContent, string $structType, array &$errors = [])
     {
         libxml_clear_errors();
         libxml_use_internal_errors(true);

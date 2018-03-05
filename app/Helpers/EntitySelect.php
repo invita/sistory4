@@ -18,18 +18,218 @@ use Illuminate\Support\Facades\Cache;
  */
 class EntitySelect
 {
-    public static function selectEntities($requestData) {
-        $staticData = Si4Util::getArg($requestData, "staticData", []);
+
+    // Select entities by handle ids
+    public static function selectEntitiesByHandleIds($handleIds, $requestData = null) {
+        $filter = Si4Util::getArg($requestData, "filter", []);
+        $terms = self::makeTermsFromFilter($filter);
+        $terms["handle_id"] = $handleIds;
+        $elasticQuery = self::prepareElasticQuery($terms);
+        //print_r($elasticQuery);
+
+        $dataElastic = self::fetchElasticData($elasticQuery, $requestData);
+
+        $rowCount = Si4Util::pathArg($dataElastic, "hits/total", 0);
+        $hits = ElasticHelpers::elasticResultToAssocArray($dataElastic);
+        $result = self::processElasticResponse($hits);
+
+        return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
+    }
+
+    // Select entities by id database field
+    public static function selectEntitiesBySystemIds($sysIds, $requestData = null) {
+        $filter = Si4Util::getArg($requestData, "filter", []);
+        $terms = self::makeTermsFromFilter($filter);
+        $terms["id"] = $sysIds;
+        $elasticQuery = self::prepareElasticQuery($terms);
+        //print_r($elasticQuery);
+
+        $dataElastic = self::fetchElasticData($elasticQuery, $requestData);
+        $rowCount = Si4Util::pathArg($dataElastic, "hits/total", 0);
+        $hits = ElasticHelpers::elasticResultToAssocArray($dataElastic);
+        $result = self::processElasticResponse($hits);
+
+        return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
+    }
+
+    // Select entities by parent id
+    public static function selectEntitiesByParentHandle($parentHandle, $requestData = null) {
+        $filter = Si4Util::getArg($requestData, "filter", []);
+        $terms = self::makeTermsFromFilter($filter);
+        $terms["parent"] = $parentHandle;
+        $elasticQuery = self::prepareElasticQuery($terms);
+        //print_r($elasticQuery);
+
+        $dataElastic = self::fetchElasticData($elasticQuery, $requestData);
+        $rowCount = Si4Util::pathArg($dataElastic, "hits/total", 0);
+        $hits = ElasticHelpers::elasticResultToAssocArray($dataElastic);
+        $result = self::processElasticResponse($hits);
+
+        return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
+    }
+
+    // Select entities general
+    public static function selectEntities($requestData = null) {
+        $filter = Si4Util::getArg($requestData, "filter", []);
+        $terms = self::makeTermsFromFilter($filter);
+        $elasticQuery = self::prepareElasticQuery($terms);
+        //print_r($elasticQuery);
+
+        $dataElastic = self::fetchElasticData($elasticQuery, $requestData);
+        $rowCount = Si4Util::pathArg($dataElastic, "hits/total", 0);
+        $hits = ElasticHelpers::elasticResultToAssocArray($dataElastic);
+        $result = self::processElasticResponse($hits);
+
+        return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
+    }
+
+
+    // ********** ********** **********
+
+
+    // Map filter fields, to match elastic structure
+    private static $filterMap = [
+        "id" => "id",
+        "handle_id" => "handle_id",
+        "parent" => "parent",
+        "primary" => "primary",
+        "struct_type" => "struct_type",
+        "title" => "data.dmd.dc.title",
+        "creator" => "data.dmd.dc.creator",
+        "date" => "data.dmd.dc.date",
+    ];
+
+    private static function makeTermsFromFilter($filter) {
+        // Add Filter fields, mapped by filterMap
+        $terms = [];
+        foreach ($filter as $fKey => $fVal) {
+            if (!isset(self::$filterMap[$fKey])) continue;
+            $terms[self::$filterMap[$fKey]] = ElasticHelpers::escapeValue($fVal);
+        }
+        return $terms;
+    }
+
+    private static function prepareElasticQuery($terms = []) {
+        $queryFilterMust = [];
+
+        foreach ($terms as $termKey => $termVal) {
+            if (is_array($termVal)) {
+                $queryFilterMust[] = [
+                    "terms" => [ $termKey => $termVal ]
+                ];
+            } else {
+                $queryFilterMust[] = [
+                    "term" => [ $termKey => $termVal ]
+                ];
+            }
+        }
+
+        $query = [
+            "constant_score" => [
+                "filter" => [
+                    "bool" => [
+                        "must" => $queryFilterMust
+                    ]
+                ]
+            ]
+        ];
+        return $query;
+    }
+
+    private static function fetchElasticData($elasticQuery, $requestData = null) {
         $pageStart = Si4Util::getArg($requestData, "pageStart", 0);
         $pageCount = Si4Util::getArg($requestData, "pageCount", 20);
         $sortField = Si4Util::getArg($requestData, "sortField", "id");
         $sortOrder = Si4Util::getArg($requestData, "sortOrder", "asc");
+        $dataElastic = ElasticHelpers::search($elasticQuery, $pageStart, $pageCount, $sortField, $sortOrder);
+        return $dataElastic;
+    }
+
+    private static function processElasticResponse($hits) {
+        $result = [];
+        foreach ($hits as $id => $hit) {
+
+            //print_r($entity);
+
+            $handle_id = "";
+            $parent = 0;
+            $primary = 0;
+            $title = "";
+            $creator = "";
+            $date = "";
+            $xml = "";
+            $data = null;
+
+            $fileName = "";
+            $fileUrl = "";
+
+            $structType = "";
+            $entityType = "";
+
+            $_source = Si4Util::getArg($hit, "_source", null);
+
+            if ($_source) {
+                $structType = Si4Util::getArg($_source, "struct_type", "");
+                $entityType = Si4Util::getArg($_source, "entity_type", "");
+
+                $handle_id = Si4Util::getArg($_source, "handle_id", "");
+                $parent = Si4Util::getArg($_source, "parent", "");
+                $primary = Si4Util::getArg($_source, "primary", "");
+                $data = Si4Util::getArg($_source, "data", null);
+                $xml = Si4Util::getArg($_source, "xml", "");
+                $active = Si4Util::getArg($_source, "active", 0);
+
+                //print_r($data);
+
+                $dcMetadata = Si4Util::pathArg($data, "dmd/dc", []);
+                $title = isset($dcMetadata["title"]) ? join(" : ", $dcMetadata["title"]) : "";
+                $creator = isset($dcMetadata["creator"]) ? join("; ", $dcMetadata["creator"]) : "";
+                $date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
+
+                $fileName = Si4Util::pathArg($data, "files/0/id", "");
+                if ($fileName) $fileUrl = FileHelpers::getPreviewUrl($id, $fileName);
+
+            }
+
+            $result[] = [
+                "id" => $id,
+                "handle_id" => $handle_id,
+                "parent" => $parent,
+                "primary" => $primary,
+                "struct_type" => $structType,
+                "entity_type" => $entityType,
+                "title" => $title,
+                "creator" => $creator,
+                "date" => $date,
+                "fileName" => $fileName,
+                "fileUrl" => $fileUrl,
+                "active" => $active,
+                "xmlData" => $xml,
+                "elasticData" => $data,
+            ];
+        }
+
+        return $result;
+    }
+
+
+
+    /*
+
+    public static function selectEntities($requestData) {
+        $pageStart = Si4Util::getArg($requestData, "pageStart", 0);
+        $pageCount = Si4Util::getArg($requestData, "pageCount", 20);
+        $sortField = Si4Util::getArg($requestData, "sortField", "id");
+        $sortOrder = Si4Util::getArg($requestData, "sortOrder", "asc");
+
         $parent = Si4Util::getArg($requestData, "parent", null);
         $entityIds = Si4Util::getArg($requestData, "entityIds", null);
 
-        $struct_type  = Si4Util::getArg($staticData, "struct_type", "");
-
+        //$staticData = Si4Util::getArg($requestData, "staticData", []);
+        //$struct_type  = Si4Util::getArg($staticData, "struct_type", "");
         $filter = Si4Util::getArg($requestData, "filter", []);
+        $struct_type  = Si4Util::getArg($filter, "struct_type", "");
+
 
         $rowCount = 0;
 
@@ -155,14 +355,14 @@ class EntitySelect
 
         return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
     }
+    */
 
     public static function selectEntityHierarchy($requestData) {
-        $id = Si4Util::getArg($requestData, "id", null);
+        $handle_id = Si4Util::getArg($requestData, "handle_id", null);
         $entity = Si4Util::getArg($requestData, "entity", null);
-        $recursiveUp = Si4Util::getArg($requestData, "recursiveUp", false);
 
-        if (!$id) {
-            return ["status" => false, "error" => "No id given"];
+        if (!$handle_id) {
+            return ["status" => false, "error" => "No handle_id given"];
         }
 
         $parents = [];
@@ -170,9 +370,7 @@ class EntitySelect
 
         // Select current entity by Id
         if (!$entity) {
-            $entity = EntitySelect::selectEntities([
-                "entityIds" => [$id]
-            ]);
+            $entity = EntitySelect::selectEntitiesByHandleIds([$handle_id]);
             $entity = isset($entity["data"]) && isset($entity["data"][0]) ? $entity["data"][0] : null;
         }
 
@@ -180,22 +378,18 @@ class EntitySelect
 
         $parentId = $entity && isset($entity["parent"]) && $entity["parent"] ? $entity["parent"] : false;
         while ($parentId) {
-            $parentEntity = EntitySelect::selectEntities([
-                "entityIds" => [$parentId]
-            ]);
+            $parentEntity = EntitySelect::selectEntitiesByHandleIds([$parentId]);
             $parentEntity = isset($parentEntity["data"]) && isset($parentEntity["data"][0]) ? $parentEntity["data"][0] : null;
             if ($parentEntity) {
                 array_unshift($parents, $parentEntity);
-                $parentId = intval($parentEntity["parent"]);
+                $parentId = $parentEntity["parent"];
             } else {
                 $parentId = null;
             }
         }
 
         // Select child entities
-        $children = EntitySelect::selectEntities([
-            "parent" => $id
-        ]);
+        $children = EntitySelect::selectEntitiesByParentHandle($entity["handle_id"]);
         $children = isset($children["data"]) ? $children["data"] : [];
 
         //print_r(["children" => $children]);

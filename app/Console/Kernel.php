@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\ReindexEntities::class,
         Commands\EntityTestElasticConvert::class,
         Commands\Si4MigrateDatabase::class,
+        Commands\TestTest::class,
     ];
 
     /**

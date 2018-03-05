@@ -88,6 +88,25 @@ class Si4MigrateDatabase extends Command
                 DB::table('entities')->truncate();
                 $this->info("Recreate Elastic index...");
                 ElasticHelpers::recreateIndex();
+
+                $this->info("Flush handle sequences...");
+                DB::table('entity_handle_seq')->truncate();
+                DB::table('entity_handle_seq')->insert([
+                    "entity_struct_type" => "entity",
+                    "format" => "#",
+                    "last_num" => 0,
+                ]);
+                DB::table('entity_handle_seq')->insert([
+                    "entity_struct_type" => "collection",
+                    "format" => "menu#",
+                    "last_num" => 0,
+                ]);
+                DB::table('entity_handle_seq')->insert([
+                    "entity_struct_type" => "file",
+                    "format" => "file#",
+                    "last_num" => 0,
+                ]);
+
             }
         } else if ($mode == "menus") {
 

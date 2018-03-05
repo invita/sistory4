@@ -13,7 +13,8 @@ var F = function(args){
         dataSource: new si4.widget.si4DataTableDataSource({
             select: si4.api["entityList"],
             delete: si4.api["deleteEntity"],
-            staticData : { struct_type: "entity" },
+            //staticData : { struct_type: "entity" },
+            filter: { struct_type: "entity" },
             pageCount: 20
         }),
         editorModuleArgs: {
@@ -24,8 +25,10 @@ var F = function(args){
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
-            id: { caption: "Id", hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            id: { caption: "Id" },
+            handle_id: { caption: "Handle Id", hintF: si4.entity.hintHelper.displayEntityInfoDT },
             parent: { caption: "Parent", hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            primary: { caption: "Primary", hintF: si4.entity.hintHelper.displayEntityInfoDT },
             struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
             entity_type: { canFilter: false, caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
 
@@ -34,6 +37,9 @@ var F = function(args){
             title: { maxCharLength: 100 },
             creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
 
+            fileName: { visible: false },
+            fileUrl: { visible: false },
+            active: { visible: false },
             xmlData: { visible: false },
             elasticData: { visible: false },
         },

@@ -58,10 +58,11 @@ class Entities extends Controller
         $postJson = json_decode(file_get_contents("php://input"), true);
         $id = Si4Util::getArg($postJson, "id", 0);
         $parent = Si4Util::getArg($postJson, "parent", "");
-        $primary = Si4Util::getArg($postJson, "primary", "");
+        //$primary = Si4Util::getArg($postJson, "primary", "");
+        //$entityType = Si4Util::getArg($postJson, "entity_type", "");
         $structType = Si4Util::getArg($postJson, "struct_type", "");
-        $entityType = Si4Util::getArg($postJson, "entity_type", "");
         $xml = Si4Util::getArg($postJson, "xml", "");
+        $active = Si4Util::getArg($postJson, "active", false);
 
         $status = true;
         $error = null;
@@ -78,10 +79,18 @@ class Entities extends Controller
 
         $entity = Entity::findOrNew($id);
         $entity->parent = $parent;
-        $entity->primary = $primary;
         $entity->struct_type = in_array($structType, Enums::$structTypes) ? $structType : null;
-        $entity->entity_type = in_array($entityType, Enums::$entityTypes) ? $entityType : null;
         $entity->data = $xml;
+        $entity->active = $active;
+
+        //$entity->primary = "123";
+        //$entity->entity_type = "dependant";
+        //print_r($entity->id); die();
+
+        $entity->calculatePrimary();
+
+        //$entity->primary = $primary;
+        //$entity->entity_type = in_array($entityType, Enums::$entityTypes) ? $entityType : null;
 
         $entity->save();
 

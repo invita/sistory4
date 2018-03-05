@@ -39,7 +39,11 @@ class ElasticHelpers
     },
     "mappings": {
         "entity": {
-            "date_detection": false
+            "date_detection": false,
+            "properties": {
+                "id": { "type": "integer" },
+                "handle_id": { "type": "string" }
+            }
         }
     }
 }
@@ -109,6 +113,8 @@ HERE;
      * @param $query String to match
      * @param $offset Integer offset
      * @param $limit Integer limit
+     * @param $sortField string sortField
+     * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
     public static function search($query, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
@@ -121,23 +127,6 @@ HERE;
                 "sort" => [$sortField => [ "order" => $sortDir ]],
                 "from" => $offset,
                 "size" => $limit,
-                /*
-                [
-                "term" => [ "user" => "kimchy" ]
-                    "match" => [
-                        "_all" => $query
-                    ]
-                ]
-                */
-                /*
-"sort" : [
-        { "post_date" : {"order" : "asc"}},
-        "user",
-        { "name" : "desc" },
-        { "age" : "desc" },
-        "_score"
-    ],
-                */
             ]
         ];
         return \Elasticsearch::connection()->search($requestArgs);

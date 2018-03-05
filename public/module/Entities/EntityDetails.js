@@ -550,7 +550,7 @@ var F = function(args){
             };
 
             args.relationsTab.onActive(function(tabArgs) {
-                si4.api.entityHierarchy({ id: rowValue.id, recursiveUp: true }, function (response) {
+                si4.api.entityHierarchy({ handle_id: rowValue.handle_id }, function (response) {
 
                     console.log("entityHierarchy response", response);
 
