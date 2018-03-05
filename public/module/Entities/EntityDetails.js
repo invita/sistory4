@@ -46,6 +46,15 @@ var F = function(args){
             disabled: true,
         });
 
+        args.basicTab.fieldParent = args.basicTab.form.addInput({
+            name: "parent",
+            value: rowValue.parent,
+            type: "text",
+            caption: si4.translate("field_parent"),
+            readOnly: struct_type == "file",
+            style: { marginTop: "10px" }
+        });
+
         args.basicTab.fieldEntityTypeId = args.basicTab.form.addInput({
             name: "entity_type",
             value: rowValue.entity_type,
@@ -53,21 +62,15 @@ var F = function(args){
             caption: si4.translate("field_entityType"),
             values: si4.data.entityTypes,
             addEmptyOption: true,
+            disabled: true,
         });
 
-        args.basicTab.fieldParent = args.basicTab.form.addInput({
-            name: "parent",
-            value: rowValue.parent,
-            type: "text",
-            caption: si4.translate("field_parent"),
-            readOnly: struct_type == "file"
-        });
-
-        args.basicTab.fieldParent = args.basicTab.form.addInput({
+        args.basicTab.fieldPrimary = args.basicTab.form.addInput({
             name: "primary",
             value: rowValue.primary,
             type: struct_type == "file" ? "hidden" : "text",
             caption: si4.translate("field_primary"),
+            readOnly: true,
         });
 
         args.basicTab.entityActive = args.basicTab.form.addInput({
@@ -75,7 +78,7 @@ var F = function(args){
             value: rowValue.active,
             type: "checkbox",
             caption: si4.translate("field_active"),
-            style: { marginTop: "4px" },
+            style: { marginTop: "6px", marginBottom: "4px" },
         });
         /*
         args.basicTab.entityEnabled = args.basicTab.form.addInput({
