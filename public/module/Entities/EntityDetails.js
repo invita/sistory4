@@ -543,14 +543,51 @@ var F = function(args){
 
 
         // *** Files Tab ***
-        if (struct_type != "file") {
+        if (struct_type == "entity") {
             args.filesTab = args.createContentTab("filesTab", {canClose: false});
             args.filesTab.panel = new si4.widget.si4Panel({parent: args.filesTab.content.selector});
+
+            args.filesTab.dataTable = new si4.widget.si4DataTable({
+                parent: args.filesTab.content.selector,
+                primaryKey: ['id'],
+                entityTitleNew: si4.lookup["entity"].entityTitleNew,
+                entityTitleEdit: si4.lookup["entity"].entityTitleEdit,
+                //filter: { enabled: false },
+                dataSource: new si4.widget.si4DataTableDataSource({
+                    select: si4.api["entityList"],
+                    delete: si4.api["deleteEntity"],
+                    filter: { struct_type: "file", parent: rowValue.handle_id },
+                    staticData: { parent: rowValue.handle_id },
+                    pageCount: 20
+                }),
+                editorModuleArgs: {
+                    moduleName:"Entities/EntityDetails",
+                    caller: "fileList"
+                },
+                canInsert: true,
+                canDelete: true,
+                tabPage: args.filesTab,
+                fields: {
+                    id: { caption: "Id" },
+                    handle_id: { caption: "Handle Id", hintF: si4.entity.hintHelper.displayEntityInfoDT },
+                    parent: { caption: "Parent", hintF: si4.entity.hintHelper.displayEntityInfoDT },
+                    struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
+                    fileName: { maxCharLength: 50 },
+                    //title: { maxCharLength: 100 },
+                    //creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
+                },
+                showOnlyDefinedFields: true,
+                cssClass_table: "si4DataTable_table width100percent"
+            });
+
+
+            /*
             args.filesTab.panelGroup = args.filesTab.panel.addGroup("TODO: Tabela datotek in možnost dodajanja, brisanja.");
             args.filesTab.form = new si4.widget.si4Form({
                 parent: args.filesTab.panelGroup.content.selector,
                 captionWidth: "90px"
             });
+            */
         }
 
 
@@ -592,6 +629,7 @@ var F = function(args){
 
 
     if (!args.row || !args.row.id) {
+        console.log("new", args);
         args.row = {};
         switch (args.caller) {
             case "entityList":default:
@@ -614,6 +652,9 @@ var F = function(args){
             args.row.id = response.data.id;
             args.row.handle_id = response.data.handle_id;
             args.row.entity_subtype = response.data.entity_subtype;
+            if (args.staticData) {
+                for (var i in args.staticData) args.row[i] = args.staticData[i];
+            }
             args.row.xmlData = si4.entity.template.getEmptyMetsXml({
                 id: args.row.id,
                 handleId: args.row.handle_id,

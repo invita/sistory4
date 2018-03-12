@@ -29,18 +29,10 @@ var F = function(args){
             handle_id: { caption: "Handle Id", hintF: si4.entity.hintHelper.displayEntityInfoDT },
             parent: { caption: "Parent", hintF: si4.entity.hintHelper.displayEntityInfoDT },
             struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
-            entity_type: { visible: false },
-            primary: { visible: false },
-
-            //name: { caption: "Naziv" },
-            //description: { caption: "Opis" },
             title: { maxCharLength: 100 },
             creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
-
-            active: { visible: false },
-            xmlData: { visible: false },
-            elasticData: { visible: false },
         },
+        showOnlyDefinedFields: true,
         cssClass_table: "si4DataTable_table width100percent"
     });
 

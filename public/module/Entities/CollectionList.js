@@ -36,13 +36,8 @@ var F = function(args){
             //description: { caption: "Opis" },
             title: { maxCharLength: 100 },
             creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
-
-            fileName: { visible: false },
-            fileUrl: { visible: false },
-            active: { visible: false },
-            xmlData: { visible: false },
-            elasticData: { visible: false },
         },
+        showOnlyDefinedFields: true,
         cssClass_table: "si4DataTable_table width100percent"
     });
 
