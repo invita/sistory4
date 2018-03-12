@@ -6,6 +6,7 @@
 
 .entityHierarchyContainer .entityHierarchyRow.stCollection { color: #8e130b; }
 .entityHierarchyContainer .entityHierarchyRow.stEntity { color: darkgoldenrod; }
+.entityHierarchyContainer .entityHierarchyRow.stFile { color: darkgreen; }
 
 .entityHierarchyContainer .entityHierarchyRow.parent {  }
 .entityHierarchyContainer .entityHierarchyRow.current { font-weight: bold; }

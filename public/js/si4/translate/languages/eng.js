@@ -12,7 +12,8 @@ si4.translations = {
     entities_entityList_mainTab_text: "Entity list",
     entities_entityList_contentTab_text: "List",
     entities_entityList_importTab_text: "Import",
-    entities_entityList_exportTab_text: "Export",
+    entities_entityList_exportMetsTab_text: "Export Mets(Zip)",
+    entities_entityList_exportCsvTab_text: "Export Csv",
     entities_entityTitleNew: "New entity",
     entities_entityTitleEdit: "Entity [[handle_id]]",
 
@@ -76,9 +77,10 @@ si4.translations = {
     // Fields
     field_id: "Id",
     field_systemId: "System Id",
-    field_handleId: "Handle Id",
+    field_handleId: "Handle suffix",
+
     field_title: "Title",
-    field_creator: "Creators",
+    field_creator: "Creator",
     field_contributor: "Contributors",
     field_coverage: "Coverage",
     field_date: "Date",
@@ -95,8 +97,9 @@ si4.translations = {
     field_physicalFile: "Physical file",
 
     field_year: "Year",
-    field_structType: "Structure type",
+    field_structType: "Content type",
     field_entityType: "Entity type",
+    field_entitySubtype: "Behavior",
     field_collectionType: "Collection type",
     field_xmlFromFile: "Load xml from file",
 
@@ -108,9 +111,11 @@ si4.translations = {
     field_active: "Active",
     //field_enabled: "Enabled",
     //field_indexed: "Indexed",
+
     field_parent: "Parent",
     field_children: "Children",
     field_primary: "Primary",
+    field_collection: "Collection",
 
     field_actions: "Actions",
 
@@ -151,20 +156,21 @@ si4.translations = {
     // Enums
 
     // Enum: Structure Types
-    st_entity: "Entity",
-    st_collection: "Collection",
-    st_file: "File",
+    st_entity: "entity",
+    st_collection: "collection",
+    st_file: "file",
 
     // Enum: Entity Types
-    et_primary: "Primary",
-    et_dependant: "Dependant",
+    et_primary: "primary",
+    et_dependant: "dependant",
 
     // Enum: Relation Types
+    /*
     rel_isChildOf: "Is child of",
     rel_isParentOf: "Is parent of",
     rel_isCitedIn: "Is cited in",
     rel_cites: "Cites"
-
+    */
 
 
 };

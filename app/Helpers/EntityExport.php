@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Artisan;
  */
 class EntityExport
 {
-    public static function exportEntities($entityList) {
+    public static function exportEntitiesMets($entityList) {
 
         //print_r($entityList["data"][0]);
 
@@ -34,6 +34,40 @@ class EntityExport
         $archive->setArchiveComment('Created '.date('Y-M-d'));
         $archive->close();
 
+        return $fileName;
+
+    }
+
+    public static function exportEntitiesCsv($entityList, $columns) {
+
+        //print_r($entityList["data"][0]);
+
+        $status = true;
+        $error = null;
+        //$fileName = "entities.zip";
+        $fileName = tempnam("/tmp", "si4.csv");
+        $pathPrefix = "entities/";
+
+        $result = "";
+        $NL = "\n";
+        $quote = "\"";
+
+
+        $lineData = [];
+        foreach ($columns as $colName => $colText) {
+            $lineData[] = $quote.$colText.$quote;
+        }
+        $result .= join(",", $lineData).$NL;
+
+        foreach ($entityList["data"] as $entity) {
+            $lineData = [];
+            foreach ($columns as $colName => $colText) {
+                $lineData[] = $quote.$entity[$colName].$quote;
+            }
+            $result .= join(",", $lineData).$NL;
+        }
+
+        file_put_contents($fileName, $result);
         return $fileName;
 
     }

@@ -56,8 +56,10 @@ class ReindexEntity extends Command
                 "handle_id" => $entity["handle_id"],
                 "parent" => $entity["parent"],
                 "primary" => $entity["primary"],
+                "collection" => $entity["collection"],
                 "struct_type" => $entity["struct_type"],
                 "entity_type" => $entity["entity_type"],
+                "entity_subtype" => $entity["entity_subtype"],
                 "active" => $entity["active"],
                 "xml" => $entity["data"],
                 "data" => $entityElastic->getData()

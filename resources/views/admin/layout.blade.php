@@ -41,6 +41,9 @@
     <script src="/js/si4/widget/si4HtmlTable.js"></script>
     <script src="/js/si4/widget/si4Hint.js"></script>
     <script src="/js/si4/widget/si4AutoComplete.js"></script>
+    <script src="/js/si4/xmlMutators/mutateXml.js"></script>
+    <script src="/js/si4/xmlMutators/dcFields.js"></script>
+    <script src="/js/si4/xmlMutators/entityActive.js"></script>
     <script src="/js/si4/init.js"></script>
 
     <link rel="stylesheet" href="/lib/zurb/css/normalize.css" />

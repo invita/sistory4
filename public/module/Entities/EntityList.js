@@ -25,24 +25,19 @@ var F = function(args){
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
-            id: { caption: "Id" },
-            handle_id: { caption: "Handle Id", hintF: si4.entity.hintHelper.displayEntityInfoDT },
-            parent: { caption: "Parent", hintF: si4.entity.hintHelper.displayEntityInfoDT },
-            primary: { caption: "Primary", hintF: si4.entity.hintHelper.displayEntityInfoDT },
-            struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
-            entity_type: { canFilter: false, caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
-
-            //name: { caption: "Naziv" },
-            //description: { caption: "Opis" },
-            title: { maxCharLength: 100 },
+            id: { caption: si4.translate("field_id") },
+            handle_id: { caption: si4.translate("field_handleId"), hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            parent: { caption: si4.translate("field_parent"), hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            primary: { caption: si4.translate("field_primary"), hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            collection: { caption: si4.translate("field_collection"), hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            struct_type: { caption: si4.translate("field_structType"), valueTranslatePrefix:"st_", canFilter: false },
+            entity_type: { caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
+            entity_subtype: { caption: si4.translate("field_entitySubtype") },
+            title: { caption: si4.translate("field_title"), maxCharLength: 80 },
             creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
-
-            fileName: { visible: false },
-            fileUrl: { visible: false },
-            active: { visible: false },
-            xmlData: { visible: false },
-            elasticData: { visible: false },
+            date: { caption: si4.translate("field_date") },
         },
+        showOnlyDefinedFields: true,
         cssClass_table: "si4DataTable_table width100percent"
     });
 
@@ -86,9 +81,29 @@ var F = function(args){
     });
 
 
-    args.entityExportButton = args.createContentTab("exportTab", { type: "button" });
-    args.entityExportButton.onActive(function() {
-        var url = "/admin/download/export";
+    args.entityExportMetsButton = args.createContentTab("exportMetsTab", { type: "button" });
+    args.entityExportMetsButton.onActive(function() {
+        var url = "/admin/download/exportMets";
+        var postData = dataTable.dataSource.getMethodCallData(dataTable.dataSource.methodNames.select);
+
+        var exportForm = document.createElement("form");
+        exportForm.action = url;
+        exportForm.method = "POST";
+
+        var dataInput = document.createElement("input");
+        dataInput.name = "data";
+        dataInput.type = "hidden";
+        dataInput.value = JSON.stringify(postData);
+        exportForm.appendChild(dataInput);
+
+        si4.data.contentElement.append(exportForm);
+
+        exportForm.submit();
+    });
+
+    args.entityExportCsvButton = args.createContentTab("exportCsvTab", { type: "button" });
+    args.entityExportCsvButton.onActive(function() {
+        var url = "/admin/download/exportCsv";
         var postData = dataTable.dataSource.getMethodCallData(dataTable.dataSource.methodNames.select);
 
         var exportForm = document.createElement("form");

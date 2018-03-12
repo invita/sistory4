@@ -48,7 +48,7 @@ class TestTest extends Command
         // Calculate primary
         /*
         $entity = Entity::findOrNew(7);
-        $entity->calculatePrimary();
+        $entity->calculateParents();
         echo "Calc EntityType: ".$entity->entity_type."\n";
         echo "Calc Primary: ".$entity->primary."\n";
         */

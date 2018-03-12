@@ -42,7 +42,7 @@ class EntityImport
         $entity->struct_type = "entity";
 
         $entity->parent = "";
-        //$entity->calculatePrimary();
+        //$entity->calculateParents();
         $entity->entity_type = "";
         $entity->primary = "";
 

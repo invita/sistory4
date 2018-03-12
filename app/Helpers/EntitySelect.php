@@ -93,7 +93,10 @@ class EntitySelect
         "handle_id" => "handle_id",
         "parent" => "parent",
         "primary" => "primary",
+        "collection" => "collection",
         "struct_type" => "struct_type",
+        "entity_type" => "entity_type",
+        "entity_subtype" => "entity_subtype",
         "title" => "data.dmd.dc.title",
         "creator" => "data.dmd.dc.creator",
         "date" => "data.dmd.dc.date",
@@ -119,14 +122,15 @@ class EntitySelect
                 ];
             } else {
                 $queryFilterMust[] = [
-                    "term" => [ $termKey => $termVal ]
+                    //"term" => [ $termKey => $termVal ]
+                    "wildcard" => [ $termKey => $termVal ]
                 ];
             }
         }
 
         $query = [
             "constant_score" => [
-                "filter" => [
+                "query" => [
                     "bool" => [
                         "must" => $queryFilterMust
                     ]
@@ -152,8 +156,8 @@ class EntitySelect
             //print_r($entity);
 
             $handle_id = "";
-            $parent = 0;
-            $primary = 0;
+            $parent = "";
+            $primary = "";
             $title = "";
             $creator = "";
             $date = "";
@@ -165,16 +169,19 @@ class EntitySelect
 
             $structType = "";
             $entityType = "";
+            $entitySubtype = "";
 
             $_source = Si4Util::getArg($hit, "_source", null);
 
             if ($_source) {
                 $structType = Si4Util::getArg($_source, "struct_type", "");
                 $entityType = Si4Util::getArg($_source, "entity_type", "");
+                $entitySubtype = Si4Util::getArg($_source, "entity_subtype", "");
 
                 $handle_id = Si4Util::getArg($_source, "handle_id", "");
                 $parent = Si4Util::getArg($_source, "parent", "");
                 $primary = Si4Util::getArg($_source, "primary", "");
+                $collection = Si4Util::getArg($_source, "collection", "");
                 $data = Si4Util::getArg($_source, "data", null);
                 $xml = Si4Util::getArg($_source, "xml", "");
                 $active = Si4Util::getArg($_source, "active", 0);
@@ -183,8 +190,9 @@ class EntitySelect
 
                 $dcMetadata = Si4Util::pathArg($data, "dmd/dc", []);
                 $title = isset($dcMetadata["title"]) ? join(" : ", $dcMetadata["title"]) : "";
-                $creator = isset($dcMetadata["creator"]) ? join("; ", $dcMetadata["creator"]) : "";
-                $date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
+                $creator = isset($dcMetadata["creator"]) ? join(" : ", $dcMetadata["creator"]) : "";
+                //$date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
+                $date = isset($dcMetadata["date"]) && isset($dcMetadata["date"][0]) ? $dcMetadata["date"][0] : "";
 
                 $fileName = Si4Util::pathArg($data, "files/0/id", "");
                 if ($fileName) $fileUrl = FileHelpers::getPreviewUrl($id, $fileName);
@@ -196,8 +204,10 @@ class EntitySelect
                 "handle_id" => $handle_id,
                 "parent" => $parent,
                 "primary" => $primary,
+                "collection" => $collection,
                 "struct_type" => $structType,
                 "entity_type" => $entityType,
+                "entity_subtype" => $entitySubtype,
                 "title" => $title,
                 "creator" => $creator,
                 "date" => $date,

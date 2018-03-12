@@ -34,7 +34,7 @@ var F = function(args){
             value: rowValue.handle_id,
             type: "text",
             caption: si4.translate("field_handleId"),
-            readOnly: true,
+            readOnly: rowValue.handle_id ? true : false,
         });
 
         args.basicTab.fieldStructTypeId = args.basicTab.form.addInput({
@@ -65,11 +65,26 @@ var F = function(args){
             disabled: true,
         });
 
+        args.basicTab.fieldEntitySubtype = args.basicTab.form.addInput({
+            name: "entity_subtype",
+            value: rowValue.entity_subtype,
+            type: "text",
+            caption: si4.translate("field_entitySubtype"),
+        });
+
         args.basicTab.fieldPrimary = args.basicTab.form.addInput({
             name: "primary",
             value: rowValue.primary,
             type: struct_type == "file" ? "hidden" : "text",
             caption: si4.translate("field_primary"),
+            readOnly: true,
+        });
+
+        args.basicTab.fieldCollection = args.basicTab.form.addInput({
+            name: "collection",
+            value: rowValue.collection,
+            type: struct_type == "entity" ? "text" : "hidden",
+            caption: si4.translate("field_collection"),
             readOnly: true,
         });
 
@@ -80,14 +95,11 @@ var F = function(args){
             caption: si4.translate("field_active"),
             style: { marginTop: "6px", marginBottom: "4px" },
         });
-        /*
-        args.basicTab.entityEnabled = args.basicTab.form.addInput({
-            name: "enabled",
-            value: rowValue.enabled,
-            type: "checkbox",
-            caption: si4.translate("field_enabled")
+        args.basicTab.entityActive.selector.change(function(e) {
+            var value = args.basicTab.entityActive.getValue();
+            var entityActive = value ? "Active" : "Inactive";
+            si4.xmlMutators.mutateXml(args.xmlTab.fieldXml, "entityActive", { value: entityActive });
         });
-        */
 
         if (rowValue.struct_type == "file") {
             args.basicTab.physicalFile = args.basicTab.form.addInput({
@@ -378,63 +390,7 @@ var F = function(args){
                 var formValue = args.editorTab.form.getValue();
                 console.log("formValue", formValue);
 
-                var xmlStr = args.xmlTab.fieldXml.getValue();
-                var parser = new DOMParser();
-                var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
-
-                // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
-                var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
-
-                var fieldNames = si4.entity.mdHelper.dcFieldOrder.slice(0); // Clone
-                fieldNames.reverse();
-                for (var fieldIdx in fieldNames) {
-                    var fieldName = fieldNames[fieldIdx];
-                    var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
-                    var fieldValues = formValue[fieldName];
-
-                    for (var childIdx = xmlDC.children.length - 1; childIdx >= 0; childIdx--)
-                        if (xmlDC.children[childIdx].tagName == "dcterms:" + fieldName)
-                            xmlDC.children[childIdx].remove();
-
-                    if (!fieldValues.length || fieldValues.length == 1 && !fieldValues[0]) continue;
-
-                    for (var i = fieldValues.length - 1; i >= 0; i--) {
-                        var fieldValue = fieldValues[i];
-                        var newEl = xmlDoc.createElement("dcterms:" + fieldName);
-
-                        if (fieldBP.withCode) {
-                            var attr = xmlDoc.createAttribute(fieldBP.codeXmlName);
-                            attr.value = fieldValue.codeId;
-                            newEl.attributes.setNamedItem(attr);
-                            newEl.textContent = fieldValue.value;
-                        } else {
-                            newEl.textContent = fieldValue;
-                        }
-
-                        if (fieldBP.addXmlAttrs) {
-                            for (var i in fieldBP.addXmlAttrs) {
-                                var addAttr = xmlDoc.createAttribute(fieldBP.addXmlAttrs[i].name);
-                                addAttr.value = fieldBP.addXmlAttrs[i].value;
-                                newEl.attributes.setNamedItem(addAttr);
-                            }
-                        }
-
-                        if (xmlDC.children.length) {
-                            xmlDC.insertBefore(newEl, xmlDC.children[0]);
-                        } else {
-                            xmlDC.appendChild(newEl);
-                        }
-                    }
-                }
-
-
-                // Put xml into editor
-                var xmlText = new XMLSerializer().serializeToString(xmlDoc);
-                var xmlTextPretty = vkbeautify.xml(xmlText);
-                args.xmlTab.fieldXml.setValue(xmlTextPretty);
-
-                //args.xmlTab.selectTab();
-                args.xmlTab.fieldXml.codemirror.refresh();
+                si4.xmlMutators.mutateXml(args.xmlTab.fieldXml, "dcFields", { value: formValue });
 
                 args.saveEntity();
             });
@@ -492,11 +448,25 @@ var F = function(args){
                 if (hArgs.addClass) rowEl.selector.addClass(hArgs.addClass)
                 if (hArgs.entityData.struct_type == "entity") rowEl.selector.addClass("stEntity");
                 if (hArgs.entityData.struct_type == "collection") rowEl.selector.addClass("stCollection");
+                if (hArgs.entityData.struct_type == "file") rowEl.selector.addClass("stFile");
                 rowEl.selector.css("margin-left", hArgs.indent+"px");
-                var line = '<span class="ehTitle">' +hArgs.entityData.title + '</span>';
-                if (hArgs.entityData.creator) line = '<span class="ehCreator">' +hArgs.entityData.creator+ '</span> : '+ line;
-                if (hArgs.entityData.date) line = line + ' '+'<span class="ehDate">' +hArgs.entityData.date+ '</span>';
-                line = '<span class="ehId">[' +hArgs.entityData.id + ']</span> ' +line;
+
+                var line = "";
+                switch (hArgs.entityData.struct_type) {
+                    case "entity":case "collection":default:
+                        line = '<span class="ehTitle">' +hArgs.entityData.title + '</span>';
+                        if (hArgs.entityData.creator)
+                            line = '<span class="ehCreator">' +hArgs.entityData.creator+ '</span> : '+ line;
+                        if (hArgs.entityData.date)
+                            line = line + ' '+'<span class="ehDate">' +hArgs.entityData.date+ '</span>';
+                        line = '<span class="ehId">[' +hArgs.entityData.handle_id + ']</span> ' +line;
+                        break;
+                    case "file":
+                        line = '<span class="ehTitle">' +hArgs.entityData.fileName + '</span>';
+                        line = '<span class="ehId">[' +hArgs.entityData.handle_id + ']</span> ' +line;
+                        break;
+                }
+
                 rowEl.selector.html(line);
 
                 rowEl.selector.click(function() {
@@ -643,6 +613,7 @@ var F = function(args){
         si4.api["reserveEntityId"]({ struct_type: args.row.struct_type }, function(response) {
             args.row.id = response.data.id;
             args.row.handle_id = response.data.handle_id;
+            args.row.entity_subtype = response.data.entity_subtype;
             args.row.xmlData = si4.entity.template.getEmptyMetsXml({
                 id: args.row.id,
                 handleId: args.row.handle_id,

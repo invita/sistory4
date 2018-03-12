@@ -47,9 +47,11 @@ class Entity extends Model
     protected $fillable = [
         'parent',
         'primary',
+        'collection',
         'name',
         'struct_type',
         'entity_type',
+        'entity_subtype',
         'data',
         'active'
     ];
@@ -92,7 +94,7 @@ class Entity extends Model
     }
 
     // Calculates primary entity
-    public function calculatePrimary() {
+    public function calculateParents() {
 
         switch ($this->struct_type) {
             case "collection":
@@ -104,30 +106,34 @@ class Entity extends Model
                     $this->primary = $parents[0]["handle_id"];
                 } else {
                     $this->entity_type = "primary";
-                    $this->primary = "";
+                    $this->primary = $this->handle_id;
                 }
                 break;
 
             case "file":
                 $this->entity_type = "primary";
-                $this->primary = "";
+                $this->primary = $this->handle_id;
                 break;
 
             case "entity": default:
                 $this->entity_type = "primary";
-                $this->primary = "";
+                $this->primary = $this->handle_id;
                 if ($this->parent) {
                     $hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
                     $parents = Si4Util::pathArg($hierarchy, "data/parents", []);
                     $parents[] = Si4Util::pathArg($hierarchy, "data/currentEntity", []);
-                    // Find first entity parent
+                    $lastCollectionParent = "";
+                    // Find first entity parent for primary and take it's parent for collection
                     foreach ($parents as $parent) {
-                        if ($parent["struct_type"] == "entity") {
+                        if ($parent["struct_type"] == "collection") {
+                            $lastCollectionParent = $parent["handle_id"];
+                        } else if ($parent["struct_type"] == "entity") {
                             $this->entity_type = "dependant";
                             $this->primary = $parent["handle_id"];
                             break;
                         }
                     }
+                    $this->collection = $lastCollectionParent;
                 }
                 break;
         }

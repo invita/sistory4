@@ -49,7 +49,7 @@ class Si4MigrateDatabase extends Command
     {
         $migPubDb = MigUtil::$migDbName;
 
-        $modes = ["test", "clean", "menus", "pubs", "files", "all"];
+        $modes = ["test", "clean", "menus", "pubs", "files", "all", "updateParents"];
         $mode = $this->argument('mode');
 
         if (!in_array($mode, $modes)) {
@@ -310,36 +310,49 @@ class Si4MigrateDatabase extends Command
                 }
 */
             }
+            /*
+            $entity = Entity::find($entityId);
+            if ($entity) {
+                $entityXmlParsed = $entity->dataToObject();
+                //print_r($entityXmlParsed);
 
-        }
+                $entityElastic = new EntityElastic($entityXmlParsed);
 
-        /*
-        $entity = Entity::find($entityId);
-        if ($entity) {
-            $entityXmlParsed = $entity->dataToObject();
-            //print_r($entityXmlParsed);
+                $indexBody = [
+                    "id" => $entityId,
+                    "handle_id" => $entity["handle_id"],
+                    "parent" => $entity["parent"],
+                    "primary" => $entity["primary"],
+                    "struct_type" => $entity["struct_type"],
+                    "entity_type" => $entity["entity_type"],
+                    "xml" => $entity["data"],
+                    "data" => $entityElastic->getData()
+                ];
+                ElasticHelpers::indexEntity($entityId, $indexBody);
+            } else {
+                if (ElasticHelpers::entityExists($entityId)) {
+                    ElasticHelpers::deleteEntity($entityId);
+                }
+            }
 
-            $entityElastic = new EntityElastic($entityXmlParsed);
+            //print_r($entity);
+            */
 
-            $indexBody = [
-                "id" => $entityId,
-                "handle_id" => $entity["handle_id"],
-                "parent" => $entity["parent"],
-                "primary" => $entity["primary"],
-                "struct_type" => $entity["struct_type"],
-                "entity_type" => $entity["entity_type"],
-                "xml" => $entity["data"],
-                "data" => $entityElastic->getData()
-            ];
-            ElasticHelpers::indexEntity($entityId, $indexBody);
-        } else {
-            if (ElasticHelpers::entityExists($entityId)) {
-                ElasticHelpers::deleteEntity($entityId);
+
+        } else if ($mode == "updateParents") {
+            $entities = Entity::all();
+            $this->info("Count: " . count($entities));
+
+            foreach ($entities as $entity) {
+                $this->info("Updating " . $entity->id."...");
+                $entity->calculateParents();
+                $entity->save();
+
+                // Reindex
+                Artisan::call("reindex:entity", ["entityId" => $entity->id]);
+
             }
         }
-
-        //print_r($entity);
-        */
 
     }
 }

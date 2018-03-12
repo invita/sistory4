@@ -1,4 +1,4 @@
-var si4 = { object:{}, widget:{}, data:{}, defaults:{}, entity:{} };
+var si4 = { object:{}, widget:{}, data:{}, defaults:{}, entity:{}, xmlMutators:{} };
 
 si4.defaults = {
     fadeTime: 600,

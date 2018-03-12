@@ -84,7 +84,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::group(['prefix' => 'download'], function () {
             Route::post('entity', "Admin\\DownloadController@entity")->name("admin.download.entity#post");
-            Route::post('export', "Admin\\DownloadController@export")->name("admin.download.export#post");
+            Route::post('exportMets', "Admin\\DownloadController@exportMets")->name("admin.download.exportMets#post");
+            Route::post('exportCsv', "Admin\\DownloadController@exportCsv")->name("admin.download.exportCsv#post");
             //Route::get('export', "Admin\\DownloadController@export")->name("admin.download.export#get");
         });
     });
