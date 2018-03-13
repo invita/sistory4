@@ -50,8 +50,8 @@ class Entity extends Model
         'collection',
         'name',
         'struct_type',
+        'struct_subtype',
         'entity_type',
-        'entity_subtype',
         'data',
         'active'
     ];

@@ -11,12 +11,15 @@ si4.xmlMutators.dcFields = function(xmlDoc, args) {
         var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
         var fieldValues = newValue[fieldName];
 
+        // Remove existing
         for (var childIdx = xmlDC.children.length - 1; childIdx >= 0; childIdx--)
             if (xmlDC.children[childIdx].tagName == "dcterms:" + fieldName)
                 xmlDC.children[childIdx].remove();
 
+        // Ignore empty value
         if (!fieldValues.length || fieldValues.length == 1 && !fieldValues[0]) continue;
 
+        // Add from back
         for (var i = fieldValues.length - 1; i >= 0; i--) {
             var fieldValue = fieldValues[i];
             var newEl = xmlDoc.createElement("dcterms:" + fieldName);
@@ -31,9 +34,9 @@ si4.xmlMutators.dcFields = function(xmlDoc, args) {
             }
 
             if (fieldBP.addXmlAttrs) {
-                for (var i in fieldBP.addXmlAttrs) {
-                    var addAttr = xmlDoc.createAttribute(fieldBP.addXmlAttrs[i].name);
-                    addAttr.value = fieldBP.addXmlAttrs[i].value;
+                for (var j in fieldBP.addXmlAttrs) {
+                    var addAttr = xmlDoc.createAttribute(fieldBP.addXmlAttrs[j].name);
+                    addAttr.value = fieldBP.addXmlAttrs[j].value;
                     newEl.attributes.setNamedItem(addAttr);
                 }
             }

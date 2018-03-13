@@ -14,7 +14,7 @@ class UpdateEntitiesAddBehavior extends Migration
     public function up()
     {
         Schema::table('entities', function (Blueprint $table) {
-            $table->string('entity_subtype', 32)->after('entity_type')->default("default");
+            $table->string('struct_subtype', 32)->after('struct_type')->default("default");
         });
     }
 
@@ -26,7 +26,7 @@ class UpdateEntitiesAddBehavior extends Migration
     public function down()
     {
         Schema::table('entities', function (Blueprint $table) {
-            $table->dropColumn('entity_subtype');
+            $table->dropColumn('struct_subtype');
         });
     }
 }

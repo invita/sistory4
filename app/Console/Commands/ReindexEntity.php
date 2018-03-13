@@ -58,8 +58,8 @@ class ReindexEntity extends Command
                 "primary" => $entity["primary"],
                 "collection" => $entity["collection"],
                 "struct_type" => $entity["struct_type"],
+                "struct_subtype" => $entity["struct_subtype"],
                 "entity_type" => $entity["entity_type"],
-                "entity_subtype" => $entity["entity_subtype"],
                 "active" => $entity["active"],
                 "xml" => $entity["data"],
                 "data" => $entityElastic->getData()

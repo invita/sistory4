@@ -25,12 +25,10 @@ var F = function(args){
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
-            id: { caption: "Id" },
-            handle_id: { caption: "Handle Id", hintF: si4.entity.hintHelper.displayEntityInfoDT },
-            parent: { caption: "Parent", hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            id: { caption: si4.translate("field_id") },
+            handle_id: { caption: si4.translate("field_handleId"), hintF: si4.entity.hintHelper.displayEntityInfoDT },
+            parent: { caption: si4.translate("field_entity"), hintF: si4.entity.hintHelper.displayEntityInfoDT },
             struct_type: { canFilter: false, caption: si4.translate("field_structType"), valueTranslatePrefix:"st_" },
-            title: { maxCharLength: 100 },
-            creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
         },
         showOnlyDefinedFields: true,
         cssClass_table: "si4DataTable_table width100percent"

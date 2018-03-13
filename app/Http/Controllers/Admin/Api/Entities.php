@@ -42,8 +42,8 @@ class Entities extends Controller
         $entity->collection = "";
 
         $entity->struct_type = $struct_type;
+        $entity->struct_subtype = "default";
         $entity->entity_type = "";
-        $entity->entity_subtype = "default";
         $entity->save();
         return [
             "status" => $status,
@@ -51,7 +51,7 @@ class Entities extends Controller
             "data" => [
                 "id" => $newEntityId,
                 "handle_id" => $entity->handle_id,
-                "entity_subtype" => $entity->entity_subtype
+                "struct_subtype" => $entity->struct_subtype
             ]
         ];
     }
@@ -64,7 +64,7 @@ class Entities extends Controller
         $parent = Si4Util::getArg($postJson, "parent", "");
         //$primary = Si4Util::getArg($postJson, "primary", "");
         //$entityType = Si4Util::getArg($postJson, "entity_type", "");
-        $entitySubtype = Si4Util::getArg($postJson, "entity_subtype", "");
+        $structSubtype = Si4Util::getArg($postJson, "struct_subtype", "");
         $structType = Si4Util::getArg($postJson, "struct_type", "");
         $xml = Si4Util::getArg($postJson, "xml", "");
         $active = Si4Util::getArg($postJson, "active", false);
@@ -86,7 +86,7 @@ class Entities extends Controller
         $entity = Entity::findOrNew($id);
         $entity->parent = $parent;
         $entity->struct_type = in_array($structType, Enums::$structTypes) ? $structType : null;
-        $entity->entity_subtype = $entitySubtype;
+        $entity->struct_subtype = $structSubtype;
         $entity->data = $xml;
         $entity->active = $active;
 

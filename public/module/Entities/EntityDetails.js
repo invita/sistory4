@@ -65,11 +65,12 @@ var F = function(args){
             disabled: true,
         });
 
-        args.basicTab.fieldEntitySubtype = args.basicTab.form.addInput({
-            name: "entity_subtype",
-            value: rowValue.entity_subtype,
+        args.basicTab.fieldStructSubtype = args.basicTab.form.addInput({
+            name: "struct_subtype",
+            value: rowValue.struct_subtype,
             type: "text",
-            caption: si4.translate("field_entitySubtype"),
+            caption: si4.translate("field_structSubtype"),
+            readOnly: true,
         });
 
         args.basicTab.fieldPrimary = args.basicTab.form.addInput({
@@ -276,20 +277,22 @@ var F = function(args){
                 caption:si4.translate("field_title"),
                 readOnly: true
             });
-            args.basicTab.fieldAuthor = args.basicTab.formPreview.addInput({
-                name:"author",
-                value:rowValue.creator,
-                type:"text",
-                caption:si4.translate("field_creator"),
-                readOnly: true
-            });
-            args.basicTab.fieldYear = args.basicTab.formPreview.addInput({
-                name:"year",
-                value:rowValue.date,
-                type:"text",
-                caption:si4.translate("field_year"),
-                readOnly: true
-            });
+            if (struct_type == "entity") {
+                args.basicTab.fieldAuthor = args.basicTab.formPreview.addInput({
+                    name:"author",
+                    value:rowValue.creator,
+                    type:"text",
+                    caption:si4.translate("field_creator"),
+                    readOnly: true
+                });
+                args.basicTab.fieldYear = args.basicTab.formPreview.addInput({
+                    name:"year",
+                    value:rowValue.date,
+                    type:"text",
+                    caption:si4.translate("field_year"),
+                    readOnly: true
+                });
+            }
         }
 
 
@@ -353,90 +356,88 @@ var F = function(args){
 
 
         // *** Metadata Editor Tab ***
-        if (struct_type != "file") {
-            args.editorTab = args.createContentTab("mdEditorTab", {canClose: false});
-            args.editorTab.panel = new si4.widget.si4Panel({parent: args.editorTab.content.selector});
-            args.editorTab.panelGroup = args.editorTab.panel.addGroup();
-            args.editorTab.form = new si4.widget.si4Form({
-                parent: args.editorTab.panelGroup.content.selector,
-                captionWidth: "90px"
-            });
+        args.editorTab = args.createContentTab("mdEditorTab", {canClose: false});
+        args.editorTab.panel = new si4.widget.si4Panel({parent: args.editorTab.content.selector});
+        args.editorTab.panelGroup = args.editorTab.panel.addGroup();
+        args.editorTab.form = new si4.widget.si4Form({
+            parent: args.editorTab.panelGroup.content.selector,
+            captionWidth: "90px"
+        });
 
-            args.editorTab.fields = {};
+        args.editorTab.fields = {};
 
 
-            for (var fieldIdx in si4.entity.mdHelper.dcFieldOrder) {
-                var fieldName = si4.entity.mdHelper.dcFieldOrder[fieldIdx];
-                var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+        for (var fieldIdx in si4.entity.mdHelper.dcFieldOrder) {
+            var fieldName = si4.entity.mdHelper.dcFieldOrder[fieldIdx];
+            var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
 
-                args.editorTab.fields[fieldName] = args.editorTab.form.addInput({
-                    name: fieldName,
-                    type: fieldBP.inputType,
-                    caption: fieldBP.translation,
-                    withCode: fieldBP.withCode,
-                    values: fieldBP.values,
-                    isArray: true,
-                });
-            }
-
-            args.editorTab.saveButton = args.editorTab.form.addInput({
-                caption: si4.translate("field_actions"),
-                value: si4.translate("button_save"),
-                type: "submit",
-            });
-
-            // Convert DC fields to XML
-            args.editorTab.saveButton.selector.click(function (val) {
-                var formValue = args.editorTab.form.getValue();
-                console.log("formValue", formValue);
-
-                si4.xmlMutators.mutateXml(args.xmlTab.fieldXml, "dcFields", { value: formValue });
-
-                args.saveEntity();
-            });
-
-            // Parse XML to DC fields
-            args.editorTab.onActive(function () {
-                args.editorTab.form.allInputs.clear();
-                var xmlStr = args.xmlTab.fieldXml.getValue();
-                var parser = new DOMParser();
-                var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
-
-                // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
-                var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
-                var formValFromXml = {};
-                for (var i = 0; i < xmlDC.children.length; i++) {
-                    var dcElement = xmlDC.children[i];
-                    // dcElement.tagName;
-                    // dcElement.textContent;
-                    // dcElement.attributes;
-
-                    if (dcElement.tagName.indexOf(":") == -1) continue;
-                    var fieldName = dcElement.tagName.split(":")[1];
-                    var fieldValue = dcElement.textContent;
-
-                    if (!si4.entity.mdHelper.dcBlueprint[fieldName]) continue;
-                    var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
-
-                    var inputValue;
-                    if (fieldBP.withCode) {
-                        inputValue = {
-                            codeId: dcElement.attributes.getNamedItem(fieldBP.codeXmlName).value,
-                            value: fieldValue
-                        };
-                    } else {
-                        inputValue = fieldValue;
-                    }
-
-                    if (!formValFromXml[fieldName]) formValFromXml[fieldName] = [];
-                    formValFromXml[fieldName].push(inputValue);
-                }
-
-                window.xmlDoc = xmlDoc;
-                console.log(formValFromXml);
-                args.editorTab.form.setValue(formValFromXml);
+            args.editorTab.fields[fieldName] = args.editorTab.form.addInput({
+                name: fieldName,
+                type: fieldBP.inputType,
+                caption: fieldBP.translation,
+                withCode: fieldBP.withCode,
+                values: fieldBP.values,
+                isArray: true,
             });
         }
+
+        args.editorTab.saveButton = args.editorTab.form.addInput({
+            caption: si4.translate("field_actions"),
+            value: si4.translate("button_save"),
+            type: "submit",
+        });
+
+        // Convert DC fields to XML
+        args.editorTab.saveButton.selector.click(function (val) {
+            var formValue = args.editorTab.form.getValue();
+            console.log("formValue", formValue);
+
+            si4.xmlMutators.mutateXml(args.xmlTab.fieldXml, "dcFields", { value: formValue });
+
+            args.saveEntity();
+        });
+
+        // Parse XML to DC fields
+        args.editorTab.onActive(function () {
+            args.editorTab.form.allInputs.clear();
+            var xmlStr = args.xmlTab.fieldXml.getValue();
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+
+            // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
+            var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
+            var formValFromXml = {};
+            for (var i = 0; i < xmlDC.children.length; i++) {
+                var dcElement = xmlDC.children[i];
+                // dcElement.tagName;
+                // dcElement.textContent;
+                // dcElement.attributes;
+
+                if (dcElement.tagName.indexOf(":") == -1) continue;
+                var fieldName = dcElement.tagName.split(":")[1];
+                var fieldValue = dcElement.textContent;
+
+                if (!si4.entity.mdHelper.dcBlueprint[fieldName]) continue;
+                var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+
+                var inputValue;
+                if (fieldBP.withCode) {
+                    inputValue = {
+                        codeId: dcElement.attributes.getNamedItem(fieldBP.codeXmlName).value,
+                        value: fieldValue
+                    };
+                } else {
+                    inputValue = fieldValue;
+                }
+
+                if (!formValFromXml[fieldName]) formValFromXml[fieldName] = [];
+                formValFromXml[fieldName].push(inputValue);
+            }
+
+            window.xmlDoc = xmlDoc;
+            console.log(formValFromXml);
+            args.editorTab.form.setValue(formValFromXml);
+        });
 
 
         // *** Relations Tab ***
@@ -651,7 +652,7 @@ var F = function(args){
         si4.api["reserveEntityId"]({ struct_type: args.row.struct_type }, function(response) {
             args.row.id = response.data.id;
             args.row.handle_id = response.data.handle_id;
-            args.row.entity_subtype = response.data.entity_subtype;
+            args.row.struct_subtype = response.data.struct_subtype;
             if (args.staticData) {
                 for (var i in args.staticData) args.row[i] = args.staticData[i];
             }

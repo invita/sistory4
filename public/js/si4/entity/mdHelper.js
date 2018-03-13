@@ -62,7 +62,7 @@ si4.entity.mdHelper.dcBlueprint = {
     },
     language: {
         translation: si4.translate("field_language"),
-        inputType: "select",
+        inputType: "text",
         //values: si4.entity.mdHelper.dcLangCodes,
         addXmlAttrs: [{ name: "xsi:type", value: "dcterms:ISO639-3" }],
     },

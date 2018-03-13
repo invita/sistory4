@@ -95,8 +95,8 @@ class EntitySelect
         "primary" => "primary",
         "collection" => "collection",
         "struct_type" => "struct_type",
+        "struct_subtype" => "struct_subtype",
         "entity_type" => "entity_type",
-        "entity_subtype" => "entity_subtype",
         "title" => "data.dmd.dc.title",
         "creator" => "data.dmd.dc.creator",
         "date" => "data.dmd.dc.date",
@@ -175,8 +175,8 @@ class EntitySelect
 
             if ($_source) {
                 $structType = Si4Util::getArg($_source, "struct_type", "");
+                $structSubtype = Si4Util::getArg($_source, "struct_subtype", "");
                 $entityType = Si4Util::getArg($_source, "entity_type", "");
-                $entitySubtype = Si4Util::getArg($_source, "entity_subtype", "");
 
                 $handle_id = Si4Util::getArg($_source, "handle_id", "");
                 $parent = Si4Util::getArg($_source, "parent", "");
@@ -206,8 +206,8 @@ class EntitySelect
                 "primary" => $primary,
                 "collection" => $collection,
                 "struct_type" => $structType,
+                "struct_subtype" => $structSubtype,
                 "entity_type" => $entityType,
-                "entity_subtype" => $entitySubtype,
                 "title" => $title,
                 "creator" => $creator,
                 "date" => $date,

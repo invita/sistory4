@@ -21,7 +21,8 @@ si4.translations = {
     entities_collectionList_mainTab_text: "Collection list",
     entities_collectionList_contentTab_text: "List",
     entities_collectionList_importTab_text: "Import",
-    entities_collectionList_exportTab_text: "Export",
+    entities_collectionList_exportMetsTab_text: "Export Mets(Zip)",
+    entities_collectionList_exportCsvTab_text: "Export Csv",
     //entities_collectionTitleNew: "New collection",
     //entities_collectionTitleEdit: "Collection [[handle_id]]",
 
@@ -99,8 +100,8 @@ si4.translations = {
     field_year: "Year",
     field_structType: "Content type",
     field_entityType: "Entity type",
-    field_entitySubtype: "Behavior",
     field_collectionType: "Collection type",
+    field_structSubtype: "Behavior",
     field_xmlFromFile: "Load xml from file",
 
     field_email: "Email",
@@ -115,6 +116,7 @@ si4.translations = {
     field_parent: "Parent",
     field_children: "Children",
     field_primary: "Primary",
+    field_entity: "Entity",
     field_collection: "Collection",
 
     field_actions: "Actions",
