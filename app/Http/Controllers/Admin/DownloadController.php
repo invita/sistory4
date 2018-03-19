@@ -77,7 +77,7 @@ class DownloadController extends Controller
         $tmpFile = EntityExport::exportEntitiesCsv($entityList, $columns);
 
         header('Content-Type: ');
-        //header('Content-disposition: attachment; filename=entities.csv');
+        header('Content-disposition: attachment; filename=entities.csv');
         header('Content-Length: ' .filesize($tmpFile));
 
         readfile($tmpFile);
