@@ -635,15 +635,15 @@ var F = function(args){
         switch (args.caller) {
             case "entityList":default:
                 args.row.struct_type = "entity";
-                args.row.entity_type = "dependant";
+                args.row.entity_type = "";
                 break;
             case "collectionList":
                 args.row.struct_type = "collection";
-                args.row.entity_type = "primary";
+                args.row.entity_type = "";
                 break;
             case "fileList":
                 args.row.struct_type = "file";
-                args.row.entity_type = "primary";
+                args.row.entity_type = "";
                 break;
         }
         args.row.indexed = true;

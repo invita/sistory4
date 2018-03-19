@@ -93,36 +93,6 @@ class Entity extends Model
         return $array;
     }
 
-    /*
-    public function objectToData($obj)
-    {
-        if (!$this->data) return null;
-        $serializerBuilder = SerializerBuilder::create();
-        $serializerBuilder->addMetadataDir(app_path("Xsd/Mets"), 'App\Xsd\Mets');
-        $serializerBuilder->configureHandlers(function (HandlerRegistryInterface $handler) use ($serializerBuilder) {
-            $serializerBuilder->addDefaultHandlers();
-            $handler->registerSubscribingHandler(new BaseTypesHandler()); // XMLSchema List handling
-            $handler->registerSubscribingHandler(new XmlSchemaDateHandler()); // XMLSchema date handling
-
-            //$handler->registerSubscribingHandler(new XmlDataATypeHandler());
-            // $handler->registerSubscribingHandler(new YourhandlerHere());
-            //$handler->registerSubscribingHandler(new AnySimpleTypeHandler());
-            $handler->registerSubscribingHandler(new DcTypeHandler());
-            $handler->registerSubscribingHandler(new AnyTypeHandler());
-
-        });
-
-        $serializer = $serializerBuilder->build();
-
-        // serialize the object into XML
-        $data = $serializer->serialize($obj, 'xml');
-        //$array = $object->toArray();
-
-
-        return $data;
-    }
-    */
-
     public function updateXml() {
         $xmlDoc = simplexml_load_string($this->data);
         $xmlDoc['ID'] = $this->handle_id;

@@ -100,7 +100,6 @@ class Entities extends Controller
 
         Artisan::call("reindex:entity", ["entityId" => $entity->id]);
 
-
         return ["status" => $status, "error" => $error];
     }
 
