@@ -116,7 +116,7 @@ si4.translations = {
     field_parent: "Parent",
     field_children: "Children",
     field_primary: "Primary",
-    field_entity: "Entity",
+    field_entity: "Parent (Entity)",
     field_collection: "Collection",
 
     field_actions: "Actions",
