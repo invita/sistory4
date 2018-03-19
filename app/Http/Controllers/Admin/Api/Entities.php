@@ -93,14 +93,8 @@ class Entities extends Controller
         if (!$handle_id) $handle_id = EntityHandleSeq::nextNumSeq($entity->struct_type);
         $entity->handle_id = $handle_id;
 
-        //$entity->primary = "123";
-        //$entity->entity_type = "dependant";
-        //print_r($entity->id); die();
-
         $entity->calculateParents();
-
-        //$entity->primary = $primary;
-        //$entity->entity_type = in_array($entityType, Enums::$entityTypes) ? $entityType : null;
+        $entity->updateXml();
 
         $entity->save();
 

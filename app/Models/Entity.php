@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
 use App\Helpers\Si4Util;
+use App\Helpers\XmlHelpers;
 use App\Xsd\AnySimpleTypeHandler;
 use App\Xsd\AnyTypeHandler;
 use App\Xsd\XmlDataATypeHandler;
@@ -89,8 +90,68 @@ class Entity extends Model
         $object = $serializer->deserialize($this->data, 'App\Xsd\Mets\Mets', 'xml');
         $array = $object->toArray();
 
-
         return $array;
+    }
+
+    /*
+    public function objectToData($obj)
+    {
+        if (!$this->data) return null;
+        $serializerBuilder = SerializerBuilder::create();
+        $serializerBuilder->addMetadataDir(app_path("Xsd/Mets"), 'App\Xsd\Mets');
+        $serializerBuilder->configureHandlers(function (HandlerRegistryInterface $handler) use ($serializerBuilder) {
+            $serializerBuilder->addDefaultHandlers();
+            $handler->registerSubscribingHandler(new BaseTypesHandler()); // XMLSchema List handling
+            $handler->registerSubscribingHandler(new XmlSchemaDateHandler()); // XMLSchema date handling
+
+            //$handler->registerSubscribingHandler(new XmlDataATypeHandler());
+            // $handler->registerSubscribingHandler(new YourhandlerHere());
+            //$handler->registerSubscribingHandler(new AnySimpleTypeHandler());
+            $handler->registerSubscribingHandler(new DcTypeHandler());
+            $handler->registerSubscribingHandler(new AnyTypeHandler());
+
+        });
+
+        $serializer = $serializerBuilder->build();
+
+        // serialize the object into XML
+        $data = $serializer->serialize($obj, 'xml');
+        //$array = $object->toArray();
+
+
+        return $data;
+    }
+    */
+
+    public function updateXml() {
+        $xmlDoc = simplexml_load_string($this->data);
+        $xmlDoc['ID'] = $this->handle_id;
+        $xmlDoc['OBJID'] = "http://hdl.handle.net/11686/".$this->handle_id;
+
+        $premisIdentifiers = $xmlDoc->xpath(
+            "METS:amdSec/METS:techMD/METS:mdWrap[@MDTYPE='PREMIS:OBJECT']/METS:xmlData/premis:objectIdentifier");
+        foreach ($premisIdentifiers as $premisIdentifier) {
+            $piTypeNode = $premisIdentifier->xpath("premis:objectIdentifierType")[0];
+            $piValueNode = $premisIdentifier->xpath("premis:objectIdentifierValue")[0];
+            $piType = (string)$piTypeNode;
+
+            if ($piType == "si4") {
+                $piValueNode[0] = $this->id;
+            }
+            else if ($piType == "Local name") {
+                $piValueNode[0] = $this->handle_id;
+            }
+            else if ($piType == "hdl") {
+                $piValueNode[0] = "http://hdl.handle.net/11686/".$this->handle_id;
+            }
+
+        }
+
+        $premisObjCategory = $xmlDoc->xpath(
+            "METS:amdSec/METS:techMD/METS:mdWrap[@MDTYPE='PREMIS:OBJECT']/METS:xmlData/premis:objectCategory")[0];
+        $premisObjCategory[0] = $this->struct_type;
+
+        $this->data = $xmlDoc->asXML();
     }
 
     // Calculates primary entity
