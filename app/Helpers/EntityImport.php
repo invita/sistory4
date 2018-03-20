@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Artisan;
  */
 class EntityImport
 {
-    public static function importEntity($handleId, $xmlContent) {
+    public static function importEntity($handleId, $parentHandleId, $xmlContent) {
 
-        $xml = simplexml_load_string($xmlContent);
+        $xmlDoc = simplexml_load_string($xmlContent);
 
         //print_r($xml);
 
@@ -24,11 +24,25 @@ class EntityImport
         //    echo $attrKey.' = "'.$attrVal."\"\n";
         //}
 
-        $metsAttributes = $xml->attributes();
+        $metsAttributes = $xmlDoc->attributes();
         $maType = (string)$metsAttributes["TYPE"];
         $maId = (string)$metsAttributes["ID"];
         $maObjId = (string)$metsAttributes["OBJID"];
 
+        $metsFile = null;
+
+        if ($maType == "file") {
+            $metsFileEl = $xmlDoc->xpath("METS:fileSec[@ID='default.file']/METS:fileGrp/METS:file");
+            if ($metsFileEl && $metsFileEl[0]) {
+                $metsFile = [
+                    "id" => (string)$metsFileEl[0]["ID"],
+                    "fileName" => (string)$metsFileEl[0]["OWNERID"],
+                    "mimeType" => (string)$metsFileEl[0]["MIMETYPE"],
+                    "created" => (string)$metsFileEl[0]["CREATED"],
+                    "size" => (string)$metsFileEl[0]["SIZE"],
+                ];
+            }
+        }
 
         $existing = Entity::where(["handle_id" => $handleId])->first();
         if ($existing) $existing->delete();
@@ -39,9 +53,9 @@ class EntityImport
         $newEntityId = Si4Util::nextEntityId();
         $entity = Entity::findOrNew($newEntityId);
         $entity->handle_id = $handleId;
-        $entity->struct_type = "entity";
+        $entity->struct_type = $maType;
 
-        $entity->parent = "";
+        $entity->parent = $parentHandleId;
         //$entity->calculateParents();
         $entity->entity_type = "";
         $entity->primary = "";
@@ -54,7 +68,23 @@ class EntityImport
 
         Artisan::call("reindex:entity", ["entityId" => $newEntityId]);
 
-        return true;
+        //return $entity;
+        return [
+            "sysId" => $newEntityId,
+            "structType" => $maType,
+            "metsFile" => $metsFile,
+            "entity" => $entity,
+        ];
 
     }
+
+    public static function postImportEntity($sysId) {
+        $entity = Entity::findOrNew($sysId);
+        $entity->calculateParents();
+        $entity->updateXml();
+        $entity->save();
+
+        Artisan::call("reindex:entity", ["entityId" => $sysId]);
+    }
+
 }

@@ -30,7 +30,8 @@ si4.translations = {
     entities_fileList_mainTab_text: "File list",
     entities_fileList_contentTab_text: "List",
     entities_fileList_importTab_text: "Import",
-    entities_fileList_exportTab_text: "Export",
+    entities_fileList_exportMetsTab_text: "Export Mets(Zip)",
+    entities_fileList_exportCsvTab_text: "Export Csv",
     entities_fileTitleNew: "New file",
     entities_fileTitleEdit: "File [[handle_id]] - [[name]]",
 
@@ -150,7 +151,7 @@ si4.translations = {
 
     saved_confirm_close: "Operation successful. Close?",
 
-    text_confirm_import_entities: "Import will add new entities. Existing IDs will be overwritten. Do you want to continue?",
+    text_confirm_import_entities: "Zip contains:\n - [[collections]] collections,\n - [[entities]] entities,\n - [[files]] files\n - [[unknown]] unknown\n\nNote: Import will overwrite existing IDs.\nDo you want to continue?",
 
     // Errors
     ERR_API_STATUS_FALSE: "Failed to save.",

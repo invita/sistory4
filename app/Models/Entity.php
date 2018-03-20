@@ -97,6 +97,7 @@ class Entity extends Model
         $xmlDoc = simplexml_load_string($this->data);
         $xmlDoc['ID'] = $this->handle_id;
         $xmlDoc['OBJID'] = "http://hdl.handle.net/11686/".$this->handle_id;
+        $xmlDoc['TYPE'] = $this->struct_type;
 
         $premisIdentifiers = $xmlDoc->xpath(
             "METS:amdSec/METS:techMD/METS:mdWrap[@MDTYPE='PREMIS:OBJECT']/METS:xmlData/premis:objectIdentifier");

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Artisan;
  */
 class EntityExport
 {
-    public static function exportEntitiesMets($entityList) {
+    public static function exportEntitiesMets($entityList, $pathPrefix = "entities") {
 
         //print_r($entityList["data"][0]);
 
@@ -19,7 +19,6 @@ class EntityExport
         $error = null;
         //$fileName = "entities.zip";
         $fileName = tempnam("/tmp", "si4.zip");
-        $pathPrefix = "entities/";
 
         $archive = new \ZipArchive();
         $archive->open($fileName, \ZipArchive::CREATE);
@@ -28,7 +27,7 @@ class EntityExport
             $handle_id = $entity["handle_id"];
 
             $xml = $entity["xmlData"];
-            $archive->addFromString($pathPrefix.$handle_id."/mets.xml", $xml);
+            $archive->addFromString($pathPrefix."/".$handle_id."/mets.xml", $xml);
         }
 
         $archive->setArchiveComment('Created '.date('Y-M-d'));
@@ -46,7 +45,6 @@ class EntityExport
         $error = null;
         //$fileName = "entities.zip";
         $fileName = tempnam("/tmp", "si4.csv");
-        $pathPrefix = "entities/";
 
         $result = "";
         $NL = "\n";

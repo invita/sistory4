@@ -135,6 +135,7 @@ var F = function(args){
                             var fileExt = response.data.realFileName.split(".").pop();
                             if (["jpg", "jpeg", "png"].indexOf(fileExt.toLowerCase()) != -1) {
                                 args.basicTab.filePreviewImg.selector.attr("src", response.data.url);
+                                args.basicTab.filePreviewDiv.display();
                             }
 
 
@@ -252,13 +253,31 @@ var F = function(args){
                 caption:si4.translate("field_checksumAlgo"),
                 readOnly: true
             });
+
+            // Preview div
+            args.basicTab.fileInfoDiv = new si4.widget.si4Element({
+                parent: args.basicTab.panelGroupPreview.content.selector, tagClass: "fileInfoDiv" });
+
             args.basicTab.filePreviewDiv = new si4.widget.si4Element({
-                parent: args.basicTab.panelGroupPreview.content.selector });
+                parent: args.basicTab.fileInfoDiv.selector, tagClass: "filePreviewDiv" });
             args.basicTab.filePreviewImg = new si4.widget.si4Element({
                 parent: args.basicTab.filePreviewDiv.selector, tagName: "img" });
-            args.basicTab.filePreviewImg.selector.css({
-                marginTop: "10px", maxWidth: "256px"
+            args.basicTab.filePreviewDiv.displayNone();
+
+            // Download div
+            args.basicTab.fileDownloadDiv = new si4.widget.si4Element({
+                parent: args.basicTab.fileInfoDiv.selector, tagClass: "fileDownloadDiv" });
+            args.basicTab.fileDownloadImg = new si4.widget.si4Element({
+                parent: args.basicTab.fileDownloadDiv.selector, tagName: "img" });
+            args.basicTab.fileDownloadImg.selector.attr("src", "/img/download.png");
+            args.basicTab.fileDownloadSpan = new si4.widget.si4Element({
+                parent: args.basicTab.fileDownloadDiv.selector, tagName: "span" });
+            args.basicTab.fileDownloadSpan.selector.html("Open");
+            args.basicTab.fileDownloadDiv.selector.click(function() {
+                window.open(rowValue.fileUrl, "_blank");
             });
+            args.basicTab.fileDownloadDiv.displayNone();
+
 
             // File Preview
             var fileName = rowValue.fileName;
@@ -267,7 +286,9 @@ var F = function(args){
                 var fileExt = fileName.split(".").pop();
                 if (["jpg", "jpeg", "png"].indexOf(fileExt.toLowerCase()) != -1) {
                     args.basicTab.filePreviewImg.selector.attr("src", fileUrl);
+                    args.basicTab.filePreviewDiv.display();
                 }
+                args.basicTab.fileDownloadDiv.display();
             }
         } else {
             args.basicTab.fieldTitle = args.basicTab.formPreview.addInput({
@@ -639,11 +660,11 @@ var F = function(args){
                 break;
             case "collectionList":
                 args.row.struct_type = "collection";
-                args.row.entity_type = "";
+                args.row.entity_type = "primary";
                 break;
             case "fileList":
                 args.row.struct_type = "file";
-                args.row.entity_type = "";
+                args.row.entity_type = "primary";
                 break;
         }
         args.row.indexed = true;

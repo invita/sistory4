@@ -20,8 +20,7 @@ class FileHelpers
         return "public/entity/".$idNS."/".$entityId."/".$fileName;
     }
 
-    public static function getIdNamespace($id)
-    {
+    public static function getIdNamespace($id) {
         if($id <= 1000) return '1-1000';
         return floor($id/1000).'001-'.(floor($id/1000) + 1).'000';
     }

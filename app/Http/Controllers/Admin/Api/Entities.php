@@ -78,7 +78,7 @@ class Entities extends Controller
         $tempFileName = Si4Util::getArg($postJson, "tempFileName", "");
         if ($tempFileName && $realFileName) {
             $tempStorageName = "public/temp/".$tempFileName;
-            $destStorageName = FileHelpers::getStorageName($id, $realFileName);
+            $destStorageName = FileHelpers::getStorageName($parent, $realFileName);
             if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
             Storage::move($tempStorageName, $destStorageName);
         }

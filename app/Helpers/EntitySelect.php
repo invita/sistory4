@@ -115,16 +115,23 @@ class EntitySelect
     private static function prepareElasticQuery($terms = []) {
         $queryFilterMust = [];
 
+        $nonWildCardKeys = ["id"];
+
         foreach ($terms as $termKey => $termVal) {
             if (is_array($termVal)) {
                 $queryFilterMust[] = [
                     "terms" => [ $termKey => $termVal ]
                 ];
             } else {
-                $queryFilterMust[] = [
-                    //"term" => [ $termKey => $termVal ]
-                    "wildcard" => [ $termKey => $termVal ]
-                ];
+                if (in_array($termKey, $nonWildCardKeys)) {
+                    $queryFilterMust[] = [
+                        "term" => [ $termKey => $termVal ]
+                    ];
+                } else {
+                    $queryFilterMust[] = [
+                        "wildcard" => [ $termKey => $termVal ]
+                    ];
+                }
             }
         }
 
@@ -194,8 +201,8 @@ class EntitySelect
                 //$date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
                 $date = isset($dcMetadata["date"]) && isset($dcMetadata["date"][0]) ? $dcMetadata["date"][0] : "";
 
-                $fileName = Si4Util::pathArg($data, "files/0/id", "");
-                if ($fileName) $fileUrl = FileHelpers::getPreviewUrl($id, $fileName);
+                $fileName = Si4Util::pathArg($data, "files/0/ownerId", "");
+                if ($fileName) $fileUrl = FileHelpers::getPreviewUrl($parent, $fileName);
 
             }
 

@@ -34,47 +34,77 @@ var F = function(args){
         cssClass_table: "si4DataTable_table width100percent"
     });
 
-    /*
 
+    // Import
     var importForm = new si4.widget.si4Form({parent:si4.data.contentElement });
     var importFile = importForm.addInput({name:"file", value:"", type:"file", accept: ".zip" });
     importFile.displayNone();
     importFile.selector.change(function() {
         console.log("change", importFile.getValue());
 
-        var url = "/admin/upload/import";
+        var importCheckUrl = "/admin/upload/import-check";
+        var importUrl = "/admin/upload/import";
+
         var formData = new FormData();
         formData.append("file", importFile.getValue());
-        console.log("post ", url, formData);
+        console.log("post ", importCheckUrl, formData);
 
         si4.loading.show();
-
         $.ajax({
             type: 'POST',
-            url: url,
+            url: importCheckUrl,
             data: formData,
             processData: false,
             contentType: false,
             success: function(response){
-                console.log("callback", response);
-                setTimeout(function() {
-                    dataTable.refresh();
-                    si4.loading.hide();
-                }, 2000);
+                console.log("import-check callback", response);
+                si4.loading.hide();
+
+                if (response.status) {
+                    if (confirm(si4.translate("text_confirm_import_entities", response.data))) {
+                        si4.loading.show();
+                        var importData = { uploadedFile: response.pathName };
+
+                        console.log("post ", importUrl, importData);
+                        $.ajax({
+                            type: 'POST',
+                            url: importUrl,
+                            data: JSON.stringify(importData),
+                            success: function(response){
+                                console.log("import callback", response);
+
+                                if (response.status) {
+                                    setTimeout(function() {
+                                        dataTable.refresh();
+                                        si4.loading.hide();
+                                    }, 2000);
+
+                                } else {
+                                    alert(response.error);
+                                }
+                            }
+                        });
+                    }
+
+                } else {
+                    alert(response.error);
+                }
             }
         });
+
     });
 
     args.entityImportButton = args.createContentTab("importTab", { type: "button" });
     args.entityImportButton.onActive(function(e) {
-        console.log("import");
+        console.log("import", e);
         importFile.input.selector.click();
     });
 
 
-    args.entityExportButton = args.createContentTab("exportTab", { type: "button" });
-    args.entityExportButton.onActive(function() {
-        var url = "/admin/download/export";
+    // Export Mets
+    args.entityExportMetsButton = args.createContentTab("exportMetsTab", { type: "button" });
+    args.entityExportMetsButton.onActive(function() {
+        var url = "/admin/download/exportMets";
         var postData = dataTable.dataSource.getMethodCallData(dataTable.dataSource.methodNames.select);
 
         var exportForm = document.createElement("form");
@@ -92,40 +122,25 @@ var F = function(args){
         exportForm.submit();
     });
 
-    */
+    // Export Csv
+    args.entityExportCsvButton = args.createContentTab("exportCsvTab", { type: "button" });
+    args.entityExportCsvButton.onActive(function() {
+        var url = "/admin/download/exportCsv";
+        var postData = dataTable.dataSource.getMethodCallData(dataTable.dataSource.methodNames.select);
 
+        var exportForm = document.createElement("form");
+        exportForm.action = url;
+        exportForm.method = "POST";
 
+        var dataInput = document.createElement("input");
+        dataInput.name = "data";
+        dataInput.type = "hidden";
+        dataInput.value = JSON.stringify(postData);
+        exportForm.appendChild(dataInput);
 
-    /*
+        si4.data.contentElement.append(exportForm);
 
-    var name = "file";
-    var dataTable = new si4.widget.si4DataTable({
-        parent: args.contentTab.content.selector,
-        primaryKey: ['id'],
-        entityTitleNew: si4.lookup[name].entityTitleNew,
-        entityTitleEdit: si4.lookup[name].entityTitleEdit,
-        //filter: { enabled: false },
-        dataSource: new si4.widget.si4DataTableDataSource({
-            select: si4.api["fileList"],
-            delete: si4.api["deleteFile"],
-            staticData : { },
-            pageCount: 20
-        }),
-        editorModuleArgs: {
-            moduleName:"Files/FileDetails",
-        },
-        canInsert: true,
-        canDelete: true,
-        tabPage: args.contentTab,
-        fields: {
-            //id: { caption: "Id" },
-            size: { format: function(fieldVal) { return si4.friendlyFileSize(fieldVal); } },
-            url: { visible: false },
-            mimeType: { caption: si4.translate("field_mimeType") },
-        },
-        cssClass_table: "si4DataTable_table width100percent"
+        exportForm.submit();
     });
-
-    */
 
 };

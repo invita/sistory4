@@ -16,24 +16,19 @@ class DownloadController extends Controller
 {
     public function entity(Request $request)
     {
-        /*
-        $structType = EntityType::find($request->input("struct_type_id"));
-        $file = $request->file("file");
-
-        $entity = Entity::createFromUpload($entityType, $file);
-
-        return ["status" => true, "data" => $entity->data, "error" =>  null];
-        */
     }
 
     public function exportMets(Request $request)
     {
         $postJson = json_decode($request->input("data"), true);
+        $filter_struct_type = Si4Util::pathArg($postJson, "filter/struct_type");
+        $outFileName = self::getFileName($filter_struct_type);
+
         $entityList = EntitySelect::selectEntities($postJson);
-        $tmpFile = EntityExport::exportEntitiesMets($entityList);
+        $tmpFile = EntityExport::exportEntitiesMets($entityList, $outFileName);
 
         header('Content-Type: application/zip');
-        header('Content-disposition: attachment; filename=entities.zip');
+        header('Content-disposition: attachment; filename='.$outFileName.'.zip');
         header('Content-Length: ' .filesize($tmpFile));
         readfile($tmpFile);
     }
@@ -41,11 +36,12 @@ class DownloadController extends Controller
     public function exportCsv(Request $request)
     {
         $postJson = json_decode($request->input("data"), true);
-        $filter = Si4Util::getArg($postJson, "filter", []);
-        $filter_structType = Si4Util::getArg($filter, "struct_type", "");
+        $filter_struct_type = Si4Util::pathArg($postJson, "filter/struct_type");
+        $outFileName = self::getFileName($filter_struct_type);
+
         $entityList = EntitySelect::selectEntities($postJson);
 
-        switch ($filter_structType) {
+        switch ($filter_struct_type) {
             case "entity": default:
                 $columns = [
                     "id" => "id",
@@ -77,9 +73,22 @@ class DownloadController extends Controller
         $tmpFile = EntityExport::exportEntitiesCsv($entityList, $columns);
 
         header('Content-Type: ');
-        header('Content-disposition: attachment; filename=entities.csv');
+        header('Content-disposition: attachment; filename='.$outFileName.'.csv');
         header('Content-Length: ' .filesize($tmpFile));
 
         readfile($tmpFile);
     }
+
+
+    // Helper methods
+
+    private static function getFileName($filter_struct_type) {
+        switch ($filter_struct_type) {
+            case "entity": default: $result = "entities"; break;
+            case "collection": $result = "collections"; break;
+            case "file": $result = "files"; break;
+        }
+        return $result;
+    }
+
 }

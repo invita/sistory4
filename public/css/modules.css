@@ -22,7 +22,15 @@
     max-width: 200px;
     max-height: 200px;
 }
+#pageHolder .fileInfoDiv { display: flex; flex-direction: row; align-items: flex-start; margin-top: 5px; }
+#pageHolder .fileDownloadDiv { display: flex; flex-direction: row; align-items: center;
+    cursor: pointer; margin: 8px; }
+.fileDownloadDiv img { width: 32px; margin-right: 5px; }
+.fileDownloadDiv span { color: #888; }
+.fileDownloadDiv span:hover { color: #555; }
 
+#pageHolder .filePreviewDiv { margin: 8px; }
+.filePreviewDiv img { max-width: 256px; }
 
 
 /* TODO: delete from here down... check to rename if anything is needed */
