@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\ElasticHelpers;
 use App\Helpers\EntityImport;
 use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
+use App\Models\Elastic\EntityNotIndexedException;
 use App\Models\Entity;
 use App\Models\Relation;
 use Elasticsearch\ClientBuilder;
@@ -64,10 +66,26 @@ class UploadController extends Controller
             if (strtolower($fileName) == "mets.xml") {
                 if (!$commonPathComponents) {
                     $commonPathComponents = $pathExplode;
+                    foreach ($commonPathComponents as $cpcIdx => $cpcName) {
+                        // Condition to throw component out from commonPath
+                        if (is_numeric($cpcName) ||
+                            substr($cpcName, 0, 4) == "menu" ||
+                            substr($cpcName, 0, 4) == "file"
+                        ) {
+                            $commonPathComponents = array_slice($commonPathComponents, 0, $cpcIdx);
+                        }
+                    }
                 } else {
                     foreach ($commonPathComponents as $cpcIdx => $cpcName) {
-                        if (!isset($pathExplode[$cpcIdx]) || $pathExplode[$cpcIdx] != $cpcName)
+                        // Condition to throw component out from commonPath
+                        if (!isset($pathExplode[$cpcIdx]) ||
+                            $pathExplode[$cpcIdx] != $cpcName ||
+                            is_numeric($cpcName) ||
+                            substr($cpcName, 0, 4) == "menu" ||
+                            substr($cpcName, 0, 4) == "file"
+                        ) {
                             $commonPathComponents = array_slice($commonPathComponents, 0, $cpcIdx);
+                        }
                     }
                 }
             }
@@ -157,14 +175,18 @@ class UploadController extends Controller
             return ["status" => false, "data" => [], "error" =>  "File not found"];
 
         $zipFileName = storage_path('app')."/".$uploadedFile;
-        $error = null;
+        $errors = [];
         $data = [
             "importCount" => 0,
+            "replacedCount" => 0,
         ];
 
-        $insertIds = [];
+        $depthLevel = 0;
+        $importedEntitiesByLevel = [];
+        $importCount = 0;
 
         $zipInfo = $this->zipGetInfo($zipFileName);
+        //print_r($zipInfo);
 
         $archive = new \ZipArchive();
         $archive->open($zipFileName, \ZipArchive::CREATE);
@@ -191,6 +213,8 @@ class UploadController extends Controller
             //echo "fileName ".$fileName."\n";
 
             $handleId = array_pop($pathExplode);
+            $depthLevel = count($pathExplode);
+
             $parentHandleId = array_pop($pathExplode);
             if (!$parentHandleId) $parentHandleId = "";
             $content = $archive->getFromName($zipFile);
@@ -202,40 +226,11 @@ class UploadController extends Controller
 
                 $importResult = EntityImport::importEntity($handleId, $parentHandleId, $content);
                 $entity = $importResult["entity"];
-                $insertIds[] = $entity->id;
+                $importCount += 1;
 
-                /*
-                if ($entity->struct_type == "file" && $entity->parent && $importResult["metsFile"]) {
+                $importedEntitiesByLevel[$depthLevel][] = $entity->id;
 
-                    // Copy physical file
-
-                    print_r($importResult["metsFile"]);
-                    $metsFile = $importResult["metsFile"];
-                    //    Array
-                    //    (
-                    //        [id] => filefile477
-                    //        [fileName] => Dramaticni_krozek_v_Gorici.pdf
-                    //        [mimeType] => application/pdf
-                    //        [created] => 2016-11-17T17:19:55
-                    //        [size] => 0
-                    //    )
-
-
-                    //$archive->getFromName($zipFile);
-
-                    $destStorageName = FileHelpers::getStorageName($entity->parent, $metsFile["fileName"]);
-                    if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
-                    //Storage::move($tempStorageName, $destStorageName);
-
-
-                    //$tempStorageName = "public/temp/".$tempFileName;
-                    //$realFileName
-                    //$destStorageName = FileHelpers::getStorageName($entity->parent, $realFileName);
-                    //if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
-                    //Storage::move($tempStorageName, $destStorageName);
-
-                }
-                */
+                if ($importResult["replaced"]) $data["replacedCount"] += 1;
 
             } else {
                 // Not mets.xml, copy file to appropriate path
@@ -251,13 +246,26 @@ class UploadController extends Controller
 
         $archive->close();
 
-        foreach ($insertIds as $insertId) {
-            EntityImport::postImportEntity($insertId);
+        $levels = array_keys($importedEntitiesByLevel);
+        sort($levels);
+
+        foreach ($levels as $level) {
+            foreach ($importedEntitiesByLevel[$level] as $insertId) {
+                try {
+                    EntityImport::postImportEntity($insertId);
+                } catch (EntityNotIndexedException $eNotIndexed) {
+                    $errors[] = $eNotIndexed->getMessage();
+                }
+            }
+
+            // Because Elastic is not real time, we need to refresh index for each insert depth level
+            // It is important that i.e. "parent" menus can be found in index before indexing it's child entities
+            if (count($importedEntitiesByLevel[$level]))
+                ElasticHelpers::refreshIndex();
         }
 
-        $data["importCount"] = count($insertIds);
-
-        return ["status" => true, "data" => $data, "error" => $error];
+        $data["importCount"] = $importCount;
+        return ["status" => true, "data" => $data, "errors" => $errors];
     }
 
     public function uploadFile(Request $request) {

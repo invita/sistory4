@@ -43,58 +43,10 @@ var F = function(args){
     var importFile = importForm.addInput({name:"file", value:"", type:"file", accept: ".zip" });
     importFile.displayNone();
     importFile.selector.change(function() {
-        console.log("change", importFile.getValue());
-
-        var importCheckUrl = "/admin/upload/import-check";
-        var importUrl = "/admin/upload/import";
-
+        console.log("importFile input change", importFile.getValue());
         var formData = new FormData();
         formData.append("file", importFile.getValue());
-        console.log("post ", importCheckUrl, formData);
-
-        si4.loading.show();
-        $.ajax({
-            type: 'POST',
-            url: importCheckUrl,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response){
-                console.log("import-check callback", response);
-                si4.loading.hide();
-
-                if (response.status) {
-                    if (confirm(si4.translate("text_confirm_import_entities", response.data))) {
-                        si4.loading.show();
-                        var importData = { uploadedFile: response.pathName };
-
-                        console.log("post ", importUrl, importData);
-                        $.ajax({
-                            type: 'POST',
-                            url: importUrl,
-                            data: JSON.stringify(importData),
-                            success: function(response){
-                                console.log("import callback", response);
-
-                                if (response.status) {
-                                    setTimeout(function() {
-                                        dataTable.refresh();
-                                        si4.loading.hide();
-                                    }, 2000);
-
-                                } else {
-                                    alert(response.error);
-                                }
-                            }
-                        });
-                    }
-
-                } else {
-                    alert(response.error);
-                }
-            }
-        });
-
+        si4.entity.entityImport(formData, dataTable);
     });
 
     args.entityImportButton = args.createContentTab("importTab", { type: "button" });

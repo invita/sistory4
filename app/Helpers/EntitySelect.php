@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\Elastic\EntityNotIndexedException;
 use App\Models\Entity;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\EntityHelpers;
@@ -391,6 +392,11 @@ class EntitySelect
             $entity = isset($entity["data"]) && isset($entity["data"][0]) ? $entity["data"][0] : null;
         }
 
+        $found_handle_id = $entity && isset($entity["handle_id"]) && $entity["handle_id"] ? $entity["handle_id"] : false;
+        if (!$found_handle_id) {
+            throw new EntityNotIndexedException("Entity ".$handle_id." not found in Elastic index");
+        }
+
         // Select parent entity
 
         $parentId = $entity && isset($entity["parent"]) && $entity["parent"] ? $entity["parent"] : false;
@@ -406,7 +412,7 @@ class EntitySelect
         }
 
         // Select child entities
-        $children = EntitySelect::selectEntitiesByParentHandle($entity["handle_id"]);
+        $children = EntitySelect::selectEntitiesByParentHandle($handle_id);
         $children = isset($children["data"]) ? $children["data"] : [];
 
         //print_r(["children" => $children]);

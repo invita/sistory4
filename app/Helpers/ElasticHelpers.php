@@ -54,6 +54,18 @@ HERE;
 
 
     /**
+     * Refresh index
+     * @return array
+     */
+    public static function refreshIndex()
+    {
+        return \Elasticsearch::connection()->indices()->refresh([
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities")
+        ]);
+    }
+
+
+    /**
      * Sends a document to elastic search to be indexed
      * @param $entityId Integer entity id to index
      * @param $body Array body to index

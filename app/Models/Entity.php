@@ -6,10 +6,12 @@ use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
 use App\Helpers\Si4Util;
 use App\Helpers\XmlHelpers;
+use App\Models\Elastic\EntityNotIndexedException;
 use App\Xsd\AnySimpleTypeHandler;
 use App\Xsd\AnyTypeHandler;
 use App\Xsd\XmlDataATypeHandler;
 use App\Xsd\DcTypeHandler;
+use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Illuminate\Contracts\Logging\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -127,7 +129,6 @@ class Entity extends Model
 
     // Calculates primary entity
     public function calculateParents() {
-
         switch ($this->struct_type) {
             case "collection":
                 if ($this->parent) {

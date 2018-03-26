@@ -27,6 +27,7 @@
     <script src="/js/si4/entity/template.js"></script>
     <script src="/js/si4/entity/mdHelper.js"></script>
     <script src="/js/si4/entity/hintHelper.js"></script>
+    <script src="/js/si4/entity/entityImport.js"></script>
     <script src="/js/si4/object/si4EventBase.js"></script>
     <script src="/js/si4/object/si4FileUploader.js"></script>
     <script src="/js/si4/widget/si4Element.js"></script>

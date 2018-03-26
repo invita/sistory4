@@ -42,4 +42,6 @@ si4.config.uploadApis = {
     entity: si4.config.uploadApiUrl+"/entity",
 };
 
+si4.config.maxErrorsToAlert = 10;
+
 //si4.config.

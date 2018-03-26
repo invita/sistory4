@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\Models\Elastic\EntityNotIndexedException;
 use App\Models\Entity;
 use Illuminate\Support\Facades\Artisan;
 
@@ -44,13 +45,20 @@ class EntityImport
             }
         }
 
+        //echo "Importing handleId:".$handleId."\n";
+
         $existing = Entity::where(["handle_id" => $handleId])->first();
-        if ($existing) $existing->delete();
+        if ($existing && $existing->id) {
+            $newEntityId = $existing->id;
+            $replaced = true;
+        } else {
+            $newEntityId = Si4Util::nextEntityId();
+            $replaced = false;
+        }
 
         //$id = explode(".", $maId)[2];
         //echo "id: ".$id."\n";
 
-        $newEntityId = Si4Util::nextEntityId();
         $entity = Entity::findOrNew($newEntityId);
         $entity->handle_id = $handleId;
         $entity->struct_type = $maType;
@@ -74,12 +82,14 @@ class EntityImport
             "structType" => $maType,
             "metsFile" => $metsFile,
             "entity" => $entity,
+            "replaced" => $replaced,
         ];
 
     }
 
     public static function postImportEntity($sysId) {
         $entity = Entity::findOrNew($sysId);
+
         $entity->calculateParents();
         $entity->updateXml();
         $entity->save();
