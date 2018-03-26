@@ -174,6 +174,11 @@ class EntitySelect
 
             $fileName = "";
             $fileUrl = "";
+            $fileMimeType = "";
+            $fileSize = 0;
+            $fileTimestamp = "";
+            $fileChecksum = "";
+            $fileChecksumType = "";
 
             $structType = "";
             $entityType = "";
@@ -203,8 +208,14 @@ class EntitySelect
                 $date = isset($dcMetadata["date"]) && isset($dcMetadata["date"][0]) ? $dcMetadata["date"][0] : "";
 
                 $fileName = Si4Util::pathArg($data, "files/0/ownerId", "");
-                if ($fileName) $fileUrl = FileHelpers::getPreviewUrl($parent, $fileName);
-
+                if ($fileName) {
+                    $fileUrl = FileHelpers::getPreviewUrl($parent, $fileName);
+                    $fileMimeType = Si4Util::pathArg($data, "files/0/mimeType", "");
+                    $fileSize = Si4Util::pathArg($data, "files/0/size", "");
+                    $fileTimestamp = Si4Util::pathArg($data, "files/0/created", "");
+                    $fileChecksum = Si4Util::pathArg($data, "files/0/checksum", "");
+                    $fileChecksumType = Si4Util::pathArg($data, "files/0/checksumType", "");
+                }
             }
 
             $result[] = [
@@ -221,6 +232,11 @@ class EntitySelect
                 "date" => $date,
                 "fileName" => $fileName,
                 "fileUrl" => $fileUrl,
+                "fileMimeType" => $fileMimeType,
+                "fileSize" => $fileSize,
+                "fileTimestamp" => $fileTimestamp,
+                "fileChecksum" => $fileChecksum,
+                "fileChecksumType" => $fileChecksumType,
                 "active" => $active,
                 "xmlData" => $xml,
                 "elasticData" => $data,

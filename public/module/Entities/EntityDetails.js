@@ -220,35 +220,35 @@ var F = function(args){
             });
             args.basicTab.fieldFileFormat = args.basicTab.formPreview.addInput({
                 name:"format",
-                value:"",//rowValue.format,
+                value:rowValue.fileMimeType,
                 type:"text",
                 caption:si4.translate("field_mimeType"),
                 readOnly: true
             });
             args.basicTab.fieldFileSize = args.basicTab.formPreview.addInput({
                 name:"fileSize",
-                value:"",//rowValue.date,
+                value:rowValue.fileSize,
                 type:"text",
                 caption:si4.translate("field_size"),
                 readOnly: true
             });
             args.basicTab.fieldFileTimestamp = args.basicTab.formPreview.addInput({
                 name:"fileTimestamp",
-                value:"",
+                value:rowValue.fileTimestamp,
                 type:"text",
                 caption:si4.translate("field_timestamp"),
                 readOnly: true
             });
             args.basicTab.fieldFileChecksum = args.basicTab.formPreview.addInput({
                 name:"fileChecksum",
-                value:"",
+                value:rowValue.fileChecksum,
                 type:"text",
                 caption:si4.translate("field_checksum"),
                 readOnly: true
             });
             args.basicTab.fieldFileChecksumAlgo = args.basicTab.formPreview.addInput({
                 name:"fileChecksumAlgo",
-                value:"MD5",
+                value:rowValue.fileChecksumType,
                 type:"text",
                 caption:si4.translate("field_checksumAlgo"),
                 readOnly: true

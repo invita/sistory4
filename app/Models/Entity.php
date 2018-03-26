@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
+use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
 use App\Helpers\XmlHelpers;
 use App\Models\Elastic\EntityNotIndexedException;
@@ -16,6 +17,7 @@ use Illuminate\Contracts\Logging\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 
+use Illuminate\Support\Facades\Storage;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Handler\HandlerRegistryInterface;
 
@@ -124,6 +126,24 @@ class Entity extends Model
             "METS:amdSec/METS:techMD/METS:mdWrap[@MDTYPE='PREMIS:OBJECT']/METS:xmlData/premis:objectCategory")[0];
         $premisObjCategory[0] = $this->struct_type;
 
+
+        // File attributes
+        if ($this->struct_type == "file") {
+            $metsFile = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file")[0];
+            $fileName = $metsFile["OWNERID"];
+            $parent = $this->parent;
+            $storageName = FileHelpers::getStorageName($parent, $fileName);
+
+            if (Storage::exists($storageName)) {
+                $metsFile["MIMETYPE"] = Storage::mimeType($storageName); // FileHelpers::fileNameMime($fileName);
+                $metsFile["SIZE"] = Storage::size($storageName);
+                $metsFile["CREATED"] = "";
+                $metsFile["CHECKSUM"] = md5_file(storage_path('app')."/".$storageName);
+                $metsFile["CHECKSUMTYPE"] = "MD5";
+            }
+            //print_r($metsFile);
+        }
+
         $this->data = $xmlDoc->asXML();
     }
 
@@ -171,7 +191,6 @@ class Entity extends Model
                 break;
         }
     }
-
 
     /**
      * @param \App\Models\StructType $structType

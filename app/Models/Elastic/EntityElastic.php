@@ -169,9 +169,12 @@ class EntityElastic
 
                 $fileData = [
                     "id" => self::get($file, "IDAttrName"),
-                    "mime" => self::get($file, "MIMETYPEAttrName"),
-                    "size" => self::get($file, "SIZEAttrName"),
                     "ownerId" => self::get($file, "OWNERIDAttrName"),
+                    "mimeType" => self::get($file, "MIMETYPEAttrName"),
+                    "size" => self::get($file, "SIZEAttrName"),
+                    "created" => self::get($file, "CREATEDAttrName"),
+                    "checksum" => self::get($file, "CHECKSUMAttrName"),
+                    "checksumType" => self::get($file, "CHECKSUMTYPEAttrName"),
                     "locations" => $locations
                 ];
 

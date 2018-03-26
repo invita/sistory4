@@ -7,6 +7,7 @@ use App\Helpers\EntitySelect;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class TestTest extends Command
 {
@@ -44,6 +45,15 @@ class TestTest extends Command
 
         //$entity = Entity::where(["handle_id" => "1"])->first();
         //print_r($entity);
+
+
+        // Fix xml data
+        /*
+        $entity = Entity::findOrNew(3);
+        $entity->updateXml();
+        $entity->save();
+        Artisan::call("reindex:entity", ["entityId" => $entity->id]);
+        */
 
         // Calculate primary
         /*
