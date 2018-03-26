@@ -428,31 +428,33 @@ var F = function(args){
             // Find <METS:mdWrap MDTYPE="DC> + <xmlData>"
             var xmlDC = xmlDoc.querySelector("mdWrap[MDTYPE=DC] xmlData");
             var formValFromXml = {};
-            for (var i = 0; i < xmlDC.children.length; i++) {
-                var dcElement = xmlDC.children[i];
-                // dcElement.tagName;
-                // dcElement.textContent;
-                // dcElement.attributes;
+            if (xmlDC) {
+                for (var i = 0; i < xmlDC.children.length; i++) {
+                    var dcElement = xmlDC.children[i];
+                    // dcElement.tagName;
+                    // dcElement.textContent;
+                    // dcElement.attributes;
 
-                if (dcElement.tagName.indexOf(":") == -1) continue;
-                var fieldName = dcElement.tagName.split(":")[1];
-                var fieldValue = dcElement.textContent;
+                    if (dcElement.tagName.indexOf(":") == -1) continue;
+                    var fieldName = dcElement.tagName.split(":")[1];
+                    var fieldValue = dcElement.textContent;
 
-                if (!si4.entity.mdHelper.dcBlueprint[fieldName]) continue;
-                var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
+                    if (!si4.entity.mdHelper.dcBlueprint[fieldName]) continue;
+                    var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
 
-                var inputValue;
-                if (fieldBP.withCode) {
-                    inputValue = {
-                        codeId: dcElement.attributes.getNamedItem(fieldBP.codeXmlName).value,
-                        value: fieldValue
-                    };
-                } else {
-                    inputValue = fieldValue;
+                    var inputValue;
+                    if (fieldBP.withCode) {
+                        inputValue = {
+                            codeId: dcElement.attributes.getNamedItem(fieldBP.codeXmlName).value,
+                            value: fieldValue
+                        };
+                    } else {
+                        inputValue = fieldValue;
+                    }
+
+                    if (!formValFromXml[fieldName]) formValFromXml[fieldName] = [];
+                    formValFromXml[fieldName].push(inputValue);
                 }
-
-                if (!formValFromXml[fieldName]) formValFromXml[fieldName] = [];
-                formValFromXml[fieldName].push(inputValue);
             }
 
             window.xmlDoc = xmlDoc;
