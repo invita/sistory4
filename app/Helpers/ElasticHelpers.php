@@ -122,7 +122,7 @@ HERE;
 
     /**
      * Retrieves all matching documents from elastic search
-     * @param $query String to match
+     * @param $query array elastic search expression to match
      * @param $offset Integer offset
      * @param $limit Integer limit
      * @param $sortField string sortField
@@ -141,7 +141,45 @@ HERE;
                 "size" => $limit,
             ]
         ];
+
         return \Elasticsearch::connection()->search($requestArgs);
+    }
+
+    /**
+     * Retrieves all matching documents from elastic search
+     * @param $queryString a string to match
+     * @param $offset Integer offset
+     * @param $limit Integer limit
+     * @param $sortField string sortField
+     * @param $sortDir string sort direction (asc/desc)
+     * @return array
+     */
+    public static function searchString($queryString, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
+    {
+        $query = [
+            "query_string" => [
+                "default_field" => "_all",
+                "query" => $queryString
+            ]
+        ];
+        return self::search($query, $offset, $limit, $sortField, $sortDir);
+    }
+    public static function suggestEntites($queryString, $limit = 20)
+    {
+
+        $queryStringWild = $queryString."*";
+
+        $query = [
+            "query_string" => [
+                "fields" => [
+                    "data.dmd.dc.title",
+                    "data.dmd.dc.creator",
+                    "data.dmd.dc.date",
+                ],
+                "query" => $queryStringWild
+            ]
+        ];
+        return self::search($query, 0, $limit, "id", "asc");
     }
 
     public static function searchByIdArray($idArray)
@@ -207,6 +245,19 @@ HERE;
             if (isset($hits[$i])) $result[$i]["_source"] = $hits[$i]["_source"];
         }
         return $result;
+    }
+
+    public static function elasticAssocStripXml($assocData) {
+        $result = [];
+        foreach ($assocData as $doc) {
+            unset($doc["_source"]["xml"]);
+            $result[] = $doc;
+        }
+        return $result;
+    }
+
+    public static function getDCField($assocData, $fieldName) {
+
     }
 
     public static function escapeValue($value) {

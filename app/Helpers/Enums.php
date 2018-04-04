@@ -2,7 +2,7 @@
 namespace App\Helpers;
 
 /**
- * Class Si4Util
+ * Class Enums
  *
  * @package  Sistory4
  * @author   Matic Vrscaj

@@ -1,0 +1,84 @@
+/* ***** Common ***** */
+
+
+/* ***** Search ***** */
+
+/* Search box */
+.searchFormContainer {
+    padding: 10px 20px 0px 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border-bottom: #8e130b solid 2px;
+    border-left: #8e130b solid 1px;
+    border-right: #8e130b solid 1px;
+
+    background: -moz-linear-gradient(top, rgba(142,19,11,0.2) 0%, rgba(109,0,25,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(142,19,11,0.2) 0%,rgba(109,0,25,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(142,19,11,0.2) 0%,rgba(109,0,25,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
+}
+.searchFormContainer form { position: relative; }
+.searchFormContainer input.query { }
+.searchFormContainer input.submit {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 39px;
+}
+
+/* Search results */
+.searchResults {
+    margin-top: 15px;
+}
+.searchResults a {
+    color: black;
+}
+.searchResult a {
+    display: flex;
+    flex-direction: row;
+    padding: 15px 0px;
+    border-bottom: rgba(142,19,11,0.3) solid 1px;
+}
+.searchResult:nth-child(odd) {
+    background-color: rgba(142,19,11,0.02);
+}
+.searchResult:nth-child(even) {
+    background-color: rgba(142,19,11,0.06);
+}
+.searchResult:hover {
+    background-color: rgba(142,19,11,0.1);
+}
+.searchResult .imageWrapper {
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.searchResult .imageWrapper img {
+    width: 64px;
+    height: 64px;
+    opacity: 0.25;
+}
+
+.searchResult .dataWrapper {
+    font-weight: 300;
+}
+
+.searchResult .dataWrapper .title {
+    line-height: 21px;
+}
+.searchResult .dataWrapper .title span:first-child {
+    font-weight: 500;
+}
+.searchResult .dataWrapper .creator {
+}
+
+.searchNoResultsWrapper {
+    padding: 20px;
+    text-align: center;
+}
+
+.searchAutocompleteTerm {
+    font-weight: bold;
+    color: #8e130b;
+}

@@ -1,9 +1,17 @@
 
 // Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+// @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 
-// Variables
-@import "variables";
+// Foundation settings
+@import "settings";
 
-// Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+// Foundation
+@import "../../../node_modules/foundation-sites/assets/foundation";
+@import "../../../node_modules/foundation-sites/assets/foundation-float";
+@import "../../../node_modules/foundation-sites/assets/foundation-prototype";
+@import "../../../node_modules/foundation-sites/assets/foundation-rtl";
+
+@import "../../../node_modules/jquery-ui-bundle/jquery-ui.min.css";
+
+//@import "../../../node_modules/foundation-sites/dist/css/foundation.css";
+//@import "../../../node_modules/foundation-sites/scss/foundation";

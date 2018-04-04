@@ -11,39 +11,27 @@
 |
 */
 
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+//Route::get('/', function () {
+//    return view('index');
+//});
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/test', function () {
+Route::get('/', "IndexController@index")->name("index.index#get");
+Route::get('/search', "SearchController@index")->name("search.index#get");
+Route::get('/details/{hdl}', "DetailsController@index")->name("details.index#get");
 
-    $entity = \App\Models\Entity::find(104);
-    $entity->dataToObject();
+Route::get('/ajax/{name}', "AjaxController@index")->name("ajax.index#get");
 
-    /*
-    $process = new Process(realpath(__DIR__."/../vendor/goetas-webservices/xsd2php/bin/xsd2php")
-        ." convert " .realpath(__DIR__."/../xsd2php.yml")." ".realpath(__DIR__."/../resources/assets/xsd/mets.xsd"));
-    $process->run();
-    */
+Route::get('/test', "TestController@index")->name("test.index#get");
+Route::get('/test/{id}', "TestController@index")->name("test.index#get");
 
-    /*
-    $_SERVER['argv'] = [
-        realpath(__DIR__."/../vendor/goetas-webservices/xsd2php/bin/xsd2php"),
-        "convert",
-        realpath(__DIR__."/../xsd2php.yml"),
-        realpath(__DIR__."/../resources/assets/xsd/mets.xsd")
-    ];
-    */
 
-   // include realpath(__DIR__."/../vendor/goetas-webservices/xsd2php/bin/xsd2php");
-    //passthru("vendor/goetas-webservices/xsd2php/bin/xsd2php convert xsd2php.yml resources/assets/xsd/mets.xsd");
-});
 
+// *** Storage ***
 Route::get('/storage/preview', "StorageController@preview")->name("storage.preview#get");
 
+
+// *** Admin ***
 Route::group(['prefix' => 'admin'], function () {
 
     Route::get('login', "Admin\\LoginController@index")->name("admin.login.index#get");

@@ -11,10 +11,35 @@ si4.xmlMutators.dcFields = function(xmlDoc, args) {
         var fieldBP = si4.entity.mdHelper.dcBlueprint[fieldName];
         var fieldValues = newValue[fieldName];
 
+        if (!xmlDC) {
+            // Check <METS:dmdSec />
+            var dmdSec = xmlDoc.querySelector("dmdSec[ID=default\\.dc]");
+            if (!dmdSec) {
+                dmdSec = xmlDoc.createElement("METS:dmdSec");
+                dmdSec.setAttribute("ID", "default.dc");
+                xmlDoc.children[0].appendChild(dmdSec);
+            }
+
+            // Check <METS:mdWrap />
+            var mdWrap = xmlDoc.querySelector("dmdSec[ID=default\\.dc] mdWrap[MDTYPE=DC]");
+            if (!mdWrap) {
+                mdWrap = xmlDoc.createElement("METS:mdWrap");
+                mdWrap.setAttribute("MDTYPE", "DC");
+                mdWrap.setAttribute("MIMETYPE", "text/xml");
+                dmdSec.appendChild(mdWrap);
+            }
+
+            // Check <METS:xmlData />
+            var xmlDC = xmlDoc.createElement("METS:xmlData");
+            mdWrap.appendChild(xmlDC);
+        }
+
         // Remove existing
-        for (var childIdx = xmlDC.children.length - 1; childIdx >= 0; childIdx--)
-            if (xmlDC.children[childIdx].tagName == "dcterms:" + fieldName)
-                xmlDC.children[childIdx].remove();
+        if (xmlDC.children.length) {
+            for (var childIdx = xmlDC.children.length - 1; childIdx >= 0; childIdx--)
+                if (xmlDC.children[childIdx].tagName == "dcterms:" + fieldName)
+                    xmlDC.children[childIdx].remove();
+        }
 
         // Ignore empty value
         if (!fieldValues.length || fieldValues.length == 1 && !fieldValues[0]) continue;

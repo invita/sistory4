@@ -12,7 +12,8 @@
         "formaldehid/xsd2php": "^0.2.7",
         "goetas-webservices/xsd2php-runtime": "^0.2.2",
         "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "zurb/foundation": "^6.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
