@@ -87,6 +87,10 @@ si4.entity.template.emptyMetsXmlTemplate =
         </METS:techMD>\r\
     </METS:amdSec>\r\
     <METS:fileSec ID="default.file" xmlns:xlink="http://www.w3.org/1999/xlink">\r\
+        <METS:fileGrp>\r\
+            <METS:file MIMETYPE="" SIZE="" CREATED="" CHECKSUM="" CHECKSUMTYPE="">\r\
+            </METS:file>\r\
+        </METS:fileGrp>\r\
     </METS:fileSec>\r\
     <METS:structMap ID="default.structure" TYPE="primary" xmlns:xlink="http://www.w3.org/1999/xlink">\r\
     </METS:structMap>\r\

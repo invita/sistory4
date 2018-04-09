@@ -20,6 +20,11 @@
 </head>
 
 <body>
+    <div class="row">
+        <div class="medium-12 columns logo">
+            <img src="/img/logo4.png" />
+        </div>
+    </div>
 @yield("body")
 </body>
 </html>

@@ -199,6 +199,31 @@ HERE;
         return self::mergeElasticResultAndIdArray($dataElastic, $idArray);
     }
 
+
+    public static function searchByHandleArray($handleArray)
+    {
+        $requestArgs = [
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+            "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
+            "body" => [
+                "query" => [
+                    "constant_score" => [
+                        "filter" => [
+                            "terms" => [
+                                "handle_id" => $handleArray
+                            ]
+                        ]
+                    ]
+                ],
+                "from" => 0,
+                "size" => count($handleArray),
+            ]
+        ];
+
+        $dataElastic = \Elasticsearch::connection()->search($requestArgs);
+        return self::elasticResultToAssocArray($dataElastic);
+    }
+
     public static function searchByParent($parent)
     {
         $requestArgs = [
