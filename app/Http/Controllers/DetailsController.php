@@ -25,6 +25,7 @@ class DetailsController extends FrontendController
             $docData = $elasticData[array_keys($elasticData)[0]];
             //echo "<pre>"; print_r($docData); echo "</pre>";
 
+            $data["xml"] = Si4Util::pathArg($docData, "_source/xml", "");
             $data["doc"] = DcHelpers::mapElasticEntity($docData);
 
             $struct_type = Si4Util::pathArg($docData, "_source/struct_type", "entity");
