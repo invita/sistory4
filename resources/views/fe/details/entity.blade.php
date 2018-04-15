@@ -1,4 +1,4 @@
-@extends("layout")
+@extends("......layout")
 
 @section("head")
 @endsection
@@ -100,12 +100,15 @@
             </div>
             -->
 
-            <div class="accordion" for="accordion1">
-                {{ __('fe.details_sectionFiles') }}
-            </div>
-            <div class="accordionContent" id="accordion1">
-                Content
-            </div>
+            <?php /* TODO: Files */ ?>
+            @if ($data["doc"]["fileName"])
+                <div class="accordion" for="accordionFiles">
+                    {{ __('fe.details_sectionFiles') }}
+                </div>
+                <div class="accordionContent" id="accordionFiles">
+                    Content
+                </div>
+            @endif
 
             <br/>
 

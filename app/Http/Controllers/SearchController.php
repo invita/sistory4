@@ -8,7 +8,7 @@ use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
-class SearchController extends Controller
+class SearchController extends FrontendController
 {
     public function index(Request $request) {
 
@@ -40,6 +40,7 @@ class SearchController extends Controller
         //echo "<pre>"; print_r($data); echo "</pre>";
 
         return view("fe.search", [
+            "layoutData" => $this->layoutData($request),
             "q" => $q,
             "data" => $data,
         ]);

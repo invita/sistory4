@@ -25,6 +25,13 @@
             <img src="/img/logo4.png" />
         </div>
     </div>
+    <div class="row" style="margin-top:10px;">
+        <div class="medium-12 columns logo">
+            <nav class="topMenu">
+                <?php echo $layoutData["topMenuHtml"]; ?>
+            </nav>
+        </div>
+    </div>
 @yield("body")
 </body>
 </html>

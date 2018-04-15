@@ -391,6 +391,68 @@ class EntitySelect
     }
     */
 
+    private static function _selectTopMenu_recurseChildren($handle_id, $parentMap) {
+        if (!isset($parentMap[$handle_id])) return [];
+        $result = $parentMap[$handle_id];
+        foreach ($result as $idx => $childDoc) {
+            $result[$idx]["children"] = self::_selectTopMenu_recurseChildren($childDoc["handle_id"], $parentMap);
+        }
+        return $result;
+    }
+
+    private static $_topMenu = null;
+    public static function selectTopMenu() {
+        if (self::$_topMenu) return self::$_topMenu;
+
+        $elasticQuery = [
+            "constant_score" => [
+                "query" => [
+                    "bool" => [
+                        "must" => [
+                            ["term" => [
+                                "struct_type" => "collection"
+                            ]],
+                            ["term" => [
+                                "active" => 1
+                            ]]
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        $dataElastic = ElasticHelpers::search($elasticQuery, 0, 10000);
+        $hits = Si4Util::pathArg($dataElastic, "hits/hits", []);
+
+        $parentMap = [];
+        $result = [];
+
+        foreach ($hits as $hit) {
+            $source = $hit["_source"];
+            $handle_id = $source["handle_id"];
+            $parent = $source["parent"];
+
+            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0", "");
+
+            $parentKey = $parent ? $parent : "_noparent";
+            if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];
+            $parentMap[$parentKey][] = [
+                "handle_id" => $handle_id,
+                "parent" => $parent,
+                "title" => $title,
+            ];
+        }
+
+        foreach ($parentMap["_noparent"] as $rootDoc) {
+            $rootDoc["children"] = self::_selectTopMenu_recurseChildren($rootDoc["handle_id"], $parentMap);
+            $result[] = $rootDoc;
+        }
+
+        self::$_topMenu = $result;
+        return $result;
+    }
+
+
     public static function selectEntityHierarchy($requestData) {
         $handle_id = Si4Util::getArg($requestData, "handle_id", null);
         $entity = Si4Util::getArg($requestData, "entity", null);

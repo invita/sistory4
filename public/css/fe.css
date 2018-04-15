@@ -156,3 +156,29 @@
 .accordionContent {
     padding: 4px 10px;
 }
+
+/* Top menu */
+#topMenu {
+}
+#topMenu > li {
+    display: inline-table;
+}
+
+#topMenu li.ui-menu-item {
+}
+#topMenu div.ui-menu-item-wrapper {
+    white-space: nowrap;
+}
+
+#topMenu .ui-state-active {
+    border-color: #668833;
+    color: black;
+    background: -moz-linear-gradient(top, rgba(102,136,51,0.2) 0%, rgba(109,0,25,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(102,136,51,0.2) 0%,rgba(109,0,25,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(102,136,51,0.2) 0%,rgba(109,0,25,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
+}
+
+#topMenu .ui-state-active .ui-icon {
+    background-image: url(/images/vendor/jquery-ui-bundle/ui-icons_444444_256x240.png);
+}

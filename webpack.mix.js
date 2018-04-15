@@ -23,6 +23,7 @@ mix.combine([
     'node_modules/jquery-ui-bundle/jquery-ui.min.js',
     'node_modules/foundation-sites/dist/js/foundation.min.js',
     'resources/assets/js/common/accordion.js',
+    'resources/assets/js/common/topMenu.js',
     'resources/assets/js/search/autocomplete.js',
     'resources/assets/js/app.js',
 ], 'public/js/app.js');
