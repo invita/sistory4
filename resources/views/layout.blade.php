@@ -37,13 +37,13 @@
             <div class="searchFormContainer">
                 <div class="row">
                     <!-- Logo -->
-                    <div class="medium-2 columns logo">
+                    <div class="medium-5 columns logo">
                         <a href="/">
-                            <img src="/img/logo5.png" />
+                            <img src="/img/logo5.png" style="height:70px;" />
                         </a>
                     </div>
 
-                    <div class="medium-10 columns mt-1">
+                    <div class="medium-7 columns mt-1">
                         <!-- Search Form -->
                         <form action="/search">
                             <input id="searchInput" class="query" type="text" name="q"

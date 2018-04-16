@@ -12,6 +12,11 @@
 .flexJustifyCenter { justify-content: center; }
 .flexBothCenter { align-items: center; justify-content: center; }
 
+/* Index */
+.content {
+    min-height: 400px;
+}
+
 /* ***** Search ***** */
 
 /* Search box */
