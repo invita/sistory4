@@ -42,14 +42,35 @@ class ElasticHelpers
 {
     "settings": {
         "number_of_shards": 1,
-        "number_of_replicas": 0
+        "number_of_replicas": 0,
+        "analysis": {
+            "analyzer": {
+                "lowercase_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": [ "lowercase" ]
+                }
+            }
+        }
     },
     "mappings": {
         "entity": {
             "date_detection": false,
             "properties": {
-                "id": { "type": "integer" },
-                "handle_id": { "type": "string" }
+                "id": {
+                    "type": "integer"
+                },
+                "handle_id": {
+                    "type": "string"
+                },
+                "data.dmd.dc.title.text": {
+                    "type": "string",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "data.dmd.dc.creator.text": {
+                    "type": "string",
+                    "analyzer": "lowercase_analyzer"
+                }
             }
         }
     }
@@ -179,9 +200,9 @@ HERE;
         $query = [
             "query_string" => [
                 "fields" => [
-                    "data.dmd.dc.title",
-                    "data.dmd.dc.creator",
-                    "data.dmd.dc.date",
+                    "data.dmd.dc.title.text",
+                    "data.dmd.dc.creator.text",
+                    "data.dmd.dc.date.text",
                 ],
                 "query" => $queryStringWild
             ]
@@ -231,7 +252,7 @@ HERE;
         return self::elasticResultToAssocArray($dataElastic);
     }
 
-    public static function searchByParent($parent)
+    public static function searchByParent($parent, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
@@ -241,7 +262,10 @@ HERE;
                     "match" => [
                         "parent" => $parent
                     ]
-                ]
+                ],
+                "sort" => [$sortField => [ "order" => $sortDir ]],
+                "from" => $offset,
+                "size" => $limit,
             ]
         ];
 
@@ -253,6 +277,33 @@ HERE;
         // self::mergeElasticResultAndIdArray($dataElastic, $idArray);
     }
 
+    public static function searchChildren($parent, $offset = 0, $limit = 20)
+    {
+        $requestArgs = [
+            "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+            "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
+            "body" => [
+                "query" => [
+                    "match" => [
+                        "parent" => $parent
+                    ]
+                ],
+                "sort" => [
+                    ["struct_type_sort" => [ "order" => "desc" ]]
+                ],
+
+                "from" => $offset,
+                "size" => $limit,
+            ]
+        ];
+
+        $dataElastic = \Elasticsearch::connection()->search($requestArgs);
+
+        //print_r($dataElastic);
+
+        return self::elasticResultToAssocArray($dataElastic);
+        // self::mergeElasticResultAndIdArray($dataElastic, $idArray);
+    }
 
 
     public static function elasticResultToAssocArray($dataElastic) {

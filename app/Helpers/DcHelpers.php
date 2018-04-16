@@ -28,6 +28,14 @@ class DcHelpers {
                 "handle_url" => ["path" => "_source/data/objId"],
                 "created_at" => ["path" => "_source/data/created_at"],
                 "modified_at" => ["path" => "_source/data/modified_at"],
+                "first_title" => ["path" => "_source/data/dmd/dc/title/0/text"],
+                "first_description" => ["path" => "_source/data/dmd/dc/description/0/text"],
+
+                // Thumb
+                "thumb" => [
+                    "path" => "_source/struct_type",
+                    "parser" => DcHelpers::getThumbParser(),
+                ],
 
                 // DC
                 "dc_title" => [
@@ -120,7 +128,7 @@ class DcHelpers {
     // function extracts texts and put them in a simple array
     public static function dcTextArray($dcData) {
         return array_map(function($item) {
-            return $item["text"];
+            return isset($item["text"]) ? $item["text"] : "";
         }, $dcData);
     }
 
@@ -154,6 +162,29 @@ class DcHelpers {
             }
             return print_r($inputValue, true);
         };
+    }
+
+    public static function getThumbParser() {
+        return function($inputName, $inputValue) {
+            if ($inputValue === null) return "";
+            switch($inputValue) {
+                case "entity":
+                case "collection":
+                case "file":
+                    return "/img/structType/".$inputValue.".png";
+                default:
+                    return "";
+            }
+        };
+    }
+
+    public static function getStructTypeSortValue($structType) {
+        switch($structType) {
+            case "collection": return 30;
+            case "entity": return 20;
+            case "file": return 10;
+            default: return 0;
+        }
     }
 
     public static function getDcFirstFileNameParser() {

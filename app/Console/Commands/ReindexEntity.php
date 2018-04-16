@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
@@ -58,6 +59,7 @@ class ReindexEntity extends Command
                 "primary" => $entity["primary"],
                 "collection" => $entity["collection"],
                 "struct_type" => $entity["struct_type"],
+                "struct_type_sort" => DcHelpers::getStructTypeSortValue($entity["struct_type"]),
                 "struct_subtype" => $entity["struct_subtype"],
                 "entity_type" => $entity["entity_type"],
                 "active" => $entity["active"],

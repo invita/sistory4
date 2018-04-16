@@ -35,7 +35,7 @@ class DetailsController extends FrontendController
         switch ($struct_type) {
             case "collection":
                 $viewName = "fe.details.collection";
-                $childData = ElasticHelpers::searchByParent($hdl);
+                $childData = ElasticHelpers::searchChildren($hdl);
                 $children = [];
                 foreach ($childData as $child) {
                     $children[] = DcHelpers::mapElasticEntity($child);
