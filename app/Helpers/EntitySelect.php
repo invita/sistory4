@@ -202,8 +202,8 @@ class EntitySelect
                 //print_r($data);
 
                 $dcMetadata = Si4Util::pathArg($data, "dmd/dc", []);
-                $title = isset($dcMetadata["title"]) ? join(" : ", $dcMetadata["title"]) : "";
-                $creator = isset($dcMetadata["creator"]) ? join(" : ", $dcMetadata["creator"]) : "";
+                $title = isset($dcMetadata["title"]) ? join(" : ", DcHelpers::dcTextArray($dcMetadata["title"])) : "";
+                $creator = isset($dcMetadata["creator"]) ? join(" : ", DcHelpers::dcTextArray($dcMetadata["creator"])) : "";
                 //$date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
                 $date = isset($dcMetadata["date"]) && isset($dcMetadata["date"][0]) ? $dcMetadata["date"][0] : "";
 
@@ -435,7 +435,7 @@ class EntitySelect
             $handle_id = $source["handle_id"];
             $parent = $source["parent"];
 
-            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0", "");
+            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0/text", "");
 
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];
@@ -456,6 +456,7 @@ class EntitySelect
         }
 
         self::$_topMenu = $result;
+
         return $result;
     }
 
@@ -493,7 +494,7 @@ class EntitySelect
             $handle_id = $source["handle_id"];
             $parent = $source["parent"];
 
-            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0", "");
+            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0/text", "");
 
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];

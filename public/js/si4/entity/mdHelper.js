@@ -30,7 +30,7 @@ si4.entity.mdHelper.dcBlueprint = {
     title: {
         translation: si4.translate("field_title"),
         inputType: "text",
-        //withCode: si4.entity.mdHelper.dcLangCodes,
+        withCode: si4.entity.mdHelper.dcLangCodes,
         codeXmlName: "xml:lang",
     },
     creator: {

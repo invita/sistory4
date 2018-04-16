@@ -241,7 +241,6 @@ mptr and area elements for mapping MPEG21 DII Identifier values
         xmlns:mods="http://www.loc.gov/mods/v3"
 
 -->
-
 <xsd:schema
         targetNamespace="http://www.loc.gov/METS/"
         xmlns="http://www.loc.gov/METS/"

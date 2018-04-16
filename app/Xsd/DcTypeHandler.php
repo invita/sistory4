@@ -40,9 +40,30 @@ class DcTypeHandler implements SubscribingHandlerInterface
     {
         // deserialize your object here
 
-
+        /*
         $elementName = $data->getName();
         $value = (array)$data;
+        return DcTypeHandler::create($elementName, $value);
+        */
+
+
+        // $data is SimpleXmlElement that can be iterated for elements with same name
+        // Each element can have attributes in different namespaces...
+        // Plan: Map every element into array, with all the attributes.
+
+        $elementName = $data->getName();
+
+        $value = [];
+        foreach($data as $el) {
+            $elValue = ["text" => (string)$el];
+
+            foreach ($el->getNamespaces() as $ns => $_) {
+                foreach ($el->attributes($ns, true) as $attrKey => $attrVal) {
+                    $elValue[$ns."_".$attrKey] = (string)$attrVal;
+                }
+            }
+            $value[] = $elValue;
+        }
 
         return DcTypeHandler::create($elementName, $value);
     }

@@ -123,14 +123,17 @@ class EntityElastic
     }
 
     private function populateDCData($xmlData) {
+        //echo "EntityElastic.populateDCData: "; print_r($xmlData);
         foreach ($xmlData as $key => $val) {
             $keyRepl = strtolower(str_replace("PropName", "", $key));
             if ($val && count($val)) {
                 // Convert CDATA to string
-                foreach ($val as $i => $v) $val[$i] = (string)$v;
+                foreach ($val as $i => $v) $val[$i]["text"] = (string)$v["text"];
             }
+            //$this->data["dmd"]["dc"][$keyRepl] = ["text" => $val];
             $this->data["dmd"]["dc"][$keyRepl] = $val;
         }
+        //print_r($this->data["dmd"]["dc"]);
     }
 
     private function populateModsData($xmlData) {

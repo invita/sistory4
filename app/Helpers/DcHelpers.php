@@ -101,6 +101,7 @@ class DcHelpers {
         return self::$docPathMap;
     }
 
+    // Entity mapping using self::$docPathMap blueprint
     public static function mapElasticEntity($elasticEntity) {
         $docPathMap = self::getElasticEntityPathMap($elasticEntity);
         $docResult = [];
@@ -113,11 +114,23 @@ class DcHelpers {
         return $docResult;
     }
 
+
+    // *** dcTextArray - simplify elastic data ***
+    // $dcData is an array i.e. [ ["text" => "", ...] , ["text" => "", ...] , ... ]
+    // function extracts texts and put them in a simple array
+    public static function dcTextArray($dcData) {
+        return array_map(function($item) {
+            return $item["text"];
+        }, $dcData);
+    }
+
+
     public static function getDcTitlePresentationParser() {
         return function($inputName, $inputValue) {
             if ($inputValue === null) return "";
             if (is_string($inputValue)) $inputValue = [$inputValue];
             if (is_array($inputValue)) {
+                $inputValue = self::dcTextArray($inputValue);
                 $result = "";
                 for ($i = 0; $i < count($inputValue); $i++) {
                     if ($i == 0)
@@ -136,6 +149,7 @@ class DcHelpers {
             if ($inputValue === null) return "";
             if (is_string($inputValue)) return $inputValue;
             if (is_array($inputValue)) {
+                $inputValue = self::dcTextArray($inputValue);
                 return join("<br/>", array_map(function($e) { return "<span>".$e."</span>"; }, $inputValue));
             }
             return print_r($inputValue, true);
