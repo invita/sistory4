@@ -17,4 +17,6 @@ return [
     'details_dcRights' => 'Rights',
 
     'details_sectionFiles' => 'Files',
+
+    'footerText' => '© Copyright 2011-2018 INZ, Zgodovina Slovenije - Si4',
 ];

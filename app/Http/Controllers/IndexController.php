@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Storage;
 class IndexController extends FrontendController
 {
     public function index(Request $request) {
-        return view('fe.index', [
+
+        $data = [
             "layoutData" => $this->layoutData($request),
-        ]);
+        ];
+
+        return view('fe.index', $data);
     }
 }

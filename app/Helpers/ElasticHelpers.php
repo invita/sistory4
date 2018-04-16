@@ -10,6 +10,13 @@ namespace App\Helpers;
 class ElasticHelpers
 {
 
+    public static function getTopMenuHandleId() {
+        return env("SI4_ELASTIC_TOP_MENU_COLLECTION", "menuTop");
+    }
+    public static function getBottomMenuHandleId() {
+        return env("SI4_ELASTIC_BOTTOM_MENU_COLLECTION", "menuBottom");
+    }
+
     /**
      * Delete and create index
      * @param $entityId Integer entity id to index

@@ -24,7 +24,7 @@ class EntitySelect
     public static function selectEntitiesByHandleIds($handleIds, $requestData = null) {
         $filter = Si4Util::getArg($requestData, "filter", []);
         $terms = self::makeTermsFromFilter($filter);
-        $terms["handle_id"] = $handleIds;
+        $terms["handle_id"] = array_map(function($x) { return strtolower($x); }, $handleIds);
         $elasticQuery = self::prepareElasticQuery($terms);
         //print_r($elasticQuery);
 
@@ -391,15 +391,18 @@ class EntitySelect
     }
     */
 
-    private static function _selectTopMenu_recurseChildren($handle_id, $parentMap) {
+    // Recursive helper function visits each collection in a graph
+    // and appends children attribute from so called parentMap
+    private static function _selectMenu_recurseChildren($handle_id, $parentMap) {
         if (!isset($parentMap[$handle_id])) return [];
         $result = $parentMap[$handle_id];
         foreach ($result as $idx => $childDoc) {
-            $result[$idx]["children"] = self::_selectTopMenu_recurseChildren($childDoc["handle_id"], $parentMap);
+            $result[$idx]["children"] = self::_selectMenu_recurseChildren($childDoc["handle_id"], $parentMap);
         }
         return $result;
     }
 
+    // Select Top Menu collections from Elastic
     private static $_topMenu = null;
     public static function selectTopMenu() {
         if (self::$_topMenu) return self::$_topMenu;
@@ -443,12 +446,74 @@ class EntitySelect
             ];
         }
 
-        foreach ($parentMap["_noparent"] as $rootDoc) {
-            $rootDoc["children"] = self::_selectTopMenu_recurseChildren($rootDoc["handle_id"], $parentMap);
-            $result[] = $rootDoc;
+        $topMenuHandle = ElasticHelpers::getTopMenuHandleId();
+
+        if (isset($parentMap[$topMenuHandle])) {
+            foreach ($parentMap[$topMenuHandle] as $rootDoc) {
+                $rootDoc["children"] = self::_selectMenu_recurseChildren($rootDoc["handle_id"], $parentMap);
+                $result[] = $rootDoc;
+            }
         }
 
         self::$_topMenu = $result;
+        return $result;
+    }
+
+
+    // Select Bottom Menu collections from Elastic
+    private static $_bottomMenu = null;
+    public static function selectBottomMenu() {
+        if (self::$_bottomMenu) return self::$_bottomMenu;
+
+        $elasticQuery = [
+            "constant_score" => [
+                "query" => [
+                    "bool" => [
+                        "must" => [
+                            ["term" => [
+                                "struct_type" => "collection"
+                            ]],
+                            ["term" => [
+                                "active" => 1
+                            ]]
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        $dataElastic = ElasticHelpers::search($elasticQuery, 0, 10000);
+        $hits = Si4Util::pathArg($dataElastic, "hits/hits", []);
+
+        $parentMap = [];
+        $result = [];
+
+        foreach ($hits as $hit) {
+            $source = $hit["_source"];
+            $handle_id = $source["handle_id"];
+            $parent = $source["parent"];
+
+            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0", "");
+
+            $parentKey = $parent ? $parent : "_noparent";
+            if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];
+            $parentMap[$parentKey][] = [
+                "handle_id" => $handle_id,
+                "parent" => $parent,
+                "title" => $title,
+            ];
+        }
+
+        $bottomMenuHandle = ElasticHelpers::getBottomMenuHandleId();
+
+        if (isset($parentMap[$bottomMenuHandle])) {
+            foreach ($parentMap[$bottomMenuHandle] as $rootDoc) {
+                $rootDoc["children"] = self::_selectMenu_recurseChildren($rootDoc["handle_id"], $parentMap);
+                $result[] = $rootDoc;
+            }
+        }
+
+        self::$_bottomMenu = $result;
         return $result;
     }
 

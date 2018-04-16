@@ -7,15 +7,6 @@
 <div class="content">
 
     <div class="row">
-        <div class="medium-12 columns">
-            <div class="searchFormContainer">
-                <form>
-                    <input id="searchInput" class="query" type="text" name="q"
-                        value="{{$q}}" placeholder="Search..." autocomplete="off" />
-                    <input class="submit" type="submit" value="Search">
-                </form>
-            </div>
-        </div>
         @if ($q && count($data["results"]) > 0)
             <div class="medium-12 columns">
                 <div class="searchResults">

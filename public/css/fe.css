@@ -1,13 +1,24 @@
 /* ***** Common ***** */
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mt-3 { margin-top: 3rem; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.mb-3 { margin-bottom: 3rem; }
 
+.flex { display: flex; flex-direction: column; }
+.flexRow { display: flex; flex-direction: row; }
+.flexAlignCenter { align-items: center; }
+.flexJustifyCenter { justify-content: center; }
+.flexBothCenter { align-items: center; justify-content: center; }
 
 /* ***** Search ***** */
 
 /* Search box */
 .searchFormContainer {
-    padding: 10px 20px 0px 20px;
-    margin-top: 10px;
-    border-radius: 10px;
+    padding: 5px 20px 10px 20px;
+
+    border-radius: 0px 0px 10px 10px;
     border-bottom: #668833 solid 2px;
     border-left: #668833 solid 1px;
     border-right: #668833 solid 1px;
@@ -17,6 +28,13 @@
     background: linear-gradient(to bottom, rgba(102,136,51,0.2) 0%,rgba(109,0,25,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
 }
+
+.searchFormContainer > .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .searchFormContainer form { position: relative; }
 .searchFormContainer input.query { }
 .searchFormContainer input.submit {
@@ -157,11 +175,28 @@
     padding: 4px 10px;
 }
 
+
 /* Top menu */
+.topMenuWrap {
+    /*
+    border-bottom: #668833 solid 1px;
+    padding: 10px;
+    background: #223311;
+    */
+}
 #topMenu {
+    border: none;
+    border-bottom: #668833 solid 1px;
 }
 #topMenu > li {
     display: inline-table;
+}
+#topMenu > li > div {
+    padding: 5px 1.6em 5px 1em;
+}
+
+#topMenu .ui-widget.ui-widget-content {
+    border: #668833 solid 1px;
 }
 
 #topMenu li.ui-menu-item {
@@ -181,4 +216,58 @@
 
 #topMenu .ui-state-active .ui-icon {
     background-image: url(/images/vendor/jquery-ui-bundle/ui-icons_444444_256x240.png);
+}
+
+/* First level menu -> icon down instead of right */
+#topMenu > li > div > span.ui-icon {
+    background-position: -65px 0;
+}
+
+
+/* bottomMenu */
+.bottomMenuWrap {
+    margin-top: 20px;
+    background: #ececec;
+    border-top: #626262 solid 3px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#bottomMenu, #bottomMenu ul {
+    list-style: none;
+    margin: 0;
+}
+#bottomMenu {
+    display: flex;
+    flex-direction: row;
+}
+#bottomMenu > li {
+    max-width: 250px;
+    flex: 1;
+    padding-left: 20px;
+}
+
+#bottomMenu > li > a {
+    font-size: 17px;
+    font-weight: bold;
+    color: #111;
+}
+#bottomMenu > li > a:hover {
+    text-decoration: underline;
+}
+
+#bottomMenu > li > ul > li a {
+    font-size: 17px;
+    color: #444;
+}
+#bottomMenu > li > ul > li a:hover {
+    text-decoration: underline;
+}
+
+.bottomMenuWrap .footerLogo {
+    height: 120px;
+    border: silver solid 1px;
+}
+
+.bottomMenuWrap .footerText {
+
 }
