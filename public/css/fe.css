@@ -275,7 +275,7 @@
     margin-top: 20px;
     background: #ececec;
     border-top: #626262 solid 3px;
-    padding-top: 10px;
+    padding-top: 20px;
     padding-bottom: 10px;
 }
 #bottomMenu, #bottomMenu ul {
@@ -311,7 +311,9 @@
 
 .bottomMenuWrap .footerLogo {
     height: 120px;
+    /*
     border: silver solid 1px;
+    */
 }
 
 .bottomMenuWrap .footerText {

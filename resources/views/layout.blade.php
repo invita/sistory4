@@ -62,7 +62,7 @@
         <div class="bottomMenuWrap">
             <div class="row">
                 <div class="medium-3 columns footerLogo">
-                    Logo
+                    <img src="/img/logo-footer.png" />
                 </div>
                 <div class="medium-9 columns bottomMenu">
                     @if (isset($layoutData) && isset($layoutData["bottomMenuHtml"]))
@@ -74,7 +74,6 @@
             <div class="row mt-1 mb-2">
                 <div class="medium-12 columns">
                     <span class="footerText">{{ __("fe.footerText") }}</span>
-
                 </div>
             </div>
 
