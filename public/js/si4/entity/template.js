@@ -57,9 +57,9 @@ si4.entity.template.emptyMetsXmlTemplate =
     <METS:dmdSec ID="default.dc">\r\
         <METS:mdWrap MDTYPE="DC" MIMETYPE="text/xml">\r\
             <METS:xmlData>\r\
-                <dcterms:title xml:lang="slv"></dcterms:title>\r\
-                <dcterms:creator></dcterms:creator>\r\
-                <dcterms:date></dcterms:date>\r\
+                <dc:title xml:lang="slv"></dc:title>\r\
+                <dc:creator></dc:creator>\r\
+                <dc:date></dc:date>\r\
             </METS:xmlData>\r\
         </METS:mdWrap>\r\
     </METS:dmdSec>\r\
