@@ -17,7 +17,7 @@ si4.entity.template.emptyMetsXmlTemplateParts = {
                     <METS:xmlData xmlns:collection="http://sistory.si/schema/si4/collection" xsi:schemaLocation="http://sistory.si/schema/si4/collection ../../schema/collection.1.0.xsd">\r\
                         <collection:description xml:lang="slv"></collection:description>\r\
                         <collection:externalCollection></collection:externalCollection>\r\
-                        <collection:wholeContent></collection:wholeContent>\r\
+                        <collection:wholeContent>0</collection:wholeContent>\r\
                         <collection:searchResultsSort>Title ascending</collection:searchResultsSort>\r\
                         <collection:searchResultsShow>Multiple per line</collection:searchResultsShow>\r\
                     </METS:xmlData>\r\
