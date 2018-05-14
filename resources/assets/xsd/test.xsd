@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TEST: Metadata Encoding and Transmission Standard -->
+<xsd:schema
+        targetNamespace="http://www.loc.gov/TEST/"
+        xmlns="http://www.loc.gov/TEST/"
+        xmlns:xml="http://www.w3.org/XML/1998/namespace"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:entity="http://sistory.si/schema/si4/entity"
+        elementFormDefault="qualified"
+        attributeFormDefault="qualified">
+
+    <xsd:import namespace="http://sistory.si/schema/si4/entity" schemaLocation="entity.1.0.xsd"/>
+
+    <xsd:complexType name="rootType">
+        <xsd:sequence>
+            <xsd:element name="header" type="headerType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="body" type="bodyType" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="headerType">
+        <xsd:sequence>
+            <xsd:element name="title" type="titleType" maxOccurs="unbounded" />
+            <xsd:element name="subject" type="subjectType" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="titleType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute ref="xml:lang" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="subjectType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="bodyType">
+        <xsd:sequence>
+
+            <xsd:element ref="entity:desc" minOccurs="0" maxOccurs="unbounded" />
+
+            <!--
+            <xsd:element name="data" type="dataType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="desc" type="entity:descType" minOccurs="0" maxOccurs="unbounded" />
+
+            <xsd:element name="desc" type="entity:descType" minOccurs="0" maxOccurs="unbounded" />
+            -->
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="dataType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="descType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute ref="xml:lang" use="required" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:element name="root" type="rootType" />
+
+</xsd:schema>

@@ -12,42 +12,60 @@
     </xs:documentation>
   </xs:annotation>
 
-  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/03/xml.xsd"/> 
-  
-  <xs:element name="description">
-    <xs:annotation>
-      <xs:documentation xml:lang="sl">Opisna predstavitev collection na spletni strani repozitorija si4 v HTML kodi.
-        Označba jezika določi, na kateri jezikovni spletni strani se prikaže. 
-        Možna je samo ena jezikovna varianta elementa description.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:sequence minOccurs="0" maxOccurs="unbounded">
-        <xs:any processContents="lax"/>
-      </xs:sequence>
-      <xs:attribute ref="xml:lang" use="required"/>
-    </xs:complexType>
-  </xs:element>
-  
-  <xs:element name="wholeContent" type="xs:boolean">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/03/xml.xsd"/>
+
+    <xs:element name="desc">
+        <xs:annotation>
+            <xs:documentation xml:lang="sl">Opisna predstavitev intelektualne entitete na spletni strani repozitorija si4 v HTML kodi.
+                Označba jezika določi, na kateri jezikovni spletni strani se prikaže.
+                Možna je samo ena jezikovna varianta elementa description.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute ref="xml:lang" use="required" />
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+
+  <xs:element name="wholeContent">
     <xs:annotation>
       <xs:documentation xml:lang="sl">
         Če true na spletni strani zbirke v si4 pri collection prikaže celoten opis iz collection:description,
         če false prikaže samo prvi dve vrstici.
       </xs:documentation>
     </xs:annotation>
+      <xs:complexType>
+          <xs:simpleContent>
+              <xs:extension base="xs:boolean">
+              </xs:extension>
+          </xs:simpleContent>
+      </xs:complexType>
   </xs:element>
   
-  <xs:element name="externalCollection" type="xs:anyURI">
+  <xs:element name="externalCollection">
     <xs:annotation>
       <xs:documentation>Povezava na zunanjo zbirko.</xs:documentation>
     </xs:annotation>
+      <xs:complexType>
+          <xs:simpleContent>
+              <xs:extension base="xs:anyURI">
+              </xs:extension>
+          </xs:simpleContent>
+      </xs:complexType>
   </xs:element>
   
-  <xs:element name="removedTo" type="xs:anyURI">
+  <xs:element name="removedTo">
     <xs:annotation>
       <xs:documentation xml:lang="sl">URL iz repozitorija umaknjene si4 zbirke.</xs:documentation>
     </xs:annotation>
+      <xs:complexType>
+          <xs:simpleContent>
+              <xs:extension base="xs:anyURI">
+              </xs:extension>
+          </xs:simpleContent>
+      </xs:complexType>
   </xs:element>
   
   <xs:element name="searchResultsSort">
@@ -100,7 +118,7 @@
   <xs:group name="elementsGroup">
     <xs:sequence>
       <xs:choice>
-        <xs:element ref="description" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="desc" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element ref="wholeContent" minOccurs="0"/>
         <xs:element ref="externalCollection" minOccurs="0"/>
         <xs:element ref="removedTo" minOccurs="0"/>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<METS:mets
+        xmlns:METS="http://www.loc.gov/METS/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:entity="http://sistory.si/schema/si4/entity"
+        ID="a1123"
+        TYPE="entity"
+        OBJID="http://hdl.handle.net/11686/1123"
+        xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd http://sistory.si/schema/si4/entity /xsd/entity.1.0.xsd">
+    <METS:metsHdr>
+    </METS:metsHdr>
+    <METS:amdSec ID="default.amd">
+        <METS:techMD ID="default.si4">
+            <METS:mdWrap MDTYPE="OTHER" OTHERMDTYPE="ENTITY" MIMETYPE="text/xml">
+                <METS:xmlData>
+                    <entity:desc xml:lang="sl">Some description2</entity:desc>
+                    <entity:page>123</entity:page>
+                    <entity:removedTo>http://hdl.handle.net/11686/1123</entity:removedTo>
+                </METS:xmlData>
+            </METS:mdWrap>
+        </METS:techMD>
+    </METS:amdSec>
+</METS:mets>

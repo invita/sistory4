@@ -128,7 +128,7 @@ class DcHelpers {
     // function extracts texts and put them in a simple array
     public static function dcTextArray($dcData) {
         return array_map(function($item) {
-            return isset($item["text"]) ? $item["text"] : "";
+            return isset($item["value"]) ? $item["value"] : "";
         }, $dcData);
     }
 

@@ -10,8 +10,11 @@ use App\Helpers\XmlHelpers;
 use App\Models\Elastic\EntityNotIndexedException;
 use App\Xsd\AnySimpleTypeHandler;
 use App\Xsd\AnyTypeHandler;
+use App\Xsd\AsTextTypeHandler;
+use App\Xsd\Base64TypeHandler;
 use App\Xsd\XmlDataATypeHandler;
 use App\Xsd\DcTypeHandler;
+use App\Xsd\XsiTypeHandler;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Illuminate\Contracts\Logging\Log;
 use Illuminate\Database\Eloquent\Model;
@@ -74,25 +77,40 @@ class Entity extends Model
     {
         if (!$this->data) return null;
         $serializerBuilder = SerializerBuilder::create();
+
         $serializerBuilder->addMetadataDir(app_path("Xsd/Mets"), 'App\Xsd\Mets');
+        $serializerBuilder->addMetadataDir(app_path("Xsd/Dc"), 'App\Xsd\Dc');
+        $serializerBuilder->addMetadataDir(app_path("Xsd/Premis"), 'App\Xsd\Premis');
+        $serializerBuilder->addMetadataDir(app_path("Xsd/Mods"), 'App\Xsd\Mods');
+        $serializerBuilder->addMetadataDir(app_path("Xsd/Entity"), 'App\Xsd\Entity');
+        $serializerBuilder->addMetadataDir(app_path("Xsd/Collection"), 'App\Xsd\Collection');
+
         $serializerBuilder->configureHandlers(function (HandlerRegistryInterface $handler) use ($serializerBuilder) {
             $serializerBuilder->addDefaultHandlers();
             $handler->registerSubscribingHandler(new BaseTypesHandler()); // XMLSchema List handling
             $handler->registerSubscribingHandler(new XmlSchemaDateHandler()); // XMLSchema date handling
 
+            //$handler->registerSubscribingHandler(new XsiTypeHandler());
+
             //$handler->registerSubscribingHandler(new XmlDataATypeHandler());
-            // $handler->registerSubscribingHandler(new YourhandlerHere());
             //$handler->registerSubscribingHandler(new AnySimpleTypeHandler());
-            $handler->registerSubscribingHandler(new DcTypeHandler());
-            $handler->registerSubscribingHandler(new AnyTypeHandler());
+            //$handler->registerSubscribingHandler(new DcTypeHandler());
+
+            //$handler->registerSubscribingHandler(new Base64TypeHandler());
+            //$handler->registerSubscribingHandler(new AnyTypeHandler());
+            //$handler->registerSubscribingHandler(new AsTextTypeHandler());
 
         });
 
         $serializer = $serializerBuilder->build();
 
+
         // deserialize the XML into object
         $object = $serializer->deserialize($this->data, 'App\Xsd\Mets\Mets', 'xml');
+        //print_r($object);
+
         $array = $object->toArray();
+        //print_r($array);
 
         return $array;
     }

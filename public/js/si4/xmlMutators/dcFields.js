@@ -36,9 +36,13 @@ si4.xmlMutators.dcFields = function(xmlDoc, args) {
 
         // Remove existing
         if (xmlDC.children.length) {
-            for (var childIdx = xmlDC.children.length - 1; childIdx >= 0; childIdx--)
+            for (var childIdx = xmlDC.children.length - 1; childIdx >= 0; childIdx--) {
+                // Legacy cleanup (dcterms)
                 if (xmlDC.children[childIdx].tagName == "dcterms:" + fieldName)
                     xmlDC.children[childIdx].remove();
+                else if (xmlDC.children[childIdx].tagName == "dc:" + fieldName)
+                    xmlDC.children[childIdx].remove();
+            }
         }
 
         // Ignore empty value
@@ -47,7 +51,7 @@ si4.xmlMutators.dcFields = function(xmlDoc, args) {
         // Add from back
         for (var i = fieldValues.length - 1; i >= 0; i--) {
             var fieldValue = fieldValues[i];
-            var newEl = xmlDoc.createElement("dcterms:" + fieldName);
+            var newEl = xmlDoc.createElement("dc:" + fieldName);
 
             if (fieldBP.withCode) {
                 var attr = xmlDoc.createAttribute(fieldBP.codeXmlName);

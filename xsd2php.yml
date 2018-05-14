@@ -4,30 +4,59 @@
 
 xsd2php:
   namespaces:
+    'http://www.w3.org/2001/XMLSchema-instance': 'App/Xsd/Xsi'
+    'http://www.loc.gov/TEST/': 'App/Xsd/Test'
+    #'http://www.w3.org/XML/1998/namespace': 'App/Xsd/Xml'
     'http://www.loc.gov/METS/': 'App/Xsd/Mets'
     'http://purl.org/dc/elements/1.1/': 'App/Xsd/Dc/Elements'
     'http://purl.org/dc/terms/': 'App/Xsd/Dc/Terms'
     'http://purl.org/dc/dcmitype/': 'App/Xsd/Dc/DcmiType'
-    'http://www.loc.gov/standards/premis/v1': 'App/Xsd/Premis'
     'http://www.loc.gov/mods/v3': 'App/Xsd/Mods'
+    'http://www.loc.gov/premis/v3': 'App/Xsd/Premis'
+    'http://sistory.si/schema/si4/entity': 'App/Xsd/Entity'
+    'http://sistory.si/schema/si4/collection': 'App/Xsd/Collection'
+
   destinations_php:
+    'App\Xsd\Xsi': app/Xsd/Xsi
+    'App\Xsd\Test': app/Xsd/Test
     'App\Xsd\Mets': app/Xsd/Mets
     'App\Xsd\Dc': app/Xsd/Dc
     'App\Xsd\Premis': app/Xsd/Premis
     'App\Xsd\Mods': app/Xsd/Mods
+    'App\Xsd\Entity': app/Xsd/Entity
+    'App\Xsd\Collection': app/Xsd/Collection
   destinations_jms:
+    'App\Xsd\Xsi': app/Xsd/Xsi
+    'App\Xsd\Test': app/Xsd/Test
     'App\Xsd\Mets': app/Xsd/Mets
     'App\Xsd\Dc': app/Xsd/Dc
     'App\Xsd\Premis': app/Xsd/Premis
     'App\Xsd\Mods': app/Xsd/Mods
+    'App\Xsd\Entity': app/Xsd/Entity
+    'App\Xsd\Collection': app/Xsd/Collection
 
   aliases: # optional
-    'http://www.w3.org/2001/XMLSchema':
-      anySimpleType: 'App\Xsd\AnySimpleTypeHandler'
-      anyType: 'App\Xsd\AnyTypeHandler'
 
-    'http://purl.org/dc/elements/1.1/':
-      SimpleLiteral: 'App\Xsd\DcTypeHandler'
+    #'http://www.loc.gov/METS/':
+    #  'App\Xsd\Entity\desc': 'App\Xsd\AsTextTypeHandler'
+
+    #'http://sistory.si/schema/si4/entity':
+    #  'App\Xsd\Entity\Desc': 'App\Xsd\AsTextTypeHandler'
+
+    'http://www.w3.org/2001/XMLSchema':
+      base64Binary: 'App\Xsd\Base64TypeHandler'
+      anyType: 'App\Xsd\AnyTypeHandler'
+#      anyType: 'string'
+
+#    'http://www.w3.org/2001/XMLSchema':
+#      anySimpleType: 'App\Xsd\AnySimpleTypeHandler'
+#      anyType: 'App\Xsd\AnyTypeHandler'
+
+#    'http://www.loc.gov/premis/v3':
+#      objectIdentifierComplexType: 'App\Xsd\AnyTypeHandler'
+
+#    'http://purl.org/dc/elements/1.1/':
+#      SimpleLiteral: 'App\Xsd\DcTypeHandler'
 
   naming_strategy: short # optional and default
   path_generator: psr4 # optional and default

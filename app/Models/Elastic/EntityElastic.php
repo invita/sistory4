@@ -128,7 +128,12 @@ class EntityElastic
             $keyRepl = strtolower(str_replace("PropName", "", $key));
             if ($val && count($val)) {
                 // Convert CDATA to string
-                foreach ($val as $i => $v) $val[$i]["text"] = (string)$v["text"];
+                foreach ($val as $i => $v) {
+                    $val[$i]["value"] = (string)$v["value"];
+                    $langPropName = (string)$v["LangPropName"];
+                    unset($val[$i]["LangPropName"]);
+                    if ($langPropName) $val[$i]["lang"] = $langPropName;
+                }
             }
             //$this->data["dmd"]["dc"][$keyRepl] = ["text" => $val];
             $this->data["dmd"]["dc"][$keyRepl] = $val;

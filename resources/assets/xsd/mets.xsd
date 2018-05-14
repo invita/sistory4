@@ -241,20 +241,106 @@ mptr and area elements for mapping MPEG21 DII Identifier values
         xmlns:mods="http://www.loc.gov/mods/v3"
 
 -->
+
 <xsd:schema
         targetNamespace="http://www.loc.gov/METS/"
         xmlns="http://www.loc.gov/METS/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xml="http://www.w3.org/XML/1998/namespace"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:dc="http://purl.org/dc/elements/1.1/"
         xmlns:dcmitype="http://purl.org/dc/dcmitype/"
         xmlns:dcterms="http://purl.org/dc/terms/"
+        xmlns:premis="http://www.loc.gov/premis/v3"
+        xmlns:mods="http://www.loc.gov/mods/v3"
+        xmlns:entity="http://sistory.si/schema/si4/entity"
+        xmlns:collection="http://sistory.si/schema/si4/collection"
         elementFormDefault="qualified"
         attributeFormDefault="unqualified">
+	
 	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
 
-    <xsd:import namespace="http://purl.org/dc/terms/" schemaLocation="dcterms.xsd"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+    <xsd:import namespace="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="xsi.xsd"/>
 
+	<xsd:import namespace="http://purl.org/dc/terms/" schemaLocation="dcterms.xsd"/>
+	<xsd:import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="dc.xsd"/>
+	<xsd:import namespace="http://purl.org/dc/dcmitype/" schemaLocation="dcmitype.xsd"/>
+	
+	<xsd:import namespace="http://www.loc.gov/premis/v3" schemaLocation="premis.xsd"/>
+	<xsd:import namespace="http://www.loc.gov/mods/v3" schemaLocation="mods.xsd"/>
+	
+	<xsd:import namespace="http://sistory.si/schema/si4/entity" schemaLocation="entity.1.0.xsd"/>
+	<xsd:import namespace="http://sistory.si/schema/si4/collection" schemaLocation="collection.1.0.xsd"/>
+
+    <!--
+    <xsd:group name="dcGroup">
+		<xsd:choice>
+            <xsd:element ref="dcterms:accrualMethod" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dcterms:accrualPeriodicity" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dcterms:accrualPolicy" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dcterms:audience" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:contributor" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:coverage" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:date" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:description" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:format" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:identifier" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dcterms:instructionalMethod" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:language" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dcterms:provenance" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:publisher" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:relation" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:rights" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dcterms:rightsHolder" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:source" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:subject" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:title" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="dc:type" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
+	</xsd:group>
+	-->
+
+	<xsd:group name="premisGroup">
+        <xsd:choice>
+            <xsd:element ref="premis:objectIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element ref="premis:object" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element ref="premis:objectCategory" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:choice>
+	</xsd:group>
+	
+	<xsd:group name="modsGroup">
+		<xsd:choice>
+			<xsd:element ref="mods:mods" minOccurs="0"/>
+		</xsd:choice>
+	</xsd:group>
+
+    <!--
+    <xsd:group name="entityGroup">
+        <xsd:choice>
+            <xsd:element ref="entity:desc" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element ref="entity:page" minOccurs="0" maxOccurs="1" />
+            <xsd:element ref="entity:removedTo" minOccurs="0" maxOccurs="1" />
+            <xsd:element ref="entity:newVersion" minOccurs="0" maxOccurs="1" />
+        </xsd:choice>
+    </xsd:group>
+    -->
+
+    <!--
+	<xsd:group name="collectionGroup">
+		<xsd:choice>
+			<xsd:element ref="collection:description" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="collection:externalCollection" minOccurs="0"/>
+			<xsd:element ref="collection:removedTo" minOccurs="0"/>
+			<xsd:element ref="collection:searchResultsShow" minOccurs="0"/>
+			<xsd:element ref="collection:searchResultsSort" minOccurs="0"/>
+			<xsd:element ref="collection:wholeContent" minOccurs="0"/>
+		</xsd:choice>
+	</xsd:group>
+	-->
+
+	
 	<xsd:element name="mets">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">METS: Metadata Encoding and Transmission Standard.
@@ -1304,58 +1390,19 @@ TCF.
                                     The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element.
                                 </xsd:documentation>
                             </xsd:annotation>
-                            <xsd:complexType>
-                                <xsd:choice>
-                                    <xsd:element ref="dcterms:title" minOccurs="1" />
-                                    <xsd:element ref="dcterms:creator" minOccurs="0" />
-                                    <xsd:element ref="dcterms:subject" minOccurs="0" />
-                                    <xsd:element ref="dcterms:description" minOccurs="0" />
-                                    <xsd:element ref="dcterms:publisher" minOccurs="0" />
-                                    <xsd:element ref="dcterms:contributor" minOccurs="0" />
-                                    <xsd:element ref="dcterms:date" minOccurs="0" />
-                                    <xsd:element ref="dcterms:type" minOccurs="0" />
-                                    <xsd:element ref="dcterms:format" minOccurs="0" />
-                                    <xsd:element ref="dcterms:identifier" minOccurs="0" />
-                                    <xsd:element ref="dcterms:source" minOccurs="0" />
-                                    <xsd:element ref="dcterms:language" minOccurs="0" />
-                                    <xsd:element ref="dcterms:relation" minOccurs="0" />
-                                    <xsd:element ref="dcterms:coverage" minOccurs="0" />
-                                    <xsd:element ref="dcterms:rights" minOccurs="0" />
-                                </xsd:choice>
-                            </xsd:complexType>
-                        </xsd:element>
 
-                        <!--
-                        <xsd:element name="xmlData" minOccurs="0">
-                            <xsd:annotation>
-                                <xsd:documentation xml:lang="en">
-                                    The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element.
-                                </xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-
-						<xsd:element name="xmlData" minOccurs="0" type="dc:elementContainer">
-							<xsd:annotation>
-								<xsd:documentation xml:lang="en">
-									The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element.
-								</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						-->
-                        <!--
-                        <xsd:element name="xmlData" minOccurs="0">
-							<xsd:annotation>
-								<xsd:documentation xml:lang="en">
-									The xml data wrapper element &lt;xmlData&gt; is used to contain XML encoded metadata. The content of an &lt;xmlData&gt; element can be in any namespace or in no namespace. As permitted by the XML Schema Standard, the processContents attribute value for the metadata in an &lt;xmlData&gt; is set to “lax”. Therefore, if the source schema and its location are identified by means of an XML schemaLocation attribute, then an XML processor will validate the elements for which it can find declarations. If a source schema is not identified, or cannot be found at the specified schemaLocation, then an XML validator will check for well-formedness, but otherwise skip over the elements appearing in the &lt;xmlData&gt; element.
-								</xsd:documentation>
-							</xsd:annotation>
+                            <!-- xmlData -->
                             <xsd:complexType>
                                 <xsd:sequence>
-                                    <xsd:any namespace="##any" maxOccurs="unbounded" processContents="lax"/>
+                                    <xsd:group ref="dc:elementsGroup" minOccurs="0" maxOccurs="unbounded"/>
+                                    <xsd:group ref="premisGroup" minOccurs="0" maxOccurs="unbounded"/>
+                                    <xsd:group ref="modsGroup" minOccurs="0" maxOccurs="unbounded"/>
+                                    <xsd:group ref="entity:elementsGroup" minOccurs="0" maxOccurs="unbounded"/>
+                                    <xsd:group ref="collection:elementsGroup" minOccurs="0" maxOccurs="unbounded"/>
                                 </xsd:sequence>
-                            </xsd:complexType>
-						</xsd:element>
-						-->
+                        	</xsd:complexType>
+                        </xsd:element>
+
 					</xsd:choice>
 					<xsd:attribute name="ID" type="xsd:ID" use="optional">
 						<xsd:annotation>

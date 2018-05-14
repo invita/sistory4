@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<METS:mets
+    xmlns:METS="http://www.loc.gov/METS/"
+    xmlns:xlink="http://www.w3.org/TR/xlink"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+    xmlns:premis="http://www.loc.gov/premis/v3"
+    xmlns:mods="http://www.loc.gov/mods/v3"
+    xmlns:entity="http://sistory.si/schema/sistory/v3/entity"
+    ID="1123"
+    TYPE="entity"
+    OBJID="http://hdl.handle.net/11686/1123"
+    xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd http://purl.org/dc/terms/ http://dublincore.org/schemas/xmls/qdc/dcterms.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-0.xsd http://www.loc.gov/standards/premis/v1 http://www.loc.gov/standards/premis/v1/PREMIS-v1-1.xsd">
+    <METS:metsHdr CREATEDATE="2017-01-05T13:36:44" LASTMODDATE="2017-01-05T13:36:44" RECORDSTATUS="Active">
+        <METS:agent ROLE="DISSEMINATOR" TYPE="ORGANIZATION">
+            <METS:name>SIstory</METS:name>
+            <METS:note>http://sistory.si/</METS:note>
+        </METS:agent>
+        <METS:agent ROLE="CREATOR" ID="user.11" TYPE="INDIVIDUAL">
+            <METS:name>Pančur, Andrej</METS:name>
+        </METS:agent>
+    </METS:metsHdr>
+    <METS:dmdSec ID="default.dc">
+        <METS:mdWrap MDTYPE="DC" MIMETYPE="text/xml">
+            <METS:xmlData>
+                <dc:title xml:lang="slv">Arhiv odporništva</dc:title>
+                <dc:title xml:lang="slv">European Resistance Archive</dc:title>
+                <dc:creator>Troha, Nevenka</dc:creator>
+                <dc:creator>Guštin, Damijan</dc:creator>
+                <dc:contributor>Florian Plocek</dc:contributor>
+                <dc:contributor>Eva Reinbacher</dc:contributor>
+                <dc:date xsi:type="dcterms:W3CDTF">2011</dc:date>
+                <dc:description>ERA-EUROPEAN RESISTANCE ARCHIVE, Arhiv evropskega odporništva je platforma, ki prikazuje odporništvo z različnih nacionalnih perspektiv in hkrati omogoča primerjavo posameznih nacionalnih specifičnosti. Vzpostavlja se ga na podlagi video intervjujev oz. pričevanj z aktivnimi udeleženci odpora iz različnih evropskih geografskih območij. Gre za prenašanje zgodovinskega spomina in izkušenj starejših na mlajše generacije. Osebne zgodbe in različne pojavne oblike odporniških gibanj se izrisujejo skozi video intervjuje, ki jih opravljajo mladi v starosti od 15 do 25 let.Namen in cilj Arhiva evropskega odporništva je ohranjati zgodovinski spomin in narediti evropsko zgodovino in današnjo podobo Evrope razumljivo mlajšim generacijam. Želi se opozoriti, da je odpor proti nacifašizmu odigral relevantno oziroma konstitutivno vlogo pri formiranju današnje združene Evrope. Osebne zgodbe med drugim tudi treh slovenskih pričevalcev najdete tukaj.</dc:description>
+                <dc:description>ERA - European Resistance Archive is a platform for introducing the resistance from various perspectives, and simultaneously allows comparison of individual national specifics. It was established on the basis of video interviews and testimonies of the active resistance participants from different European geographical regions. ERA is about passing down historical memory and the experience of older generations to the younger population. Various forms of resistance movements emerge through personal stories in video interviews conducted by young people aged 15 to 25 years. The aim and objective of the European Resistance Archive is to preserve historical memory and facilitate the understanding of European history as well as modern Europe by younger generations. They need to know that the resistance against Nazism and Fascism played not only a relevant but an essential role in the formation of today's united Europe. You can find personal stories here, including three Slovenian testimonies.</dc:description>
+                <dc:publisher>Youth Antifa Berlin, Germany</dc:publisher>
+                <dc:type xsi:type="dcterms:DCMIType">Collection</dc:type>
+            </METS:xmlData>
+        </METS:mdWrap>
+    </METS:dmdSec>
+    <METS:amdSec ID="default.amd">
+        <METS:techMD ID="default.premis">
+            <METS:mdWrap MDTYPE="PREMIS:OBJECT" MIMETYPE="text/xml">
+                <METS:xmlData>
+                    <premis:objectIdentifier simpleLink="http://hdl.handle.net/11686/1123">
+                        <premis:objectIdentifierType>si4</premis:objectIdentifierType>
+                        <premis:objectIdentifierValue>9</premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <premis:objectIdentifier>
+                        <premis:objectIdentifierType>Local name</premis:objectIdentifierType>
+                        <premis:objectIdentifierValue>1123</premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <premis:objectIdentifier>
+                        <premis:objectIdentifierType>hdl</premis:objectIdentifierType>
+                        <premis:objectIdentifierValue>http://hdl.handle.net/11686/1123</premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <premis:objectCategory>entity</premis:objectCategory>
+                </METS:xmlData>
+            </METS:mdWrap>
+        </METS:techMD>
+        <METS:techMD ID="default.si4">
+            <METS:mdWrap MDTYPE="OTHER" OTHERMDTYPE="ENTITY" MIMETYPE="text/xml">
+                <METS:xmlData xmlns:entity="http://sistory.si/schema/si4/entity" xsi:schemaLocation="http://sistory.si/schema/si4/entity /schema/si4/entity.1.0.xsd">
+                    <entity:desc xml:lang="sl">Some description2</entity:desc>
+                    <entity:page>123</entity:page>
+                    <entity:removedTo>http://hdl.handle.net/11686/1123</entity:removedTo>
+                    <entity:newVersion>http://hdl.handle.net/11686/1123</entity:newVersion>
+                </METS:xmlData>
+            </METS:mdWrap>
+        </METS:techMD>
+    </METS:amdSec>
+    <METS:fileSec xmlns:xlink="http://www.w3.org/1999/xlink" ID="default.file">
+        <METS:fileGrp USE="DEFAULT"/>
+    </METS:fileSec>
+    <METS:structMap xmlns:xlink="http://www.w3.org/1999/xlink" ID="default.structure" TYPE="primary">
+        <METS:div TYPE="collection">
+            <METS:mptr LOCTYPE="HANDLE" xlink:href="http://hdl.handle.net/11686/menu8"/>
+            <METS:div TYPE="entity" DMDID="default.dc" ADMID="default.amd"/>
+        </METS:div>
+    </METS:structMap>
+</METS:mets>

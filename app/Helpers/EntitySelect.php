@@ -98,7 +98,7 @@ class EntitySelect
         "struct_type" => "struct_type",
         "struct_subtype" => "struct_subtype",
         "entity_type" => "entity_type",
-        "title" => "data.dmd.dc.title",
+        "title" => "data.dmd.dc.title.value",
         "creator" => "data.dmd.dc.creator",
         "date" => "data.dmd.dc.date",
     ];

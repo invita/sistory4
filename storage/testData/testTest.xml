@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEST:root
+        xmlns:TEST="http://www.loc.gov/TEST/"
+        xmlns:xml="http://www.w3.org/XML/1998/namespace"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:entity="http://sistory.si/schema/si4/entity"
+        xsi:schemaLocation="http://www.loc.gov/TEST/ http://www.loc.gov/test/test.xsd">
+    <TEST:header>
+        <TEST:title xml:lang="sl">Some title</TEST:title>
+        <TEST:title xml:lang="en">Some title2</TEST:title>
+        <TEST:subject>Some subject</TEST:subject>
+    </TEST:header>
+    <TEST:body>
+        <entity:desc xml:lang="sl">Description...</entity:desc>
+        <!--
+        <TEST:data>Test value</TEST:data>
+        <TEST:data>Test value2</TEST:data>
+        -->
+        <!--
+        <entity:desc xml:lang="sl">Description...</entity:desc>
+        <desc xml:lang="sl">Description...</desc>
+        -->
+    </TEST:body>
+</TEST:root>
