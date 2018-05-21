@@ -7,7 +7,7 @@ si4.config.uploadApiUrl = "/admin/upload";
 si4.config.apiUrl = "/admin/api";
 
 si4.config.apiNames = [
-    "entityList", "saveEntity", "reserveEntityId", "deleteEntity", "entityHierarchy",
+    "entityList", "entityListDb", "saveEntity", "reserveEntityId", "deleteEntity", "entityHierarchy",
     "entityRelationsList", "saveEntityRelation", "deleteEntityRelation",
     "userList", "saveUser", "deleteUser",
     "fileList", "saveFile", "deleteFile",

@@ -11,10 +11,10 @@ var F = function(args){
         entityTitleEdit: si4.lookup[name].entityTitleEdit,
         //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
-            select: si4.api["entityList"],
+            select: si4.api["entityListDb"],
             delete: si4.api["deleteEntity"],
             staticData : { },
-            pageCount: 200
+            pageCount: 20
         }),
         editorModuleArgs: {
             moduleName:"Entities/EntityDetails",
@@ -23,17 +23,16 @@ var F = function(args){
         canInsert: true,
         canDelete: true,
         tabPage: args.contentTab,
+        showOnlyDefinedFields: true,
         fields: {
-            id: { caption: "Id" },
-            struct_type_name: { caption: si4.translate("field_structType"), valueTranslatePrefix:"et_" },
-
-            //name: { caption: "Naziv" },
-            //description: { caption: "Opis" },
-            title: { maxCharLength: 100 },
-            creator: { caption: si4.translate("field_creator"), maxCharLength: 50 },
-
-            struct_type_id: { visible: false },
-            data: { visible: false },
+            id: { caption: si4.translate("field_id") },
+            handle_id: { caption: si4.translate("field_handleId") },
+            parent: { caption: si4.translate("field_parent") },
+            primary: { caption: si4.translate("field_primary") },
+            collection: { caption: si4.translate("field_collection") },
+            struct_type: { caption: si4.translate("field_structType"), valueTranslatePrefix:"st_", canFilter: false },
+            struct_subtype: { caption: si4.translate("field_structSubtype") },
+            entity_type: { caption: si4.translate("field_entityType"), valueTranslatePrefix:"et_" },
         },
         cssClass_table: "si4DataTable_table width100percent"
     });

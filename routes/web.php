@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('initial-data', "Admin\\Api\\Initial@initialData")->name("admin.api.initial-data#post");
 
             Route::post('entity-list', "Admin\\Api\\Entities@entityList")->name("admin.api.entity-list#post");
+            Route::post('entity-list-db', "Admin\\Api\\Entities@entityListDb")->name("admin.api.entity-list-db#post");
             Route::post('reserve-entity-id', "Admin\\Api\\Entities@reserveEntityId")->name("admin.api.reserve-entity-id#post");
             Route::post('save-entity', "Admin\\Api\\Entities@saveEntity")->name("admin.api.save-entity#post");
             Route::post('delete-entity', "Admin\\Api\\Entities@deleteEntity")->name("admin.api.delete-entity#post");

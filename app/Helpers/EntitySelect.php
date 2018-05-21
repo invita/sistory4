@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class EntitySelect
@@ -80,6 +81,44 @@ class EntitySelect
         $rowCount = Si4Util::pathArg($dataElastic, "hits/total", 0);
         $hits = ElasticHelpers::elasticResultToAssocArray($dataElastic);
         $result = self::processElasticResponse($hits);
+
+        return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
+    }
+
+    // Select entities from mysql database (no elastic)
+    public static function selectEntitiesFromDb($requestData = null) {
+        $filter = Si4Util::getArg($requestData, "filter", []);
+        $pageStart = Si4Util::getArg($requestData, "pageStart", 0);
+        $pageCount = Si4Util::getArg($requestData, "pageCount", 20);
+
+        $query = DB::table("entities")->where($filter)->offset($pageStart)->limit($pageCount);
+
+        $rowCount = $query->count();
+
+        $data = $query->get();
+
+        $result = [];
+        foreach ($data as $idx => $row) {
+            $rowArray = (array)$row;
+            $rowData = array_merge($rowArray, [
+                "title" => "",
+                "creator" => "",
+                "date" => "",
+                "fileName" => "",
+                "fileUrl" => "",
+                "fileMimeType" => "",
+                "fileSize" => "",
+                "fileTimestamp" => "",
+                "fileChecksum" => "",
+                "fileChecksumType" => "",
+                "active" => "",
+                "xmlData" => $rowArray["data"],
+                //"elasticData" => $data,
+            ]);
+            unset($rowData["data"]);
+
+            $result[] = $rowData;
+        }
 
         return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
     }

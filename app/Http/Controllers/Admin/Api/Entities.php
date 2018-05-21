@@ -22,6 +22,11 @@ class Entities extends Controller
         $postJson = json_decode(file_get_contents("php://input"), true);
         return EntitySelect::selectEntities($postJson);
     }
+    public function entityListDb(Request $request)
+    {
+        $postJson = json_decode(file_get_contents("php://input"), true);
+        return EntitySelect::selectEntitiesFromDb($postJson);
+    }
 
     public function reserveEntityId(Request $request)
     {
