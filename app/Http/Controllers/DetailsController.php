@@ -16,7 +16,9 @@ class DetailsController extends FrontendController
 
         $data = [];
 
-        if ($hdl) {
+        if (!$hdl) {
+            $viewName = "fe.details.nodata";
+        } else {
             $elasticData = ElasticHelpers::searchByHandleArray([$hdl]);
             if (!count($elasticData)) {
                 die("Handle id not found");
@@ -26,25 +28,36 @@ class DetailsController extends FrontendController
             //echo "<pre>"; print_r($docData); echo "</pre>";
 
             $data["xml"] = Si4Util::pathArg($docData, "_source/xml", "");
+            //$data["elasticData"] = $docData;
             $data["doc"] = DcHelpers::mapElasticEntity($docData);
 
             $struct_type = Si4Util::pathArg($docData, "_source/struct_type", "entity");
             $struct_subtype = Si4Util::pathArg($docData, "_source/struct_subtype", "default");
-        }
 
-        switch ($struct_type) {
-            case "collection":
-                $viewName = "fe.details.collection";
-                $childData = ElasticHelpers::searchChildren($hdl);
-                $children = [];
-                foreach ($childData as $child) {
-                    $children[] = DcHelpers::mapElasticEntity($child);
-                }
-                $data["children"] = $children;
-                //print_r($children);
-                break;
-            case "file": $viewName = "fe.details.file"; break;
-            case "entity": default: $viewName = "fe.details.entity"; break;
+            // Parents
+            $parenData = ElasticHelpers::searchParentsRecursive($data["doc"]["parent"]);
+            $parents = [];
+            foreach ($parenData as $parent) {
+                $parents[] = DcHelpers::mapElasticEntity($parent);
+            }
+            $data["parents"] = $parents;
+
+            $this->prepareBreadcrumbs($request, $hdl, $data);
+
+            switch ($struct_type) {
+                case "collection":
+                    $viewName = "fe.details.collection";
+                    $this->prepareDataForCollection($request, $hdl, $data);
+                    break;
+                case "file":
+                    $viewName = "fe.details.file";
+                    $this->prepareDataForFile($request, $hdl, $data);
+                    break;
+                case "entity": default:
+                    $viewName = "fe.details.entity";
+                    $this->prepareDataForEntity($request, $hdl, $data);
+                    break;
+            }
         }
 
         return view($viewName, [
@@ -53,4 +66,64 @@ class DetailsController extends FrontendController
             "data" => $data,
         ]);
     }
+
+
+    private function prepareDataForCollection(Request $request, $hdl, &$data) {
+
+        // Find children
+        $childData = ElasticHelpers::searchChildren($hdl);
+        $children = [];
+        foreach ($childData as $child) {
+            $children[] = DcHelpers::mapElasticEntity($child);
+        }
+        $data["children"] = $children;
+
+
+        //print_r($data);
+    }
+
+    private function prepareDataForEntity(Request $request, $hdl, &$data) {
+
+    }
+
+    private function prepareDataForFile(Request $request, $hdl, &$data) {
+
+    }
+
+
+    private function prepareBreadcrumbs(Request $request, $hdl, &$data) {
+        //print_r($data["doc"]);
+
+        $linkPrefix = "/details/";
+        $skipHandles = ["si4", "menuTop"];
+        $breadcrumbs = [];
+
+        // Add Parents to breadcrumbs
+
+        $breadcrumbs[] = [
+            "link" => "/",
+            "text" => "Si4"
+        ];
+
+        $parentsReverse = array_reverse($data["parents"]);
+        foreach ($parentsReverse as $parent) {
+            if (in_array($parent["handle_id"], $skipHandles)) continue;
+            $breadcrumbs[] = [
+                "link" => $linkPrefix.$parent["handle_id"],
+                "text" => $parent["first_dc_title"]
+            ];
+        }
+
+        // Add current doc to breadcrumbs
+        $breadcrumbs[] = [
+            "link" => $linkPrefix.$data["doc"]["handle_id"],
+            "text" => $data["doc"]["first_dc_title"]
+        ];
+        $data["breadcrumbs"] = $breadcrumbs;
+        $data["html_breadcrumbs"] = DcHelpers::breadcrumbsPresentation($breadcrumbs);
+
+        //print_r($breadcrumbs);
+
+    }
+
 }

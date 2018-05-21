@@ -28,8 +28,6 @@ class DcHelpers {
                 "handle_url" => ["path" => "_source/data/objId"],
                 "created_at" => ["path" => "_source/data/created_at"],
                 "modified_at" => ["path" => "_source/data/modified_at"],
-                "first_title" => ["path" => "_source/data/dmd/dc/title/0/text"],
-                "first_description" => ["path" => "_source/data/dmd/dc/description/0/text"],
 
                 // Thumb
                 "thumb" => [
@@ -37,73 +35,113 @@ class DcHelpers {
                     "parser" => DcHelpers::getThumbParser(),
                 ],
 
-                // DC
-                "dc_title" => [
-                    "path" => "_source/data/dmd/dc/title",
-                    "parser" => DcHelpers::getDcTitlePresentationParser(),
-                ],
-                "dc_creator" => [
-                    "path" => "_source/data/dmd/dc/creator",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_subject" => [
-                    "path" => "_source/data/dmd/dc/subject",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_description" => [
-                    "path" => "_source/data/dmd/dc/description",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_publisher" => [
-                    "path" => "_source/data/dmd/dc/publisher",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_contributor" => [
-                    "path" => "_source/data/dmd/dc/contributor",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_date" => [
-                    "path" => "_source/data/dmd/dc/date",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_type" => [
-                    "path" => "_source/data/dmd/dc/type",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_format" => [
-                    "path" => "_source/data/dmd/dc/format",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_identifier" => [
-                    "path" => "_source/data/dmd/dc/identifier",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_source" => [
-                    "path" => "_source/data/dmd/dc/source",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_language" => [
-                    "path" => "_source/data/dmd/dc/language",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_relation" => [
-                    "path" => "_source/data/dmd/dc/relation",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_coverage" => [
-                    "path" => "_source/data/dmd/dc/coverage",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-                "dc_rights" => [
-                    "path" => "_source/data/dmd/dc/rights",
-                    "parser" => DcHelpers::getDcPresentationParser(),
-                ],
-
                 // Files
                 "fileName" => [
                     "path" => "_source/data/files",
                     "parser" => DcHelpers::getDcFirstFileNameParser(),
                 ],
+
+
+                // DC plain
+                "dc_title" => ["path" => "_source/data/dmd/dc/title"],
+                "dc_creator" => ["path" => "_source/data/dmd/dc/creator"],
+                "dc_subject" => ["path" => "_source/data/dmd/dc/subject"],
+                "dc_description" => ["path" => "_source/data/dmd/dc/description"],
+                "dc_publisher" => ["path" => "_source/data/dmd/dc/publisher"],
+                "dc_contributor" => ["path" => "_source/data/dmd/dc/contributor"],
+                "dc_date" => ["path" => "_source/data/dmd/dc/date"],
+                "dc_type" => ["path" => "_source/data/dmd/dc/type"],
+                "dc_format" => ["path" => "_source/data/dmd/dc/format"],
+                "dc_identifier" => ["path" => "_source/data/dmd/dc/identifier"],
+                "dc_source" => ["path" => "_source/data/dmd/dc/source"],
+                "dc_language" => ["path" => "_source/data/dmd/dc/language"],
+                "dc_relation" => ["path" => "_source/data/dmd/dc/relation"],
+                "dc_coverage" => ["path" => "_source/data/dmd/dc/coverage"],
+                "dc_rights" => ["path" => "_source/data/dmd/dc/rights"],
+
+                // DC With lang
+                "dc_title_lang" => [
+                    "path" => "_source/data/dmd/dc/title",
+                    "parser" => DcHelpers::getDcWithLangParser()
+                ],
+
+                // DC first
+                "first_dc_title" => [
+                    "path" => "_source/data/dmd/dc/title",
+                    "parser" => DcHelpers::getDcFirstParser()
+                ],
+                "first_dc_date" => [
+                    "path" => "_source/data/dmd/dc/date",
+                    "parser" => DcHelpers::getDcFirstParser()
+                ],
+
+
+                // DC Html Presentation
+                "html_dc_title" => [
+                    "path" => "_source/data/dmd/dc/title",
+                    "parser" => DcHelpers::getDcTitlePresentationParser(),
+                ],
+                "html_dc_creator_list" => [
+                    "path" => "_source/data/dmd/dc/creator",
+                    "parser" => DcHelpers::getDcListCreatorsParser(),
+                ],
+                "html_dc_creator" => [
+                    "path" => "_source/data/dmd/dc/creator",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_subject" => [
+                    "path" => "_source/data/dmd/dc/subject",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_description" => [
+                    "path" => "_source/data/dmd/dc/description",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_publisher" => [
+                    "path" => "_source/data/dmd/dc/publisher",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_contributor" => [
+                    "path" => "_source/data/dmd/dc/contributor",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_date" => [
+                    "path" => "_source/data/dmd/dc/date",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_type" => [
+                    "path" => "_source/data/dmd/dc/type",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_format" => [
+                    "path" => "_source/data/dmd/dc/format",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_identifier" => [
+                    "path" => "_source/data/dmd/dc/identifier",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_source" => [
+                    "path" => "_source/data/dmd/dc/source",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_language" => [
+                    "path" => "_source/data/dmd/dc/language",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_relation" => [
+                    "path" => "_source/data/dmd/dc/relation",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_coverage" => [
+                    "path" => "_source/data/dmd/dc/coverage",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+                "html_dc_rights" => [
+                    "path" => "_source/data/dmd/dc/rights",
+                    "parser" => DcHelpers::getDcPresentationParser(),
+                ],
+
             ];
         }
         return self::$docPathMap;
@@ -127,9 +165,18 @@ class DcHelpers {
     // $dcData is an array i.e. [ ["text" => "", ...] , ["text" => "", ...] , ... ]
     // function extracts texts and put them in a simple array
     public static function dcTextArray($dcData) {
+        $result = [];
+        foreach ($dcData as $idx => $item) {
+            if (isset($item["value"]) && $item["value"])
+                $result[] = $item["value"];
+        }
+        return $result;
+
+        /*
         return array_map(function($item) {
-            return isset($item["value"]) ? $item["value"] : "";
+            return isset($item["value"]) && $item["value"] ? $item["value"] : "";
         }, $dcData);
+        */
     }
 
 
@@ -158,7 +205,63 @@ class DcHelpers {
             if (is_string($inputValue)) return $inputValue;
             if (is_array($inputValue)) {
                 $inputValue = self::dcTextArray($inputValue);
-                return join("<br/>", array_map(function($e) { return "<span>".$e."</span>"; }, $inputValue));
+                return join("<br/>", array_map(function($e) { return "<span>".trim($e)."</span>"; }, $inputValue));
+            }
+            return print_r($inputValue, true);
+        };
+    }
+
+    public static function getDcWithLangParser() {
+        return function($inputName, $inputValue) {
+            if ($inputValue === null) return "";
+            if (is_string($inputValue)) return $inputValue;
+            if (is_array($inputValue)) {
+                $lang = "slv";
+                $result = [];
+                // Find fields with title
+                foreach ($inputValue as $valueAndLang) {
+                    if (isset($valueAndLang["lang"]) && $valueAndLang["lang"] == $lang) {
+                        $result[] = $valueAndLang;
+                    }
+                }
+                // If no fields with title, find fields with no title defined
+                if (!count($result)) {
+                    foreach ($inputValue as $value) {
+                        if (!isset($value["lang"])) {
+                            $result[] = $value;
+                        }
+                    }
+                }
+                return self::dcTextArray($result);
+            }
+            return print_r($inputValue, true);
+        };
+    }
+
+    public static function getDcListCreatorsParser() {
+        return function($inputName, $inputValue) {
+            if ($inputValue === null) return "";
+            if (is_string($inputValue)) return $inputValue;
+            if (is_array($inputValue)) {
+                $inputValue = self::dcTextArray($inputValue);
+                return join(
+                    '<span class="sep"> / </span>',
+                    array_map(function($e) {
+                        return '<span class="val">'.$e.'</span>';
+                    }, $inputValue)
+                );
+            }
+            return print_r($inputValue, true);
+        };
+    }
+
+    public static function getDcFirstParser() {
+        return function($inputName, $inputValue) {
+            if ($inputValue === null) return "";
+            if (is_string($inputValue)) return $inputValue;
+            if (is_array($inputValue)) {
+                $inputValue = self::dcTextArray($inputValue);
+                return isset($inputValue[0]) ? $inputValue[0] : "";
             }
             return print_r($inputValue, true);
         };
@@ -191,5 +294,17 @@ class DcHelpers {
         return function($inputName, $inputValue) {
             return isset($inputValue[0]["ownerId"]) ? $inputValue[0]["ownerId"] : "";
         };
+    }
+
+
+
+    // $breadcrumbs - [[0] => [ "link" => "/link/1", "text" => "Entity title" ]]
+    public static function breadcrumbsPresentation($breadcrumbs) {
+        return join(
+            '<span class="sep"> / </span>',
+            array_map(function($bcItem) {
+                return '<a href="'.$bcItem["link"].'">'.$bcItem["text"].'</a>';
+            }, $breadcrumbs)
+        );
     }
 }

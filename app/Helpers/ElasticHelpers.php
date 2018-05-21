@@ -322,6 +322,46 @@ HERE;
         // self::mergeElasticResultAndIdArray($dataElastic, $idArray);
     }
 
+
+    public static function searchParentsRecursive($firstParent)
+    {
+        $parent = $firstParent;
+        $result = [];
+        $step = 0;
+        $maxSteps = 100;
+        while ($parent) {
+
+            // Sanity check
+            if ($step > $maxSteps) break;
+
+            $requestArgs = [
+                "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
+                "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
+                "body" => [
+                    "query" => [
+                        "match" => [
+                            "handle_id" => $parent
+                        ]
+                    ],
+                    "size" => 1,
+                ]
+            ];
+
+            $dataElastic = \Elasticsearch::connection()->search($requestArgs);
+            $parentDataAssoc = self::elasticResultToAssocArray($dataElastic);
+            if (count($parentDataAssoc)) {
+                $first = $parentDataAssoc[array_keys($parentDataAssoc)[0]];
+                $result[] = $first;
+                $parent = $first["_source"]["parent"];
+            } else {
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+
     public static function searchChildren($parent, $offset = 0, $limit = 20)
     {
         $requestArgs = [

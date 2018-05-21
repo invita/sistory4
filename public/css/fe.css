@@ -127,6 +127,16 @@
     padding: 4px 10px;
     margin-top: 10px;
 }
+.breadcrumbs span.sep {
+    color: silver;
+    font-size: 14px;
+    padding: 2px;
+}
+.breadcrumbs a {
+    font-size: 14px;
+    font-weight: 500;
+    color: #303030;
+}
 
 .detailsContent {
     display: flex;
@@ -168,14 +178,20 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    flex: 1;
+}
+.detailsContent .childrenWrap > a {
+    display: flex;
 }
 .detailsContent .childrenWrap .child {
     display: flex;
     flex-direction: column;
     padding: 10px;
     margin: 10px;
-    width: 180px;
+    width: 220px;
+    /*
     height: 200px;
+    */
     align-items: center;
     border: silver solid 1px;
     border-radius: 5px;
@@ -202,12 +218,24 @@
     width: 100px;
     opacity: 0.4;
 }
-.detailsContent .childrenWrap .child h5 {
-    font-size: 15px;
+.detailsContent .childrenWrap .child .childTitle h5 {
+    font-size: 13px;
+    font-weight: 500;
     line-height: 1.2;
     text-align: center;
 }
-
+.detailsContent .childrenWrap .child .childDetails {
+    text-align: center;
+    line-height: 1.1;
+}
+.detailsContent .childrenWrap .child .childDetails span.childCreators span.sep {
+    font-size: 13px;
+    font-weight: 500;
+    color: silver
+}
+.detailsContent .childrenWrap .child .childDetails span.childCreators span.val {
+    font-size: 13px;
+}
 
 /* accordion */
 .accordion {

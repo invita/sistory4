@@ -8,18 +8,18 @@
     <div class="row">
         <div class="medium-12 columns">
             <div class="breadcrumbs">
-                Breadcrumbs...
+                <?php echo $data["html_breadcrumbs"]; ?>
             </div>
 
             <div class="detailsContent">
                 <div class="contentWrap">
 
                     <div class="detailsDcField detailsDcTitle">
-                        <h3>{{ $data["doc"]["first_title"] }}</h3>
+                        <h3>{{ $data["doc"]["first_dc_title"] }}</h3>
                     </div>
 
                     <div class="detailsDcField detailsDcDescription">
-                        <p><?php echo $data["doc"]["first_description"]; ?></p>
+                        <p><?php echo $data["doc"]["html_dc_description"]; ?></p>
                     </div>
 
                     <div class="childrenWrap">
@@ -27,12 +27,16 @@
                         @foreach($data["children"] as $child)
                             <a href="/details/{{ $child["handle_id"] }}">
                                 <div class="child">
+                                    <?php /* print_r($child); */ ?>
                                     <div class="childThumb">
                                         <img src="{{ $child["thumb"] }}" />
                                     </div>
 
                                     <div class="childTitle">
-                                        <h5>{{ $child["first_title"] }}</h5>
+                                        <h5>{{ $child["first_dc_title"] }}</h5>
+                                    </div>
+                                    <div class="childDetails">
+                                        <span class="childCreators"><?php echo $child["html_dc_creator_list"]; ?></span>
                                     </div>
                                 </div>
                             </a>
