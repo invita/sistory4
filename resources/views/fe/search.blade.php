@@ -19,29 +19,29 @@
 
                                 @if ($result["struct_type"] == "entity")
                                     <div class="dataWrapper entity">
-                                        @if ($result["dc_title"])
-                                            <div class="title"><?php echo $result["dc_title"]; ?></div>
+                                        @if ($result["html_dc_title"])
+                                            <div class="title"><?php echo $result["html_dc_title"]; ?></div>
                                         @endif
                                         @if ($result["dc_creator"])
-                                            <div class="creator"><?php echo $result["dc_creator"]; ?></div>
+                                            <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
                                         @endif
                                     </div>
                                 @elseif ($result["struct_type"] == "collection")
                                     <div class="dataWrapper collection">
                                         @if ($result["dc_title"])
-                                            <div class="title"><?php echo $result["dc_title"]; ?></div>
+                                            <div class="title"><?php echo $result["html_dc_title"]; ?></div>
                                         @endif
                                         @if ($result["dc_creator"])
-                                            <div class="creator"><?php echo $result["dc_creator"]; ?></div>
+                                            <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
                                         @endif
                                     </div>
                                 @elseif ($result["struct_type"] == "file")
                                     <div class="dataWrapper file">
                                         @if ($result["dc_title"])
-                                            <div class="title"><?php echo $result["dc_title"]; ?></div>
+                                            <div class="title"><?php echo $result["html_dc_title"]; ?></div>
                                         @endif
                                         @if ($result["dc_creator"])
-                                            <div class="creator"><?php echo $result["dc_creator"]; ?></div>
+                                            <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
                                         @endif
                                         @if ($result["fileName"])
                                             <div class="fileName"><?php echo $result["fileName"]; ?></div>
@@ -50,10 +50,10 @@
                                 @else
                                     <div class="dataWrapper unknown">
                                         @if ($result["dc_title"])
-                                            <div class="title"><?php echo $result["dc_title"]; ?></div>
+                                            <div class="title"><?php echo $result["html_dc_title"]; ?></div>
                                         @endif
                                         @if ($result["dc_creator"])
-                                            <div class="creator"><?php echo $result["dc_creator"]; ?></div>
+                                            <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
                                         @endif
                                     </div>
                                 @endif
