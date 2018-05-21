@@ -192,7 +192,9 @@ HERE;
         ];
         return self::search($query, $offset, $limit, $sortField, $sortDir);
     }
-    public static function suggestEntites($queryString, $limit = 20)
+
+    /*
+    public static function suggestEntities($queryString, $limit = 20)
     {
 
         $queryStringWild = $queryString."*";
@@ -200,15 +202,58 @@ HERE;
         $query = [
             "query_string" => [
                 "fields" => [
-                    "data.dmd.dc.title.text",
-                    "data.dmd.dc.creator.text",
-                    "data.dmd.dc.date.text",
+                    "data.dmd.dc.title.value",
+                    "data.dmd.dc.creator.value",
+                    "data.dmd.dc.date.value",
                 ],
                 "query" => $queryStringWild
             ]
         ];
         return self::search($query, 0, $limit, "id", "asc");
     }
+    */
+
+    public static function suggestCreators($queryString, $limit = 20)
+    {
+        $queryStringWild = $queryString."*";
+        $query = [
+            "query_string" => [
+                "fields" => [
+                    "data.dmd.dc.creator.value",
+                ],
+                "query" => $queryStringWild
+            ]
+        ];
+        return self::search($query, 0, $limit, "id", "asc");
+    }
+    public static function suggestTitlesForCreator($creator, $title, $limit = 20)
+    {
+        $titleWildcard = $title."*";
+        $creatorWildcard = $creator."*";
+        $query = [
+            "bool" => [
+                "must" => [
+                    "query_string" => [
+                        "fields" => [
+                            "data.dmd.dc.title.value",
+                        ],
+                        "query" => $titleWildcard
+                    ]
+                ],
+                "must" => [
+                    "query_string" => [
+                        "fields" => [
+                            "data.dmd.dc.creator.value",
+                        ],
+                        "query" => $creatorWildcard
+                    ]
+                ]
+            ]
+        ];
+
+        return self::search($query, 0, $limit, "id", "asc");
+    }
+
 
     public static function searchByIdArray($idArray)
     {

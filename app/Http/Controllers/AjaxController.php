@@ -14,7 +14,6 @@ class AjaxController extends Controller
 
         switch($name) {
             case "searchSuggest": return $this->searchSuggest($request);
-            case "searchSuggest_new": return $this->searchSuggest2($request);
         }
 
         $result = ["status" => false, "error" => "Bad call ".$name];
@@ -22,136 +21,119 @@ class AjaxController extends Controller
     }
 
 
-    private $bagOfWords;
-    private $unfinishedWord;
-    private $finishedWord;
-    private function searchSuggest(Request $request) {
-
-        $term = $request->query("term", "");
-        $elasticData = ElasticHelpers::suggestEntites($term, 50);
-        $assocData = ElasticHelpers::elasticResultToAssocArray($elasticData);
-
-        $termWords = explode(" ", $term);
-        $this->unfinishedWord = mb_strtolower(array_pop($termWords));
-        $this->finishedWord = mb_strtolower(join(" ", $termWords));
-
-        $this->bagOfWords = [];
-
-        foreach ($assocData as $doc) {
-            $title = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/title", []));
-            foreach ($title as $s) $this->addWordsIntoBag($s);
-
-            $creator = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/creator", []));
-            foreach ($creator as $s) $this->addWordsIntoBag($s);
-
-            $date = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/date", []));
-            foreach ($date as $s) $this->addWordsIntoBag($s);
+    private static $skipChars = [",", "\\."];
+    private function removeSkipCharacters($str) {
+        foreach (self::$skipChars as $skipChar) {
+            $str = mb_ereg_replace($skipChar, "", $str);
         }
-
-        $data = $this->bagOfWords;
-
-        // Append finishedWord to given suggestions
-        if ($this->finishedWord) {
-            $data = array_map(function($w) {
-                return $this->finishedWord." ".$w;
-            }, $data);
-        }
-
-        return json_encode($data);
+        return $str;
     }
 
-    private function addWordsIntoBag($s) {
-        $s = mb_strtolower($s);
-        $words = explode(" ", $s);
-        foreach ($words as $word) {
-            if (substr($word, 0, strlen($this->unfinishedWord)) == $this->unfinishedWord) {
-                if (!in_array($word, $this->bagOfWords))
-                    $this->bagOfWords[] = $word;
+    private function strStartsWith($str, $startPart) {
+        return mb_substr($str, 0, mb_strlen($startPart)) === $startPart;
+    }
+    private function strSameRoot($str1, $str2) {
+        $len1 = mb_strlen($str1);
+        $len2 = mb_strlen($str2);
+        if (!$len1 || !$len2) return false;
+
+        $shorterLen = min($len1, $len2);
+        return mb_substr($str1, 0, $shorterLen) === mb_substr($str2, 0, $shorterLen);
+    }
+
+
+    private function searchSuggest(Request $request) {
+        $term = $request->query("term", "");
+        $termLower = mb_strtolower($term);
+
+        //$termWords = explode(" ", $term);
+        //$potTermsCreator = [];
+
+
+        // Find potential creators
+
+        $creatorElasticData = ElasticHelpers::suggestCreators($termLower, 10);
+        $creatorAssocData = ElasticHelpers::elasticResultToAssocArray($creatorElasticData);
+
+        $creatorResults = [];
+        foreach ($creatorAssocData as $doc) {
+            $creatorDc = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/creator", []));
+            foreach ($creatorDc as $s) {
+                $creatorClean = mb_strtolower($this->removeSkipCharacters($s));
+                //echo "creatorClean ".$creatorClean."\n";
+                $creatorSplit = explode(" ", $creatorClean);
+                $splitCount = count($creatorSplit);
+
+                // Create creator firstName/lastName/(middleName) combinations
+                $creatorCombs = [];
+                if ($splitCount == 2) {
+                    $creatorCombs[] = $creatorSplit[0]." ".$creatorSplit[1];
+                    $creatorCombs[] = $creatorSplit[1]." ".$creatorSplit[0];
+                } else if ($splitCount == 3) {
+                    $creatorCombs[] = $creatorSplit[0]." ".$creatorSplit[1]." ".$creatorSplit[2];
+                    $creatorCombs[] = $creatorSplit[0]." ".$creatorSplit[2]." ".$creatorSplit[1];
+                    $creatorCombs[] = $creatorSplit[1]." ".$creatorSplit[0]." ".$creatorSplit[2];
+                    $creatorCombs[] = $creatorSplit[1]." ".$creatorSplit[2]." ".$creatorSplit[0];
+                    $creatorCombs[] = $creatorSplit[2]." ".$creatorSplit[0]." ".$creatorSplit[1];
+                    $creatorCombs[] = $creatorSplit[2]." ".$creatorSplit[1]." ".$creatorSplit[0];
+
+                } else {
+                    $creatorCombs[] = $creatorClean;
+                }
+
+                foreach ($creatorCombs as $creatorComb) {
+                    if (self::strSameRoot($creatorComb, $termLower)) {
+                        if (!isset($creatorResults[$creatorComb]))
+                            $creatorResults[$creatorComb] = 1;
+                        else
+                            $creatorResults[$creatorComb] += 1;
+
+                    }
+                }
+
             }
         }
-    }
+
+        $onlyOneCreatorAndFullyMatched =
+            count($creatorResults) == 1 &&
+            self::strStartsWith($termLower, array_keys($creatorResults)[0]);
 
 
+        if (!$onlyOneCreatorAndFullyMatched && count($creatorResults)) {
 
+            return json_encode(array_keys($creatorResults));
 
-    private function searchSuggest2(Request $request) {
+        } else {
 
-        $term = $request->query("term", "");
-        $elasticData = ElasticHelpers::suggestEntites($term, 50);
-        $assocData = ElasticHelpers::elasticResultToAssocArray($elasticData);
+            // Find potential titles
 
-        $titleSuggestions = [];
-        $creatorSuggestions = [];
-        $dateSuggestions = [];
+            $oneCreator = count($creatorResults) ? array_keys($creatorResults)[0] : "";
+            $termRest = trim(mb_substr($termLower, mb_strlen($oneCreator)));
 
-        $termLower = mb_strtolower($term);
-        $termWords = explode(" ", $termLower);
+            $titleElasticData = ElasticHelpers::suggestTitlesForCreator($oneCreator, $termRest, 10);
+            $titleAssocData = ElasticHelpers::elasticResultToAssocArray($titleElasticData);
 
-        /*
-        $this->unfinishedWord = mb_strtolower(array_pop($termWords));
-        $this->finishedWord = mb_strtolower(join(" ", $termWords));
-        //$this->bagOfWords = [];
-        */
+            $titleResults = [];
+            foreach ($titleAssocData as $doc) {
+                $titleDc = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/title", []));
+                foreach ($titleDc as $s) {
+                    $titleClean = mb_strtolower($this->removeSkipCharacters($s));
+                    $oneCreatorWithTitle = $oneCreator ? $oneCreator." ".$titleClean : $titleClean;
+                    if (!$termRest || self::strSameRoot($titleClean, $termRest)) {
+                        if (!isset($titleResults[$oneCreatorWithTitle]))
+                            $titleResults[$oneCreatorWithTitle] = 1;
+                        else
+                            $titleResults[$oneCreatorWithTitle] += 1;
 
-        $creators = [];
-        $titles = [];
-        $dates = [];
-
-        $termMatches = function($termWords, $dcWords) {
-            foreach ($dcWords as $dcWord) {
-                foreach ($termWords as $termWord) {
-                    if (substr($dcWord, 0, strlen($termWord)) == $termWord) {
-                        return true;
                     }
                 }
             }
-            return false;
-        };
 
-        $result = [];
+            return json_encode(array_keys($titleResults));
 
-        foreach ($assocData as $doc) {
-            $creatorData = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/creator", []));
-            foreach ($creatorData as $creator) {
-                $creator = mb_strtolower($creator);
-                $creatorWords = explode(" ", $creator);
-                $creatorMatches = $termMatches($termWords, $creatorWords);
-
-                if ($creatorMatches) {
-                    $result[] = $creator;
-                }
-
-                /*
-                foreach ($creatorWords as $creatorWord) {
-                    //foreach ($termWords as )
-                }
-                */
-            }
-
-            /*
-            $title = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/title", []));
-            foreach ($title as $s) $titles[] = explode(" ", $s);
-
-            $date = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/date", []));
-            foreach ($date as $s) $dates[$s];
-            */
         }
 
-
-        /*
-        $data = $this->bagOfWords;
-
-        // Append finishedWord to given suggestions
-        if ($this->finishedWord) {
-            $data = array_map(function($w) {
-                return $this->finishedWord." ".$w;
-            }, $data);
-        }
-        */
-
-        return json_encode($result);
     }
-
 
 
 }

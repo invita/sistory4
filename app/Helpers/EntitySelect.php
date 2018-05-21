@@ -474,7 +474,7 @@ class EntitySelect
             $handle_id = $source["handle_id"];
             $parent = $source["parent"];
 
-            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0/text", "");
+            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0/value", "");
 
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];
