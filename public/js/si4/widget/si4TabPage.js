@@ -127,11 +127,11 @@ si4.widget.si4TabPage = function(args)
         _p.trigger("onActive", {tabPage:_p});
     };
 
-    this.destroyTab = function(){
+    this.destroyTab = function(quiet){
         _p.trigger("onClose", {tabPage:_p});
 
         for (var childIdx in _p.childTabs) {
-            _p.childTabs[childIdx].destroyTab();
+            _p.childTabs[childIdx].destroyTab(true);
         }
         if (_p.parentTab)
             delete _p.parentTab.childTabs[_p.uniqId];
@@ -144,10 +144,13 @@ si4.widget.si4TabPage = function(args)
         _p.tabButton.selector.remove();
         _p.content.selector.remove();
 
-        if (pageToSelectAfterClose && !pageToSelectAfterClose.isButton)
+        if (!quiet && pageToSelectAfterClose && !pageToSelectAfterClose.isButton) {
             pageToSelectAfterClose.selectTab();
+        }
 
-        _p.trigger("onClosed", {tabPage:_p});
+        if (!quiet)
+            _p.trigger("onClosed", {tabPage:_p});
+
         if (_p.parentTab) _p.parentTab.trigger('onChildClosed', {tabPage:_p})
     };
 
