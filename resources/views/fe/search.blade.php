@@ -6,8 +6,25 @@
 @section("body")
 <div class="content">
 
+    @if ($searchType == "advanced-search")
+        <div class="advancedSearch">
+
+            <div class="row">
+                <div class="medium-12 columns">
+                    <h4>
+                        Advanced search
+                    </h4>
+                    <form action="/advanced-search">
+                        <div class="advancedSearchFields"></div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    @endif
+
     <div class="row">
-        @if ($q && count($data["results"]) > 0)
+        @if (count($data["results"]) > 0)
             <div class="medium-12 columns">
                 <div class="searchResults">
                     @foreach ($data["results"] as $result)
@@ -71,7 +88,7 @@
         @else
             <div class="medium-12 columns">
                 <div class="searchNoResultsWrapper">
-                    Sistory 4 Iskanje
+                    Si4 Iskanje
                 </div>
             </div>
         @endif

@@ -12,7 +12,7 @@ class SearchController extends FrontendController
 {
     public function index(Request $request) {
 
-        $size = 100;
+        $size = 10;
 
         $q = $request->query("q", "");
         $data = [
@@ -41,7 +41,68 @@ class SearchController extends FrontendController
 
         return view("fe.search", [
             "layoutData" => $this->layoutData($request),
+            "searchType" => "search",
             "q" => $q,
+            "data" => $data,
+        ]);
+    }
+
+    private static $operators = ["and", "or"];
+    public function advanced(Request $request) {
+        $size = 10;
+        $data = [
+            "took" => 0,
+            "totalHits" => 0,
+            "maxScore" => 0,
+            "results" => [],
+        ];
+
+        $queryStr = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "";
+        $queryStrExplode = explode("&", $queryStr);
+        $queryParams = [];
+
+        foreach ($queryStrExplode as $param) {
+            $kv = explode("=", $param);
+            if (count($kv) != 2) continue;
+            $operAndName = explode("-", $kv[0]);
+            if (count($operAndName) != 2) continue;
+            if (!in_array($operAndName[0], self::$operators)) continue;
+
+            $operator = $operAndName[0];
+            $fieldName = $operAndName[1];
+            $fieldValue = $kv[1];
+
+            if (!$fieldValue) continue;
+
+            $queryParams[] = [
+                "operator" => $operator,
+                "fieldName" => $fieldName,
+                "fieldValue" => $fieldValue,
+            ];
+        }
+
+        if ($queryParams) {
+
+            $elasticData = ElasticHelpers::searchAdvanced($queryParams, 0, $size);
+
+            $data["took"] = Si4Util::getArg($elasticData, "took", 0);
+            $data["totalHits"] = Si4Util::pathArg($elasticData, "hits/total", 0);
+            $data["maxScore"] = Si4Util::pathArg($elasticData, "hits/max_score", 0);
+
+            $assocData = ElasticHelpers::elasticResultToAssocArray($elasticData);
+            //echo "<pre>"; print_r($assocData); echo "</pre>";
+
+            foreach ($assocData as $doc) {
+                $data["results"][] = DcHelpers::mapElasticEntity($doc);
+            }
+        }
+
+        //echo "<pre>"; print_r($data); echo "</pre>";
+
+        return view("fe.search", [
+            "layoutData" => $this->layoutData($request),
+            "searchType" => "advanced-search",
+            "q" => "",
             "data" => $data,
         ]);
     }

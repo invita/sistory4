@@ -20,6 +20,9 @@ class FrontendController extends Controller
         // Bottom menu HTML
         $layoutData["bottomMenuHtml"] = $this->prepareBottomMenuHtml();
 
+        // Javascript data
+        $layoutData["jsData"] = $this->prepareJavascriptData();
+
         return $layoutData;
     }
 
@@ -84,6 +87,35 @@ class FrontendController extends Controller
         }
         $itemResult .= $tabs. "\t</li>\n";
         return $itemResult;
+    }
+
+
+    // Javascript data
+    private function prepareJavascriptData() {
+
+        // Advanced search - Operators enum
+        $advSearch_operators = array_map(function($oper) {
+            return [
+                "value" => $oper,
+                "text" => __("fe.advSearch_oper_".$oper)
+            ];
+        }, ElasticHelpers::$advancedSearchOperators);
+
+        // Advanced search - Field names enum
+        $advSearch_fieldNames = array_map(function($fieldName) {
+            return [
+                "value" => $fieldName,
+                "text" => __("fe.advSearch_field_".$fieldName)
+            ];
+        }, array_keys(ElasticHelpers::$advancedSearchFieldMap));
+
+        $data = [
+            "advancedSearch" => [
+                "operators" => $advSearch_operators,
+                "fieldNames" => $advSearch_fieldNames,
+            ]
+        ];
+        return json_encode($data);
     }
 
 }

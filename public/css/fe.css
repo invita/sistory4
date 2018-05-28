@@ -1,7 +1,12 @@
 /* ***** Common ***** */
+.mt-025 { margin-top: 0.25rem; }
+.mt-05 { margin-top: 0.5rem; }
 .mt-1 { margin-top: 1rem; }
 .mt-2 { margin-top: 2rem; }
 .mt-3 { margin-top: 3rem; }
+
+.mb-025 { margin-bottom: 0.25rem; }
+.mb-05 { margin-bottom: 0.5rem; }
 .mb-1 { margin-bottom: 1rem; }
 .mb-2 { margin-bottom: 2rem; }
 .mb-3 { margin-bottom: 3rem; }
@@ -11,6 +16,20 @@
 .flexAlignCenter { align-items: center; }
 .flexJustifyCenter { justify-content: center; }
 .flexBothCenter { align-items: center; justify-content: center; }
+
+.textAlignRight { text-align: right; }
+
+.displayNone { display: none; }
+
+a.default {
+    font-size: 14px;
+    font-weight: 500;
+    color: #303030;
+}
+a.default:hover {
+    text-decoration: underline;
+    color: #303030;
+}
 
 /* Index */
 .content {
@@ -48,6 +67,46 @@
     top: 0;
     height: 39px;
 }
+
+/* Advanced search */
+.advancedSearch {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.advancedSearch h4 {
+    margin-top: 10px;
+    font-size: 19px;
+}
+
+.advancedSearch select.fieldName {
+    width: 30%;
+}
+.advancedSearch input.fieldValue {
+
+}
+.advancedSearch select.operator {
+    width: 10%;
+}
+
+.advancedSearch .submit {
+    background-color: #668833;
+    color: white;
+    padding: 10px 20px;
+}
+
+.advancedSearch .addInputButton {
+    background-color: #668833;
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    margin-right: 5px;
+    /*
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    */
+}
+
 
 /* Search results */
 .searchResults {

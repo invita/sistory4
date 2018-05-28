@@ -20,6 +20,10 @@
 </head>
 
 <body>
+    @if (isset($layoutData) && isset($layoutData["jsData"]))
+        <div id="jsData" class="displayNone"><?php echo $layoutData["jsData"]; ?></div>
+    @endif
+
     @if (isset($layoutData) && isset($layoutData["topMenuHtml"]))
         <div class="topMenuWrap">
             <div class="row">
@@ -44,6 +48,10 @@
                     </div>
 
                     <div class="medium-7 columns mt-1">
+                        <div class="textAlignRight mb-025">
+                            <a class="default" href="/advanced-search">Advanced search</a>
+                        </div>
+
                         <!-- Search Form -->
                         <form action="/search">
                             <input id="searchInput" class="query" type="text" name="q"

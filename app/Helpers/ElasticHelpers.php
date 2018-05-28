@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class ElasticHelpers
@@ -7,8 +8,17 @@ namespace App\Helpers;
  * @package  Sistory4
  * @author   Matic Vrscaj
  */
+
+const ADV_SEARCH_OPERATOR_AND = "and";
+const ADV_SEARCH_OPERATOR_OR = "or";
+
 class ElasticHelpers
 {
+    public static $advancedSearchOperators = [ADV_SEARCH_OPERATOR_AND, ADV_SEARCH_OPERATOR_OR];
+    public static $advancedSearchFieldMap = [
+        "title" => "data.dmd.dc.title.value",
+        "creator" => "data.dmd.dc.creator.value",
+    ];
 
     public static function getTopMenuHandleId() {
         return env("SI4_ELASTIC_TOP_MENU_COLLECTION", "menuTop");
@@ -16,6 +26,7 @@ class ElasticHelpers
     public static function getBottomMenuHandleId() {
         return env("SI4_ELASTIC_BOTTOM_MENU_COLLECTION", "menuBottom");
     }
+
 
     /**
      * Delete and create index
@@ -63,11 +74,11 @@ class ElasticHelpers
                 "handle_id": {
                     "type": "string"
                 },
-                "data.dmd.dc.title.text": {
+                "data.dmd.dc.title.value": {
                     "type": "string",
                     "analyzer": "lowercase_analyzer"
                 },
-                "data.dmd.dc.creator.text": {
+                "data.dmd.dc.creator.value": {
                     "type": "string",
                     "analyzer": "lowercase_analyzer"
                 }
@@ -193,25 +204,86 @@ HERE;
         return self::search($query, $offset, $limit, $sortField, $sortDir);
     }
 
-    /*
-    public static function suggestEntities($queryString, $limit = 20)
+    /**
+     * Retrieves all matching documents from elastic search using bool query
+     * @param $params array of params with structure:
+     * [
+     *   [
+     *     "operator" => "...",   // One of $advancedSearchOperators
+     *     "fieldName" => "...",  // A key in $advancedSearchFieldMap
+     *     "fieldValue" => "..."  // String
+     *   ],
+     *   ...
+     * ]
+     * @param $offset Integer offset
+     * @param $limit Integer limit
+     * @param $sortField string sortField
+     * @param $sortDir string sort direction (asc/desc)
+     * @return array
+     */
+    public static function searchAdvanced($params, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
     {
+        // "should" query is OR
+        // "must" query is AND
 
-        $queryStringWild = $queryString."*";
+        $must = [];
+        $should = [];
 
-        $query = [
-            "query_string" => [
-                "fields" => [
-                    "data.dmd.dc.title.value",
-                    "data.dmd.dc.creator.value",
-                    "data.dmd.dc.date.value",
+        $query = [ "bool" => [] ];
+
+        $allowedFieldNames = array_keys(self::$advancedSearchFieldMap);
+
+        foreach ($params as $param) {
+            if (!isset($param["operator"]) || !isset($param["fieldName"]) || !isset($param["fieldValue"])) {
+                throw new Exception("Advanced search parameters invalid");
+            }
+
+            $operator = $param["operator"];
+            $fieldName = $param["fieldName"];
+            $fieldValue = $param["fieldValue"];
+
+            if (!in_array($operator, self::$advancedSearchOperators)) {
+                throw new Exception("Invalid operator: ".$operator);
+            }
+            if (!in_array($fieldName, $allowedFieldNames)) {
+                throw new Exception("fieldName not allowed: ".$fieldName);
+            }
+
+            $fieldElastic = self::$advancedSearchFieldMap[$fieldName];
+
+            $queryString = [
+                "query_string" => [
+                    "fields" => [
+                        $fieldElastic,
+                    ],
+                    "query" => $fieldValue
                 ],
-                "query" => $queryStringWild
-            ]
-        ];
-        return self::search($query, 0, $limit, "id", "asc");
+            ];
+
+            switch ($operator) {
+                case ADV_SEARCH_OPERATOR_AND:
+                    $must[] = $queryString;
+                    break;
+                case ADV_SEARCH_OPERATOR_OR:
+                    $should[] = $queryString;
+                    break;
+            }
+        }
+
+
+        if (count($must)) {
+            $query["bool"]["must"] = $must;
+        }
+        if (count($should)) {
+            $query["bool"]["should"] = $should;
+        }
+
+        //print_r($query);
+
+        return self::search($query, $offset, $limit, $sortField, $sortDir);
     }
-    */
+
+
 
     public static function suggestCreators($queryString, $limit = 20)
     {
@@ -233,19 +305,21 @@ HERE;
         $query = [
             "bool" => [
                 "must" => [
-                    "query_string" => [
-                        "fields" => [
-                            "data.dmd.dc.title.value",
+                    [
+                        "query_string" => [
+                            "fields" => [
+                                "data.dmd.dc.title.value",
+                            ],
+                            "query" => $titleWildcard
                         ],
-                        "query" => $titleWildcard
-                    ]
-                ],
-                "must" => [
-                    "query_string" => [
-                        "fields" => [
-                            "data.dmd.dc.creator.value",
-                        ],
-                        "query" => $creatorWildcard
+                    ],
+                    [
+                        "query_string" => [
+                            "fields" => [
+                                "data.dmd.dc.creator.value",
+                            ],
+                            "query" => $creatorWildcard
+                        ]
                     ]
                 ]
             ]

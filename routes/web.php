@@ -18,6 +18,7 @@
 
 Route::get('/', "IndexController@index")->name("index.index#get");
 Route::get('/search', "SearchController@index")->name("search.index#get");
+Route::get('/advanced-search', "SearchController@advanced")->name("search.advanced#get");
 Route::get('/details/{hdl}', "DetailsController@index")->name("details.index#get");
 
 Route::get('/ajax/{name}', "AjaxController@index")->name("ajax.index#get");

@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'advSearch_oper_and' => 'And',
+    'advSearch_oper_or' => 'Or',
+
+    'advSearch_field_title' => 'Title',
+    'advSearch_field_creator' => 'Creator',
+
     'details_dcCreator' => 'Author(s)',
     'details_dcSubject' => 'Subject',
     'details_dcDescription' => 'Description',
