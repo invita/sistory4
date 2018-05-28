@@ -168,7 +168,7 @@ HERE;
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function search($query, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
+    public static function search($query, $offset = 0, $limit = DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
@@ -186,14 +186,14 @@ HERE;
 
     /**
      * Retrieves all matching documents from elastic search
-     * @param $queryString a string to match
+     * @param $queryString string to match
      * @param $offset Integer offset
      * @param $limit Integer limit
      * @param $sortField string sortField
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function searchString($queryString, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
+    public static function searchString($queryString, $offset = 0, $limit = DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
     {
         $query = [
             "query_string" => [
@@ -221,7 +221,7 @@ HERE;
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function searchAdvanced($params, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
+    public static function searchAdvanced($params, $offset = 0, $limit = DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
     {
         // "should" query is OR
         // "must" query is AND
@@ -371,7 +371,7 @@ HERE;
         return self::elasticResultToAssocArray($dataElastic);
     }
 
-    public static function searchByParent($parent, $offset = 0, $limit = 20, $sortField = "id", $sortDir = "asc")
+    public static function searchByParent($parent, $offset = 0, $limit = DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
@@ -436,7 +436,7 @@ HERE;
     }
 
 
-    public static function searchChildren($parent, $offset = 0, $limit = 20)
+    public static function searchChildren($parent, $offset = 0, $limit = DEFAULT_PAGINATION_SIZE)
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),

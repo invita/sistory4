@@ -12,9 +12,10 @@ class SearchController extends FrontendController
 {
     public function index(Request $request) {
 
-        $size = 10;
-
         $q = $request->query("q", "");
+        $offset = $request->query("offset", 0);
+        $size = $request->query("size", DEFAULT_PAGINATION_SIZE);
+
         $data = [
             "took" => 0,
             "totalHits" => 0,
@@ -23,7 +24,7 @@ class SearchController extends FrontendController
         ];
 
         if ($q) {
-            $elasticData = ElasticHelpers::searchString($q, 0, $size);
+            $elasticData = ElasticHelpers::searchString($q, $offset, $size);
 
             $data["took"] = Si4Util::getArg($elasticData, "took", 0);
             $data["totalHits"] = Si4Util::pathArg($elasticData, "hits/total", 0);
@@ -44,12 +45,16 @@ class SearchController extends FrontendController
             "searchType" => "search",
             "q" => $q,
             "data" => $data,
+            "paginatorTop" => $this->preparePaginator($data, "top"),
+            "paginatorBot" => $this->preparePaginator($data, "bottom"),
         ]);
     }
 
-    private static $operators = ["and", "or"];
     public function advanced(Request $request) {
-        $size = 10;
+
+        $offset = $request->query("offset", 0);
+        $size = $request->query("size", DEFAULT_PAGINATION_SIZE);
+
         $data = [
             "took" => 0,
             "totalHits" => 0,
@@ -57,7 +62,7 @@ class SearchController extends FrontendController
             "results" => [],
         ];
 
-        $queryStr = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "";
+        $queryStr = isset($_SERVER['QUERY_STRING']) ? urldecode($_SERVER['QUERY_STRING']) : "";
         $queryStrExplode = explode("&", $queryStr);
         $queryParams = [];
 
@@ -66,7 +71,7 @@ class SearchController extends FrontendController
             if (count($kv) != 2) continue;
             $operAndName = explode("-", $kv[0]);
             if (count($operAndName) != 2) continue;
-            if (!in_array($operAndName[0], self::$operators)) continue;
+            if (!in_array($operAndName[0], ElasticHelpers::$advancedSearchOperators)) continue;
 
             $operator = $operAndName[0];
             $fieldName = $operAndName[1];
@@ -83,7 +88,7 @@ class SearchController extends FrontendController
 
         if ($queryParams) {
 
-            $elasticData = ElasticHelpers::searchAdvanced($queryParams, 0, $size);
+            $elasticData = ElasticHelpers::searchAdvanced($queryParams, $offset, $size);
 
             $data["took"] = Si4Util::getArg($elasticData, "took", 0);
             $data["totalHits"] = Si4Util::pathArg($elasticData, "hits/total", 0);
@@ -104,6 +109,8 @@ class SearchController extends FrontendController
             "searchType" => "advanced-search",
             "q" => "",
             "data" => $data,
+            "paginatorTop" => $this->preparePaginator($data, "top"),
+            "paginatorBot" => $this->preparePaginator($data, "bottom"),
         ]);
     }
 }

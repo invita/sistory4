@@ -25,6 +25,11 @@
 
     <div class="row">
         @if (count($data["results"]) > 0)
+
+            <div class="medium-12 columns">
+                <?php echo $paginatorTop; ?>
+            </div>
+
             <div class="medium-12 columns">
                 <div class="searchResults">
                     @foreach ($data["results"] as $result)
@@ -79,6 +84,11 @@
                     @endforeach
                 </div>
             </div>
+
+            <div class="medium-12 columns">
+                <?php echo $paginatorBot; ?>
+            </div>
+
         @elseif ($q && !count($data["results"]))
             <div class="medium-12 columns">
                 <div class="searchNoResultsWrapper">

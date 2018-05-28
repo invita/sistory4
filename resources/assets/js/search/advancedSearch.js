@@ -126,12 +126,17 @@ function AdvancedSearchFields(mainEl) {
 
     this.setValueFromUrl = function() {
         var params = location.search.replace("?", "").split("&");
+
+        var validOperators = _p.defaultOperatorOpts.map(function(x) { return x.value; });
+
         for (var i in params) {
             var kv = params[i].split("=");
             if (kv.length != 2) continue;
             var operName = kv[0].split("-");
 
             var operator = operName[0];
+            if (validOperators.indexOf(operator) === -1) continue;
+
             var name = operName[1];
             var value = decodeURIComponent(kv[1]);
 

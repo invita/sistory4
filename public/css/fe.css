@@ -21,7 +21,7 @@
 
 .displayNone { display: none; }
 
-a.default {
+.default {
     font-size: 14px;
     font-weight: 500;
     color: #303030;
@@ -107,7 +107,6 @@ a.default:hover {
     */
 }
 
-
 /* Search results */
 .searchResults {
     margin-top: 15px;
@@ -175,6 +174,32 @@ a.default:hover {
     color: #8e130b;
 }
 
+
+/* Pagination */
+.paginator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.paginator a, .paginator > span {
+    padding: 5px;
+}
+
+.paginator .curPage {
+}
+.paginator .maxPage {
+    color: #666;
+    font-size: 13px;
+}
+.paginator .totalHits {
+    color: #666;
+    font-size: 13px;
+    margin-left: 20px;
+}
+.paginator .took {
+    color: #666;
+    font-size: 13px;
+}
 
 
 /* Details */
