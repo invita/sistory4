@@ -18,6 +18,17 @@ class ElasticHelpers
     public static $advancedSearchFieldMap = [
         "title" => "data.dmd.dc.title.value",
         "creator" => "data.dmd.dc.creator.value",
+        "subject" => "data.dmd.dc.subject.value",
+        "description" => "data.dmd.dc.description.value",
+        "publisher" => "data.dmd.dc.publisher.value",
+        "contributor" => "data.dmd.dc.contributor.value",
+        "date" => "data.dmd.dc.date.value",
+        "format" => "data.dmd.dc.format.value",
+        "identifier" => "data.dmd.dc.identifier.value",
+        "source" => "data.dmd.dc.source.value",
+        "relation" => "data.dmd.dc.relation.value",
+        "coverage" => "data.dmd.dc.coverage.value",
+        "rights" => "data.dmd.dc.rights.value",
     ];
 
     public static function getTopMenuHandleId() {

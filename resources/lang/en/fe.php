@@ -6,6 +6,17 @@ return [
 
     'advSearch_field_title' => 'Title',
     'advSearch_field_creator' => 'Creator',
+    'advSearch_field_subject' => 'Subject',
+    'advSearch_field_description' => 'Description',
+    'advSearch_field_publisher' => 'Publisher',
+    'advSearch_field_contributor' => 'Contributor',
+    'advSearch_field_date' => 'Date',
+    'advSearch_field_format' => 'Format',
+    'advSearch_field_identifier' => 'Identifier',
+    'advSearch_field_source' => 'Source',
+    'advSearch_field_relation' => 'Relation',
+    'advSearch_field_coverage' => 'Coverage',
+    'advSearch_field_rights' => 'Rights',
 
     'details_dcCreator' => 'Author(s)',
     'details_dcSubject' => 'Subject',
