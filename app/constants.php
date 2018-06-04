@@ -1,0 +1,3 @@
+<?php
+
+const SI4_DEFAULT_PAGINATION_SIZE = 20;

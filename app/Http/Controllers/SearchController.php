@@ -14,7 +14,7 @@ class SearchController extends FrontendController
 
         $q = $request->query("q", "");
         $offset = $request->query("offset", 0);
-        $size = $request->query("size", DEFAULT_PAGINATION_SIZE);
+        $size = $request->query("size", SI4_DEFAULT_PAGINATION_SIZE);
 
         $data = [
             "took" => 0,
@@ -53,7 +53,7 @@ class SearchController extends FrontendController
     public function advanced(Request $request) {
 
         $offset = $request->query("offset", 0);
-        $size = $request->query("size", DEFAULT_PAGINATION_SIZE);
+        $size = $request->query("size", SI4_DEFAULT_PAGINATION_SIZE);
 
         $data = [
             "took" => 0,

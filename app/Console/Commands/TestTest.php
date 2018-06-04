@@ -86,10 +86,10 @@ class TestTest extends Command
 
         // Test php2xsd
         $entity = new Entity();
-        $entity->data = file_get_contents(__DIR__ ."/../../../storage/testData/testMets.xml");
-        //$entity = Entity::findOrNew(69);
+        //$entity->data = file_get_contents(__DIR__ ."/../../../storage/testData/testMets.xml");
+        $entity = Entity::findOrNew(4);
         $array = $entity->dataToObject();
-        //print_r($array);
+        print_r($array);
         /*
         */
 

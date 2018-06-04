@@ -9,8 +9,6 @@ use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
-const DEFAULT_PAGINATION_SIZE = 20;
-
 class FrontendController extends Controller
 {
     public function layoutData(Request $request) {
@@ -125,8 +123,8 @@ class FrontendController extends Controller
 
         // Get paginator URL params
         $offset = request()->query("offset", 0);
-        $size = request()->query("size", DEFAULT_PAGINATION_SIZE);
-        if (!$size) $size = DEFAULT_PAGINATION_SIZE;
+        $size = request()->query("size", SI4_DEFAULT_PAGINATION_SIZE);
+        if (!$size) $size = SI4_DEFAULT_PAGINATION_SIZE;
 
         // Calculate curPage and totalPages
         $totalHits = isset($resultData["totalHits"]) ? $resultData["totalHits"] : 0;

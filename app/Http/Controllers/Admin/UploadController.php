@@ -32,6 +32,35 @@ class UploadController extends Controller
         return ["status" => true, "data" => file_get_contents($file->getPathname()), "error" =>  null];
     }
 
+
+    private static $relevantPathStarts = null;
+    private function isRelevantPathComponent($cpcName) {
+        $rootCollectionName = env("SI4_ELASTIC_ROOT_COLLECTION");
+        $topMenuName = env("SI4_ELASTIC_TOP_MENU_COLLECTION");
+        $botMenuName = env("SI4_ELASTIC_BOTTOM_MENU_COLLECTION");
+
+        if (self::$relevantPathStarts == null) {
+            self::$relevantPathStarts = [
+                env("SI4_ELASTIC_ROOT_COLLECTION"),
+                env("SI4_ELASTIC_TOP_MENU_COLLECTION"),
+                env("SI4_ELASTIC_BOTTOM_MENU_COLLECTION"),
+                "file",
+                "menu"
+            ];
+        }
+
+        // Numeric directory (handle_id of entities) is relevant
+        if (is_numeric($cpcName)) return true;
+
+        // If path component starts with any of self::$relevantPathStarts, this component is relevant
+        foreach (self::$relevantPathStarts as $relevantPathStart) {
+            if (substr($cpcName, 0, strlen($relevantPathStart)) == $relevantPathStart) return true;
+        }
+
+        // Otherwise this component is not relevant
+        return false;
+    }
+
     private function zipGetInfo($fileName) {
         $archive = new \ZipArchive();
         $archive->open($fileName, \ZipArchive::CREATE);
@@ -68,10 +97,7 @@ class UploadController extends Controller
                     $commonPathComponents = $pathExplode;
                     foreach ($commonPathComponents as $cpcIdx => $cpcName) {
                         // Condition to throw component out from commonPath
-                        if (is_numeric($cpcName) ||
-                            substr($cpcName, 0, 4) == "menu" ||
-                            substr($cpcName, 0, 4) == "file"
-                        ) {
+                        if ($this->isRelevantPathComponent($cpcName)) {
                             $commonPathComponents = array_slice($commonPathComponents, 0, $cpcIdx);
                         }
                     }
@@ -80,9 +106,7 @@ class UploadController extends Controller
                         // Condition to throw component out from commonPath
                         if (!isset($pathExplode[$cpcIdx]) ||
                             $pathExplode[$cpcIdx] != $cpcName ||
-                            is_numeric($cpcName) ||
-                            substr($cpcName, 0, 4) == "menu" ||
-                            substr($cpcName, 0, 4) == "file"
+                            $this->isRelevantPathComponent($cpcName)
                         ) {
                             $commonPathComponents = array_slice($commonPathComponents, 0, $cpcIdx);
                         }

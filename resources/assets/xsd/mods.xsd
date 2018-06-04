@@ -103,7 +103,7 @@ minOccurs="0" and for the mods record definition minOccurs="1" (default).
 **        These are the "top level" MODS elements               **
 **********************************************************************
 -->
-			<xs:element ref="abstract"/>
+			<xs:element ref="abstractDef"/>
 			<xs:element ref="accessCondition"/>
 			<xs:element ref="classification"/>
 			<xs:element ref="extension"/>
@@ -140,7 +140,7 @@ End list of "top level" MODS elements
 *   Top Level Element <abstract>       *
 *********************************************
  -->
-	<xs:element name="abstract" type="abstractDefinition"/>
+	<xs:element name="abstractDef" type="abstractDefinition"/>
 	<!-- -->
 	<xs:complexType name="abstractDefinition">
 		<xs:simpleContent>
