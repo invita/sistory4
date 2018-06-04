@@ -94,7 +94,11 @@ class EntityImport
         $entity->updateXml();
         $entity->save();
 
+        // Reindex
         Artisan::call("reindex:entity", ["entityId" => $sysId]);
+
+        // Create thumb
+        Artisan::call("thumbs:create", ["entityId" => $sysId]);
     }
 
 }

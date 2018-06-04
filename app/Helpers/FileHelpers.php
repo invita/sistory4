@@ -1,5 +1,7 @@
 <?php
 namespace App\Helpers;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class FileHelpers
@@ -9,15 +11,41 @@ namespace App\Helpers;
  */
 class FileHelpers
 {
-    public static function getPreviewUrl($entityId, $fileName) {
-        $idNS = self::getIdNamespace($entityId);
-        $storageName = "entity/".$idNS."/".$entityId."/".$fileName;
+    public static function getPreviewUrl($handleId, $fileName) {
+        $storageName = self::getStorageName($handleId, $fileName);
         return "/storage/preview/?path=".$storageName;
     }
 
-    public static function getStorageName($entityId, $fileName) {
-        $idNS = self::getIdNamespace($entityId);
-        return "public/entity/".$idNS."/".$entityId."/".$fileName;
+    public static function getThumbUrl($handleId, $fileName) {
+        $publicStorageName = self::getPublicStorageName($handleId, $fileName.SI4_THUMB_FILE_POSTFIX);
+        if (Storage::exists($publicStorageName)) {
+            return self::getPreviewUrl($handleId, $fileName.SI4_THUMB_FILE_POSTFIX);
+        }
+        return SI4_DEFAULT_THUMB;
+    }
+
+
+    public static function getPublicStorageName($handleId, $fileName) {
+        return "public/".self::getStorageName($handleId, $fileName);
+    }
+
+    public static function getStorageName($handleId, $fileName) {
+        $prefix = substr($handleId, 0, 4);
+        if ($prefix == "file") {
+            $type = "file";
+            $num = intval(str_replace("file", "", $handleId));
+        } else if ($prefix == "menu") {
+            $type = "menu";
+            $num = intval(str_replace("menu", "", $handleId));
+        } else if (is_numeric($handleId)) {
+            $type = "entity";
+            $num = intval($handleId);
+        } else {
+            throw new Exception("Bad handleId ".$handleId);
+        }
+
+        $idNS = self::getIdNamespace($num);
+        return $type."/".$idNS."/".$handleId."/".$fileName;
     }
 
     public static function getIdNamespace($id) {

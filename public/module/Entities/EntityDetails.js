@@ -158,14 +158,14 @@ var F = function(args){
 
                             // METS:file
                             var fileEl = xmlDoc.createElement("METS:file");
-                            fileEl.setAttribute("ID", response.data.realFileName);
+                            fileEl.setAttribute("ID", args.row.handle_id);
+                            fileEl.setAttribute("OWNERID", response.data.realFileName);
                             fileEl.setAttribute("USE", "DEFAULT");
                             fileEl.setAttribute("CREATED", new Date().toISOString());
                             fileEl.setAttribute("SIZE", response.data.size);
                             fileEl.setAttribute("CHECKSUM", response.data.checksum);
                             fileEl.setAttribute("CHECKSUMTYPE", "md5");
                             fileEl.setAttribute("MIMETYPE", response.data.mimeType);
-                            fileEl.setAttribute("OWNERID", si4.data.currentUser.id);
                             fileGrpEl.appendChild(fileEl);
 
                             // METS:FLocat

@@ -50,6 +50,21 @@ class TestTest extends Command
     public function handle()
     {
 
+        Artisan::call("thumbs:create", ["entityId" => 4]);
+
+        /*
+        $testPdf = __DIR__ ."/../../../storage/testData/test.pdf";
+        echo $testPdf."\n";
+        //file_get_contents($testPdf);
+        $image = new \Imagick($testPdf."[0]");
+        $image->setResolution(300, 0);
+        $image->setCompressionQuality(85);
+        $image->setImageFormat('jpeg');
+        $image->writeImage($testPdf.".jpg");
+        $image->clear();
+        $image->destroy();
+        */
+
         /*
         $serializerBuilder = SerializerBuilder::create();
         $serializerBuilder->addMetadataDir(app_path("Xsd/Test"), 'App\Xsd\Test');
@@ -85,12 +100,12 @@ class TestTest extends Command
 
 
         // Test php2xsd
+        /*
         $entity = new Entity();
         //$entity->data = file_get_contents(__DIR__ ."/../../../storage/testData/testMets.xml");
         $entity = Entity::findOrNew(4);
         $array = $entity->dataToObject();
         print_r($array);
-        /*
         */
 
         //echo "DmdSecElName/0/MdWrapElName/XmlDataElName/TitlePropName\n";

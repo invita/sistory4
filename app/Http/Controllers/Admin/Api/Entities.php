@@ -83,7 +83,7 @@ class Entities extends Controller
         $tempFileName = Si4Util::getArg($postJson, "tempFileName", "");
         if ($tempFileName && $realFileName) {
             $tempStorageName = "public/temp/".$tempFileName;
-            $destStorageName = FileHelpers::getStorageName($parent, $realFileName);
+            $destStorageName = FileHelpers::getPublicStorageName($handle_id, $realFileName);
             if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
             Storage::move($tempStorageName, $destStorageName);
         }
@@ -104,10 +104,12 @@ class Entities extends Controller
         $entity->save();
 
         Artisan::call("reindex:entity", ["entityId" => $entity->id]);
+        Artisan::call("thumbs:create", ["entityId" => $entity->id]);
 
         return ["status" => $status, "error" => $error];
     }
 
+    // TODO: delete child files and prompt first
     public function deleteEntity(Request $request) {
         $postJson = json_decode(file_get_contents("php://input"), true);
         $id = $postJson["data"]["id"];

@@ -248,7 +248,7 @@ class EntitySelect
 
                 $fileName = Si4Util::pathArg($data, "files/0/ownerId", "");
                 if ($fileName) {
-                    $fileUrl = FileHelpers::getPreviewUrl($parent, $fileName);
+                    $fileUrl = FileHelpers::getPreviewUrl($handle_id, $fileName);
                     $fileMimeType = Si4Util::pathArg($data, "files/0/mimeType", "");
                     $fileSize = Si4Util::pathArg($data, "files/0/size", "");
                     $fileTimestamp = Si4Util::pathArg($data, "files/0/created", "");

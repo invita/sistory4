@@ -259,7 +259,7 @@ class UploadController extends Controller
             } else {
                 // Not mets.xml, copy file to appropriate path
 
-                $destStorageName = FileHelpers::getStorageName($parentHandleId, $fileName);
+                $destStorageName = FileHelpers::getPublicStorageName($handleId, $fileName);
                 if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
                 Storage::put($destStorageName, $content);
                 //echo "Put file ".$destStorageName."\n";

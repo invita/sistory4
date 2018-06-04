@@ -321,6 +321,30 @@ a.default:hover {
     font-size: 13px;
 }
 
+/* Files */
+.fileList {
+}
+.fileList .file {
+    display: flex;
+    flex-direction: row;
+}
+.fileList .file:hover {
+    background-color: rgba(0,0,0,0.02);
+}
+.fileList .file img.fileThumb {
+    max-width: 100px;
+    max-height: 80px;
+}
+.fileList .file .fileContent {
+    margin: 0px 15px;
+}
+.fileList .file pre {
+    font-size: 12px;
+    line-height: 14px;
+    color: gray;
+}
+
+
 /* accordion */
 .accordion {
     border: silver solid 1px;

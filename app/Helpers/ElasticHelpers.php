@@ -382,15 +382,24 @@ HERE;
         return self::elasticResultToAssocArray($dataElastic);
     }
 
-    public static function searchByParent($parent, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
+    public static function searchMust($filters = [], $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
     {
+        foreach ($filters as $fieldName => $fieldValue) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => [$fieldName],
+                    "query" => $fieldValue
+                ],
+            ];
+        }
+
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
             "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
             "body" => [
                 "query" => [
-                    "match" => [
-                        "parent" => $parent
+                    "bool" => [
+                        "must" => $must
                     ]
                 ],
                 "sort" => [$sortField => [ "order" => $sortDir ]],

@@ -36,11 +36,10 @@ class DcHelpers {
                 ],
 
                 // Files
-                "fileName" => [
+                "defaultThumb" => [
                     "path" => "_source/data/files",
-                    "parser" => DcHelpers::getDcFirstFileNameParser(),
+                    "parser" => DcHelpers::getDcDefaultThumbParser(),
                 ],
-
 
                 // DC plain
                 "dc_title" => ["path" => "_source/data/dmd/dc/title"],
@@ -290,12 +289,26 @@ class DcHelpers {
         }
     }
 
+    /*
     public static function getDcFirstFileNameParser() {
         return function($inputName, $inputValue) {
             return isset($inputValue[0]["ownerId"]) ? $inputValue[0]["ownerId"] : "";
         };
     }
+    */
 
+    public static function getDcDefaultThumbParser() {
+        return function($inputName, $inputValue) {
+            // Default file
+            $fileHandleId = Si4Util::pathArg($inputValue, "0/id");
+            $fileName = Si4Util::pathArg($inputValue, "0/ownerId");
+            if ($fileHandleId && $fileName) {
+                $thumbUrl = FileHelpers::getThumbUrl($fileHandleId, $fileName);
+                return $thumbUrl;
+            }
+            return ""; // TODO default path/to/some/default/thumb.jpg
+        };
+    }
 
 
     // $breadcrumbs - [[0] => [ "link" => "/link/1", "text" => "Entity title" ]]

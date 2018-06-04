@@ -13,7 +13,7 @@
 
             <div class="detailsContent">
                 <div class="bigImageWrap">
-                    <div class="img"></div>
+                    <img class="img" src="{{ $data["doc"]["defaultThumb"] }}" />
                 </div>
                 <div class="contentWrap">
                     <div class="detailsDcField detailsDcTitle">
@@ -101,12 +101,24 @@
             -->
 
             <?php /* TODO: Files */ ?>
-            @if ($data["doc"]["fileName"])
+            @if (isset($data["files"]) && count($data["files"]))
                 <div class="accordion" for="accordionFiles">
                     {{ __('fe.details_sectionFiles') }}
                 </div>
-                <div class="accordionContent" id="accordionFiles">
-                    Content
+                <div class="accordionContent fileList" id="accordionFiles">
+                    @foreach ($data["files"] as $file)
+                        <div class="file">
+
+                            <img class="fileThumb" src="{{ $file["thumbUrl"] }}" />
+                            <div class="fileContent">
+                                <div class="fileName">{{ $file["fileName"] }}</div>
+                                <div class="created">{{ $file["created"] }}</div>
+                                <div class="size">{{ $file["size"] }}</div>
+                                <div class="checksum">{{ $file["checksumType"] }}: {{ $file["checksum"] }}</div>
+                            </div>
+                            <pre><?php print_r($file); ?></pre>
+                        </div>
+                    @endforeach
                 </div>
             @endif
 

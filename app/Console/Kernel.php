@@ -15,6 +15,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ReindexEntity::class,
         Commands\ReindexEntities::class,
+        Commands\ThumbsCreate::class,
+        Commands\ThumbsCreateAll::class,
         Commands\EntityTestElasticConvert::class,
         Commands\Si4MigrateDatabase::class,
         Commands\Si4NumSeq::class,

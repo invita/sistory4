@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
+use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -83,7 +84,28 @@ class DetailsController extends FrontendController
     }
 
     private function prepareDataForEntity(Request $request, $hdl, &$data) {
+        $data["files"] = [];
+        $files = ElasticHelpers::searchMust([
+            "parent" => $data["doc"]["handle_id"],
+            "struct_type" => "file"
+        ]);
+        //print_r($files);
 
+        foreach ($files as $file) {
+            $handleId = Si4Util::pathArg($file, "_source/handle_id");
+            $fileName = Si4Util::pathArg($file, "_source/data/files/0/ownerId");
+            $data["files"][] = [
+                "handle_id" => $handleId,
+                "url" => Si4Util::pathArg($file, "_source/data/objId"),
+                "fileName" => $fileName,
+                "thumbUrl" => FileHelpers::getThumbUrl($handleId, $fileName),
+                "mimeType" => Si4Util::pathArg($file, "_source/data/files/0/mimeType"),
+                "size" => Si4Util::pathArg($file, "_source/data/files/0/size"),
+                "created" => Si4Util::pathArg($file, "_source/data/files/0/created"),
+                "checksum" => Si4Util::pathArg($file, "_source/data/files/0/checksum"),
+                "checksumType" => Si4Util::pathArg($file, "_source/data/files/0/checksumType"),
+            ];
+        }
     }
 
     private function prepareDataForFile(Request $request, $hdl, &$data) {
