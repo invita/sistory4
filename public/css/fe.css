@@ -344,6 +344,11 @@ a.default:hover {
     color: gray;
 }
 
+.allMetadata pre {
+    font-size: 13px;
+    line-height: 16px;
+}
+
 
 /* accordion */
 .accordion {

@@ -127,7 +127,7 @@
             <div class="accordion" for="accordionMets">
                 Vsi metapodatki
             </div>
-            <div class="accordionContent" id="accordionMets">
+            <div class="accordionContent allMetadata" id="accordionMets">
                 <pre>{{ print_r($data["xml"], true) }}</pre>
             </div>
 
