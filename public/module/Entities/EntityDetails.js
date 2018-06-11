@@ -648,6 +648,9 @@ var F = function(args){
                 si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE, data);
             }
             //console.log("saveEntity callback", data);
+        }, function(err) {
+            // errorCallback
+            alert(si4.translate("save_failed", { reason: "["+err.status+"] "+err.statusText }));
         });
     };
 

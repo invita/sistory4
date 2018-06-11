@@ -150,6 +150,7 @@ si4.translations = {
     dataTable_confirmDelete: "Are you sure you want to delete record [[record]]?",
 
     saved_confirm_close: "Operation successful. Close?",
+    save_failed: "Save failed. [[reason]]\nDouble check system fields and xml.",
 
     text_confirm_import_entities: "Zip contains:\n[[importInfo]]\nNote: Import will overwrite existing IDs.\nDo you want to continue?",
     text_import_entities_success: "Import successful.\n - Entities replaced: [[replacedCount]]\n - Total count: [[importCount]]",
