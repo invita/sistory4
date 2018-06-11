@@ -145,6 +145,15 @@ class Entity extends Model
         $premisObjCategory[0] = $this->struct_type;
 
 
+        // TODO
+        // structMap
+        //$structMap = $xmlDoc->xpath("METS:structMap")[0];
+        //$structMap["ID"] = "default.structure";
+        //$structMap["TYPE"] = $this->entity_type;
+
+
+
+
         // File attributes
         if ($this->struct_type == "file") {
             $metsFile = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file")[0];
