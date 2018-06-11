@@ -206,6 +206,52 @@ HERE;
      */
     public static function searchString($queryString, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
     {
+
+        $searchFields = [
+            "data.dmd.dc.creator.value",
+            "data.dmd.dc.title.value",
+        ];
+
+        $searchWords = explode(" ", $queryString);
+        $must = [];
+        $should = [];
+
+        foreach ($searchWords as $wordIdx => $searchWord) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => $searchFields,
+                    "query" => '*'.$searchWord.'*'
+                ],
+            ];
+
+            /*
+            if ($wordIdx <= 1) {
+                $must[] = [
+                    "query_string" => [
+                        "fields" => ["data.dmd.dc.creator.value"],
+                        "query" => "*".$searchWord."*"
+                    ],
+                ];
+            } else {
+                $should[] = [
+                    "query_string" => [
+                        "fields" => $searchFields,
+                        "query" => $searchWord
+                    ],
+                ];
+            }
+            */
+        }
+
+        $query = [ "bool" => [] ];
+
+        if (count($should)) $query["bool"]["should"] = $should;
+        if (count($must)) $query["bool"]["must"] = $must;
+
+        return self::search($query, 0, $limit, "id", "asc");
+
+
+        /*
         $query = [
             "query_string" => [
                 "default_field" => "_all",
@@ -213,6 +259,7 @@ HERE;
             ]
         ];
         return self::search($query, $offset, $limit, $sortField, $sortDir);
+        */
     }
 
     /**
@@ -296,9 +343,33 @@ HERE;
 
 
 
-    public static function suggestCreators($queryString, $limit = 20)
+    public static function suggestCreators($creatorTerm, $limit = 30)
     {
-        $queryStringWild = $queryString."*";
+        /*
+        $creatorWords = explode(" ", $creatorTerm);
+        $must = [];
+
+        foreach ($creatorWords as $creatorWord) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => [
+                        "data.dmd.dc.creator.value",
+                    ],
+                    "query" => $creatorWord."*"
+                ],
+            ];
+        }
+        $query = [
+            "bool" => [ "must" => $must ]
+        ];
+        */
+
+        $creatorWords = explode(" ", $creatorTerm);
+        $creatorSimple = "";
+        if (count($creatorWords) > 0) $creatorSimple .= $creatorWords[0];
+        if (count($creatorWords) > 1) $creatorSimple .= " ".$creatorWords[1];
+
+        $queryStringWild = $creatorSimple."*";
         $query = [
             "query_string" => [
                 "fields" => [
@@ -307,10 +378,42 @@ HERE;
                 "query" => $queryStringWild
             ]
         ];
+
         return self::search($query, 0, $limit, "id", "asc");
     }
-    public static function suggestTitlesForCreator($creator, $title, $limit = 20)
+    public static function suggestTitlesForCreator($creator, $title, $limit = 30)
     {
+        $creatorWords = explode(" ", $creator);
+        $titleWords = explode(" ", $title);
+
+        $must = [];
+
+        foreach ($creatorWords as $creatorWord) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => [
+                        "data.dmd.dc.creator.value",
+                    ],
+                    "query" => $creatorWord
+                ],
+            ];
+        }
+        foreach ($titleWords as $titleWord) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => [
+                        "data.dmd.dc.title.value",
+                    ],
+                    "query" => $titleWord."*"
+                ],
+            ];
+        }
+
+        $query = [
+            "bool" => [ "must" => $must ]
+        ];
+
+        /*
         $titleWildcard = $title."*";
         $creatorWildcard = $creator."*";
         $query = [
@@ -335,7 +438,7 @@ HERE;
                 ]
             ]
         ];
-
+        */
         return self::search($query, 0, $limit, "id", "asc");
     }
 

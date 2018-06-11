@@ -29,9 +29,50 @@ class AjaxController extends Controller
         return $str;
     }
 
-    private function strStartsWith($str, $startPart) {
+    private static function strStartsWith($str, $startPart) {
         return mb_substr($str, 0, mb_strlen($startPart)) === $startPart;
     }
+
+    private static function countMatchingChars($str1, $str2) {
+        $len1 = mb_strlen($str1);
+        $len2 = mb_strlen($str2);
+        if (!$len1 || !$len2) return 0;
+
+        $shorterLen = min($len1, $len2);
+        for ($i = 0; $i < $shorterLen; $i++) {
+            if ($str1[$i] != $str2[$i]) return $i;
+        }
+        return $shorterLen;
+    }
+
+    // Find shortest best matching string in array
+    // If more strings match with the same number of starting characters, shorter is chosen.
+    private static function findShortestMatching($str, $array) {
+
+        $bestScore = 0;
+        $bestPotentials = [];
+
+        foreach ($array as $potential) {
+            $curScore = self::countMatchingChars($str, $potential);
+            if ($curScore == $bestScore) {
+                $bestPotentials[] = $potential;
+            } else if ($curScore > $bestScore) {
+                $bestScore = $curScore;
+                $bestPotentials = [$potential];
+            }
+        }
+
+        if (!count($bestPotentials)) return "";
+        if (count($bestPotentials) == 1) return $bestPotentials[0];
+
+        $shortest = $bestPotentials[0];
+        foreach ($bestPotentials as $potential) {
+            if (mb_strlen($potential) < mb_strlen($shortest))
+                $shortest = $potential;
+        }
+        return $shortest;
+    }
+
     private function strSameRoot($str1, $str2) {
         $len1 = mb_strlen($str1);
         $len2 = mb_strlen($str2);
@@ -45,6 +86,7 @@ class AjaxController extends Controller
     private function searchSuggest(Request $request) {
         $term = $request->query("term", "");
         $termLower = mb_strtolower($term);
+        //echo "termLower: '".$termLower."'\n";
 
         //$termWords = explode(" ", $term);
         //$potTermsCreator = [];
@@ -52,7 +94,7 @@ class AjaxController extends Controller
 
         // Find potential creators
 
-        $creatorElasticData = ElasticHelpers::suggestCreators($termLower, 10);
+        $creatorElasticData = ElasticHelpers::suggestCreators($termLower);
         $creatorAssocData = ElasticHelpers::elasticResultToAssocArray($creatorElasticData);
 
         $creatorResults = [];
@@ -87,19 +129,20 @@ class AjaxController extends Controller
                             $creatorResults[$creatorComb] = 1;
                         else
                             $creatorResults[$creatorComb] += 1;
-
                     }
                 }
 
             }
         }
 
-        $onlyOneCreatorAndFullyMatched =
-            count($creatorResults) == 1 &&
-            self::strStartsWith($termLower, array_keys($creatorResults)[0]);
+        $oneCreator = self::findShortestMatching($termLower, array_keys($creatorResults));
 
+        //echo "creatorResults: ".print_r(array_keys($creatorResults), true)."\n";
+        //echo "oneCreator: ".$oneCreator."\n";
 
-        if (!$onlyOneCreatorAndFullyMatched && count($creatorResults)) {
+        $onlyFewCreatorsAndFullyMatched = count($creatorResults) <= 3 && $oneCreator;
+
+        if (!$onlyFewCreatorsAndFullyMatched && count($creatorResults)) {
 
             return json_encode(array_keys($creatorResults));
 
@@ -107,13 +150,20 @@ class AjaxController extends Controller
 
             // Find potential titles
 
-            $oneCreator = count($creatorResults) ? array_keys($creatorResults)[0] : "";
+            // If more than one (a few) creators possible, list those with highter length
+            $titleResults = [];
+            if (count($creatorResults) > 1) {
+                foreach (array_keys($creatorResults) as $c) {
+                    if (mb_strlen($c) >= mb_strlen($termLower))
+                        $titleResults[$c] = 1;
+                }
+            }
+
             $termRest = trim(mb_substr($termLower, mb_strlen($oneCreator)));
 
             $titleElasticData = ElasticHelpers::suggestTitlesForCreator($oneCreator, $termRest, 10);
             $titleAssocData = ElasticHelpers::elasticResultToAssocArray($titleElasticData);
 
-            $titleResults = [];
             foreach ($titleAssocData as $doc) {
                 $titleDc = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/title", []));
                 foreach ($titleDc as $s) {
