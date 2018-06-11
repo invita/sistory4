@@ -244,7 +244,7 @@ class EntitySelect
                 $title = isset($dcMetadata["title"]) ? join(" : ", DcHelpers::dcTextArray($dcMetadata["title"])) : "";
                 $creator = isset($dcMetadata["creator"]) ? join(" : ", DcHelpers::dcTextArray($dcMetadata["creator"])) : "";
                 //$date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
-                $date = isset($dcMetadata["date"]) && isset($dcMetadata["date"][0]) ? $dcMetadata["date"][0] : "";
+                $date = isset($dcMetadata["date"]) ? join(", ", DcHelpers::dcTextArray($dcMetadata["date"])) : "";
 
                 $fileName = Si4Util::pathArg($data, "files/0/ownerId", "");
                 if ($fileName) {
