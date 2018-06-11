@@ -90,8 +90,10 @@ class EntityElastic
         $this->data["dmd"] = [];
 
         $dmdSecs = $this->getFromAssoc("DmdSecElName");
+
         foreach ($dmdSecs as $idx => $dmdSec) {
 
+            $dmdId = self::get($dmdSec, "IDAttrName");
             $dmdType = self::get($dmdSec, "MdWrapElName/MDTYPEAttrName");
 
             $dmd = [
@@ -101,14 +103,22 @@ class EntityElastic
             ];
 
             $xmlData = self::get($dmdSec, "MdWrapElName/XmlDataElName");
+
             switch (strtolower($dmdType)) {
                 case "premis:object":
                     $this->data["dmd"]["premis"] = $dmd;
                     $this->populatePremisData($xmlData);
                     break;
                 case "dc":
-                    $this->data["dmd"]["dc"] = $dmd;
-                    $this->populateDCData($xmlData);
+                    if ($dmdId == "default.dc") {
+                        // <METS:dmdSec ID="default.dc"> + <METS:mdWrap MDTYPE="DC">
+                        $this->data["dmd"]["dc"] = $dmd;
+                        $this->populateDCData($xmlData);
+                    } else if ($dmdId == "default.dcterms") {
+                        // <METS:dmdSec ID="default.dcterms"> + <METS:mdWrap MDTYPE="DC">
+                        $this->data["dmd"]["dcterms"] = $dmd;
+                        $this->populateDCTermsData($xmlData);
+                    }
                     break;
                 case "mods":
                     $this->data["dmd"]["mods"] = $dmd;
@@ -140,6 +150,11 @@ class EntityElastic
         }
         //print_r($this->data["dmd"]["dc"]);
     }
+
+    private function populateDCTermsData($xmlData) {
+        // ...
+    }
+
 
     private function populateModsData($xmlData) {
         // ...

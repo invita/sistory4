@@ -17,7 +17,16 @@ si4.entity.entityImport = function(formData, dataTable) {
             si4.loading.hide();
 
             if (response.status) {
-                if (confirm(si4.translate("text_confirm_import_entities", response.data))) {
+
+                var importInfo = [];
+                if (response.data["collections"]) importInfo.push("- "+response.data["collections"]+" collections");
+                if (response.data["entities"]) importInfo.push("- "+response.data["entities"]+ " entities");
+                if (response.data["files"]) importInfo.push("- "+response.data["files"]+ " files");
+                if (response.data["unknown"]) importInfo.push("- "+response.data["unknown"]+ " unknown");
+
+                var confirmData = { importInfo: importInfo.join(",\n")+"\n" };
+
+                if (confirm(si4.translate("text_confirm_import_entities", confirmData))) {
                     si4.loading.show();
                     var importData = { uploadedFile: response.pathName };
 

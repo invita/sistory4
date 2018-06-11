@@ -151,7 +151,7 @@ si4.translations = {
 
     saved_confirm_close: "Operation successful. Close?",
 
-    text_confirm_import_entities: "Zip contains:\n - [[collections]] collections,\n - [[entities]] entities,\n - [[files]] files\n - [[unknown]] unknown\n\nNote: Import will overwrite existing IDs.\nDo you want to continue?",
+    text_confirm_import_entities: "Zip contains:\n[[importInfo]]\nNote: Import will overwrite existing IDs.\nDo you want to continue?",
     text_import_entities_success: "Import successful.\n - Entities replaced: [[replacedCount]]\n - Total count: [[importCount]]",
 
     // Errors
