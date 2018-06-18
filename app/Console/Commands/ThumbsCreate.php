@@ -57,16 +57,25 @@ class ThumbsCreate extends Command
         $this->comment("Fetching entity {$entityId}");
 
         $elasticEntities = ElasticHelpers::searchByIdArray([$entityId]);
-        $elasticEntity = Si4Util::pathArg($elasticEntities, $entityId."/_source/data");
-        $handle_id = Si4Util::pathArg($elasticEntity, "id");
-        $firstFile = Si4Util::pathArg($elasticEntity, "files/0");
+        $elasticEntity = Si4Util::pathArg($elasticEntities, $entityId."/_source");
+        $this->info(print_r($elasticEntity, true));
+
+        $struct_type = Si4Util::pathArg($elasticEntity, "struct_type");
+        if ($struct_type == "file") {
+            $entity_handle_id = Si4Util::pathArg($elasticEntity, "parent");
+        } else {
+            $entity_handle_id = Si4Util::pathArg($elasticEntity, "handle_id");
+        }
+
+        $firstFile = Si4Util::pathArg($elasticEntity, "data/files/0");
         $firstFileHandleId = Si4Util::pathArg($firstFile, "id");
         $firstFileName = Si4Util::pathArg($firstFile, "ownerId");
 
         if ($firstFileHandleId && $firstFileName) {
-            $this->info("- Recreating thumbnail for entity {$entityId} handle_id={$handle_id}, file_handle={$firstFileHandleId} ({$firstFileName})");
+            $this->info("- Recreating thumbnail for entity {$entityId} handle_id={$entity_handle_id}, file_handle={$firstFileHandleId} ({$firstFileName})");
 
-            $storageName = FileHelpers::getPublicStorageName($firstFileHandleId, $firstFileName);
+
+            $storageName = FileHelpers::getPublicStorageName($entity_handle_id, $firstFileName);
             $fullPath = storage_path('app')."/".$storageName;
 
             if (file_exists($fullPath)) {
@@ -82,6 +91,8 @@ class ThumbsCreate extends Command
                 $image->writeImage($fullPath.SI4_THUMB_FILE_POSTFIX);
                 $image->clear();
                 $image->destroy();
+            } else {
+                $this->warn("File does not exist: ".$fullPath);
             }
         }
     }

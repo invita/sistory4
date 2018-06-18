@@ -37,7 +37,7 @@ class DcHelpers {
 
                 // Files
                 "defaultThumb" => [
-                    "path" => "_source/data/files",
+                    "path" => "_source",
                     "parser" => DcHelpers::getDcDefaultThumbParser(),
                 ],
 
@@ -300,10 +300,12 @@ class DcHelpers {
     public static function getDcDefaultThumbParser() {
         return function($inputName, $inputValue) {
             // Default file
-            $fileHandleId = Si4Util::pathArg($inputValue, "0/id");
-            $fileName = Si4Util::pathArg($inputValue, "0/ownerId");
-            if ($fileHandleId && $fileName) {
-                $thumbUrl = FileHelpers::getThumbUrl($fileHandleId, $fileName);
+            //print_r($inputValue);
+            $handleId = Si4Util::pathArg($inputValue, "handle_id");
+            $fileName = Si4Util::pathArg($inputValue, "data/files/0/ownerId");
+
+            if ($handleId && $fileName) {
+                $thumbUrl = FileHelpers::getThumbUrl($handleId, $fileName);
                 return $thumbUrl;
             }
             return ""; // TODO default path/to/some/default/thumb.jpg

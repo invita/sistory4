@@ -158,8 +158,8 @@ class Entity extends Model
         if ($this->struct_type == "file") {
             $metsFile = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file")[0];
             $fileName = $metsFile["OWNERID"];
-            $handle_id = $this->handle_id;
-            $storageName = FileHelpers::getPublicStorageName($handle_id, $fileName);
+            $parent = $this->parent;
+            $storageName = FileHelpers::getPublicStorageName($parent, $fileName);
 
             if (Storage::exists($storageName)) {
                 $metsFile["MIMETYPE"] = Storage::mimeType($storageName); // FileHelpers::fileNameMime($fileName);

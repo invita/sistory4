@@ -263,7 +263,7 @@ class UploadController extends Controller
             } else {
                 // Not mets.xml, copy file to appropriate path
 
-                $destStorageName = FileHelpers::getPublicStorageName($handleId, $fileName);
+                $destStorageName = FileHelpers::getPublicStorageName($parentHandleId, $fileName);
                 if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
                 Storage::put($destStorageName, $content);
                 //echo "Put file ".$destStorageName."\n";
@@ -274,6 +274,7 @@ class UploadController extends Controller
 
         $archive->close();
 
+        // Remember imported entities by hierarchy depth level (children have higher value than their parents)
         $levels = array_keys($importedEntitiesByLevel);
         sort($levels);
 

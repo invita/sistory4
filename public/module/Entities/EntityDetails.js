@@ -254,15 +254,9 @@ var F = function(args){
                 readOnly: true
             });
 
-            // Preview div
+            // Preview and Download container
             args.basicTab.fileInfoDiv = new si4.widget.si4Element({
                 parent: args.basicTab.panelGroupPreview.content.selector, tagClass: "fileInfoDiv" });
-
-            args.basicTab.filePreviewDiv = new si4.widget.si4Element({
-                parent: args.basicTab.fileInfoDiv.selector, tagClass: "filePreviewDiv" });
-            args.basicTab.filePreviewImg = new si4.widget.si4Element({
-                parent: args.basicTab.filePreviewDiv.selector, tagName: "img" });
-            args.basicTab.filePreviewDiv.displayNone();
 
             // Download div
             args.basicTab.fileDownloadDiv = new si4.widget.si4Element({
@@ -278,16 +272,30 @@ var F = function(args){
             });
             args.basicTab.fileDownloadDiv.displayNone();
 
+            // Preview div
+            args.basicTab.filePreviewDiv = new si4.widget.si4Element({
+                parent: args.basicTab.fileInfoDiv.selector, tagClass: "filePreviewDiv" });
+            args.basicTab.filePreviewImg = new si4.widget.si4Element({
+                parent: args.basicTab.filePreviewDiv.selector, tagName: "img" });
+            args.basicTab.filePreviewDiv.displayNone();
+
 
             // File Preview
             var fileName = rowValue.fileName;
             if (fileName) {
+                /*
                 var fileUrl = rowValue.fileUrl;
                 var fileExt = fileName.split(".").pop();
                 if (["jpg", "jpeg", "png"].indexOf(fileExt.toLowerCase()) != -1) {
                     args.basicTab.filePreviewImg.selector.attr("src", fileUrl);
                     args.basicTab.filePreviewDiv.display();
                 }
+                args.basicTab.fileDownloadDiv.display();
+                */
+
+                var fileThumb = rowValue.fileThumb;
+                args.basicTab.filePreviewImg.selector.attr("src", fileThumb);
+                args.basicTab.filePreviewDiv.display();
                 args.basicTab.fileDownloadDiv.display();
             }
         } else {

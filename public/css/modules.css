@@ -29,52 +29,5 @@
 .fileDownloadDiv span { color: #888; }
 .fileDownloadDiv span:hover { color: #555; }
 
-#pageHolder .filePreviewDiv { margin: 8px; }
-.filePreviewDiv img { max-width: 256px; }
-
-
-/* TODO: delete from here down... check to rename if anything is needed */
-
-/* Cobiss */
-.si4TabContent.cobiss select,
-.si4TabContent.cobiss input
-{
-    display: block;
-    float: left;
-    margin-right: 10px;
-}
-
-.si4TabContent.cobiss select
-{
-    width: 100px;
-}
-
-.si4TabContent.cobiss img.loadingImg
-{
-    display: none;
-}
-
-/* Search */
-div.pubSearch_leftContainer { width:324px; display: inline-table; }
-div.pubSearch_rightContainer { display: inline-table; }
-
-div.search_additionalFields { text-decoration:underline; }
-div.search_additionalFields:hover { text-decoration:none; }
-
-
-/* Pub */
-div.hierarchyDiv { margin:2px 2px 2px 10px; color:#333333; cursor:pointer; }
-div.hierarchyDiv:hover { color:#87BCEA; }
-div.hierarchyDiv.current { font-weight:bold; }
-
-
-/* Project */
-tr.si4DataTableRow.projectLineFulfilled { background:#CCEECC; }
-tr.si4DataTableRow.projectLineFulfilled:nth-of-type(even) { background:#DDFFDD; }
-
-div.projectLinesTable > table.si4DataTable_table { min-width:780px; }
-
-/* Regular/Alt Doubles */
-span.doublesSaveButton { color:#CC9933; }
-span.doublesSaveButton:hover { color:#DDAA66; }
-
+#pageHolder .filePreviewDiv { margin: 8px; border: silver dashed 1px; }
+.filePreviewDiv img { max-width: 256px; max-height: 256px; }

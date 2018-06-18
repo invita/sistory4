@@ -11,16 +11,19 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  */
 class FileHelpers
 {
+    // $handleId -> file's parent handle_id
     public static function getPreviewUrl($handleId, $fileName) {
         $storageName = self::getStorageName($handleId, $fileName);
         return "/storage/preview/?path=".$storageName;
     }
 
+    // $handleId -> file's parent handle_id
     public static function getThumbUrl($handleId, $fileName) {
         $publicStorageName = self::getPublicStorageName($handleId, $fileName.SI4_THUMB_FILE_POSTFIX);
         if (Storage::exists($publicStorageName)) {
             return self::getPreviewUrl($handleId, $fileName.SI4_THUMB_FILE_POSTFIX);
         }
+        //echo "File not exist {$handleId} {$fileName} {$publicStorageName}\n";
         return SI4_DEFAULT_THUMB;
     }
 

@@ -86,19 +86,19 @@ class DetailsController extends FrontendController
     private function prepareDataForEntity(Request $request, $hdl, &$data) {
         $data["files"] = [];
         $files = ElasticHelpers::searchMust([
-            "parent" => $data["doc"]["handle_id"],
+            "parent" => $hdl,
             "struct_type" => "file"
         ]);
         //print_r($files);
 
         foreach ($files as $file) {
-            $handleId = Si4Util::pathArg($file, "_source/handle_id");
+            $fileHandleId = Si4Util::pathArg($file, "_source/handle_id");
             $fileName = Si4Util::pathArg($file, "_source/data/files/0/ownerId");
             $data["files"][] = [
-                "handle_id" => $handleId,
+                "handle_id" => $fileHandleId,
                 "url" => Si4Util::pathArg($file, "_source/data/objId"),
                 "fileName" => $fileName,
-                "thumbUrl" => FileHelpers::getThumbUrl($handleId, $fileName),
+                "thumbUrl" => FileHelpers::getThumbUrl($hdl, $fileName),
                 "mimeType" => Si4Util::pathArg($file, "_source/data/files/0/mimeType"),
                 "size" => Si4Util::pathArg($file, "_source/data/files/0/size"),
                 "created" => Si4Util::pathArg($file, "_source/data/files/0/created"),

@@ -106,6 +106,7 @@ class EntitySelect
                 "date" => "",
                 "fileName" => "",
                 "fileUrl" => "",
+                "fileThumb" => "",
                 "fileMimeType" => "",
                 "fileSize" => "",
                 "fileTimestamp" => "",
@@ -213,6 +214,7 @@ class EntitySelect
 
             $fileName = "";
             $fileUrl = "";
+            $fileThumb = "";
             $fileMimeType = "";
             $fileSize = 0;
             $fileTimestamp = "";
@@ -248,7 +250,8 @@ class EntitySelect
 
                 $fileName = Si4Util::pathArg($data, "files/0/ownerId", "");
                 if ($fileName) {
-                    $fileUrl = FileHelpers::getPreviewUrl($handle_id, $fileName);
+                    $fileUrl = FileHelpers::getPreviewUrl($parent, $fileName);
+                    $fileThumb = FileHelpers::getThumbUrl($parent, $fileName);
                     $fileMimeType = Si4Util::pathArg($data, "files/0/mimeType", "");
                     $fileSize = Si4Util::pathArg($data, "files/0/size", "");
                     $fileTimestamp = Si4Util::pathArg($data, "files/0/created", "");
@@ -271,6 +274,7 @@ class EntitySelect
                 "date" => $date,
                 "fileName" => $fileName,
                 "fileUrl" => $fileUrl,
+                "fileThumb" => $fileThumb,
                 "fileMimeType" => $fileMimeType,
                 "fileSize" => $fileSize,
                 "fileTimestamp" => $fileTimestamp,
