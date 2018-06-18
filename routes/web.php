@@ -30,6 +30,7 @@ Route::get('/test/{id}', "TestController@index")->name("test.index#get");
 
 // *** Storage ***
 Route::get('/storage/preview', "StorageController@preview")->name("storage.preview#get");
+Route::get('/storage/mets', "StorageController@mets")->name("storage.mets#get");
 
 
 // *** Admin ***

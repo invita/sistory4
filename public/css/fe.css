@@ -402,9 +402,11 @@ a.default:hover {
     margin-top: 6px;
 }
 
-.allMetadata pre {
-    font-size: 13px;
-    line-height: 16px;
+#accordionMets {
+    padding: 10px;
+}
+#accordionMets a {
+    margin: 10px 5px;
 }
 
 /* si4button */

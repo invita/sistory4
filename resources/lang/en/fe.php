@@ -42,7 +42,10 @@ return [
     'details_sectionFiles' => 'Files',
     'details_fileSize' => 'Size',
     'details_fileCreated' => 'Created',
+    'details_fileView' => 'View',
     'details_fileDownload' => 'Download',
+
+    'details_allMetadata' => 'All metadata',
 
     'footerText' => '© Copyright 2011-2018 INZ, Zgodovina Slovenije - Si4',
 ];

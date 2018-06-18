@@ -56,10 +56,15 @@
             </div>
 
             <div class="accordion" for="accordionMets">
-                Vsi metapodatki
+                {{ __('fe.details_allMetadata') }}
             </div>
-            <div class="accordionContent" id="accordionMets">
-                <pre style="font-size:12px;">{{ print_r($data["xml"], true) }}</pre>
+            <div class="accordionContent allMetadata" id="accordionMets">
+                <a class="si4button" href="/storage/mets?handleId={{ $data["doc"]["handle_id"] }}" target="_blank">
+                    {{ __('fe.details_fileView') }}
+                </a>
+                <a class="si4button" href="/storage/mets?handleId={{ $data["doc"]["handle_id"] }}&attach=1">
+                    {{ __('fe.details_fileDownload') }}
+                </a>
             </div>
 
 

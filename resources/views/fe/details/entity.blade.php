@@ -126,10 +126,15 @@
             <br/>
 
             <div class="accordion" for="accordionMets">
-                Vsi metapodatki
+                {{ __('fe.details_allMetadata') }}
             </div>
             <div class="accordionContent allMetadata" id="accordionMets">
-                <pre>{{ print_r($data["xml"], true) }}</pre>
+                <a class="si4button" href="/storage/mets?handleId={{ $data["doc"]["handle_id"] }}" target="_blank">
+                    {{ __('fe.details_fileView') }}
+                </a>
+                <a class="si4button" href="/storage/mets?handleId={{ $data["doc"]["handle_id"] }}&attach=1">
+                    {{ __('fe.details_fileDownload') }}
+                </a>
             </div>
 
         </div>
