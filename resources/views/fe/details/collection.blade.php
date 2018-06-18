@@ -1,4 +1,4 @@
-@extends("......layout")
+@extends("layout")
 
 @section("head")
 @endsection
@@ -9,6 +9,15 @@
         <div class="medium-12 columns">
             <div class="breadcrumbs">
                 <?php echo $data["html_breadcrumbs"]; ?>
+            </div>
+
+            <div class="collectionSearch">
+                <form action="/search" class="flexRow">
+                    <input type="hidden" name="hdl" value="{{ $data["doc"]["handle_id"] }}" />
+                    <input class="query flex7" type="text" name="q" value="{{ $layoutData["q"] }}"
+                        placeholder="Search {{ $data["doc"]["first_dc_title"] }}..." autocomplete="off" />
+                    <input class="submit flex1" type="submit" value="Search">
+                </form>
             </div>
 
             <div class="detailsContent">
@@ -29,7 +38,7 @@
                                 <div class="child">
                                     <?php /* print_r($child); */ ?>
                                     <div class="childThumb">
-                                        <img src="{{ $child["thumb"] }}" />
+                                        <img src="{{ $child["defaultThumb"] }}" />
                                     </div>
 
                                     <div class="childTitle">

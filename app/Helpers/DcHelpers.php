@@ -308,7 +308,7 @@ class DcHelpers {
                 $thumbUrl = FileHelpers::getThumbUrl($handleId, $fileName);
                 return $thumbUrl;
             }
-            return ""; // TODO default path/to/some/default/thumb.jpg
+            return SI4_DEFAULT_THUMB;
         };
     }
 
@@ -322,4 +322,25 @@ class DcHelpers {
             }, $breadcrumbs)
         );
     }
+
+    public static function fileSizePresentation($fileSizeInBytes) {
+        if ($fileSizeInBytes >= 1048576)
+            $result = number_format($fileSizeInBytes / 1048576, 1) .' MB';
+        elseif ($fileSizeInBytes >= 1024)
+            $result = number_format($fileSizeInBytes / 1024, 1) .' KB';
+        else
+            $result = $fileSizeInBytes .' B';
+
+        return $result;
+    }
+
+    public static function fileDatePresentation($fileDate) {
+        // expected format "2018-06-18T19:53:30Z"
+        //return $result;
+        $time = strtotime($fileDate);
+        $newformat = date('d.m.Y, H:i', $time);
+        return $newformat;
+    }
+
+
 }

@@ -12,7 +12,9 @@ class SearchController extends FrontendController
 {
     public function index(Request $request) {
 
-        $q = $request->query("q", "");
+        $q = $request->query("q", ""); // Query string
+        $st = $request->query("st", "all"); // Search type
+        $hdl = $request->query("hdl", ""); // Handle id filter
         $offset = $request->query("offset", 0);
         $size = $request->query("size", SI4_DEFAULT_PAGINATION_SIZE);
 
@@ -24,7 +26,7 @@ class SearchController extends FrontendController
         ];
 
         if ($q) {
-            $elasticData = ElasticHelpers::searchString($q, $offset, $size);
+            $elasticData = ElasticHelpers::searchString($q, $st, $hdl, $offset, $size);
 
             $data["took"] = Si4Util::getArg($elasticData, "took", 0);
             $data["totalHits"] = Si4Util::pathArg($elasticData, "hits/total", 0);
@@ -43,7 +45,6 @@ class SearchController extends FrontendController
         return view("fe.search", [
             "layoutData" => $this->layoutData($request),
             "searchType" => "search",
-            "q" => $q,
             "data" => $data,
             "paginatorTop" => $this->preparePaginator($data, "top"),
             "paginatorBot" => $this->preparePaginator($data, "bottom"),

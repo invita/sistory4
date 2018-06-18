@@ -43,20 +43,20 @@ class DetailsController extends FrontendController
             }
             $data["parents"] = $parents;
 
-            $this->prepareBreadcrumbs($request, $hdl, $data);
+            $this->prepareBreadcrumbs($request, $hdl, $docData, $data);
 
             switch ($struct_type) {
                 case "collection":
                     $viewName = "fe.details.collection";
-                    $this->prepareDataForCollection($request, $hdl, $data);
+                    $this->prepareDataForCollection($request, $hdl, $docData, $data);
                     break;
                 case "file":
                     $viewName = "fe.details.file";
-                    $this->prepareDataForFile($request, $hdl, $data);
+                    $this->prepareDataForFile($request, $hdl, $docData, $data);
                     break;
                 case "entity": default:
                     $viewName = "fe.details.entity";
-                    $this->prepareDataForEntity($request, $hdl, $data);
+                    $this->prepareDataForEntity($request, $hdl, $docData, $data);
                     break;
             }
         }
@@ -69,7 +69,7 @@ class DetailsController extends FrontendController
     }
 
 
-    private function prepareDataForCollection(Request $request, $hdl, &$data) {
+    private function prepareDataForCollection(Request $request, $hdl, $docData, &$data) {
 
         // Find children
         $childData = ElasticHelpers::searchChildren($hdl);
@@ -83,7 +83,7 @@ class DetailsController extends FrontendController
         //print_r($data);
     }
 
-    private function prepareDataForEntity(Request $request, $hdl, &$data) {
+    private function prepareDataForEntity(Request $request, $hdl, $docData, &$data) {
         $data["files"] = [];
         $files = ElasticHelpers::searchMust([
             "parent" => $hdl,
@@ -94,26 +94,58 @@ class DetailsController extends FrontendController
         foreach ($files as $file) {
             $fileHandleId = Si4Util::pathArg($file, "_source/handle_id");
             $fileName = Si4Util::pathArg($file, "_source/data/files/0/ownerId");
+
+            $fileSize = Si4Util::pathArg($file, "_source/data/files/0/size");
+            $fileCreated = Si4Util::pathArg($file, "_source/data/files/0/created");
+
             $data["files"][] = [
                 "handle_id" => $fileHandleId,
-                "url" => Si4Util::pathArg($file, "_source/data/objId"),
                 "fileName" => $fileName,
+                "url" => FileHelpers::getPreviewUrl($hdl, $fileName),
                 "thumbUrl" => FileHelpers::getThumbUrl($hdl, $fileName),
                 "mimeType" => Si4Util::pathArg($file, "_source/data/files/0/mimeType"),
-                "size" => Si4Util::pathArg($file, "_source/data/files/0/size"),
-                "created" => Si4Util::pathArg($file, "_source/data/files/0/created"),
+                "size" => $fileSize,
+                "displaySize" => DcHelpers::fileSizePresentation($fileSize),
+                "created" => $fileCreated,
+                "displayCreated" => DcHelpers::fileDatePresentation($fileCreated),
                 "checksum" => Si4Util::pathArg($file, "_source/data/files/0/checksum"),
                 "checksumType" => Si4Util::pathArg($file, "_source/data/files/0/checksumType"),
             ];
         }
     }
 
-    private function prepareDataForFile(Request $request, $hdl, &$data) {
+    private function prepareDataForFile(Request $request, $hdl, $docData, &$data) {
+        //print_r($docData);
+        $parent = Si4Util::pathArg($docData, "_source/parent", null);
+        $file = Si4Util::pathArg($docData, "_source/data/files/0", null);
+        $fileName = Si4Util::pathArg($file, "ownerId", "");
 
+        $size = Si4Util::pathArg($file, "size");
+        $created = Si4Util::pathArg($file, "created");
+
+        //print_r($file);
+        if ($file) {
+            $data["file"] = [
+                "handle_id" => $hdl,
+                "parent" => $parent,
+                "fileName" => $fileName,
+                "url" => FileHelpers::getPreviewUrl($parent, $fileName),
+                "thumbUrl" => FileHelpers::getThumbUrl($parent, $fileName),
+                "mimeType" => Si4Util::pathArg($file, "mimeType"),
+                "size" => $size,
+                "displaySize" => DcHelpers::fileSizePresentation($size),
+                "created" => $created,
+                "displayCreated" => DcHelpers::fileDatePresentation($created),
+                "checksum" => Si4Util::pathArg($file, "checksum"),
+                "checksumType" => Si4Util::pathArg($file, "checksumType"),
+            ];
+        }
+
+        //print_r($data["file"]);
     }
 
 
-    private function prepareBreadcrumbs(Request $request, $hdl, &$data) {
+    private function prepareBreadcrumbs(Request $request, $hdl, $docData, &$data) {
         //print_r($data["doc"]);
 
         $linkPrefix = "/details/";

@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'searchType_all' => 'All',
+    'searchType_collection' => 'Collections',
+    'searchType_entity' => 'Digital objects',
+    'searchType_file' => 'Files',
+    'searchType_fullText' => 'File contents',
+
     'advSearch_oper_and' => 'And',
     'advSearch_oper_or' => 'Or',
 
@@ -34,6 +40,9 @@ return [
     'details_dcRights' => 'Rights',
 
     'details_sectionFiles' => 'Files',
+    'details_fileSize' => 'Size',
+    'details_fileCreated' => 'Created',
+    'details_fileDownload' => 'Download',
 
     'footerText' => '© Copyright 2011-2018 INZ, Zgodovina Slovenije - Si4',
 ];

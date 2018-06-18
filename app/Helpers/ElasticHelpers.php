@@ -12,9 +12,18 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 const ADV_SEARCH_OPERATOR_AND = "and";
 const ADV_SEARCH_OPERATOR_OR = "or";
 
+const SEARCH_TYPE_ALL = "all";
+const SEARCH_TYPE_COLLECTION = "collection";
+const SEARCH_TYPE_ENTITY = "entity";
+const SEARCH_TYPE_FILE = "file";
+const SEARCH_TYPE_FULL_TEXT = "fullText";
+
 class ElasticHelpers
 {
-    public static $advancedSearchOperators = [ADV_SEARCH_OPERATOR_AND, ADV_SEARCH_OPERATOR_OR];
+    public static $advancedSearchOperators = [
+        ADV_SEARCH_OPERATOR_AND,
+        ADV_SEARCH_OPERATOR_OR
+    ];
     public static $advancedSearchFieldMap = [
         "title" => "data.dmd.dc.title.value",
         "creator" => "data.dmd.dc.creator.value",
@@ -29,6 +38,14 @@ class ElasticHelpers
         "relation" => "data.dmd.dc.relation.value",
         "coverage" => "data.dmd.dc.coverage.value",
         "rights" => "data.dmd.dc.rights.value",
+    ];
+
+    public static $searchTypes = [
+        SEARCH_TYPE_ALL,
+        SEARCH_TYPE_COLLECTION,
+        SEARCH_TYPE_ENTITY,
+        SEARCH_TYPE_FILE,
+        SEARCH_TYPE_FULL_TEXT
     ];
 
     public static function getTopMenuHandleId() {
@@ -204,7 +221,7 @@ HERE;
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function searchString($queryString, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
+    public static function searchString($queryString, $searchType = "all", $hdl = "", $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
     {
 
         $searchFields = [
@@ -223,43 +240,62 @@ HERE;
                     "query" => '*'.$searchWord.'*'
                 ],
             ];
+        }
 
-            /*
-            if ($wordIdx <= 1) {
+        // Apply search type filter
+        switch ($searchType) {
+            case SEARCH_TYPE_ALL:
+                // No additional filter
+                break;
+
+            case SEARCH_TYPE_COLLECTION:
                 $must[] = [
                     "query_string" => [
-                        "fields" => ["data.dmd.dc.creator.value"],
-                        "query" => "*".$searchWord."*"
+                        "fields" => ["struct_type"],
+                        "query" => 'collection'
                     ],
                 ];
-            } else {
-                $should[] = [
+                break;
+
+            case SEARCH_TYPE_ENTITY:
+                $must[] = [
                     "query_string" => [
-                        "fields" => $searchFields,
-                        "query" => $searchWord
+                        "fields" => ["struct_type"],
+                        "query" => 'entity'
                     ],
                 ];
-            }
-            */
+                break;
+
+            case SEARCH_TYPE_FILE:
+                $must[] = [
+                    "query_string" => [
+                        "fields" => ["struct_type"],
+                        "query" => 'file'
+                    ],
+                ];
+                break;
+            case SEARCH_TYPE_FULL_TEXT:
+                // TODO: Must index file contents first
+                break;
+        }
+
+        // Apply handle_id filter
+        if ($hdl) {
+            // TODO: Must index parent hierarchy to enable search for nested children
+            // For now find only first level children, whose parent is directly $hdl
+            $must[] = [
+                "query_string" => [
+                    "fields" => ["parent"],
+                    "query" => $hdl
+                ],
+            ];
         }
 
         $query = [ "bool" => [] ];
-
         if (count($should)) $query["bool"]["should"] = $should;
         if (count($must)) $query["bool"]["must"] = $must;
 
-        return self::search($query, 0, $limit, "id", "asc");
-
-
-        /*
-        $query = [
-            "query_string" => [
-                "default_field" => "_all",
-                "query" => $queryString
-            ]
-        ];
-        return self::search($query, $offset, $limit, $sortField, $sortDir);
-        */
+        return self::search($query, $offset, $limit, "id", "asc");
     }
 
     /**

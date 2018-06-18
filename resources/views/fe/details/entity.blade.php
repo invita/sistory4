@@ -1,4 +1,4 @@
-@extends("......layout")
+@extends("layout")
 
 @section("head")
 @endsection
@@ -93,30 +93,31 @@
                 </div>
             </div>
 
-            <!--
-            <div>
-                Details {{ $hdl }}
-                {{ print_r($data["doc"], true) }}
-            </div>
-            -->
-
-            <?php /* TODO: Files */ ?>
             @if (isset($data["files"]) && count($data["files"]))
                 <div class="accordion" for="accordionFiles">
                     {{ __('fe.details_sectionFiles') }}
                 </div>
                 <div class="accordionContent fileList" id="accordionFiles">
                     @foreach ($data["files"] as $file)
-                        <div class="file">
-
-                            <img class="fileThumb" src="{{ $file["thumbUrl"] }}" />
-                            <div class="fileContent">
-                                <div class="fileName">{{ $file["fileName"] }}</div>
-                                <div class="created">{{ $file["created"] }}</div>
-                                <div class="size">{{ $file["size"] }}</div>
-                                <div class="checksum">{{ $file["checksumType"] }}: {{ $file["checksum"] }}</div>
+                        <div class="fileDetails">
+                            <div class="flexRow flexAlignCenter">
+                                <a href="/details/{{$file["handle_id"]}}">
+                                    <div class="flexRow">
+                                        <img class="fileThumb" src="{{ $file["thumbUrl"] }}" />
+                                        <div class="fileContent">
+                                            <div class="fileName">{{ $file["fileName"] }}</div>
+                                            <div class="created">{{ __('fe.details_fileCreated') }}: {{ $file["displayCreated"] }}</div>
+                                            <div class="size">{{ __('fe.details_fileSize') }}: {{ $file["displaySize"] }}</div>
+                                            <div class="checksum">{{ $file["checksumType"] }}: {{ $file["checksum"] }}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="fileDownload">
+                                    <a class="si4button download" href="{{ $file["url"] }}" target="_blank">
+                                        {{ __('fe.details_fileDownload') }}
+                                    </a>
+                                </div>
                             </div>
-                            <pre><?php print_r($file); ?></pre>
                         </div>
                     @endforeach
                 </div>

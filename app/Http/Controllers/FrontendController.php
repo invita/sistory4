@@ -14,6 +14,14 @@ class FrontendController extends Controller
     public function layoutData(Request $request) {
         $layoutData = [];
 
+        // Search parameters remain
+        $layoutData["q"] = $request->query("q", ""); // Query string
+        $layoutData["st"] = $request->query("st", "all"); // Search type
+        $layoutData["hdl"] = $request->query("hdl", ""); // Handle filter
+
+        // Available search types
+        $layoutData["searchTypes"] = $this->prepareSearchTypes();
+
         // Top menu HTML
         $layoutData["topMenuHtml"] = $this->prepareTopMenuHtml();
 
@@ -25,6 +33,13 @@ class FrontendController extends Controller
 
         return $layoutData;
     }
+
+
+    // Search types
+    private function prepareSearchTypes() {
+        return ElasticHelpers::$searchTypes;
+    }
+
 
     // *** TopMenu ***
 

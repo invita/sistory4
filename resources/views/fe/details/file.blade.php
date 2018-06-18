@@ -1,5 +1,4 @@
-doc
-@extends("......layout")
+@extends("layout")
 
 @section("head")
 @endsection
@@ -14,12 +13,13 @@ doc
 
             <div class="detailsContent">
                 <div class="bigImageWrap">
-                    <div class="img"></div>
+                    <img class="img" src="{{ $data["file"]["thumbUrl"] }}" />
                 </div>
                 <div class="contentWrap">
                     <div class="detailsDcField detailsDcTitle">
                         <?php echo $data["doc"]["html_dc_title"] ?>
                     </div>
+
                     <div class="detailsDcField detailsDcCreator">
                         {{ __('fe.details_dcCreator') }}: <?php echo $data["doc"]["html_dc_creator"] ?>
                     </div>
@@ -91,27 +91,33 @@ doc
                             {{ __('fe.details_dcRights') }}: <?php echo $data["doc"]["html_dc_rights"] ?>
                         </div>
                     @endif
+
+                    @if (isset($data["file"]))
+                        <div class="fileDetails">
+                            <div class="fileName">{{ $data["file"]["fileName"] }} <span class="mime">({{ $data["file"]["mimeType"] }})</span></div>
+                            <div class="size">{{ __('fe.details_fileSize') }}: {{ $data["file"]["displaySize"] }}</div>
+                            <div class="created">{{ __('fe.details_fileCreated') }}: {{ $data["file"]["displayCreated"] }}</div>
+                            <div class="checksum">{{ $data["file"]["checksumType"] }}: {{ $data["file"]["checksum"] }}</div>
+
+                            <div class="fileDownload">
+                                <a class="si4button download" href="{{ $data["file"]["url"] }}" target="_blank">
+                                    {{ __('fe.details_fileDownload') }}
+                                </a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
-
-            <!--
-            <div>
-                Details {{ $hdl }}
-                {{ print_r($data["doc"], true) }}
-            </div>
-            -->
-
-            <?php /* TODO: Files */ ?>
-            @if ($data["doc"]["fileName"])
-                <div class="accordion" for="accordionFiles">
-                    {{ __('fe.details_sectionFiles') }}
-                </div>
-                <div class="accordionContent" id="accordionFiles">
-                    Content
-                </div>
-            @endif
 
             <br/>
+
+            <div class="accordion" for="accordionMets">
+                Vsi metapodatki
+            </div>
+            <div class="accordionContent allMetadata" id="accordionMets">
+                <pre>{{ print_r($data["xml"], true) }}</pre>
+            </div>
+
 
         </div>
     </div>

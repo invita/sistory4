@@ -53,10 +53,15 @@
                         </div>
 
                         <!-- Search Form -->
-                        <form action="/search">
-                            <input id="searchInput" class="query" type="text" name="q"
-                                value="{{ $q or "" }}" placeholder="Search..." autocomplete="off" />
-                            <input class="submit" type="submit" value="Search">
+                        <form action="/search" class="flexRow">
+                            <input id="searchInput" class="query flex7" type="text" name="q"
+                                value="{{ $layoutData["q"] }}" placeholder="Search..." autocomplete="off" />
+                            <select name="st" class="flex2">
+                                @foreach($layoutData["searchTypes"] as $searchType)
+                                    <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
+                                @endforeach
+                            </select>
+                            <input class="submit flex1" type="submit" value="Search">
                         </form>
                     </div>
                 </div>

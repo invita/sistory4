@@ -86,16 +86,16 @@
                 <?php echo $paginatorBot; ?>
             </div>
 
-        @elseif ($q && !count($data["results"]))
+        @elseif ($layoutData["q"] && !count($data["results"]))
             <div class="medium-12 columns">
                 <div class="searchNoResultsWrapper">
-                    Iskanje ni obrodilo sadov...
+                    No results...
                 </div>
             </div>
         @else
             <div class="medium-12 columns">
                 <div class="searchNoResultsWrapper">
-                    Si4 Iskanje
+                    Si4 Search
                 </div>
             </div>
         @endif
