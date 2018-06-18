@@ -160,6 +160,7 @@ class AjaxController extends Controller
             }
 
             $termRest = trim(mb_substr($termLower, mb_strlen($oneCreator)));
+            //echo "termRest {$termRest}\n";
 
             $titleElasticData = ElasticHelpers::suggestTitlesForCreator($oneCreator, $termRest, 10);
             $titleAssocData = ElasticHelpers::elasticResultToAssocArray($titleElasticData);

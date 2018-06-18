@@ -383,21 +383,23 @@ HERE;
     }
     public static function suggestTitlesForCreator($creator, $title, $limit = 30)
     {
-        $creatorWords = explode(" ", $creator);
-        $titleWords = explode(" ", $title);
-
         $must = [];
 
-        foreach ($creatorWords as $creatorWord) {
-            $must[] = [
-                "query_string" => [
-                    "fields" => [
-                        "data.dmd.dc.creator.value",
+        if ($creator) {
+            $creatorWords = explode(" ", $creator);
+            foreach ($creatorWords as $creatorWord) {
+                $must[] = [
+                    "query_string" => [
+                        "fields" => [
+                            "data.dmd.dc.creator.value",
+                        ],
+                        "query" => $creatorWord
                     ],
-                    "query" => $creatorWord
-                ],
-            ];
+                ];
+            }
         }
+
+        $titleWords = explode(" ", $title);
         foreach ($titleWords as $titleWord) {
             $must[] = [
                 "query_string" => [
@@ -413,32 +415,6 @@ HERE;
             "bool" => [ "must" => $must ]
         ];
 
-        /*
-        $titleWildcard = $title."*";
-        $creatorWildcard = $creator."*";
-        $query = [
-            "bool" => [
-                "must" => [
-                    [
-                        "query_string" => [
-                            "fields" => [
-                                "data.dmd.dc.title.value",
-                            ],
-                            "query" => $titleWildcard
-                        ],
-                    ],
-                    [
-                        "query_string" => [
-                            "fields" => [
-                                "data.dmd.dc.creator.value",
-                            ],
-                            "query" => $creatorWildcard
-                        ]
-                    ]
-                ]
-            ]
-        ];
-        */
         return self::search($query, 0, $limit, "id", "asc");
     }
 
