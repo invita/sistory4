@@ -32,4 +32,52 @@ class Si4Util {
         return $lastEntityId[0] ? intval($lastEntityId[0]) + 1 : 1;
     }
 
+
+    // SimpleXmlElement helpers
+
+    public static function xmlElementGetData($simpleXmlEl) {
+        $namespaces = array_keys($simpleXmlEl->getNamespaces());
+        $namespaces[] = ""; // Add empty namespace
+
+        $nsPrefix = count($namespaces) ? $namespaces[0].":" : "";
+
+        $attributes = [];
+        foreach ($namespaces as $ns) {
+            foreach ($simpleXmlEl->attributes($ns, true) as $attrKey => $attrVal) {
+                $attributes[$attrKey] = (string)$attrVal;
+            }
+        }
+
+        $children = [];
+        foreach ($namespaces as $ns) {
+            foreach ($simpleXmlEl->children($ns, true) as $child) {
+                $children[] = $child;
+            }
+        }
+
+
+        $result = [
+            "name" => $nsPrefix.$simpleXmlEl->getName(),
+            "attributes" => $attributes,
+            "children" => $children,
+        ];
+        return $result;
+    }
+
+    public static function xmlElementDump($simpleXmlEl, $maxDepth = 1, $curDepth = 0) {
+
+        $elData = self::xmlElementGetData($simpleXmlEl);
+
+        if ($curDepth < $maxDepth) {
+            foreach ($elData["children"] as $idx => $child) {
+                $elData["children"][$idx] = self::xmlElementDump($child, $maxDepth, $curDepth +1);
+            }
+        } else {
+            $childCount = count($elData["children"]);
+            $elData["children"] = $childCount;
+        }
+
+        return $elData;
+    }
+
 }

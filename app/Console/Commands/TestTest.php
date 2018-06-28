@@ -50,7 +50,11 @@ class TestTest extends Command
     public function handle()
     {
 
-        Artisan::call("thumbs:create", ["entityId" => 4]);
+        $entity = Entity::findOrNew(4);
+        $entity->updateXml();
+        print_r($entity->data);
+
+        //Artisan::call("thumbs:create", ["entityId" => 4]);
 
         /*
         $testPdf = __DIR__ ."/../../../storage/testData/test.pdf";

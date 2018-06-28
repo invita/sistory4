@@ -145,12 +145,63 @@ class Entity extends Model
         $premisObjCategory[0] = $this->struct_type;
 
 
-        // TODO
-        // structMap
-        //$structMap = $xmlDoc->xpath("METS:structMap")[0];
-        //$structMap["ID"] = "default.structure";
-        //$structMap["TYPE"] = $this->entity_type;
+        // structMap hierarchy
+        $hierarchy = $this->getHierarchy();
+        $parents = $hierarchy["data"]["parents"];
+        if (count($parents)) {
+            $parent = $parents[count($parents) -1];
 
+            // METS:structMap
+            $structMapArr = $xmlDoc->xpath("METS:structMap");
+            if (count($structMapArr))
+                $structMap = $structMapArr[0];
+            else
+                $structMap = $xmlDoc->addChild("METS:structMap");
+            $structMap["ID"] = "default.structure";
+            $structMap["TYPE"] = $parent["entity_type"];
+
+
+
+            // Remove METS:structMap/METS:div and reconstruct
+            unset($xmlDoc->xpath("METS:structMap/METS:div")[0][0]);
+
+
+            // METS:structMap/METS:div - parentDiv
+            $structParentDiv = $structMap->addChild("METS:div");
+            $structParentDiv["TYPE"] = $parent["struct_type"];
+
+            // METS:structMap/METS:div/METS:mptr - parent mptr
+            $structParentMptr = $structParentDiv->addChild("METS:mptr");
+            $structParentMptr["LOCTYPE"] = "HANDLE";
+            $structParentMptr["xlink:href"] = "http://hdl.handle.net/11686/".$this->parent;
+
+            // METS:structMap/METS:div/METS:div - currentDiv
+            $structCurrentDiv = $structParentDiv->addChild("METS:div");
+            $structCurrentDiv["TYPE"] = $this->struct_type;
+            $structCurrentDiv["DMDID"] = "default.dc default.mods";
+            $structCurrentDiv["AMDID"] = "default.amd";
+
+            $children = $hierarchy["data"]["children"];
+            //print_r(array_keys($children[0]));
+            //print_r($children[0]["handle_id"]);
+            foreach ($children as $child) {
+                $childHandleId = $child["handle_id"];
+                $childStructType = $child["struct_type"];
+
+                if ($childStructType == "file") {
+                    // METS:structMap/METS:div/METS:div/METS:fptr - childFptr
+                    $structChildFptr = $structCurrentDiv->addChild("METS:fptr");
+                    $structChildFptr["FILEID"] = $childHandleId;
+                } else {
+                    // METS:structMap/METS:div/METS:div/METS:div - childDiv
+                    $structChildDiv = $structCurrentDiv->addChild("METS:div");
+                    $structChildDiv["TYPE"] = $childStructType;
+                    $structChildMptr = $structChildDiv->addChild("METS:mptr");
+                    $structChildMptr["LOCTYPE"] = "HANDLE";
+                    $structChildMptr["xlink:href"] = "http://hdl.handle.net/11686/".$childHandleId;
+                }
+            }
+        }
 
 
 
@@ -171,7 +222,32 @@ class Entity extends Model
             //print_r($metsFile);
         }
 
-        $this->data = $xmlDoc->asXML();
+
+        // Format XML
+        $dom = new \DOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xmlDoc->asXML());
+
+        $this->data = $dom->saveXML();
+
+        //$this->data = $xmlDoc->asXML();
+    }
+
+    private $hierarchy = null;
+    public function getHierarchy() {
+        if (!$this->hierarchy) {
+            $this->hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->handle_id]);
+        }
+        return $this->hierarchy;
+    }
+
+    private $parentHierarchy = null;
+    public function getParentHierarchy() {
+        if (!$this->parentHierarchy) {
+            $this->parentHierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
+        }
+        return $this->parentHierarchy;
     }
 
     // Calculates primary entity
@@ -180,7 +256,8 @@ class Entity extends Model
             case "collection":
                 if ($this->parent) {
                     $this->entity_type = "dependant";
-                    $hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
+                    //$hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
+                    $hierarchy = $this->getParentHierarchy();
                     $parents = Si4Util::pathArg($hierarchy, "data/parents", []);
                     $parents[] = Si4Util::pathArg($hierarchy, "data/currentEntity", []);
                     $this->primary = $parents[0]["handle_id"];
@@ -199,7 +276,8 @@ class Entity extends Model
                 $this->entity_type = "primary";
                 $this->primary = $this->handle_id;
                 if ($this->parent) {
-                    $hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
+                    //$hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
+                    $hierarchy = $this->getParentHierarchy();
                     $parents = Si4Util::pathArg($hierarchy, "data/parents", []);
                     $parents[] = Si4Util::pathArg($hierarchy, "data/currentEntity", []);
                     $lastCollectionParent = "";

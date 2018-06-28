@@ -106,6 +106,22 @@ class Entities extends Controller
         Artisan::call("reindex:entity", ["entityId" => $entity->id]);
         Artisan::call("thumbs:create", ["entityId" => $entity->id]);
 
+        ElasticHelpers::refreshIndex();
+
+        // Update parent
+        /*
+        if ($entity->parent) {
+            $parentEntity = Entity::where(["handle_id" => $entity->parent])->first();
+            $parentEntity->updateXml();
+
+            $entity->save();
+
+            Artisan::call("reindex:entity", ["entityId" => $parentEntity->id]);
+
+            ElasticHelpers::refreshIndex();
+        }
+        */
+
         return ["status" => $status, "error" => $error];
     }
 
