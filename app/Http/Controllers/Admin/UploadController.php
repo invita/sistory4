@@ -147,6 +147,7 @@ class UploadController extends Controller
     public function importCheck(Request $request) {
         ini_set('max_execution_time', env("SI4_MAX_EXECUTION_TIME_EXT_OPTS"));
         ini_set('post_max_size', env("SI4_MAX_POST_SIZE_EXT_OPTS"));
+        ini_set('upload_max_filesize', env("SI4_MAX_POST_SIZE_EXT_OPTS"));
 
         $file = $request->file("file");
         //print_r($file);
@@ -195,6 +196,7 @@ class UploadController extends Controller
     {
         ini_set('max_execution_time', env("SI4_MAX_EXECUTION_TIME_EXT_OPTS"));
         ini_set('post_max_size', env("SI4_MAX_POST_SIZE_EXT_OPTS"));
+        ini_set('upload_max_filesize', env("SI4_MAX_POST_SIZE_EXT_OPTS"));
 
         $postJson = json_decode(file_get_contents("php://input"), true);
         $uploadedFile = Si4Util::getArg($postJson, "uploadedFile");
@@ -302,6 +304,7 @@ class UploadController extends Controller
     public function uploadFile(Request $request) {
         ini_set('max_execution_time', env("SI4_MAX_EXECUTION_TIME_EXT_OPTS"));
         ini_set('post_max_size', env("SI4_MAX_POST_SIZE_EXT_OPTS"));
+        ini_set('upload_max_filesize', env("SI4_MAX_POST_SIZE_EXT_OPTS"));
 
         $status = true;
         $error = null;
