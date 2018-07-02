@@ -302,13 +302,14 @@ class DcHelpers {
             // Default file
             //print_r($inputValue);
             $handleId = Si4Util::pathArg($inputValue, "handle_id");
+            $structType = Si4Util::pathArg($inputValue, "struct_type");
             $fileName = Si4Util::pathArg($inputValue, "data/files/0/ownerId");
 
             if ($handleId && $fileName) {
-                $thumbUrl = FileHelpers::getThumbUrl($handleId, $fileName);
+                $thumbUrl = FileHelpers::getThumbUrl($handleId, $structType, $fileName);
                 return $thumbUrl;
             }
-            return SI4_DEFAULT_THUMB;
+            return FileHelpers::getDefaultThumbForStructType($structType);
         };
     }
 
