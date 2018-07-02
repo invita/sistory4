@@ -42,8 +42,14 @@ class SearchController extends FrontendController
 
         //echo "<pre>"; print_r($data); echo "</pre>";
 
+        $layoutData = $this->layoutData($request);
+        if ($hdl) {
+            $layoutData["allowInsideSearch"] = true;
+            $layoutData["hdl"] = $hdl;
+        }
+
         return view("fe.search", [
-            "layoutData" => $this->layoutData($request),
+            "layoutData" => $layoutData,
             "searchType" => "search",
             "data" => $data,
             "paginatorTop" => $this->preparePaginator($data, "top"),

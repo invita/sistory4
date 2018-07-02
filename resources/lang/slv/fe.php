@@ -2,8 +2,10 @@
 
 return [
     'search_placeholderPrefix' => 'Išči',
+    'search_placeholderPrefixCollection' => 'Išči po',
     'search_searchButton' => 'Išči',
     'search_advancedSearch' => 'Napredno iskanje',
+    'search_textInCollection' => 'Iskanje znotraj trenutne zbirke',
 
     'searchType_all' => 'Vse',
     'searchType_collection' => 'Zbirke',

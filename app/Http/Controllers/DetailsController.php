@@ -61,8 +61,20 @@ class DetailsController extends FrontendController
             }
         }
 
+        $layoutData = $this->layoutData($request);
+
+        // Modify layout data when looking at collection details, so that search will look inside this collection
+        if ($struct_type == "collection") {
+            $layoutData["allowInsideSearch"] = true;
+            $layoutData["hdl"] = $hdl;
+
+            $title = $data["doc"]["first_dc_title"];
+            //$layoutData["search_placeholder"] = __("fe.search_placeholderPrefixCollection")." ".$title."...";
+            //print_r($layoutData);
+        }
+
         return view($viewName, [
-            "layoutData" => $this->layoutData($request),
+            "layoutData" => $layoutData,
             "hdl" => $hdl,
             "data" => $data,
         ]);
@@ -78,7 +90,6 @@ class DetailsController extends FrontendController
             $children[] = DcHelpers::mapElasticEntity($child);
         }
         $data["children"] = $children;
-
 
         //print_r($data);
     }

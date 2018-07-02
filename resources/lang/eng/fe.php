@@ -2,8 +2,10 @@
 
 return [
     'search_placeholderPrefix' => 'Search',
+    'search_placeholderPrefixCollection' => 'Search in',
     'search_searchButton' => 'Search',
     'search_advancedSearch' => 'Advanced search',
+    'search_textInCollection' => 'Searching inside current collection',
 
     'searchType_all' => 'All',
     'searchType_collection' => 'Collections',

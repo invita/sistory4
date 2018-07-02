@@ -49,21 +49,26 @@
             <div class="searchFormContainer">
                 <div class="row">
                     <!-- Logo -->
-                    <div class="medium-5 columns logo">
+                    <div class="medium-4 columns logo">
                         <a href="/">
                             <img src="/img/logo5.png" style="height:70px;" />
                         </a>
                     </div>
 
-                    <div class="medium-7 columns mt-1">
+                    <div class="medium-8 columns mt-1">
                         <div class="textAlignRight mb-025">
                             <a class="default" href="/advanced-search">{{ __("fe.search_advancedSearch") }}</a>
                         </div>
 
                         <!-- Search Form -->
-                        <form action="/search" class="flexRow">
+                        <form action="/search" class="flexRow" id="searchForm">
+                            @if ($layoutData["allowInsideSearch"])
+                                <input type="checkbox" name="hdl" value="{{ $layoutData["hdl"] }}" class="displayNone" id="searchInsideCurrent" {{ $layoutData["hdl"] ? "checked" : "" }}/>
+                                <label id="collectionSearchIndicator" for="searchInsideCurrent">{{ __("fe.search_textInCollection") }}</label>
+                            @endif
                             <input id="searchInput" class="query flex7" type="text" name="q"
-                                value="{{ $layoutData["q"] }}" placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
+                                value="{{ $layoutData["q"] }}"
+                                placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
                             <select name="st" class="flex2">
                                 @foreach($layoutData["searchTypes"] as $searchType)
                                     <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>

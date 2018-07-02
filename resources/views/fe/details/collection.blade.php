@@ -11,6 +11,7 @@
                 <?php echo $data["html_breadcrumbs"]; ?>
             </div>
 
+<!--
             <div class="collectionSearch">
                 <form action="/search" class="flexRow">
                     <input type="hidden" name="hdl" value="{{ $data["doc"]["handle_id"] }}" />
@@ -19,6 +20,7 @@
                     <input class="submit flex1" type="submit" value="Search">
                 </form>
             </div>
+-->
 
             <div class="detailsContent">
                 <div class="contentWrap">

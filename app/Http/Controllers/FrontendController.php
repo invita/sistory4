@@ -21,6 +21,7 @@ class FrontendController extends Controller
         $layoutData["q"] = $request->query("q", ""); // Query string
         $layoutData["st"] = $request->query("st", "all"); // Search type
         $layoutData["hdl"] = $request->query("hdl", ""); // Handle filter
+        $layoutData["allowInsideSearch"] = false;
 
         // Available search types
         $layoutData["searchTypes"] = $this->prepareSearchTypes();
