@@ -132,26 +132,34 @@ a.default:hover {
 }
 
 /* Collection search */
+.collectionSearchIndicatorWrap {
+    margin-top: -10px;
+}
+
 input + #collectionSearchIndicator {
+    margin: 0px 5px;
+    line-height: 14px;
+    font-size: 12px;
+    padding-left: 2px;
+    text-align: center;
+    cursor: pointer;
+    /*
     display: flex;
     align-items: center;
     justify-content: center;
     height: 39px;
-    margin: 0px 5px;
     width: 120px;
-    line-height: 14px;
-    font-size: 13px;
-    padding: 2px;
-    text-align: center;
-    cursor: pointer;
     border-radius: 2px;
     border: silver solid 1px;
     background: rgba(102, 136, 51, 0.2);
+    */
 }
 input:checked + #collectionSearchIndicator {
     /* border: white solid 1px; */
+    /*
     background: #668833;
     color: white;
+    */
 }
 
 /* Search results */

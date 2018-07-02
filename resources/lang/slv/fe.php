@@ -5,7 +5,7 @@ return [
     'search_placeholderPrefixCollection' => 'Išči po',
     'search_searchButton' => 'Išči',
     'search_advancedSearch' => 'Napredno iskanje',
-    'search_textInCollection' => 'Iskanje znotraj trenutne zbirke',
+    'search_textInCollection' => 'Išči znotraj',
 
     'searchType_all' => 'Vse',
     'searchType_collection' => 'Zbirke',

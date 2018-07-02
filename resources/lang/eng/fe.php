@@ -5,7 +5,7 @@ return [
     'search_placeholderPrefixCollection' => 'Search in',
     'search_searchButton' => 'Search',
     'search_advancedSearch' => 'Advanced search',
-    'search_textInCollection' => 'Searching inside current collection',
+    'search_textInCollection' => 'Search inside',
 
     'searchType_all' => 'All',
     'searchType_collection' => 'Collections',

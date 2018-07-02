@@ -67,10 +67,7 @@ class DetailsController extends FrontendController
         if ($struct_type == "collection") {
             $layoutData["allowInsideSearch"] = true;
             $layoutData["hdl"] = $hdl;
-
-            $title = $data["doc"]["first_dc_title"];
-            //$layoutData["search_placeholder"] = __("fe.search_placeholderPrefixCollection")." ".$title."...";
-            //print_r($layoutData);
+            $layoutData["hdlTitle"] = $data["doc"]["first_dc_title"];
         }
 
         return view($viewName, [

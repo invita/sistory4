@@ -61,20 +61,24 @@
                         </div>
 
                         <!-- Search Form -->
-                        <form action="/search" class="flexRow" id="searchForm">
+                        <form action="/search" id="searchForm">
+                            <div class="flexRow">
+                                <input id="searchInput" class="query flex7" type="text" name="q"
+                                    value="{{ $layoutData["q"] }}"
+                                    placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
+                                <select name="st" class="flex2">
+                                    @foreach($layoutData["searchTypes"] as $searchType)
+                                        <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
+                                    @endforeach
+                                </select>
+                                <input class="submit flex1" type="submit" value="{{ __("fe.search_searchButton") }}">
+                            </div>
                             @if ($layoutData["allowInsideSearch"])
-                                <input type="checkbox" name="hdl" value="{{ $layoutData["hdl"] }}" class="displayNone" id="searchInsideCurrent" {{ $layoutData["hdl"] ? "checked" : "" }}/>
-                                <label id="collectionSearchIndicator" for="searchInsideCurrent">{{ __("fe.search_textInCollection") }}</label>
+                                <div class="flexRow collectionSearchIndicatorWrap">
+                                    <input type="checkbox" name="hdl" value="{{ $layoutData["hdl"] }}" id="searchInsideCurrent" {{ $layoutData["hdl"] ? "checked" : "" }}/>
+                                    <label id="collectionSearchIndicator" for="searchInsideCurrent">{{ __("fe.search_textInCollection") }} {{ $layoutData["hdlTitle"] }}</label>
+                                </div>
                             @endif
-                            <input id="searchInput" class="query flex7" type="text" name="q"
-                                value="{{ $layoutData["q"] }}"
-                                placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
-                            <select name="st" class="flex2">
-                                @foreach($layoutData["searchTypes"] as $searchType)
-                                    <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
-                                @endforeach
-                            </select>
-                            <input class="submit flex1" type="submit" value="{{ __("fe.search_searchButton") }}">
                         </form>
                     </div>
                 </div>

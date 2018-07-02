@@ -46,6 +46,12 @@ class SearchController extends FrontendController
         if ($hdl) {
             $layoutData["allowInsideSearch"] = true;
             $layoutData["hdl"] = $hdl;
+
+            $hdlElasticData = ElasticHelpers::searchByHandleArray([$hdl]);
+            $hdlDocData = $hdlElasticData[array_keys($hdlElasticData)[0]];
+            $hdlDoc = DcHelpers::mapElasticEntity($hdlDocData);
+
+            $layoutData["hdlTitle"] = $hdlDoc["first_dc_title"];
         }
 
         return view("fe.search", [
