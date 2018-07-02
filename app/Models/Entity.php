@@ -146,8 +146,10 @@ class Entity extends Model
 
 
         // structMap hierarchy
-        $hierarchy = $this->getHierarchy();
-        $parents = $hierarchy["data"]["parents"];
+        //$hierarchy = $this->getHierarchy();
+        $parentHierarchy = $this->findParentHierarchy();
+        $parents = $parentHierarchy["data"];
+
         if (count($parents)) {
             $parent = $parents[count($parents) -1];
 
@@ -159,8 +161,6 @@ class Entity extends Model
                 $structMap = $xmlDoc->addChild("METS:structMap");
             $structMap["ID"] = "default.structure";
             $structMap["TYPE"] = $parent["entity_type"];
-
-
 
             // Remove METS:structMap/METS:div and reconstruct
             unset($xmlDoc->xpath("METS:structMap/METS:div")[0][0]);
@@ -181,7 +181,9 @@ class Entity extends Model
             $structCurrentDiv["DMDID"] = "default.dc default.mods";
             $structCurrentDiv["AMDID"] = "default.amd";
 
-            $children = $hierarchy["data"]["children"];
+            $childrenData = $this->findChildren();
+            $children = $childrenData["data"];
+            //$children = $hierarchy["data"]["children"];
             //print_r(array_keys($children[0]));
             //print_r($children[0]["handle_id"]);
             foreach ($children as $child) {
@@ -234,6 +236,7 @@ class Entity extends Model
         //$this->data = $xmlDoc->asXML();
     }
 
+    /*
     private $hierarchy = null;
     public function getHierarchy() {
         if (!$this->hierarchy) {
@@ -249,6 +252,18 @@ class Entity extends Model
         }
         return $this->parentHierarchy;
     }
+    */
+
+
+    public function findParentHierarchy() {
+        return EntitySelect::selectParentHierarchy($this->parent);
+    }
+    public function findChildren() {
+        return EntitySelect::selectChildren($this->handle_id);
+    }
+
+
+
 
     // Calculates primary entity
     public function calculateParents() {
@@ -257,9 +272,8 @@ class Entity extends Model
                 if ($this->parent) {
                     $this->entity_type = "dependant";
                     //$hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
-                    $hierarchy = $this->getParentHierarchy();
-                    $parents = Si4Util::pathArg($hierarchy, "data/parents", []);
-                    $parents[] = Si4Util::pathArg($hierarchy, "data/currentEntity", []);
+                    $parentHierarchy = $this->findParentHierarchy();
+                    $parents = Si4Util::pathArg($parentHierarchy, "data", []);
                     $this->primary = $parents[0]["handle_id"];
                 } else {
                     $this->entity_type = "primary";
@@ -277,9 +291,9 @@ class Entity extends Model
                 $this->primary = $this->handle_id;
                 if ($this->parent) {
                     //$hierarchy = EntitySelect::selectEntityHierarchy(["handle_id" => $this->parent]);
-                    $hierarchy = $this->getParentHierarchy();
-                    $parents = Si4Util::pathArg($hierarchy, "data/parents", []);
-                    $parents[] = Si4Util::pathArg($hierarchy, "data/currentEntity", []);
+                    $parentHierarchy = $this->findParentHierarchy();
+                    //$hierarchy = $this->getParentHierarchy();
+                    $parents = Si4Util::pathArg($parentHierarchy, "data", []);
                     $lastCollectionParent = "";
                     // Find first entity parent for primary and take it's parent for collection
                     foreach ($parents as $parent) {

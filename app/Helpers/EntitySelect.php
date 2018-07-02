@@ -611,4 +611,47 @@ class EntitySelect
         ]];
     }
 
+
+    public static function selectParentHierarchy($first_parent_handle_id) {
+
+        $parents = [];
+        if (!$first_parent_handle_id) return ["status" => true, "data" => []];
+
+        // Select first parent entity by handle
+        $entity = EntitySelect::selectEntitiesByHandleIds([$first_parent_handle_id]);
+        $entity = isset($entity["data"]) && isset($entity["data"][0]) ? $entity["data"][0] : null;
+
+        $found_handle_id = $entity && isset($entity["handle_id"]) && $entity["handle_id"] ? $entity["handle_id"] : false;
+        if (!$found_handle_id) {
+            throw new EntityNotIndexedException("Entity '".$first_parent_handle_id."' not found in Elastic index");
+        }
+
+        array_unshift($parents, $entity);
+
+        // Select grandparent entities
+        $parentId = $entity && isset($entity["parent"]) && $entity["parent"] ? $entity["parent"] : false;
+        while ($parentId) {
+            $parentEntity = EntitySelect::selectEntitiesByHandleIds([$parentId]);
+            $parentEntity = isset($parentEntity["data"]) && isset($parentEntity["data"][0]) ? $parentEntity["data"][0] : null;
+            if ($parentEntity) {
+                array_unshift($parents, $parentEntity);
+                $parentId = $parentEntity["parent"];
+            } else {
+                $parentId = null;
+            }
+        }
+
+
+        return ["status" => true, "data" => $parents];
+    }
+
+
+    public static function selectChildren($handle_id) {
+
+        $children = EntitySelect::selectEntitiesByParentHandle($handle_id);
+        $children = isset($children["data"]) ? $children["data"] : [];
+
+        return ["status" => true, "data" => $children];
+    }
+
 }
