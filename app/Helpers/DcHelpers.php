@@ -69,6 +69,10 @@ class DcHelpers {
                     "path" => "_source/data/dmd/dc/title",
                     "parser" => DcHelpers::getDcFirstParser()
                 ],
+                "first_dc_creator" => [
+                    "path" => "_source/data/dmd/dc/creator",
+                    "parser" => DcHelpers::getDcFirstParser()
+                ],
                 "first_dc_date" => [
                     "path" => "_source/data/dmd/dc/date",
                     "parser" => DcHelpers::getDcFirstParser()

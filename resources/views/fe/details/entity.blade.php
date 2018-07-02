@@ -19,6 +19,7 @@
                     <div class="detailsDcField detailsDcTitle">
                         <?php echo $data["doc"]["html_dc_title"] ?>
                     </div>
+
                     <div class="detailsDcField detailsDcCreator">
                         {{ __('fe.details_dcCreator') }}: <?php echo $data["doc"]["html_dc_creator"] ?>
                     </div>
@@ -90,6 +91,25 @@
                             {{ __('fe.details_dcRights') }}: <?php echo $data["doc"]["html_dc_rights"] ?>
                         </div>
                     @endif
+
+
+                    @if ($data["children"] && count($data["children"]))
+                        <div class="detailsChildren">
+                            <div class="childrenText">Child entities</div>
+                            <ul class="entityChildren">
+                                @foreach ($data["children"] as $child)
+                                    @if ($child["handle_id"] && $child["first_dc_creator"] && $child["first_dc_title"])
+                                        <li>
+                                            <span>{{ $child["first_dc_creator"] }}:</span>
+                                            <a href="/details/{{ $child["handle_id"] }}">{{ $child["first_dc_title"] }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                            <?php /* print_r($data["children"]); */ ?>
+                        </div>
+                    @endif
+
                 </div>
             </div>
 

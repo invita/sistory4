@@ -84,6 +84,16 @@ class DetailsController extends FrontendController
     }
 
     private function prepareDataForEntity(Request $request, $hdl, $docData, &$data) {
+
+        // Find children
+        $childData = ElasticHelpers::searchChildren($hdl);
+        $children = [];
+        foreach ($childData as $child) {
+            $children[] = DcHelpers::mapElasticEntity($child);
+        }
+        $data["children"] = $children;
+
+
         $data["files"] = [];
         $files = ElasticHelpers::searchMust([
             "parent" => $hdl,

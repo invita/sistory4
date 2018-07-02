@@ -246,6 +246,7 @@ a.default:hover {
 }
 .detailsContent .bigImageWrap {
     width: 250px;
+    max-height: 350px;
     /* height: 350px; */
     display: flex;
     align-items: flex-start;
@@ -338,6 +339,17 @@ a.default:hover {
 .detailsContent .childrenWrap .child .childDetails span.childCreators span.val {
     font-size: 13px;
 }
+
+/* Entity children */
+.detailsContent .detailsChildren .childrenText {
+    font-weight: bold;
+    margin-top: 10px;
+}
+.detailsContent .detailsChildren ul {
+    list-style: inside circle;
+}
+
+
 
 /* Files */
 .fileList {
