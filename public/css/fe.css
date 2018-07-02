@@ -48,6 +48,21 @@ a.default:hover {
     min-height: 400px;
 }
 
+/* ***** Language select ***** */
+#langSelect {
+    position: absolute;
+    right: .9375rem;
+    top: 3px;
+    width: 150px;
+}
+#langSelect select {
+    font-size: 13px;
+    line-height: 20px;
+    height: 30px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 /* ***** Search ***** */
 
 /* Search box */
@@ -492,6 +507,9 @@ a.default:hover {
     padding: 10px;
     background: #223311;
     */
+}
+.topMenuHolder {
+    position: relative;
 }
 #topMenu {
     border: none;

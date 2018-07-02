@@ -27,10 +27,18 @@
     @if (isset($layoutData) && isset($layoutData["topMenuHtml"]))
         <div class="topMenuWrap">
             <div class="row">
-                <div class="medium-12 columns">
+                <div class="medium-12 columns topMenuHolder">
                     <nav class="topMenu">
                         <?php echo  $layoutData["topMenuHtml"]; ?>
                     </nav>
+                    <div id="langSelect">
+                        <select>
+                            @foreach ($layoutData["langauges"] as $langVal => $langText)
+                                <option value="{{$langVal}}"{{ $langVal === $layoutData["lang"] ? " selected" : ""}}>{{$langText}}</option>
+                            @endforeach
+                        </select>
+                        <script>$("#langSelect select").change(function(){ location.href = "/lang/"+$(this).val(); })</script>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,19 +57,19 @@
 
                     <div class="medium-7 columns mt-1">
                         <div class="textAlignRight mb-025">
-                            <a class="default" href="/advanced-search">Advanced search</a>
+                            <a class="default" href="/advanced-search">{{ __("fe.search_advancedSearch") }}</a>
                         </div>
 
                         <!-- Search Form -->
                         <form action="/search" class="flexRow">
                             <input id="searchInput" class="query flex7" type="text" name="q"
-                                value="{{ $layoutData["q"] }}" placeholder="Search..." autocomplete="off" />
+                                value="{{ $layoutData["q"] }}" placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
                             <select name="st" class="flex2">
                                 @foreach($layoutData["searchTypes"] as $searchType)
                                     <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
                                 @endforeach
                             </select>
-                            <input class="submit flex1" type="submit" value="Search">
+                            <input class="submit flex1" type="submit" value="{{ __("fe.search_searchButton") }}">
                         </form>
                     </div>
                 </div>

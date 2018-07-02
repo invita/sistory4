@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'search_placeholderPrefix' => 'Search',
+    'search_searchButton' => 'Search',
+    'search_advancedSearch' => 'Advanced search',
+
     'searchType_all' => 'All',
     'searchType_collection' => 'Collections',
     'searchType_entity' => 'Digital objects',
@@ -46,6 +50,9 @@ return [
     'details_fileDownload' => 'Download',
 
     'details_allMetadata' => 'All metadata',
+
+    'lang_eng' => 'English',
+    'lang_slv' => 'Slovenian',
 
     'footerText' => '© Copyright 2011-2018 INZ, Zgodovina Slovenije - Si4',
 ];

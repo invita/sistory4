@@ -8,6 +8,10 @@ namespace App\Helpers;
  * @author   Matic Vrscaj
  */
 class Enums {
+
+    public static $feLanguages = ["eng", "slv"];
+    public static $dcLanguages = ["eng", "slv"];
+
     public static $structTypes = ["entity", "collection", "file"];
     public static $entityTypes = ["primary", "dependant"];
 }

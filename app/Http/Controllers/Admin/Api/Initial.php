@@ -15,6 +15,7 @@ class Initial extends Controller
             "currentUser" => $currentUser,
             "structTypes" => Enums::$structTypes,
             "entityTypes" => Enums::$entityTypes,
+            "dcLanguages" => Enums::$dcLanguages,
             "status" => true,
             "error" =>  null
         ];

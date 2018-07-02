@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\EntitySelect;
+use App\Helpers\Enums;
 use App\Helpers\Si4Util;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -12,15 +13,20 @@ use Illuminate\Support\Facades\Storage;
 class FrontendController extends Controller
 {
     public function layoutData(Request $request) {
+
         $layoutData = [];
 
         // Search parameters remain
+        $layoutData["lang"] = $request->session()->get("lang", "eng"); // Selected language
         $layoutData["q"] = $request->query("q", ""); // Query string
         $layoutData["st"] = $request->query("st", "all"); // Search type
         $layoutData["hdl"] = $request->query("hdl", ""); // Handle filter
 
         // Available search types
         $layoutData["searchTypes"] = $this->prepareSearchTypes();
+
+        // Available langauges
+        $layoutData["langauges"] = $this->prepareLanguages();
 
         // Top menu HTML
         $layoutData["topMenuHtml"] = $this->prepareTopMenuHtml();
@@ -40,6 +46,14 @@ class FrontendController extends Controller
         return ElasticHelpers::$searchTypes;
     }
 
+    // Languages
+    private function prepareLanguages() {
+        $result = [];
+        foreach (Enums::$feLanguages as $lang) {
+            $result[$lang] = __("fe.lang_".$lang);
+        }
+        return $result;
+    }
 
     // *** TopMenu ***
 

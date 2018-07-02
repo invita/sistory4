@@ -15,6 +15,8 @@
 //    return view('index');
 //});
 
+Route::get('/lang', "IndexController@lang")->name("index.lang#get");
+Route::get('/lang/{lang}', "IndexController@lang")->name("index.lang#get");
 
 Route::get('/', "IndexController@index")->name("index.index#get");
 Route::get('/search', "SearchController@index")->name("search.index#get");

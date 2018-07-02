@@ -37,6 +37,17 @@ $(document).ready(function() {
             }
             si4.data.entityTypes = entityTypes;
 
+            // dcLanguages
+            /*
+            var dcLanguages = {};
+            for (var dcLangIdx in response.dcLanguages) {
+                var dcLang = response.dcLanguages[dcLangIdx];
+                dcLanguages[dcLang] = dcLang;
+            }
+            si4.entity.mdHelper.dcLangCodes = dcLanguages;
+            */
+            //si4.data.dcLanguages = dcLanguages;
+
             var relationTypes = {};
             var relationTypesSelOpts = {};
             var relationTypesMap = {};

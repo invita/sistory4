@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
+use App\Helpers\Enums;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,6 @@ class IndexController extends FrontendController
         return view('fe.index', $data);
     }
 
-
     private function prepareIndexEntities() {
         $topMenuHandle = ElasticHelpers::getTopMenuHandleId();
         $assocData = ElasticHelpers::searchChildren($topMenuHandle);
@@ -29,5 +29,17 @@ class IndexController extends FrontendController
         }
 
         return $result;
+    }
+
+    public function lang(Request $request, $lang = 'eng') {
+        if (in_array($lang, Enums::$feLanguages)) {
+            session(["lang" => $lang]);
+        }
+
+        if (isset($_SERVER["HTTP_REFERER"]) && isset($_SERVER["HTTP_REFERER"])) {
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            return redirect("/");
+        }
     }
 }
