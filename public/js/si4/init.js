@@ -97,6 +97,10 @@ $(document).ready(function() {
                 caption: si4.translate("system_dashboard_mainTab_text"),
             });
             menuItems.push({
+                loadArgs: { moduleName:'System/Notes' },
+                caption: si4.translate("system_notes_mainTab_text"),
+            });
+            menuItems.push({
                 loadArgs: { moduleName:'System/UserList' },
                 caption: si4.translate("system_userList_mainTab_text"),
             });

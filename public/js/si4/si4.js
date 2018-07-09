@@ -54,118 +54,11 @@ si4.loadModule = function(loadArgs) {
 
     si4.loading.hide();
 
-    /*
-    si4.loading.show();
-
-    var moduleName = si4.getArg(loadArgs, "moduleName", null); // Module Name
-    var postData = si4.getArg(loadArgs, "postData", {}); // Post data
-    var tabPage = si4.getArg(loadArgs, "tabPage", null); // si4TabPage object
-    var newTab = si4.getArg(loadArgs, "newTab", null); // new TabPage Name string
-    var inDialog = si4.getArg(loadArgs, "inDialog", false); // Open module in new si4Dialog
-    var onModuleLoad = si4.getArg(loadArgs, "onModuleLoad", function(args){}); // OnModuleLoad callback
-
-    onModuleLoad(loadArgs);
-
-    $.post("/loadModule", {args: {moduleName:moduleName, postData:postData}}, function(data) {
-        try {
-            var dataObj = JSON.parse(data);
-            if (dataObj) {
-                var args = si4.mergeObjects(loadArgs, dataObj.args);
-
-                if (inDialog) {
-                    var dialogTitle = "Dialog";
-                    if (newTab) {
-                        dialogTitle = newTab;
-                        newTab = null;
-                    }
-                    var dialog = new si4.widget.si4Dialog({title:dialogTitle});
-                    tabPage = dialog.mainTab;
-                }
-
-                // Prepare some useful functions
-                args.helpers = {};
-
-                // Create TabPage Function
-                args.helpers.createTabPage = function(tabArgs){
-                    var tab = (tabPage && typeof(tabPage) == "object" && tabPage.isTabPage) ? tabPage : si4.data.mainTab;
-                    loadArgs.tabPage = tab;
-
-                    if (newTab)
-                        tab = new si4.widget.si4TabPage({name:newTab, parent:tab});
-
-                    if (!tabArgs) tabArgs = {};
-                    if (!tabArgs.name) tabArgs.name = 'Tab';
-                    if (!tabArgs.parent) tabArgs.parent = tab == si4.data.mainTab ? tab : tab.content;
-                    var childTabPage = new si4.widget.si4TabPage(tabArgs);
-                    if (loadArgs.onClose && typeof(loadArgs.onClose) == "function") childTabPage.onClose(loadArgs.onClose);
-                    if (loadArgs.onClosed && typeof(loadArgs.onClosed) == "function") childTabPage.onClosed(loadArgs.onClosed);
-                    return childTabPage;
-                };
-
-                if (dataObj["F"] && typeof(dataObj["F"]) == "string") {
-                    eval(dataObj["F"]);
-                    if (F && typeof(F) == "function") F(args);
-                }
-            }
-        }
-        catch (ex) {
-            alert("Error loading module "+moduleName+"\n\nMessage:\n"+ex.message);
-        }
-
-        si4.loading.hide();
-    });
-    */
 };
 
 
 si4.callMethod = function(args, f) {
-    //return si4.api.abstractCall(args, f);
-    /*
-    si4.loading.show();
-
-    var moduleName = si4.getArg(args, "moduleName", null); // Module Name
-    var methodName = si4.getArg(args, "methodName", null); // Method Name
-    var aSync = si4.getArg(args, "aSync", false); // Asynchronous call
-
-    var successF = function(result) {
-        si4.loading.hide();
-        if (result) {
-            // Alert
-            if (typeof(result['alert']) != "undefined")
-                alert(result['alert']);
-
-            if (typeof(result['sessionExpired']) != "undefined") {
-                alert("Your session expired. Please login again");
-                location.href = "/";
-            }
-
-            // Message
-            if (typeof(f) == "function")
-                f(result);
-        }
-    };
-
-    var errorF = function(xhr, status, statusText) {
-        si4.loading.hide();
-        if (status == "parsererror") {
-            // Strip tags
-            statusText += xhr.responseText.replace(/(<([^>]+)>)/ig,"");
-        }
-        alert('moduleName: '+moduleName+'\nmethodName: '+methodName+'\n\n['+status+'] '+statusText);
-    };
-
-    var ajaxResult = $.ajax({
-        type: 'POST',
-        url: '/callMethod',
-        data: {args:args},
-        success: successF,
-        error: errorF,
-        dataType: "json",
-        async:aSync
-    });
-
-    return ajaxResult.responseJSON;
-    */
+    // Obsolete
 };
 
 

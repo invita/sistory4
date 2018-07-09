@@ -63,8 +63,10 @@ si4.translations = {
     system_userDetails_contentTab_text: "Edit",
 
     // System
-    system_dashboard_mainTab_text: "System",
+    system_dashboard_mainTab_text: "Dashboard",
     system_dashboard_contentTab_text: "Dashboard",
+    system_notes_mainTab_text: "Notes",
+    system_notes_contentTab_text: "Notes",
 
 
     // TestPage
