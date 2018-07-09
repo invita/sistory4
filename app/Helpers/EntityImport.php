@@ -14,7 +14,9 @@ class EntityImport
 {
     public static function importEntity($handleId, $parentHandleId, $xmlContent) {
 
+        Timer::start("xmlParsing");
         $xmlDoc = simplexml_load_string($xmlContent);
+        Timer::stop("xmlParsing");
 
         //print_r($xml);
 
@@ -46,6 +48,7 @@ class EntityImport
         }
 
         //echo "Importing handleId:".$handleId."\n";
+        Timer::start("database");
 
         $existing = Entity::where(["handle_id" => $handleId])->first();
         if ($existing && $existing->id) {
@@ -58,6 +61,7 @@ class EntityImport
 
         //$id = explode(".", $maId)[2];
         //echo "id: ".$id."\n";
+
 
         $entity = Entity::findOrNew($newEntityId);
         $entity->handle_id = $handleId;
@@ -74,6 +78,9 @@ class EntityImport
 
         $entity->save();
 
+        Timer::stop("database");
+
+
         Artisan::call("reindex:entity", ["entityId" => $newEntityId]);
 
         //return $entity;
@@ -88,11 +95,20 @@ class EntityImport
     }
 
     public static function postImportEntity($sysId) {
+
+        Timer::start("database");
         $entity = Entity::findOrNew($sysId);
+        Timer::stop("database");
 
         $entity->calculateParents();
+
+        Timer::start("xmlParsing");
         $entity->updateXml();
+        Timer::stop("xmlParsing");
+
+        Timer::start("database");
         $entity->save();
+        Timer::stop("database");
 
         // Reindex
         Artisan::call("reindex:entity", ["entityId" => $sysId]);

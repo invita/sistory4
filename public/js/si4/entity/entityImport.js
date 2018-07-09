@@ -44,7 +44,9 @@ si4.entity.entityImport = function(formData, dataTable) {
                                     (response.errors.length > si4.config.maxErrorsToAlert ? "\n\n..."+(response.errors.length -10)+" "+si4.translate("ERR_MORE_ERRORS") : "")
                                 );
                             } else {
-                                alert(si4.translate("text_import_entities_success", response.data));
+                                alert(
+                                    si4.translate("text_import_entities_success", response.data)
+                                    +"\n\n"+"Import times in seconds:\n" +JSON.stringify(response.data.durations, null, 2));
                             }
 
                             setTimeout(function() {

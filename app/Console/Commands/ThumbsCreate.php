@@ -6,6 +6,7 @@ use App\Helpers\ElasticHelpers;
 use App\Helpers\EntitySelect;
 use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
+use App\Helpers\Timer;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
 use App\Xsd\AnyTypeHandler;
@@ -74,6 +75,7 @@ class ThumbsCreate extends Command
         if ($firstFileHandleId && $firstFileName) {
             $this->info("- Recreating thumbnail for entity {$entityId} handle_id={$entity_handle_id}, file_handle={$firstFileHandleId} ({$firstFileName})");
 
+            Timer::start("thumbGeneration");
 
             $storageName = FileHelpers::getPublicStorageName($entity_handle_id, $firstFileName);
             $fullPath = storage_path('app')."/".$storageName;
@@ -94,6 +96,8 @@ class ThumbsCreate extends Command
             } else {
                 $this->warn("File does not exist: ".$fullPath);
             }
+
+            Timer::stop("thumbGeneration");
         }
     }
 }

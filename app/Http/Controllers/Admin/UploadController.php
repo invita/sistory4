@@ -5,6 +5,7 @@ use App\Helpers\ElasticHelpers;
 use App\Helpers\EntityImport;
 use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
+use App\Helpers\Timer;
 use App\Http\Controllers\Controller;
 use App\Models\Elastic\EntityNotIndexedException;
 use App\Models\Entity;
@@ -198,6 +199,8 @@ class UploadController extends Controller
         ini_set('post_max_size', env("SI4_MAX_POST_SIZE_EXT_OPTS"));
         ini_set('upload_max_filesize', env("SI4_MAX_POST_SIZE_EXT_OPTS"));
 
+        Timer::start("total");
+
         $postJson = json_decode(file_get_contents("php://input"), true);
         $uploadedFile = Si4Util::getArg($postJson, "uploadedFile");
 
@@ -224,7 +227,6 @@ class UploadController extends Controller
         $archive->open($zipFileName, \ZipArchive::CREATE);
 
         foreach ($zipInfo["fileList"] as $zipFile) {
-
 
             //echo "zipFile ".$zipFile."\n";
 
@@ -267,10 +269,12 @@ class UploadController extends Controller
             } else {
                 // Not mets.xml, copy file to appropriate path
 
+                Timer::start("fileCopy");
                 $destStorageName = FileHelpers::getPublicStorageName($parentHandleId, $fileName);
                 if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
                 Storage::put($destStorageName, $content);
                 //echo "Put file ".$destStorageName."\n";
+                Timer::stop("fileCopy");
             }
 
             //echo "\n";
@@ -298,6 +302,11 @@ class UploadController extends Controller
         }
 
         $data["importCount"] = $importCount;
+
+        Timer::stop("total");
+
+        $data["durations"] = Timer::getResults();
+
         return ["status" => true, "data" => $data, "errors" => $errors];
     }
 

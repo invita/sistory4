@@ -6,6 +6,7 @@ use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
 use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
+use App\Helpers\Timer;
 use App\Helpers\XmlHelpers;
 use App\Models\Elastic\EntityNotIndexedException;
 use App\Xsd\AnySimpleTypeHandler;
@@ -76,6 +77,9 @@ class Entity extends Model
     public function dataToObject()
     {
         if (!$this->data) return null;
+
+        Timer::start("xmlParsing");
+
         $serializerBuilder = SerializerBuilder::create();
 
         $serializerBuilder->addMetadataDir(app_path("Xsd/Mets"), 'App\Xsd\Mets');
@@ -112,10 +116,15 @@ class Entity extends Model
         $array = $object->toArray();
         //print_r($array);
 
+        Timer::stop("xmlParsing");
+
         return $array;
     }
 
     public function updateXml() {
+
+        Timer::start("xmlParsing");
+
         $xmlDoc = simplexml_load_string($this->data);
         $xmlDoc['ID'] = $this->handle_id;
         $xmlDoc['OBJID'] = "http://hdl.handle.net/11686/".$this->handle_id;
@@ -233,6 +242,8 @@ class Entity extends Model
 
         $this->data = $dom->saveXML();
 
+        Timer::stop("xmlParsing");
+
         //$this->data = $xmlDoc->asXML();
     }
 
@@ -267,6 +278,7 @@ class Entity extends Model
 
     // Calculates primary entity
     public function calculateParents() {
+        Timer::start("calculateParents");
         switch ($this->struct_type) {
             case "collection":
                 if ($this->parent) {
@@ -309,6 +321,7 @@ class Entity extends Model
                 }
                 break;
         }
+        Timer::stop("calculateParents");
     }
 
     /**

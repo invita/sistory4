@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
+use App\Helpers\Timer;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
 use Illuminate\Console\Command;
@@ -50,7 +51,9 @@ class ReindexEntity extends Command
             $entityXmlParsed = $entity->dataToObject();
             //print_r($entityXmlParsed);
 
+            Timer::start("entityMapping");
             $entityElastic = new EntityElastic($entityXmlParsed);
+            Timer::stop("entityMapping");
 
             $indexBody = [
                 "id" => $entityId,
@@ -66,11 +69,15 @@ class ReindexEntity extends Command
                 "xml" => $entity["data"],
                 "data" => $entityElastic->getData()
             ];
+            Timer::start("elasticIndex");
             ElasticHelpers::indexEntity($entityId, $indexBody);
+            Timer::stop("elasticIndex");
         } else {
+            Timer::start("elasticIndex");
             if (ElasticHelpers::entityExists($entityId)) {
                 ElasticHelpers::deleteEntity($entityId);
             }
+            Timer::stop("elasticIndex");
         }
 
         //print_r($entity);
