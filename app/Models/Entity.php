@@ -408,6 +408,7 @@ class Entity extends Model
     {
         $entity = new self;
         $entity->struct_type = $structType;
+        $entity->child_order = 0;
         $entity->data = file_get_contents($uploadedFile->getPathname());
         $entity->save();
 

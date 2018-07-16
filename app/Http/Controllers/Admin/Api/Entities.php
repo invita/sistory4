@@ -49,6 +49,7 @@ class Entities extends Controller
         $entity->struct_type = $struct_type;
         $entity->struct_subtype = "default";
         $entity->entity_type = "";
+        $entity->child_order = $newEntityId;
         $entity->save();
         return [
             "status" => $status,

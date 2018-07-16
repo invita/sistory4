@@ -71,6 +71,7 @@ class EntityImport
         //$entity->calculateParents();
         $entity->entity_type = "";
         $entity->primary = "";
+        $entity->child_order = $newEntityId;
 
         $entity->data = $xmlContent;
 
@@ -97,7 +98,7 @@ class EntityImport
     public static function postImportEntity($sysId) {
 
         Timer::start("database");
-        $entity = Entity::findOrNew($sysId);
+        $entity = Entity::find($sysId);
         Timer::stop("database");
 
         $entity->calculateParents();
