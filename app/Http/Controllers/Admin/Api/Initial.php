@@ -16,6 +16,10 @@ class Initial extends Controller
             "structTypes" => Enums::$structTypes,
             "entityTypes" => Enums::$entityTypes,
             "dcLanguages" => Enums::$dcLanguages,
+            "repositoryInfo" => [
+                "name" => "SIstory",
+                "note" => "http://sistory.si"
+            ],
             "status" => true,
             "error" =>  null
         ];

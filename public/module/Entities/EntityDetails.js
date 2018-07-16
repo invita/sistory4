@@ -34,7 +34,8 @@ var F = function(args){
             value: rowValue.handle_id,
             type: "text",
             caption: si4.translate("field_handleId"),
-            readOnly: rowValue.handle_id ? true : false,
+            //readOnly: rowValue.handle_id ? true : false,
+            readOnly: false,
         });
 
         args.basicTab.fieldStructTypeId = args.basicTab.form.addInput({
@@ -70,7 +71,15 @@ var F = function(args){
             value: rowValue.struct_subtype,
             type: "text",
             caption: si4.translate("field_structSubtype"),
-            readOnly: true,
+            //readOnly: true,
+        });
+
+        args.basicTab.fieldChildOrder = args.basicTab.form.addInput({
+            name: "child_order",
+            value: rowValue.child_order,
+            type: "number",
+            caption: si4.translate("field_childOrder"),
+            //readOnly: true,
         });
 
         args.basicTab.fieldPrimary = args.basicTab.form.addInput({
@@ -385,6 +394,7 @@ var F = function(args){
 
 
         // *** Metadata Editor Tab ***
+        /*
         args.editorTab = args.createContentTab("mdEditorTab", {canClose: false});
         args.editorTab.panel = new si4.widget.si4Panel({parent: args.editorTab.content.selector});
         args.editorTab.panelGroup = args.editorTab.panel.addGroup();
@@ -469,6 +479,7 @@ var F = function(args){
             console.log(formValFromXml);
             args.editorTab.form.setValue(formValFromXml);
         });
+        */
 
 
         // *** Relations Tab ***
@@ -690,12 +701,14 @@ var F = function(args){
             if (args.staticData) {
                 for (var i in args.staticData) args.row[i] = args.staticData[i];
             }
-            args.row.xmlData = si4.entity.template.getEmptyMetsXml({
+            si4.entity.template.getEmptyMetsXml({
                 id: args.row.id,
                 handleId: args.row.handle_id,
                 structType: args.row.struct_type,
+            }, function(xmlTemplate) {
+                args.row.xmlData = xmlTemplate;
+                create();
             });
-            create();
         });
     } else {
         create();

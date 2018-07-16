@@ -105,6 +105,7 @@ si4.translations = {
     field_entityType: "Entity type",
     field_collectionType: "Collection type",
     field_structSubtype: "Behavior",
+    field_childOrder: "Child order",
     field_xmlFromFile: "Load xml from file",
 
     field_email: "Email",

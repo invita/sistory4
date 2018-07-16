@@ -110,6 +110,9 @@ class EntityElastic
                     $this->populatePremisData($xmlData);
                     break;
                 case "dc":
+                    $this->data["dmd"]["dc"] = $dmd;
+                    $this->populateDCData($xmlData);
+                    /*
                     if ($dmdId == "default.dc") {
                         // <METS:dmdSec ID="default.dc"> + <METS:mdWrap MDTYPE="DC">
                         $this->data["dmd"]["dc"] = $dmd;
@@ -119,6 +122,7 @@ class EntityElastic
                         $this->data["dmd"]["dcterms"] = $dmd;
                         $this->populateDCTermsData($xmlData);
                     }
+                    */
                     break;
                 case "mods":
                     $this->data["dmd"]["mods"] = $dmd;

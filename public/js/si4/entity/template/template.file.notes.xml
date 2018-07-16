@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Atribut TYPE označuje vrsto si4 entitete. Trenutno imamo somo tri vrste entitet z vrednostjo:
+     - collection
+     - entity (okrajšava za intellectual entity)
+     - file.
+     (Z nadgradnjo si4 bi lahko dodali še druge entitete, ki bi nam oajšale prehod na semantični splet (npr. actor).)
+     Atribut ID (označuje identifikator te met.xml datoteke) vedno vsebuje identifikator, ki je sestavljen iz si4, pike in suffix ID te entitete (npr. si4.menu76).
+     (Isto pravilo velja za collection, intelectual entity in file entitete.)
+     Atribut OBJID vsebuje celoten Handle URL (npr. http://hdl.handle.net/11686/menu76)
+-->
+<METS:mets xmlns:METS="http://www.loc.gov/METS/"
+           xmlns:xlink="http://www.w3.org/TR/xlink"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           TYPE="collection"
+           ID=""
+           OBJID="">
+    <!-- Atribut CREATEDATE vsebuje časovno znamko, ko je bil mets.xml prvič shranjen v adminu oziroma prvič uvožen v si4 repozitorij. (Vrsta zapisa 2016-12-07T11:25:58).
+         Atribut LASTMODDATE vsebuje časovno znamko, ko smo shranili zadnjo spremembo tega mets.xml dokumenta. Ta podatek je nujen zaradi ustreznega delovanja OAI-PMH.
+         Atribut RECORDSTATUS lahko vsebuje:
+          - Active (entiteta je aktivna - prikazana)
+          - Inactive
+    -->
+    <METS:metsHdr CREATEDATE="" LASTMODDATE="" RECORDSTATUS="">
+        <!-- vsebuje standardne podatke o repozitoriju: podatki se izpišejo iz konfiguracije repozoitorija -->
+        <METS:agent ROLE="DISSEMINATOR" TYPE="ORGANIZATION">
+            <!-- ime repozitorija (npr. SIstory ali SI-DIH) -->
+            <METS:name></METS:name>
+            <!-- domena repozitorija (npr. http://sistory.si/ ali http://www.sidih.si/  -->
+            <METS:note></METS:note>
+        </METS:agent>
+        <!-- Podatki o uporabniku, ki je ustvaril ali uvozil mets.xml.
+             V primeru modifikacije, se zapišejo podatki o uporabniku, ki je shranil zadnjo spremembo.
+             Atribut ID vsebuje številčni identifikator uporabnika v bazi si4.
+             Ker XML shema za ta atribut ne dopušča vpisovanja integer vrednosti, je ta identifikator v mets.xml vedno zapisan kot
+             kombinacija znakov user. in integer identifikator (npr. user.11)
+        -->
+        <METS:agent ROLE="CREATOR" ID="" TYPE="INDIVIDUAL">
+            <!-- Priimek, Ime uporabnika -->
+            <METS:name></METS:name>
+        </METS:agent>
+    </METS:metsHdr>
+    <!-- Sekcija z opisnimi metapodatki -->
+    <!-- Metapodatkovni model opisnih metapodatkov je določen čisto spodaj v METS:mets/METS:behaviorSec/METS:behavior/@BTYPE
+             Trenutno ima si4 samo eden možen behavior: Dublin Core metapodatkovni model (prvotno smo ga imenovali default). -->
+    <METS:dmdSec ID="description">
+        <!-- behavior, ki opredeljuje metapodatkovni model, je opredeljen z atributoma:
+             - obvezen atribut MDTYPE (za dublincore behavior je vrednost DC)
+             - če uporabljen metapodatkovni model ni vključen v METS XML shemo, je vrednost atributa MDTYPE vedno OTHER,
+                - v tem primeru dodamo še atribut OTHERMDTYPE, ki vsebuje oznako uporabljenega metapodatkovnega modela
+        -->
+        <METS:mdWrap MDTYPE="">
+            <!-- Vsebuje METS:xmlData, katerega vsebina je odvisna od METS:mets/METS:behaviorSec/METS:behavior/@BTYPE -->
+            <!-- Vsak metapodatkovni model bo imel glede na določen behavior vnaprej opredeljen metapodatkovni model METS:xmlData.
+                 Eden ali več namespace declaration tega metapodatkovnega modela so vedno vsebovani samo v METS:xmlData.
+            -->
+            <!-- Spodaj je primer trenutnega (default) dublin core metapodatkovnega modela -->
+            <METS:xmlData xmlns:dc="http://purl.org/dc/elements/1.1/"
+                          xmlns:dcterms="http://purl.org/dc/terms/"
+                          xmlns:dcmitype="http://purl.org/dc/dcmitype/">
+                <!-- Vsak metapodatkovni model (behavior) ima obvezen vsaj en element, ki opredeljuje naslov entitete. -->
+                <dc:title xml:lang="slv"></dc:title>
+            </METS:xmlData>
+            <!-- Za ilustracijo še osnovni primer za MODS metapodatkovni model.
+              <METS:xmlData xmlns:mods="http://www.loc.gov/mods/v3">
+                <mods:mods>
+                    <mods:titleInfo>
+                        <mods:title></mods:title>
+                    </mods:titleInfo>
+                </mods:mods>
+            </METS:xmlData>-->
+        </METS:mdWrap>
+    </METS:dmdSec>
+    <!-- Vsaka entiteta ima amdSec -->
+    <METS:amdSec ID="amd">
+        <!-- Obvezni identifikatorji -->
+        <METS:techMD ID="tech.premis">
+            <METS:mdWrap MDTYPE="PREMIS:OBJECT" MIMETYPE="text/xml">
+                <METS:xmlData xmlns:premis="http://www.loc.gov/premis/v3">
+                    <premis:objectIdentifier>
+                        <premis:objectIdentifierType>si4</premis:objectIdentifierType>
+                        <!-- se generira številčni ID ob uvozu v si4 -->
+                        <premis:objectIdentifierValue></premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <premis:objectIdentifier>
+                        <premis:objectIdentifierType>Local name</premis:objectIdentifierType>
+                        <!-- Vsebuje Handle suffix (npr. menu76)  -->
+                        <premis:objectIdentifierValue></premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <premis:objectIdentifier>
+                        <premis:objectIdentifierType>hdl</premis:objectIdentifierType>
+                        <!-- vsebuje celoten Handle (npr. http://hdl.handle.net/11686/menu76) -->
+                        <premis:objectIdentifierValue></premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <!-- Vsebuje vrsto entitete. Možne vrednosti:
+                         - Collection
+                         - Intellectual entity
+                         - File
+                    -->
+                    <premis:objectCategory></premis:objectCategory>
+                </METS:xmlData>
+            </METS:mdWrap>
+        </METS:techMD>
+        <!-- Dodatni tehnični metapodatki repozitorija si4 -->
+        <METS:techMD ID="tech.si4">
+            <METS:mdWrap MDTYPE="OTHER" OTHERMDTYPE="SI4" MIMETYPE="text/xml">
+                <METS:xmlData xmlns:si4="http://si4.si/schema/">
+                    <!-- Obvezno je potrebno določiti, ali obstajajo morebitni dodatni metapodatkovni zapisi o tej entiteti.
+                         Privzeta vrednost je false. -->
+                    <si4:additionalMetadata>false</si4:additionalMetadata>
+                    <!-- ostali metapodatki so opcijski -->
+                </METS:xmlData>
+            </METS:mdWrap>
+        </METS:techMD>
+    </METS:amdSec>
+
+    <!-- Ob shranitvi fizične datoteke se v fileSec zapišejo vsi glavni tehnični metapodatki te datoteke.  -->
+    <METS:fileSec ID="files" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <METS:fileGrp>
+            <!-- Privzeta vrednost atributa @ID je file.
+                 Atribut OWNERID vsebuje ime fizične datoteke (npr. PNZ-2015-3.pdf)
+                 Atribut MIMETYPE vsebuje ustrezno generirano vrednost za MIME Tyype (npr. application/pdf)
+                 Atribut CREATED vsebuje časovno znamko, ko je bila fizična datoteka uvožena v repozitorij (in so bili zapisani vsi generirani podatki).
+                 Atribut SIZE vsebuje velikost fizične datoteke v bytih.
+            -->
+            <METS:file ID="file" OWNERID="" MIMETYPE="" CREATED="" SIZE="" DMDID="description">
+                <!-- Atribut xlink:href vsebuje absolutno pot do fizične datoteke v si4 repozitoriju,
+                     npr. http://www.sistory.si/cdn/publikacije/36001-37000/36113/PNZ-2015-3.pdf -->
+                <METS:FLocat LOCTYPE="URL" xlink:href=""/>
+            </METS:file>
+        </METS:fileGrp>
+    </METS:fileSec>
+
+    <!-- V structMap prikažemo, kateri intelektualni intiteti pripada file entiteta: razmerje do parent intellectual entity. -->
+    <METS:structMap ID="structure" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <METS:div TYPE="entity">
+            <!-- Atribut xlink:href vsebuje Handle njegove parent entitete (npr. http://hdl.handle.net/11686/36113) -->
+            <METS:mptr LOCTYPE="HANDLE" xlink:href=""/>
+            <METS:div TYPE="file">
+                <METS:fptr FILEID="file"/>
+            </METS:div>
+        </METS:div>
+    </METS:structMap>
+
+    <!-- METS:fileSec se kreira samo v primeru  intellectual entity: glej /template/entity.xml -->
+    <!-- METS:structMap se vedno kreira, vendar odvisno od tipa entitete (intellectual entity, collection, file):
+         glej /template/entity.xml, /template/collection.xml in /template/file.xml -->
+    <!-- Različni metapodatkovni modeli so predeljeni z behavior -->
+    <METS:behaviorSec ID="si4.behavior" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- Atribut BTYPE opredeljuje behavior (oz. uporabljen metapodatkovni model).
+             Za default Dublin Core behavior naj bo vrednost dublincore,
+        -->
+        <METS:behavior BTYPE="">
+            <METS:mechanism LOCTYPE="URL" xlink:href="resources/assets/xsd/"/>
+        </METS:behavior>
+    </METS:behaviorSec>
+</METS:mets>

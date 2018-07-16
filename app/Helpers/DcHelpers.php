@@ -347,5 +347,10 @@ class DcHelpers {
         return $newformat;
     }
 
+    public static function dateToISOString($date = null) {
+        if (!$date) $date = time();
+        $newformat = date('Y-m-dTH:i:s', $date);
+        return $newformat;
+    }
 
 }

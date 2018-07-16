@@ -50,7 +50,7 @@ class FileHelpers
             $type = "entity";
             $num = intval($handleId);
         } else {
-            throw new Exception("Bad handleId ".$handleId);
+            return "foo";
         }
 
         $idNS = self::getIdNamespace($num);

@@ -71,6 +71,7 @@ $(document).ready(function() {
 
             si4.data.currentUser = response.currentUser;
 
+            si4.data.repositoryInfo = response.repositoryInfo;
 
             // Append menus
 

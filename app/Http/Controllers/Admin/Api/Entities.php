@@ -40,8 +40,8 @@ class Entities extends Controller
         $newEntityId = Si4Util::nextEntityId();
         $entity = Entity::findOrNew($newEntityId);
         $entity->id = $newEntityId;
-        //$entity->handle_id = EntityHandleSeq::nextNumSeq($struct_type);
-        $entity->handle_id = "";
+        $entity->handle_id = EntityHandleSeq::nextNumSeq($struct_type);
+        //$entity->handle_id = "";
         $entity->parent = "";
         $entity->primary = "";
         $entity->collection = "";
@@ -71,6 +71,7 @@ class Entities extends Controller
         //$entityType = Si4Util::getArg($postJson, "entity_type", "");
         $structSubtype = Si4Util::getArg($postJson, "struct_subtype", "");
         $structType = Si4Util::getArg($postJson, "struct_type", "");
+        $childOrder = Si4Util::getArg($postJson, "child_order", $id);
         $xml = Si4Util::getArg($postJson, "xml", "");
         $active = Si4Util::getArg($postJson, "active", false);
 
@@ -92,6 +93,7 @@ class Entities extends Controller
         $entity->parent = $parent;
         $entity->struct_type = in_array($structType, Enums::$structTypes) ? $structType : null;
         $entity->struct_subtype = $structSubtype;
+        $entity->child_order = $childOrder;
         $entity->data = $xml;
         $entity->active = $active;
 

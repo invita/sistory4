@@ -24,7 +24,7 @@
     <script src="/js/si4/translate/translate.js"></script>
     <script src="/js/si4/translate/languages/eng.js"></script>
     <script src="/js/si4/lookup.js"></script>
-    <script src="/js/si4/entity/template.js"></script>
+    <script src="/js/si4/entity/template/template.js"></script>
     <script src="/js/si4/entity/mdHelper.js"></script>
     <script src="/js/si4/entity/hintHelper.js"></script>
     <script src="/js/si4/entity/entityImport.js"></script>

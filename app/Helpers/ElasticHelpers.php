@@ -102,6 +102,9 @@ class ElasticHelpers
                 "handle_id": {
                     "type": "string"
                 },
+                "child_order": {
+                    "type": "integer"
+                },
                 "data.dmd.dc.title.value": {
                     "type": "string",
                     "analyzer": "lowercase_analyzer"
@@ -196,7 +199,7 @@ HERE;
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function search($query, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
+    public static function search($query, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
@@ -221,7 +224,7 @@ HERE;
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function searchString($queryString, $searchType = "all", $hdl = "", $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
+    public static function searchString($queryString, $searchType = "all", $hdl = "", $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
     {
 
         $searchFields = [
@@ -295,7 +298,7 @@ HERE;
         if (count($should)) $query["bool"]["should"] = $should;
         if (count($must)) $query["bool"]["must"] = $must;
 
-        return self::search($query, $offset, $limit, "id", "asc");
+        return self::search($query, $offset, $limit, "child_order", "asc");
     }
 
     /**
@@ -315,7 +318,7 @@ HERE;
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function searchAdvanced($params, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
+    public static function searchAdvanced($params, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
     {
         // "should" query is OR
         // "must" query is AND
@@ -415,7 +418,7 @@ HERE;
             ]
         ];
 
-        return self::search($query, 0, $limit, "id", "asc");
+        return self::search($query, 0, $limit, "child_order", "asc");
     }
     public static function suggestTitlesForCreator($creator, $title, $limit = 30)
     {
@@ -451,7 +454,7 @@ HERE;
             "bool" => [ "must" => $must ]
         ];
 
-        return self::search($query, 0, $limit, "id", "asc");
+        return self::search($query, 0, $limit, "child_order", "asc");
     }
 
 
@@ -497,7 +500,7 @@ HERE;
         return self::elasticResultToAssocArray($dataElastic);
     }
 
-    public static function searchMust($filters = [], $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "id", $sortDir = "asc")
+    public static function searchMust($filters = [], $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
     {
         foreach ($filters as $fieldName => $fieldValue) {
             $must[] = [
@@ -583,7 +586,7 @@ HERE;
                     ]
                 ],
                 "sort" => [
-                    ["struct_type_sort" => [ "order" => "desc" ]]
+                    ["child_order" => [ "order" => "asc" ]]
                 ],
 
                 "from" => $offset,

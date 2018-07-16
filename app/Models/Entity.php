@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\DcHelpers;
 use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
 use App\Helpers\FileHelpers;
@@ -123,6 +124,8 @@ class Entity extends Model
 
     public function updateXml() {
 
+        $currentUser = \Auth::user();
+
         Timer::start("xmlParsing");
 
         $xmlDoc = simplexml_load_string($this->data);
@@ -130,9 +133,26 @@ class Entity extends Model
         $xmlDoc['OBJID'] = "http://hdl.handle.net/11686/".$this->handle_id;
         $xmlDoc['TYPE'] = $this->struct_type;
 
-        $premisIdentifiers = $xmlDoc->xpath(
-            "METS:amdSec/METS:techMD/METS:mdWrap[@MDTYPE='PREMIS:OBJECT']/METS:xmlData/premis:objectIdentifier");
-        foreach ($premisIdentifiers as $premisIdentifier) {
+        // * MetsHdr
+        $metsHdr = $xmlDoc->xpath("METS:metsHdr")[0];
+        $metsHdr["LASTMODDATE"] = DcHelpers::dateToISOString();
+        $metsHdr["RECORDSTATUS"] = $this->active ? "Active" : "Inactive";
+
+        $agentCreator = $metsHdr->xpath("METS:agent[@ROLE='CREATOR']")[0];
+        $agentCreator["ID"] = $currentUser->id;
+        $agentCreator["TYPE"] = "INDIVIDUAL";
+        $agentCreatorName = $agentCreator->xpath("METS:name")[0];
+        $agentCreatorName[0] = $currentUser->lastname.", ".$currentUser->firstname;
+
+        // * DmdSec
+
+        // * AmdSec
+
+        // Premis
+        $premisXmlData = $xmlDoc->xpath("METS:amdSec/METS:techMD/METS:mdWrap[@MDTYPE='PREMIS:OBJECT']/METS:xmlData")[0];
+
+        $premisIdentifiers = $premisXmlData->xpath("premis:objectIdentifier");
+        foreach($premisIdentifiers as $idx => $premisIdentifier) {
             $piTypeNode = $premisIdentifier->xpath("premis:objectIdentifierType")[0];
             $piValueNode = $premisIdentifier->xpath("premis:objectIdentifierValue")[0];
             $piType = (string)$piTypeNode;
@@ -146,28 +166,105 @@ class Entity extends Model
             else if ($piType == "hdl") {
                 $piValueNode[0] = "http://hdl.handle.net/11686/".$this->handle_id;
             }
+        }
+
+        $premisObjCategory = $premisXmlData->xpath("premis:objectCategory")[0];
+        switch ($this->struct_type) {
+            case "collection": $premisObjCategory[0] = "Collection"; break;
+            case "entity": $premisObjCategory[0] = "Intellectual entity"; break;
+            case "file": $premisObjCategory[0] = "File"; break;
+        }
+
+
+        // Load relations
+        $childrenData = $this->findChildren();
+        $children = $childrenData["data"];
+
+        $parentHierarchy = $this->findParentHierarchy();
+        $parents = $parentHierarchy["data"];
+
+        if ($this->struct_type == "entity") {
+
+            // * fileSec
+
+            $fileSecArr = $xmlDoc->xpath("METS:fileSec");
+            if (count($fileSecArr)) $fileSec = $fileSecArr[0];
+            else $fileSec = $xmlDoc->addChild("METS:fileSec");
+
+            $fileSec["ID"] = "files";
+
+            // Remove METS:fileSec/METS:fileGrp and reconstruct
+            $fileSecGrpArray = $xmlDoc->xpath("METS:fileSec/METS:fileGrp");
+            if (count($fileSecGrpArray)) $fileSecGrp = $fileSecGrpArray[0];
+            else $fileSecGrp = $fileSec->addChild("METS:fileGrp");
+
+            $existingMetsFiles = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file");
+            for ($i = 0; $i < count($existingMetsFiles); $i++) {
+                if (strtoupper($existingMetsFiles[$i]["USE"]) != "EXTERNAL") {
+                    unset($existingMetsFiles[$i][0]);
+                }
+            }
+
+            foreach ($children as $child) {
+                if ($child["struct_type"] !== "file") continue;
+
+                $fileSecFile = $fileSecGrp->addChild("METS:file");
+                $fileSecFile["ID"] = $child["handle_id"];
+                $fileSecFile["OWNERID"] = $child["fileName"];
+                $fileSecFile["USE"] = $child["struct_subtype"];
+
+                $fileSecFileLocat = $fileSecFile->addChild("METS:FLocat");
+                $fileSecFileLocat["LOCTYPE"] = "HANDLE";
+                $fileSecFileLocat["xlink:href"] = "http://hdl.handle.net/11686/".$child["handle_id"];
+            }
+
+            //print_r($fileSec->asXML());
+
+            //<METS:file ID="" OWNERID="" USE="">
+                //<!-- Atribut xlink:href vsebuje handle te datoteke (npr. https://hdl.handle.net/11686/file22731) -->
+            //    <METS:FLocat LOCTYPE="HANDLE" xlink:href=""/>
+            //</METS:file>
+
+            //unset($xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file")[0][0]);
+
+                //unset($fileSecGrp[0][0]);
+
+            // METS:fileSec/METS:fileGrp
+            //$fileSecGrp = $fileSec->addChild("METS:fileGrp");
+            //print_r($children);
 
         }
 
-        $premisObjCategory = $xmlDoc->xpath(
-            "METS:amdSec/METS:techMD/METS:mdWrap[@MDTYPE='PREMIS:OBJECT']/METS:xmlData/premis:objectCategory")[0];
-        $premisObjCategory[0] = $this->struct_type;
+        // File attributes
+        if ($this->struct_type == "file") {
+            $metsFile = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file")[0];
+            $fileName = $metsFile["OWNERID"];
+            $parent = $this->parent;
+            $storageName = FileHelpers::getPublicStorageName($parent, $fileName);
+
+            if (Storage::exists($storageName)) {
+                $metsFile["MIMETYPE"] = Storage::mimeType($storageName); // FileHelpers::fileNameMime($fileName);
+                $metsFile["SIZE"] = Storage::size($storageName);
+                $metsFile["CREATED"] = "";
+                $metsFile["CHECKSUM"] = md5_file(storage_path('app')."/".$storageName);
+                $metsFile["CHECKSUMTYPE"] = "MD5";
+            }
+            //print_r($metsFile);
+        }
 
 
-        // structMap hierarchy
-        //$hierarchy = $this->getHierarchy();
-        $parentHierarchy = $this->findParentHierarchy();
-        $parents = $parentHierarchy["data"];
+
+
+        // * structMap
 
         if (count($parents)) {
             $parent = $parents[count($parents) -1];
 
             // METS:structMap
             $structMapArr = $xmlDoc->xpath("METS:structMap");
-            if (count($structMapArr))
-                $structMap = $structMapArr[0];
-            else
-                $structMap = $xmlDoc->addChild("METS:structMap");
+            if (count($structMapArr)) $structMap = $structMapArr[0];
+            else $structMap = $xmlDoc->addChild("METS:structMap");
+
             $structMap["ID"] = "default.structure";
             $structMap["TYPE"] = $parent["entity_type"];
 
@@ -190,8 +287,6 @@ class Entity extends Model
             $structCurrentDiv["DMDID"] = "default.dc default.mods";
             $structCurrentDiv["AMDID"] = "default.amd";
 
-            $childrenData = $this->findChildren();
-            $children = $childrenData["data"];
             //$children = $hierarchy["data"]["children"];
             //print_r(array_keys($children[0]));
             //print_r($children[0]["handle_id"]);
@@ -215,25 +310,6 @@ class Entity extends Model
         }
 
 
-
-        // File attributes
-        if ($this->struct_type == "file") {
-            $metsFile = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file")[0];
-            $fileName = $metsFile["OWNERID"];
-            $parent = $this->parent;
-            $storageName = FileHelpers::getPublicStorageName($parent, $fileName);
-
-            if (Storage::exists($storageName)) {
-                $metsFile["MIMETYPE"] = Storage::mimeType($storageName); // FileHelpers::fileNameMime($fileName);
-                $metsFile["SIZE"] = Storage::size($storageName);
-                $metsFile["CREATED"] = "";
-                $metsFile["CHECKSUM"] = md5_file(storage_path('app')."/".$storageName);
-                $metsFile["CHECKSUMTYPE"] = "MD5";
-            }
-            //print_r($metsFile);
-        }
-
-
         // Format XML
         $dom = new \DOMDocument();
         $dom->preserveWhiteSpace = false;
@@ -243,8 +319,6 @@ class Entity extends Model
         $this->data = $dom->saveXML();
 
         Timer::stop("xmlParsing");
-
-        //$this->data = $xmlDoc->asXML();
     }
 
     /*

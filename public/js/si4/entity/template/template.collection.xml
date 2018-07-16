@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<METS:mets xmlns:METS="http://www.loc.gov/METS/"
+           xmlns:xlink="http://www.w3.org/TR/xlink"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           TYPE="{{structType}}"
+           ID="{{si4id}}"
+           OBJID="{{handleUrl}}">
+    <METS:metsHdr CREATEDATE="{{currentTimestamp}}" LASTMODDATE="{{currentTimestamp}}" RECORDSTATUS="{{recordStatus}}">
+        <METS:agent ROLE="DISSEMINATOR" TYPE="ORGANIZATION">
+            <METS:name>{{repositoryName}}</METS:name>
+            <METS:note>{{repositoryNote}}</METS:note>
+        </METS:agent>
+        <METS:agent ROLE="CREATOR" ID="{{userId}}" TYPE="INDIVIDUAL">
+            <METS:name>{{userFullname}}</METS:name>
+        </METS:agent>
+    </METS:metsHdr>
+    <METS:dmdSec ID="description">
+        <METS:mdWrap MDTYPE="DC">
+            <METS:xmlData xmlns:dc="http://purl.org/dc/elements/1.1/"
+                          xmlns:dcterms="http://purl.org/dc/terms/"
+                          xmlns:dcmitype="http://purl.org/dc/dcmitype/">
+                <dc:title xml:lang="slv"></dc:title>
+            </METS:xmlData>
+        </METS:mdWrap>
+    </METS:dmdSec>
+    <METS:amdSec ID="amd">
+        <METS:techMD ID="tech.premis">
+            <METS:mdWrap MDTYPE="PREMIS:OBJECT" MIMETYPE="text/xml">
+                <METS:xmlData xmlns:premis="http://www.loc.gov/premis/v3">
+                    <premis:objectIdentifier>
+                        <premis:objectIdentifierType>si4</premis:objectIdentifierType>
+                        <premis:objectIdentifierValue>{{systemId}}</premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <premis:objectIdentifier>
+                        <premis:objectIdentifierType>Local name</premis:objectIdentifierType>
+                        <premis:objectIdentifierValue>{{handleId}}</premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <premis:objectIdentifier>
+                        <premis:objectIdentifierType>hdl</premis:objectIdentifierType>
+                        <premis:objectIdentifierValue>{{handleUrl}}</premis:objectIdentifierValue>
+                    </premis:objectIdentifier>
+                    <premis:objectCategory>Intellectual entity</premis:objectCategory>
+                </METS:xmlData>
+            </METS:mdWrap>
+        </METS:techMD>
+        <METS:techMD ID="tech.si4">
+            <METS:mdWrap MDTYPE="OTHER" OTHERMDTYPE="SI4" MIMETYPE="text/xml">
+                <METS:xmlData xmlns:si4="http://si4.si/schema/">
+                    <si4:additionalMetadata>false</si4:additionalMetadata>
+                </METS:xmlData>
+            </METS:mdWrap>
+        </METS:techMD>
+    </METS:amdSec>
+    <METS:structMap ID="structure" TYPE="" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- System will manage this section when you save -->
+    </METS:structMap>
+    <METS:behaviorSec ID="si4.behavior" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <METS:behavior BTYPE="dublincore">
+            <METS:mechanism LOCTYPE="URL" xlink:href="/xsd/dc"/>
+        </METS:behavior>
+    </METS:behaviorSec>
+</METS:mets>
+
+

@@ -64,7 +64,7 @@ input.si4Input.flat { border:none; box-shadow:none; background:inherit; }
 div.si4Input.flat { width:300px; border:none; box-shadow:none; background:inherit; line-height:18px;
     white-space: pre-line; }
 
-input.si4Input[type=text], input.si4Input[type=password], textarea.si4Input { width:200px; }
+input.si4Input[type=text], input.si4Input[type=password], input.si4Input[type=number], textarea.si4Input { width:200px; }
 input.si4Input.short[type=text], input.si4Input.short[type=password], textarea.si4Input.short { width:60px; }
 
 input.si4Input.searchInput[type=text], textarea.si4Input.searchInput { width:120px; }

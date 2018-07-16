@@ -15,6 +15,7 @@
 //    return view('index');
 //});
 
+
 Route::get('/lang', "IndexController@lang")->name("index.lang#get");
 Route::get('/lang/{lang}', "IndexController@lang")->name("index.lang#get");
 
@@ -33,6 +34,8 @@ Route::get('/test/{id}', "TestController@index")->name("test.index#get");
 // *** Storage ***
 Route::get('/storage/preview', "StorageController@preview")->name("storage.preview#get");
 Route::get('/storage/mets', "StorageController@mets")->name("storage.mets#get");
+Route::get('/xsd/{name}', "XsdController@index")->name("xsd.index#get");
+
 
 
 // *** Admin ***

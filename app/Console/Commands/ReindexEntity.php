@@ -65,6 +65,7 @@ class ReindexEntity extends Command
                 "struct_type_sort" => DcHelpers::getStructTypeSortValue($entity["struct_type"]),
                 "struct_subtype" => $entity["struct_subtype"],
                 "entity_type" => $entity["entity_type"],
+                "child_order" => $entity["child_order"],
                 "active" => $entity["active"],
                 "xml" => $entity["data"],
                 "data" => $entityElastic->getData()

@@ -224,6 +224,7 @@ class EntitySelect
             $structType = "";
             $entityType = "";
             $entitySubtype = "";
+            $childOrder = 0;
 
             $_source = Si4Util::getArg($hit, "_source", null);
 
@@ -231,6 +232,7 @@ class EntitySelect
                 $structType = Si4Util::getArg($_source, "struct_type", "");
                 $structSubtype = Si4Util::getArg($_source, "struct_subtype", "");
                 $entityType = Si4Util::getArg($_source, "entity_type", "");
+                $childOrder = Si4Util::getArg($_source, "child_order", 0);
 
                 $handle_id = Si4Util::getArg($_source, "handle_id", "");
                 $parent = Si4Util::getArg($_source, "parent", "");
@@ -249,7 +251,7 @@ class EntitySelect
                 $date = isset($dcMetadata["date"]) ? join(", ", DcHelpers::dcTextArray($dcMetadata["date"])) : "";
 
                 $fileName = Si4Util::pathArg($data, "files/0/ownerId", "");
-                if ($fileName) {
+                if ($structType == "file" && $fileName) {
                     $fileUrl = FileHelpers::getPreviewUrl($parent, $structType, $fileName);
                     $fileThumb = FileHelpers::getThumbUrl($parent, $structType, $fileName);
                     $fileMimeType = Si4Util::pathArg($data, "files/0/mimeType", "");
@@ -269,6 +271,7 @@ class EntitySelect
                 "struct_type" => $structType,
                 "struct_subtype" => $structSubtype,
                 "entity_type" => $entityType,
+                "child_order" => $childOrder,
                 "title" => $title,
                 "creator" => $creator,
                 "date" => $date,
