@@ -233,11 +233,24 @@ class Entity extends Model
             //$fileSecGrp = $fileSec->addChild("METS:fileGrp");
             //print_r($children);
 
-        }
+        } else
 
         // File attributes
         if ($this->struct_type == "file") {
-            $metsFile = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file")[0];
+
+            $fileSecArr = $xmlDoc->xpath("METS:fileSec");
+            if (count($fileSecArr)) $fileSec = $fileSecArr[0];
+            else $fileSec = $xmlDoc->addChild("METS:fileSec");
+
+            $fileSecGrpArray = $fileSec->xpath("METS:fileGrp");
+            if (count($fileSecGrpArray)) $fileSecGrp = $fileSecGrpArray[0];
+            else $fileSecGrp = $fileSec->addChild("METS:fileGrp");
+
+            $fileSecFileArray = $fileSecGrp->xpath("METS:file");
+            if (count($fileSecFileArray)) $metsFile = $fileSecFileArray[0];
+            else $metsFile = $fileSec->addChild("METS:file");
+
+            //$metsFile = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file")[0];
             $fileName = $metsFile["OWNERID"];
             $parent = $this->parent;
             $storageName = FileHelpers::getPublicStorageName($parent, $fileName);

@@ -696,6 +696,7 @@ var F = function(args){
 
         si4.api["reserveEntityId"]({ struct_type: args.row.struct_type }, function(response) {
             args.row.id = response.data.id;
+            args.row.child_order = response.data.id;
             args.row.handle_id = response.data.handle_id;
             args.row.struct_subtype = response.data.struct_subtype;
             if (args.staticData) {
