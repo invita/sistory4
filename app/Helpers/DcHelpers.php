@@ -17,7 +17,7 @@ class DcHelpers {
             "fieldName" => "title",
             "translateKey" => "field_title",
             "hasLanguage" => true,
-            "showAllLangauges" => true
+            "showAllLangauges" => false
         ],
         "creator" => [
             "fieldName" => "creator",
