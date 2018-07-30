@@ -190,6 +190,9 @@ class DcHelpers {
     public static function mapElasticEntity($elasticEntity) {
         $docPathMap = self::getElasticEntityPathMap($elasticEntity);
         $docResult = [];
+
+        $docResult["si4"] = self::si4frontendFormat($elasticEntity);
+
         foreach ($docPathMap as $key => $bluePrint) {
             $path = $bluePrint["path"];
             $docResult[$key] = Si4Util::pathArg($elasticEntity, $path, "");
@@ -197,6 +200,29 @@ class DcHelpers {
                 $docResult[$key] = $bluePrint["parser"]($key, $docResult[$key]);
         }
         return $docResult;
+    }
+
+    private static function si4frontendFormat($elasticEntity) {
+        $result = [];
+        $fieldDefs = DcHelpers::$si4FieldDefinitions;
+        $feLang = request()->session()->get("lang", "eng");;
+
+        foreach ($fieldDefs as $fieldName => $fieldDef) {
+            $result[$fieldName] = [];
+            $fieldVals = Si4Util::pathArg($elasticEntity, "_source/data/si4/".$fieldName);
+
+            if (isset($fieldVals) && count($fieldVals)) {
+                if ($fieldDef["hasLanguage"] && !$fieldDef["showAllLangauges"]) {
+                    // Filter values in other lang than FE
+                    $fieldVals = array_filter($fieldVals, function($x) use ($feLang) { return $x["lang"] === $feLang; });
+                }
+
+                foreach ($fieldVals as $fieldVal) {
+                    $result[$fieldName][] = $fieldVal["value"];
+                }
+            }
+        }
+        return $result;
     }
 
 

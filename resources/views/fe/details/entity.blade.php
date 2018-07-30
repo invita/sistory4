@@ -11,11 +11,30 @@
                 <?php echo $data["html_breadcrumbs"]; ?>
             </div>
 
+            <div>
+                <?php /* dd($data["doc"]["si4"]); */ ?>
+            </div>
+
             <div class="detailsContent">
                 <div class="bigImageWrap">
                     <img class="img" src="{{ $data["doc"]["defaultThumb"] }}" />
                 </div>
                 <div class="contentWrap">
+                    <div class="detailsDcField detailsDcTitle">
+                        @foreach ($data["doc"]["si4"]["title"] as $idx => $title)
+                            @if ($idx === 0)
+                                <h3>{{ $title }}</h3>
+                            @else
+                                <h4>{{ $title }}</h4>
+                            @endif
+                        @endforeach
+                    </div>
+
+                    <div class="detailsDcField detailsDcCreator">
+                        {{ __('fe.details_dcCreator') }}: {{ join("; ", $data["doc"]["si4"]["creator"]) }}
+                    </div>
+
+                    <!--
                     <div class="detailsDcField detailsDcTitle">
                         <?php echo $data["doc"]["html_dc_title"] ?>
                     </div>
@@ -23,7 +42,6 @@
                     <div class="detailsDcField detailsDcCreator">
                         {{ __('fe.details_dcCreator') }}: <?php echo $data["doc"]["html_dc_creator"] ?>
                     </div>
-                    <!--
                     @if ($data["doc"]["html_dc_subject"])
                         <div class="detailsDcField detailsDcSubject">
                             {{ __('fe.details_dcSubject') }}: <?php echo $data["doc"]["html_dc_subject"] ?>
