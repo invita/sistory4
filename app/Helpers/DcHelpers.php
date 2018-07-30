@@ -9,6 +9,42 @@ namespace App\Helpers;
  */
 class DcHelpers {
 
+    // ***** Si4 Model *****
+
+    // Field definitions mapped from any scheme into si4 format
+    public static $si4FieldDefinitions = [
+        "title" => [
+            "fieldName" => "title",
+            "translateKey" => "field_title",
+            "hasLanguage" => true,
+            "showAllLangauges" => true
+        ],
+        "creator" => [
+            "fieldName" => "creator",
+            "translateKey" => "field_creator",
+            "hasLanguage" => false,
+            "showAllLangauges" => false
+        ],
+        "date" => [
+            "fieldName" => "date",
+            "translateKey" => "field_date",
+            "hasLanguage" => false,
+            "showAllLangauges" => false
+        ],
+        "description" => [
+            "fieldName" => "description",
+            "translateKey" => "field_description",
+            "hasLanguage" => false,
+            "showAllLangauges" => false
+        ],
+    ];
+
+    // defaultLang is used for fields with no language data but with hasLanguage definition attribute set to true
+    public static $defaultLang = "eng";
+
+    // ***** End of Si4 Model *****
+
+
     private static $docPathMap = null;
     private static function getElasticEntityPathMap() {
         if (!self::$docPathMap) {

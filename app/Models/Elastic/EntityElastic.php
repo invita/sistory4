@@ -2,13 +2,28 @@
 
 namespace App\Models\Elastic;
 
+use App\Helpers\DcHelpers;
+use App\Models\Elastic\MdMappers\DC;
+use App\Models\Elastic\MdMappers\Mods;
+
 class EntityElastic
 {
     private $entityAssoc = null;
     private $data = [];
 
+    private $mdHandlerClasses = [DC::class, Mods::class];
+    private $mdHandlers = [];
+
     public function __construct($entityAssoc) {
         $this->entityAssoc = $entityAssoc;
+
+        // Instantiate Metadata mappers
+        foreach ($this->mdHandlerClasses as $mdHandlerClass) {
+            $mdHandler = new $mdHandlerClass();
+            $mdType = strtolower($mdHandler->mdTypeToHandle());
+            $this->mdHandlers[$mdType] = $mdHandler;
+        }
+
         $this->populate();
     }
 
@@ -105,13 +120,16 @@ class EntityElastic
             $xmlData = self::get($dmdSec, "MdWrapElName/XmlDataElName");
 
             switch (strtolower($dmdType)) {
+                /*
                 case "premis:object":
                     $this->data["dmd"]["premis"] = $dmd;
                     $this->populatePremisData($xmlData);
                     break;
+                */
                 case "dc":
                     $this->data["dmd"]["dc"] = $dmd;
                     $this->populateDCData($xmlData);
+
                     /*
                     if ($dmdId == "default.dc") {
                         // <METS:dmdSec ID="default.dc"> + <METS:mdWrap MDTYPE="DC">
@@ -124,17 +142,40 @@ class EntityElastic
                     }
                     */
                     break;
+                /*
                 case "mods":
                     $this->data["dmd"]["mods"] = $dmd;
                     $this->populateModsData($xmlData);
                     break;
+                */
+            }
+
+
+            if (!isset($this->data["si4"])) $this->data["si4"] = [];
+            foreach ($this->mdHandlers as $mdType => $mdTypeHandler) {
+                if ($mdType === strtolower($dmdType)) {
+                    echo $mdType."\n";
+                    $si4 = $mdTypeHandler->mapXmlData($xmlData);
+
+                    // Merge si4 fields
+                    foreach (DcHelpers::$si4FieldDefinitions as $fieldName => $fieldDef) {
+                        if (!isset($si4[$fieldName])) continue;
+                        if (!isset($this->data["si4"][$fieldName])) $this->data["si4"][$fieldName] = [];
+                        foreach ($si4[$fieldName] as $fieldValue)
+                            $this->data["si4"][$fieldName][] = $fieldValue;
+                    }
+                }
             }
         }
+
+        //echo "All si4\n"; print_r($this->data["si4"]);
     }
 
+    /*
     private function populatePremisData($xmlData) {
         // ...
     }
+    */
 
     private function populateDCData($xmlData) {
         //echo "EntityElastic.populateDCData: "; print_r($xmlData);
@@ -155,6 +196,8 @@ class EntityElastic
         //print_r($this->data["dmd"]["dc"]);
     }
 
+    /*
+    // Obsolete
     private function populateDCTermsData($xmlData) {
         // ...
     }
@@ -163,6 +206,7 @@ class EntityElastic
     private function populateModsData($xmlData) {
         // ...
     }
+    */
 
 
     // Administrative metadata section
