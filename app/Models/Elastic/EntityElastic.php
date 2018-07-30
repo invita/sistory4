@@ -154,7 +154,7 @@ class EntityElastic
             if (!isset($this->data["si4"])) $this->data["si4"] = [];
             foreach ($this->mdHandlers as $mdType => $mdTypeHandler) {
                 if ($mdType === strtolower($dmdType)) {
-                    echo $mdType."\n";
+                    //echo $mdType."\n";
                     $si4 = $mdTypeHandler->mapXmlData($xmlData);
 
                     // Merge si4 fields
