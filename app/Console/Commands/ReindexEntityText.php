@@ -79,7 +79,7 @@ class ReindexEntityText extends Command
 
         if (!$tikaStatus) {
             $this->info("No files or text. Nothing to do.");
-            $entity->req_text_reindex = true;
+            $entity->req_text_reindex = false;
             $entity->save();
             return;
         }
@@ -88,8 +88,10 @@ class ReindexEntityText extends Command
         ElasticHelpers::indexEntity($entityId, $elasticSource);
         Timer::stop("elasticIndex");
 
-        $entity->req_text_reindex = true;
+        $entity->req_text_reindex = false;
         $entity->save();
+
+        $this->info(print_r(Timer::getResults(), true));
         $this->info("All done for entity {$entityId}");
 
     }

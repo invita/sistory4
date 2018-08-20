@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Timer;
 use App\Models\Entity;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -41,7 +42,7 @@ class ReindexEntitiesText extends Command
         if ($forceAll) {
             $this->info("forceAll - All entities texts will be reindexed");
         } else {
-
+            $this->info("Only marked entities texts will be reindexed");
         }
 
         $noPrompt = $this->option("noPrompt");
@@ -63,6 +64,7 @@ class ReindexEntitiesText extends Command
                 $cnt++;
             }
 
+            $this->info(print_r(Timer::getResults(), true));
             $this->info("All done! Entities text reindexed: {$cnt}");
         }
     }
