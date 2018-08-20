@@ -255,7 +255,7 @@ class EntityElastic
                     {
                         foreach ($this->prevElasticSource["data"]["files"] as $prevFIdx => $prevF) {
                             if ($prevF["id"] == $fId && $prevF["ownerId"] == $fOwnerId) {
-                                $fullText = $prevF["fullText"];
+                                $fullText = isset($prevF["fullText"]) ? $prevF["fullText"] : "";
                                 break;
                             }
                         }
