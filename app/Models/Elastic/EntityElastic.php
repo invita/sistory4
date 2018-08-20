@@ -12,14 +12,16 @@ class EntityElastic
 {
     private $entityAssoc = null;
     private $entityDb = null;
+    private $prevElasticSource = null;
     private $data = [];
 
     private $mdHandlerClasses = [DC::class, Mods::class];
     private $mdHandlers = [];
 
-    public function __construct($entityDb, $entityAssoc) {
+    public function __construct($entityDb, $entityAssoc, $prevElasticSource = null) {
         $this->entityDb = $entityDb;
         $this->entityAssoc = $entityAssoc;
+        $this->prevElasticSource = $prevElasticSource;
 
         // Instantiate Metadata mappers
         foreach ($this->mdHandlerClasses as $mdHandlerClass) {
@@ -242,16 +244,34 @@ class EntityElastic
                     ];
                 }
 
+                $fId = self::get($file, "IDAttrName");
+                $fOwnerId = self::get($file, "OWNERIDAttrName");
+
+                // Try to find previous file fullText
+                $fullText = "";
+                if ($this->prevElasticSource) {
+                    if (isset($this->prevElasticSource["data"]) &&
+                        isset($this->prevElasticSource["data"]["files"]))
+                    {
+                        foreach ($this->prevElasticSource["data"]["files"] as $prevFIdx => $prevF) {
+                            if ($prevF["id"] == $fId && $prevF["ownerId"] == $fOwnerId) {
+                                $fullText = $prevF["fullText"];
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 $fileData = [
-                    "id" => self::get($file, "IDAttrName"),
-                    "ownerId" => self::get($file, "OWNERIDAttrName"),
+                    "id" => $fId,
+                    "ownerId" => $fOwnerId,
                     "mimeType" => self::get($file, "MIMETYPEAttrName"),
                     "size" => self::get($file, "SIZEAttrName"),
                     "created" => self::get($file, "CREATEDAttrName"),
                     "checksum" => self::get($file, "CHECKSUMAttrName"),
                     "checksumType" => self::get($file, "CHECKSUMTYPEAttrName"),
                     "locations" => $locations,
-                    "fullText" => ""
+                    "fullText" => $fullText
                 ];
 
                 $this->data["files"][] = $fileData;

@@ -52,13 +52,19 @@ class ReindexEntity extends Command
             $entityXmlParsed = $entity->dataToObject();
             //print_r($entityXmlParsed);
 
-            Timer::start("entityMapping");
-            $entityElastic = new EntityElastic($entity, $entityXmlParsed);
-            Timer::stop("entityMapping");
+            // Keep fullText attributes for files if they exist
+            $prevElasticData = ElasticHelpers::plainEntityById($entityId);
+            $prevElasticSource = null;
+            if (isset($prevElasticData["hits"]) &&
+                isset($prevElasticData["hits"]["hits"]) &&
+                isset($prevElasticData["hits"]["hits"][0]))
+            {
+                $prevElasticSource = $prevElasticData["hits"]["hits"][0]["_source"];
+            }
 
-            //Timer::start("fileTextExtraction");
-            //$entityElastic->extractTextFromFiles();
-            //Timer::stop("fileTextExtraction");
+            Timer::start("entityMapping");
+            $entityElastic = new EntityElastic($entity, $entityXmlParsed, $prevElasticSource);
+            Timer::stop("entityMapping");
 
             $indexBody = [
                 "id" => $entityId,
@@ -78,6 +84,10 @@ class ReindexEntity extends Command
             Timer::start("elasticIndex");
             ElasticHelpers::indexEntity($entityId, $indexBody);
             Timer::stop("elasticIndex");
+
+            // TODO: Mark entity for fullText reindex
+            // Set db entity req_text_reindex
+
         } else {
             Timer::start("elasticIndex");
             if (ElasticHelpers::entityExists($entityId)) {
@@ -85,6 +95,7 @@ class ReindexEntity extends Command
             }
             Timer::stop("elasticIndex");
         }
+
 
         //print_r($entity);
 

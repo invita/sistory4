@@ -76,6 +76,9 @@ class DcHelpers {
                     "path" => "_source",
                     "parser" => DcHelpers::getDcDefaultThumbParser(),
                 ],
+                "fileName" => [
+                    "path" => "_source/data/files/0/ownerId",
+                ],
 
                 // DC plain
                 "dc_title" => ["path" => "_source/data/dmd/dc/title"],

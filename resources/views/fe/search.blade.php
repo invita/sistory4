@@ -65,6 +65,9 @@
                                         @if ($result["dc_creator"])
                                             <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
                                         @endif
+                                        @if ($result["fileName"])
+                                            <div class="fileName"><?php echo $result["fileName"]; ?></div>
+                                        @endif
                                     </div>
                                 @else
                                     <div class="dataWrapper unknown">

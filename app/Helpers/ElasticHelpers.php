@@ -291,7 +291,13 @@ HERE;
                 ];
                 break;
             case SEARCH_TYPE_FULL_TEXT:
-                // TODO: Must index file contents first
+                $should = $must;
+                $must = [[
+                    "query_string" => [
+                        "fields" => ["data.files.fullText"],
+                        "query" => $queryString
+                    ],
+                ]];
                 break;
         }
 
