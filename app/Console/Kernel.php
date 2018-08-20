@@ -13,8 +13,11 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\ReindexRecreate::class,
         Commands\ReindexEntity::class,
         Commands\ReindexEntities::class,
+        Commands\ReindexEntityText::class,
+        Commands\ReindexEntitiesText::class,
         Commands\ThumbsCreate::class,
         Commands\ThumbsCreateAll::class,
         Commands\EntityTestElasticConvert::class,

@@ -124,7 +124,9 @@ HERE;
 
 
     /**
-     * Refresh index
+     * Refresh the index.
+     * Elastic does that periodically on its own. For performance reasons not for every document.
+     * Call this method to refresh the index instantly so recently indexed documents become available.
      * @return array
      */
     public static function refreshIndex()
@@ -172,7 +174,7 @@ HERE;
      * @param $entityId Integer entity id to be found
      * @return array
      */
-    public static function entityExists($entityId)
+    public static function plainEntityById($entityId)
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
@@ -186,6 +188,17 @@ HERE;
             ]
         ];
         $elasticData = \Elasticsearch::connection()->search($requestArgs);
+        return $elasticData;
+    }
+
+    /**
+     * Check wether a document exists in elastic index
+     * @param $entityId Integer entity id to be found
+     * @return array
+     */
+    public static function entityExists($entityId)
+    {
+        $elasticData = self::plainEntityById($entityId);
         $rowCount = Si4Util::pathArg($elasticData, "hits/total", 0);
         return $rowCount > 0;
     }

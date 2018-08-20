@@ -62,8 +62,10 @@ class Entity extends Model
         'struct_type',
         'struct_subtype',
         'entity_type',
+        'child_order',
         'data',
-        'active'
+        'active',
+        'req_text_reindex'
     ];
 
     /**

@@ -50,7 +50,7 @@ class FileHelpers
             $type = "entity";
             $num = intval($handleId);
         } else {
-            return "foo";
+            return "unknownStorage";
         }
 
         $idNS = self::getIdNamespace($num);

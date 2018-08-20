@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
+use App\Helpers\TikaParseDoc;
 use App\Helpers\Timer;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
@@ -52,8 +53,12 @@ class ReindexEntity extends Command
             //print_r($entityXmlParsed);
 
             Timer::start("entityMapping");
-            $entityElastic = new EntityElastic($entityXmlParsed);
+            $entityElastic = new EntityElastic($entity, $entityXmlParsed);
             Timer::stop("entityMapping");
+
+            //Timer::start("fileTextExtraction");
+            //$entityElastic->extractTextFromFiles();
+            //Timer::stop("fileTextExtraction");
 
             $indexBody = [
                 "id" => $entityId,
@@ -83,6 +88,7 @@ class ReindexEntity extends Command
 
         //print_r($entity);
 
+        //print_r(Timer::getResults());
 
     }
 }

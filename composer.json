@@ -13,6 +13,7 @@
         "goetas-webservices/xsd2php-runtime": "^0.2.2",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "vaites/php-apache-tika": "^0.4.4",
         "zurb/foundation": "^6.4"
     },
     "require-dev": {

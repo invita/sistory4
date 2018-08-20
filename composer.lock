@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8a802744a5dc5009325d3fec59b3f8e",
+    "content-hash": "9caf9fbb3c1f83faf9992be9e2dcc1e0",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -3534,6 +3534,59 @@
             "time": "2016-09-20T12:50:39+00:00"
         },
         {
+            "name": "vaites/php-apache-tika",
+            "version": "v0.4.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vaites/php-apache-tika.git",
+                "reference": "0d431519ef86f154f0d70b20074a47c3abff4dae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vaites/php-apache-tika/zipball/0d431519ef86f154f0d70b20074a47c3abff4dae",
+                "reference": "0d431519ef86f154f0d70b20074a47c3abff4dae",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Vaites\\ApacheTika\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Martínez",
+                    "email": "contacto@davidmartinez.net"
+                }
+            ],
+            "description": "Apache Tika bindings for PHP: extracts text from documents and images (with OCR), metadata and more...",
+            "keywords": [
+                "OCR",
+                "apache",
+                "doc",
+                "documents",
+                "docx",
+                "odt",
+                "office",
+                "pdf",
+                "ppt",
+                "pptx",
+                "tika"
+            ],
+            "time": "2018-07-18T00:36:47+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v2.4.0",
             "source": {
@@ -3828,12 +3881,12 @@
             "version": "0.9.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/padraic/mockery.git",
+                "url": "https://github.com/mockery/mockery.git",
                 "reference": "6fdb61243844dc924071d3404bb23994ea0b6856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/6fdb61243844dc924071d3404bb23994ea0b6856",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/6fdb61243844dc924071d3404bb23994ea0b6856",
                 "reference": "6fdb61243844dc924071d3404bb23994ea0b6856",
                 "shasum": ""
             },

@@ -3,18 +3,22 @@
 namespace App\Models\Elastic;
 
 use App\Helpers\DcHelpers;
+use App\Helpers\FileHelpers;
+use App\Helpers\TikaParseDoc;
 use App\Models\Elastic\MdMappers\DC;
 use App\Models\Elastic\MdMappers\Mods;
 
 class EntityElastic
 {
     private $entityAssoc = null;
+    private $entityDb = null;
     private $data = [];
 
     private $mdHandlerClasses = [DC::class, Mods::class];
     private $mdHandlers = [];
 
-    public function __construct($entityAssoc) {
+    public function __construct($entityDb, $entityAssoc) {
+        $this->entityDb = $entityDb;
         $this->entityAssoc = $entityAssoc;
 
         // Instantiate Metadata mappers
@@ -246,7 +250,8 @@ class EntityElastic
                     "created" => self::get($file, "CREATEDAttrName"),
                     "checksum" => self::get($file, "CHECKSUMAttrName"),
                     "checksumType" => self::get($file, "CHECKSUMTYPEAttrName"),
-                    "locations" => $locations
+                    "locations" => $locations,
+                    "fullText" => ""
                 ];
 
                 $this->data["files"][] = $fileData;
@@ -254,6 +259,22 @@ class EntityElastic
         }
     }
 
+    public static function extractTextFromFiles($entityDb, &$entityElastic) {
+
+        $entityHandleId = $entityDb->handle_id;
+        if ($entityDb->struct_type == "file") $entityHandleId = $entityDb->parent;
+
+        $files = isset($entityElastic["data"]) && isset($entityElastic["data"]["files"]) ? $entityElastic["data"]["files"] : null;
+        if (!$files) return false;
+
+        foreach ($files as $idx => $file) {
+            $filePath = FileHelpers::getPublicStorageName($entityHandleId, $file["ownerId"]);
+            $docText = TikaParseDoc::parseText($filePath);
+            $entityElastic["data"]["files"][$idx]["fullText"] = $docText;
+        }
+
+        return true;
+    }
 
     public function getData() {
         return $this->data;
