@@ -64,7 +64,7 @@ class ReindexEntitiesText extends Command
                 $cnt++;
             }
 
-            $this->info(print_r(Timer::getResults(), true));
+            print_r(Timer::getResults());
             $this->info("All done! Entities text reindexed: {$cnt}");
         }
     }

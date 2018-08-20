@@ -91,7 +91,7 @@ class ReindexEntityText extends Command
         $entity->req_text_reindex = false;
         $entity->save();
 
-        $this->info(print_r(Timer::getResults(), true));
+        print_r(Timer::getResults());
         $this->info("All done for entity {$entityId}");
 
     }
