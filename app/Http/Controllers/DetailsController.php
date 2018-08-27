@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\FileHelpers;
+use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -30,16 +31,19 @@ class DetailsController extends FrontendController
 
             $data["xml"] = Si4Util::pathArg($docData, "_source/xml", "");
             //$data["elasticData"] = $docData;
-            $data["doc"] = DcHelpers::mapElasticEntity($docData);
+
+            //$data["doc"] = DcHelpers::mapElasticEntity($docData);
+            $data["doc"] = Si4Helpers::getEntityDetailsPresentation($docData);
 
             $struct_type = Si4Util::pathArg($docData, "_source/struct_type", "entity");
             $struct_subtype = Si4Util::pathArg($docData, "_source/struct_subtype", "default");
 
             // Parents
-            $parenData = ElasticHelpers::searchParentsRecursive($data["doc"]["parent"]);
+            $parenData = ElasticHelpers::searchParentsRecursive($data["doc"]["system"]["parent"]);
             $parents = [];
             foreach ($parenData as $parent) {
-                $parents[] = DcHelpers::mapElasticEntity($parent);
+                //$parents[] = DcHelpers::mapElasticEntity($parent);
+                $parents[] = Si4Helpers::getEntityListPresentation($parent);
             }
             $data["parents"] = $parents;
 
@@ -67,7 +71,7 @@ class DetailsController extends FrontendController
         if ($struct_type == "collection") {
             $layoutData["allowInsideSearch"] = true;
             $layoutData["hdl"] = $hdl;
-            $layoutData["hdlTitle"] = $data["doc"]["first_dc_title"];
+            $layoutData["hdlTitle"] = first($data["doc"]["si4"]["title"]);
         }
 
         return view($viewName, [
@@ -84,7 +88,8 @@ class DetailsController extends FrontendController
         $childData = ElasticHelpers::searchChildren($hdl);
         $children = [];
         foreach ($childData as $child) {
-            $children[] = DcHelpers::mapElasticEntity($child);
+            //$children[] = DcHelpers::mapElasticEntity($child);
+            $children[] = Si4Helpers::getEntityListPresentation($child);
         }
         $data["children"] = $children;
 
@@ -97,7 +102,8 @@ class DetailsController extends FrontendController
         $childData = ElasticHelpers::searchChildren($hdl);
         $children = [];
         foreach ($childData as $child) {
-            $children[] = DcHelpers::mapElasticEntity($child);
+            //$children[] = DcHelpers::mapElasticEntity($child);
+            $children[] = Si4Helpers::getEntityListPresentation($child);
         }
         $data["children"] = $children;
 
@@ -177,19 +183,21 @@ class DetailsController extends FrontendController
             "text" => "Si4"
         ];
 
+        //print_r($data);
+
         $parentsReverse = array_reverse($data["parents"]);
         foreach ($parentsReverse as $parent) {
-            if (in_array($parent["handle_id"], $skipHandles)) continue;
+            if (in_array($parent["system"]["handle_id"], $skipHandles)) continue;
             $breadcrumbs[] = [
-                "link" => $linkPrefix.$parent["handle_id"],
-                "text" => $parent["first_dc_title"]
+                "link" => $linkPrefix.$parent["system"]["handle_id"],
+                "text" => first($parent["si4"]["title"])
             ];
         }
 
         // Add current doc to breadcrumbs
         $breadcrumbs[] = [
-            "link" => $linkPrefix.$data["doc"]["handle_id"],
-            "text" => $data["doc"]["first_dc_title"]
+            "link" => $linkPrefix.$data["doc"]["system"]["handle_id"],
+            "text" => first($data["doc"]["si4"]["title"])
         ];
         $data["breadcrumbs"] = $breadcrumbs;
         $data["html_breadcrumbs"] = DcHelpers::breadcrumbsPresentation($breadcrumbs);

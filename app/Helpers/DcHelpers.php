@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\Http\Middleware\SessionLanguage;
 
 /**
  * Class DcHelpers
@@ -8,42 +9,6 @@ namespace App\Helpers;
  * @author   Matic Vrscaj
  */
 class DcHelpers {
-
-    // ***** Si4 Model *****
-
-    // Field definitions mapped from any scheme into si4 format
-    public static $si4FieldDefinitions = [
-        "title" => [
-            "fieldName" => "title",
-            "translateKey" => "field_title",
-            "hasLanguage" => true,
-            "showAllLangauges" => false
-        ],
-        "creator" => [
-            "fieldName" => "creator",
-            "translateKey" => "field_creator",
-            "hasLanguage" => false,
-            "showAllLangauges" => false
-        ],
-        "date" => [
-            "fieldName" => "date",
-            "translateKey" => "field_date",
-            "hasLanguage" => false,
-            "showAllLangauges" => false
-        ],
-        "description" => [
-            "fieldName" => "description",
-            "translateKey" => "field_description",
-            "hasLanguage" => false,
-            "showAllLangauges" => false
-        ],
-    ];
-
-    // defaultLang is used for fields with no language data but with hasLanguage definition attribute set to true
-    public static $defaultLang = "eng";
-
-    // ***** End of Si4 Model *****
-
 
     private static $docPathMap = null;
     private static function getElasticEntityPathMap() {
@@ -207,15 +172,15 @@ class DcHelpers {
 
     private static function si4frontendFormat($elasticEntity) {
         $result = [];
-        $fieldDefs = DcHelpers::$si4FieldDefinitions;
-        $feLang = request()->session()->get("lang", "eng");;
+        $fieldDefs = Si4Helpers::$si4FieldDefinitions;
+        $feLang = SessionLanguage::current();
 
         foreach ($fieldDefs as $fieldName => $fieldDef) {
             $result[$fieldName] = [];
             $fieldVals = Si4Util::pathArg($elasticEntity, "_source/data/si4/".$fieldName);
 
             if (isset($fieldVals) && count($fieldVals)) {
-                if ($fieldDef["hasLanguage"] && !$fieldDef["showAllLangauges"]) {
+                if (Si4Util::getArg($fieldDef, "hasLanguage", false) && !Si4Util::getArg($fieldDef, "showAllLangauges", false)) {
                     // Filter values in other lang than FE
                     $fieldVals = array_filter($fieldVals, function($x) use ($feLang) { return $x["lang"] === $feLang; });
                 }

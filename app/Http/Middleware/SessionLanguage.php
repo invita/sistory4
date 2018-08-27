@@ -6,6 +6,11 @@ use Closure;
 
 class SessionLanguage
 {
+    private static $currentLang;
+    public static function current() {
+        return self::$currentLang;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -17,6 +22,7 @@ class SessionLanguage
     public function handle($request, Closure $next, $guard = null)
     {
         $sessionLang = $request->session()->get('lang', 'eng');
+        self::$currentLang = $sessionLang;
         app()->setLocale($sessionLang);
 
         return $next($request);

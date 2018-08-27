@@ -29,7 +29,8 @@
             "App\\": "app/"
         },
         "files": [
-            "app/constants.php"
+            "app/constants.php",
+            "app/templateHelpers.php"
         ]
     },
     "autoload-dev": {

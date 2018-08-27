@@ -368,12 +368,15 @@ input:checked + #collectionSearchIndicator {
     text-align: center;
     line-height: 1.1;
 }
-.detailsContent .childrenWrap .child .childDetails span.childCreators span.sep {
+.detailsContent .childrenWrap .child .childDetails .childCreators {
+    font-size: 13px;
+}
+.detailsContent .childrenWrap .child .childDetails .childCreators span.sep {
     font-size: 13px;
     font-weight: 500;
     color: silver
 }
-.detailsContent .childrenWrap .child .childDetails span.childCreators span.val {
+.detailsContent .childrenWrap .child .childDetails .childCreators span.val {
     font-size: 13px;
 }
 

@@ -34,48 +34,48 @@
                 <div class="searchResults">
                     @foreach ($data["results"] as $result)
                         <div class="searchResult">
-                            <a href="/details/{{ $result["handle_id"] }}">
+                            <a href="/details/{{ $result["system"]["handle_id"] }}">
                                 <div class="imageWrapper">
-                                    <img src="/img/structType/{{ $result["struct_type"] }}.png" />
+                                    <img src="/img/structType/{{ $result["system"]["struct_type"] }}.png" />
                                 </div>
 
-                                @if ($result["struct_type"] == "entity")
+                                @if ($result["system"]["struct_type"] == "entity")
                                     <div class="dataWrapper entity">
-                                        @if ($result["html_dc_title"])
-                                            <div class="title"><?php echo $result["html_dc_title"]; ?></div>
+                                        @if (count($result["si4"]["title"]))
+                                            <div class="title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
-                                        @if ($result["dc_creator"])
-                                            <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
+                                        @if (count($result["si4"]["creator"]))
+                                            <div class="creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
-                                @elseif ($result["struct_type"] == "collection")
+                                @elseif ($result["system"]["struct_type"] == "collection")
                                     <div class="dataWrapper collection">
-                                        @if ($result["dc_title"])
-                                            <div class="title"><?php echo $result["html_dc_title"]; ?></div>
+                                        @if (count($result["si4"]["title"]))
+                                            <div class="title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
-                                        @if ($result["dc_creator"])
-                                            <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
+                                        @if (count($result["si4"]["creator"]))
+                                            <div class="creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
-                                @elseif ($result["struct_type"] == "file")
+                                @elseif ($result["system"]["struct_type"] == "file")
                                     <div class="dataWrapper file">
-                                        @if ($result["dc_title"])
-                                            <div class="title"><?php echo $result["html_dc_title"]; ?></div>
+                                        @if (count($result["si4"]["title"]))
+                                            <div class="title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
-                                        @if ($result["dc_creator"])
-                                            <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
+                                        @if (count($result["si4"]["creator"]))
+                                            <div class="creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
-                                        @if ($result["fileName"])
-                                            <div class="fileName"><?php echo $result["fileName"]; ?></div>
+                                        @if ($result["file"]["fileName"])
+                                            <div class="fileName">{{ $result["file"]["fileName"] }}</div>
                                         @endif
                                     </div>
                                 @else
                                     <div class="dataWrapper unknown">
-                                        @if ($result["dc_title"])
-                                            <div class="title"><?php echo $result["html_dc_title"]; ?></div>
+                                        @if (count($result["si4"]["title"]))
+                                            <div class="title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
-                                        @if ($result["dc_creator"])
-                                            <div class="creator"><?php echo $result["html_dc_creator"]; ?></div>
+                                        @if (count($result["si4"]["creator"]))
+                                            <div class="creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
                                 @endif

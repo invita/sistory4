@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 
+use App\Http\Middleware\SessionLanguage;
 use App\Models\Elastic\EntityNotIndexedException;
 use App\Models\Entity;
 use App\Helpers\ElasticHelpers;
@@ -453,6 +454,8 @@ class EntitySelect
     public static function selectTopMenu() {
         if (self::$_topMenu) return self::$_topMenu;
 
+        $feLang = SessionLanguage::current();
+
         $elasticQuery = [
             "constant_score" => [
                 "query" => [
@@ -481,7 +484,17 @@ class EntitySelect
             $handle_id = $source["handle_id"];
             $parent = $source["parent"];
 
-            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0/value", "");
+            //$title = Si4Util::pathArg($source, "data/dmd/dc/title/0/value", "");
+
+            // Find Menu Title
+            $titles = Si4Util::pathArg($source, "data/si4/title", []);
+            $title = "";
+            foreach ($titles as $t) {
+                if ($t["lang"] === $feLang) {
+                    $title = $t["value"];
+                    break;
+                }
+            }
 
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];
@@ -512,6 +525,8 @@ class EntitySelect
     public static function selectBottomMenu() {
         if (self::$_bottomMenu) return self::$_bottomMenu;
 
+        $feLang = SessionLanguage::current();
+
         $elasticQuery = [
             "constant_score" => [
                 "query" => [
@@ -540,7 +555,17 @@ class EntitySelect
             $handle_id = $source["handle_id"];
             $parent = $source["parent"];
 
-            $title = Si4Util::pathArg($source, "data/dmd/dc/title/0/text", "");
+            //$title = Si4Util::pathArg($source, "data/si4/title/0/value", "");
+
+            // Find Menu Title
+            $titles = Si4Util::pathArg($source, "data/si4/title", []);
+            $title = "";
+            foreach ($titles as $t) {
+                if ($t["lang"] === $feLang) {
+                    $title = $t["value"];
+                    break;
+                }
+            }
 
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];

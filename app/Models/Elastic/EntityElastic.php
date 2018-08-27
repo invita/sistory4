@@ -4,6 +4,7 @@ namespace App\Models\Elastic;
 
 use App\Helpers\DcHelpers;
 use App\Helpers\FileHelpers;
+use App\Helpers\Si4Helpers;
 use App\Helpers\TikaParseDoc;
 use App\Models\Elastic\MdMappers\DC;
 use App\Models\Elastic\MdMappers\Mods;
@@ -164,7 +165,7 @@ class EntityElastic
                     $si4 = $mdTypeHandler->mapXmlData($xmlData);
 
                     // Merge si4 fields
-                    foreach (DcHelpers::$si4FieldDefinitions as $fieldName => $fieldDef) {
+                    foreach (Si4Helpers::$si4FieldDefinitions as $fieldName => $fieldDef) {
                         if (!isset($si4[$fieldName])) continue;
                         if (!isset($this->data["si4"][$fieldName])) $this->data["si4"][$fieldName] = [];
                         foreach ($si4[$fieldName] as $fieldValue)

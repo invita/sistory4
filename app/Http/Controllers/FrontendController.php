@@ -6,6 +6,7 @@ use App\Helpers\ElasticHelpers;
 use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
 use App\Helpers\Si4Util;
+use App\Http\Middleware\SessionLanguage;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,7 @@ class FrontendController extends Controller
         $layoutData = [];
 
         // Search parameters remain
-        $layoutData["lang"] = $request->session()->get("lang", "eng"); // Selected language
+        $layoutData["lang"] = SessionLanguage::current(); // Selected language
         $layoutData["q"] = $request->query("q", ""); // Query string
         $layoutData["st"] = $request->query("st", "all"); // Search type
         $layoutData["hdl"] = $request->query("hdl", ""); // Handle filter

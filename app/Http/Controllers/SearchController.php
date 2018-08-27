@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
+use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -36,7 +37,7 @@ class SearchController extends FrontendController
             //echo "<pre>"; print_r($assocData); echo "</pre>";
 
             foreach ($assocData as $doc) {
-                $data["results"][] = DcHelpers::mapElasticEntity($doc);
+                $data["results"][] = Si4Helpers::getEntityListPresentation($doc);
             }
         }
 
@@ -49,7 +50,7 @@ class SearchController extends FrontendController
 
             $hdlElasticData = ElasticHelpers::searchByHandleArray([$hdl]);
             $hdlDocData = $hdlElasticData[array_keys($hdlElasticData)[0]];
-            $hdlDoc = DcHelpers::mapElasticEntity($hdlDocData);
+            $hdlDoc = Si4Helpers::getEntityListPresentation($hdlDocData);
 
             $layoutData["hdlTitle"] = $hdlDoc["first_dc_title"];
         }
@@ -111,7 +112,7 @@ class SearchController extends FrontendController
             //echo "<pre>"; print_r($assocData); echo "</pre>";
 
             foreach ($assocData as $doc) {
-                $data["results"][] = DcHelpers::mapElasticEntity($doc);
+                $data["results"][] = Si4Helpers::getEntityListPresentation($doc);
             }
         }
 

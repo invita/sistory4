@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Helpers\Si4Helpers;
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\Enums;
@@ -25,8 +26,11 @@ class IndexController extends FrontendController
         $assocData = ElasticHelpers::searchChildren($topMenuHandle);
         $result = [];
         foreach ($assocData as $doc) {
-            $result[] = DcHelpers::mapElasticEntity($doc);
+            //$result[] = DcHelpers::mapElasticEntity($doc);
+            $result[] = Si4Helpers::getEntityListPresentation($doc);
         }
+
+        //print_r($result);
 
         return $result;
     }

@@ -23,18 +23,22 @@
 
                     <div class="childrenWrap">
 
-                        @foreach($indexEntities as $indexEntity)
-                            <a href="/details/{{ $indexEntity["handle_id"] }}">
+                        @foreach($indexEntities as $listEntity)
+                            <a href="/details/{{ $listEntity["system"]["handle_id"] }}">
                                 <div class="child">
                                     <div class="childThumb">
-                                        <img src="{{ $indexEntity["defaultThumb"] }}" />
+                                        <img src="{{ $listEntity["thumb"] }}" />
                                     </div>
 
                                     <div class="childTitle">
-                                        <h5>{{ $indexEntity["first_dc_title"] }}</h5>
+                                        <h5>{{ first($listEntity["si4"]["title"]) }}</h5>
                                     </div>
                                     <div class="childDetails">
-                                        <span class="childCreators"><?php echo $indexEntity["html_dc_creator_list"]; ?></span>
+                                        <div class="childCreators">
+                                            @foreach($listEntity["si4"]["creator"] as $creator)
+                                                <div>{{ $creator }}</div>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
                             </a>
