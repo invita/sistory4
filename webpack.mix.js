@@ -18,8 +18,10 @@ mix.disableNotifications();
 //   .sass('resources/assets/sass/app.scss', 'public/css');
 
 mix.sass('resources/assets/sass/common-fe.scss', 'public/css');
-mix.sass('resources/assets/sass/sites/sidih.scss', 'public/sites/sidih/css/fe.css');
-mix.sass('resources/assets/sass/sites/sistory.scss', 'public/sites/sistory/css/fe.css');
+mix.sass('resources/assets/sass/sites/sidih-fe.scss', 'public/sites/sidih/css/fe.css');
+mix.sass('resources/assets/sass/sites/sidih-be.scss', 'public/sites/sidih/css/be.css');
+mix.sass('resources/assets/sass/sites/sistory-fe.scss', 'public/sites/sistory/css/fe.css');
+mix.sass('resources/assets/sass/sites/sistory-be.scss', 'public/sites/sistory/css/be.css');
 
 mix.combine([
     'node_modules/jquery/dist/jquery.min.js',

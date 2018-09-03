@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
     <link rel="icon" type="image/png" href="/img/icon.png">
-    <title>Sistory 4 - Admin</title>
+    <title>{{ si4config("siteName") }} - Admin</title>
 
     <script src="/lib/jquery/jquery-2.1.1.js"></script>
     <script src="/lib/jquery/jquery.zclip.js"></script>
@@ -57,6 +57,7 @@
     <link rel="stylesheet" href="/css/standard.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/si4.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/modules.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/sites/{{env("SI4_SITE")}}/css/be.css" type="text/css" media="screen" />
 </head>
 
 <body>
