@@ -213,11 +213,21 @@ input:checked + #collectionSearchIndicator {
 .searchResult .dataWrapper .title {
     line-height: 21px;
 }
+/*
 .searchResult .dataWrapper .title span:first-child {
     font-weight: 500;
 }
+*/
 .searchResult .dataWrapper .creator {
 }
+.searchResult .dataWrapper .fullTextHits {
+    margin-left: 10px;
+}
+.searchResult .dataWrapper .match {
+    color: #006;
+    background-color: #FF9;
+}
+
 
 .searchNoResultsWrapper {
     padding: 20px;

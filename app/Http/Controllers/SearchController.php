@@ -37,7 +37,14 @@ class SearchController extends FrontendController
             //echo "<pre>"; print_r($assocData); echo "</pre>";
 
             foreach ($assocData as $doc) {
-                $data["results"][] = Si4Helpers::getEntityListPresentation($doc);
+                $result = Si4Helpers::getEntityListPresentation($doc);
+
+                // If fullText search, append fullText hits
+                if ($st == "fullText") {
+                    Si4Helpers::findFileFullTextHits($result, $doc, $q);
+                }
+
+                $data["results"][] = $result;
             }
         }
 

@@ -91,7 +91,7 @@ class Si4Helpers {
 
         if ($result["system"]["struct_type"] === "file") {
             $result["file"] = [
-                "fileName" => Si4Util::pathArg($elasticEntity, "_source/data/files/0/ownerId", "")
+                "fileName" => Si4Util::pathArg($elasticEntity, "_source/data/files/0/ownerId", ""),
             ];
         }
 
@@ -107,6 +107,45 @@ class Si4Helpers {
         // ...
 
         return $result;
+    }
+
+
+    public static function findFileFullTextHits(&$entityPresentation, $elasticEntity, $q) {
+        if (!isset($entityPresentation["file"])) return;
+        $entityPresentation["file"]["fullTextHits"] = [];
+        $fullText = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fullText", "");
+        //print_r($elasticEntity);
+        if (!$fullText) return;
+        if (!$q) return;
+
+        $qWords = explode(" ", $q);
+
+        $beforeCharsCount = 50;
+        $afterCharsCount = 50;
+
+        foreach ($qWords as $qWord) {
+            $qWordLen = mb_strlen($qWord);
+            $pos = -1;
+            for ($i = 0; $i < 3; $i++) {
+                $pos = stripos($fullText, $qWord, $pos +1);
+                if ($pos === false) break;
+
+                $innerText = substr($fullText, $pos -$beforeCharsCount, $qWordLen +$beforeCharsCount +$afterCharsCount);
+
+                $firstSpacePos = stripos($innerText, " ");
+                if (!$firstSpacePos || $firstSpacePos > $beforeCharsCount) $firstSpacePos = 0;
+
+                $lastSpacePos = strripos($innerText, " ");
+                if (!$lastSpacePos || $lastSpacePos < $beforeCharsCount + $qWordLen) $lastSpacePos = strlen($innerText);
+
+                $innerTextClean = substr($innerText, $firstSpacePos +1, $lastSpacePos -$firstSpacePos -1);
+
+                //$innerTextStyled = "...".preg_replace("/(".$qWord.")/i", '<span class="match">$1</span>', $innerTextClean)."...";
+
+                $entityPresentation["file"]["fullTextHits"][] = $innerTextClean;
+                //$entityPresentation["file"]["fullTextHitsHtml"][] = $innerTextStyled;
+            }
+        }
     }
 
 

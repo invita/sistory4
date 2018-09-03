@@ -27,6 +27,7 @@ mix.combine([
     'resources/assets/js/common/topMenu.js',
     'resources/assets/js/search/autocomplete.js',
     'resources/assets/js/search/advancedSearch.js',
+    'resources/assets/js/search/matchHighlighter.js',
     'resources/assets/js/app.js',
 ], 'public/js/app.js');
 

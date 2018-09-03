@@ -79,6 +79,16 @@
                                         @endif
                                     </div>
                                 @endif
+
+                                @if (isset($result["file"]) && isset($result["file"]["fullTextHits"]))
+                                    <div class="dataWrapper">
+                                        <div class="fullTextHits">
+                                            @foreach($result["file"]["fullTextHits"] as $fullTextHit)
+                                                <div class="fullTextHit"><?php echo $fullTextHit; ?></div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
                             </a>
                         </div>
                     @endforeach
