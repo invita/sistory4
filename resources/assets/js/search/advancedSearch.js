@@ -59,13 +59,13 @@ function AdvancedSearchFields(mainEl) {
         _p.submitWrap.className = "textAlignRight";
 
         _p.addInputButton = document.createElement("input");
-        _p.addInputButton.className = "addInputButton";
+        _p.addInputButton.className = "button addInputButton";
         _p.addInputButton.type = "button";
         _p.addInputButton.value = "+";
         $(_p.addInputButton).click(_p.addInput);
 
         _p.submitButton = document.createElement("input");
-        _p.submitButton.className = "submit";
+        _p.submitButton.className = "button submit";
         _p.submitButton.type = "submit";
         _p.submitButton.value = "Search";
 

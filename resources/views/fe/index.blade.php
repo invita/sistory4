@@ -9,12 +9,11 @@
         <div class="medium-12 columns">
             <?php /* print_r($indexEntities); */ ?>
 
-
             <div class="detailsContent">
                 <div class="contentWrap">
 
                     <div class="detailsDcField detailsDcTitle">
-                        <h3>Welcome to Si4</h3>
+                        <h3>Welcome to {{ si4config("siteName") }}</h3>
                     </div>
 
                     <div class="detailsDcField detailsDcDescription">

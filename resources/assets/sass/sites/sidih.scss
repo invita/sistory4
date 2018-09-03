@@ -1,0 +1,80 @@
+/* Colors */
+$mainColor: #668833;
+
+#si4 {
+  /* Search box */
+  .searchFormContainer {
+    border-bottom: $mainColor solid 2px;
+    border-left: $mainColor solid 1px;
+    border-right: $mainColor solid 1px;
+    background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
+
+  .button {
+    background-color: $mainColor;
+    color: white;
+  }
+  .button:hover {
+    background-color: darken($mainColor, 10%);
+  }
+  .searchResult a {
+    border-bottom: rgba($mainColor,0.3) solid 1px;
+  }
+  .searchResult:nth-child(odd) {
+    background-color: rgba($mainColor,0.02);
+  }
+  .searchResult:nth-child(even) {
+    background-color: rgba($mainColor,0.06);
+  }
+  .searchResult:hover {
+    background-color: rgba($mainColor,0.1);
+  }
+  .searchResult .dataWrapper .match {
+    color: #006;
+    background-color: #FF9;
+  }
+  .searchAutocompleteTerm {
+    color: $mainColor;
+  }
+  .detailsContent .childrenWrap .child:hover {
+    background-color: rgba($mainColor,0.03);
+    border: rgba($mainColor,0.7) solid 1px;
+  }
+  .fileDetails .fileName .mime {
+    color: $mainColor;
+  }
+  /* si4button */
+  .si4button {
+    color: black;
+    border: silver solid 1px;
+    border-radius: 5px;
+    padding: 4px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
+  }
+  .si4button:hover, .si4button:focus {
+    color: black;
+    border-color: rgba($mainColor,1);
+  }
+  #topMenu {
+    border: none;
+    border-bottom: $mainColor solid 1px;
+  }
+  #topMenu .ui-widget.ui-widget-content {
+    border: $mainColor solid 1px;
+  }
+  #topMenu .ui-state-active {
+    border-color: $mainColor;
+    color: black;
+    background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
+  }
+}

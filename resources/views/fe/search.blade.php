@@ -8,7 +8,6 @@
 
     @if ($searchType == "advanced-search")
         <div class="advancedSearch">
-
             <div class="row">
                 <div class="medium-12 columns">
                     <h4>
@@ -42,40 +41,40 @@
                                 @if ($result["system"]["struct_type"] == "entity")
                                     <div class="dataWrapper entity">
                                         @if (count($result["si4"]["title"]))
-                                            <div class="title">{{ first($result["si4"]["title"]) }}</div>
+                                            <div class="value title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
                                         @if (count($result["si4"]["creator"]))
-                                            <div class="creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
+                                            <div class="value creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
                                 @elseif ($result["system"]["struct_type"] == "collection")
                                     <div class="dataWrapper collection">
                                         @if (count($result["si4"]["title"]))
-                                            <div class="title">{{ first($result["si4"]["title"]) }}</div>
+                                            <div class="value title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
                                         @if (count($result["si4"]["creator"]))
-                                            <div class="creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
+                                            <div class="value creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
                                 @elseif ($result["system"]["struct_type"] == "file")
                                     <div class="dataWrapper file">
                                         @if (count($result["si4"]["title"]))
-                                            <div class="title">{{ first($result["si4"]["title"]) }}</div>
+                                            <div class="value title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
                                         @if (count($result["si4"]["creator"]))
-                                            <div class="creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
+                                            <div class="value creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                         @if ($result["file"]["fileName"])
-                                            <div class="fileName">{{ $result["file"]["fileName"] }}</div>
+                                            <div class="value fileName">{{ $result["file"]["fileName"] }}</div>
                                         @endif
                                     </div>
                                 @else
                                     <div class="dataWrapper unknown">
                                         @if (count($result["si4"]["title"]))
-                                            <div class="title">{{ first($result["si4"]["title"]) }}</div>
+                                            <div class="value title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
                                         @if (count($result["si4"]["creator"]))
-                                            <div class="creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
+                                            <div class="value creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
                                 @endif
@@ -84,7 +83,7 @@
                                     <div class="dataWrapper">
                                         <div class="fullTextHits">
                                             @foreach($result["file"]["fullTextHits"] as $fullTextHit)
-                                                <div class="fullTextHit"><?php echo $fullTextHit; ?></div>
+                                                <div class="value fullTextHit"><?php echo $fullTextHit; ?></div>
                                             @endforeach
                                         </div>
                                     </div>

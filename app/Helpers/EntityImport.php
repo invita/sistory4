@@ -115,7 +115,8 @@ class EntityImport
         Artisan::call("reindex:entity", ["entityId" => $sysId]);
 
         // Create thumb
-        Artisan::call("thumbs:create", ["entityId" => $sysId]);
+        // TODO: cron job, to run thumb generator
+        //Artisan::call("thumbs:create", ["entityId" => $sysId]);
     }
 
 }

@@ -9,17 +9,19 @@
 
     <title>Sistory 4</title>
 
-    <link href="/css/app.css" rel="stylesheet" type="text/css">
-    <link href="/css/fe.css" rel="stylesheet" type="text/css">
+    <link href="/css/common-fe.css" rel="stylesheet" type="text/css">
+    <link href="/sites/{{env("SI4_SITE")}}/css/fe.css" rel="stylesheet" type="text/css">
+
+    <script>var si4site = '{{env("SI4_SITE")}}';</script>
     <script src="/js/app.js"></script>
 
-    <link rel="icon" type="image/png" href="/img/icon.png">
+    <link rel="icon" type="image/png" href="/sites/{{env("SI4_SITE")}}/img/icon.png">
 
 @yield("head")
 
 </head>
 
-<body>
+<body id="si4">
     @if (isset($layoutData) && isset($layoutData["jsData"]))
         <div id="jsData" class="displayNone"><?php echo $layoutData["jsData"]; ?></div>
     @endif
@@ -51,7 +53,7 @@
                     <!-- Logo -->
                     <div class="medium-4 columns logo">
                         <a href="/">
-                            <img src="/img/logo5.png" style="height:70px;" />
+                            <img src="/sites/{{env("SI4_SITE")}}/img/logo-header.png" style="height:70px;" />
                         </a>
                     </div>
 
@@ -92,7 +94,7 @@
         <div class="bottomMenuWrap">
             <div class="row">
                 <div class="medium-3 columns footerLogo">
-                    <img src="/img/logo-footer.png" />
+                    <img src="/sites/{{env("SI4_SITE")}}/img/logo-footer.png" />
                 </div>
                 <div class="medium-9 columns bottomMenu">
                     @if (isset($layoutData) && isset($layoutData["bottomMenuHtml"]))
