@@ -40,28 +40,28 @@
 
                                 @if ($result["system"]["struct_type"] == "entity")
                                     <div class="dataWrapper entity">
-                                        @if (count($result["si4"]["title"]))
+                                        @if (isset($result["si4"]["title"]))
                                             <div class="value title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
-                                        @if (count($result["si4"]["creator"]))
+                                        @if (isset($result["si4"]["creator"]))
                                             <div class="value creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
                                 @elseif ($result["system"]["struct_type"] == "collection")
                                     <div class="dataWrapper collection">
-                                        @if (count($result["si4"]["title"]))
+                                        @if (isset($result["si4"]["title"]))
                                             <div class="value title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
-                                        @if (count($result["si4"]["creator"]))
+                                        @if (isset($result["si4"]["creator"]))
                                             <div class="value creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
                                 @elseif ($result["system"]["struct_type"] == "file")
                                     <div class="dataWrapper file">
-                                        @if (count($result["si4"]["title"]))
+                                        @if (isset($result["si4"]["title"]))
                                             <div class="value title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
-                                        @if (count($result["si4"]["creator"]))
+                                        @if (isset($result["si4"]["creator"]))
                                             <div class="value creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                         @if ($result["file"]["fileName"])
@@ -70,10 +70,10 @@
                                     </div>
                                 @else
                                     <div class="dataWrapper unknown">
-                                        @if (count($result["si4"]["title"]))
+                                        @if (isset($result["si4"]["title"]))
                                             <div class="value title">{{ first($result["si4"]["title"]) }}</div>
                                         @endif
-                                        @if (count($result["si4"]["creator"]))
+                                        @if (isset($result["si4"]["creator"]))
                                             <div class="value creator">{{ join("; ", $result["si4"]["creator"]) }}</div>
                                         @endif
                                     </div>
