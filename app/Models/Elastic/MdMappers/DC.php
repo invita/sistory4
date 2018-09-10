@@ -24,18 +24,21 @@ class DC extends AbstractMdMapper
             // Find si4 field by DC element
             $fieldDef = null;
             switch ($key) {
-                case "TitlePropName":
-                    $fieldDef = $fieldDefs["title"];
-                    break;
-                case "CreatorPropName":
-                    $fieldDef = $fieldDefs["creator"];
-                    break;
-                case "DatePropName":
-                    $fieldDef = $fieldDefs["date"];
-                    break;
-                case "DescriptionPropName":
-                    $fieldDef = $fieldDefs["description"];
-                    break;
+                case "TitlePropName": $fieldDef = $fieldDefs["title"]; break;
+                case "CreatorPropName": $fieldDef = $fieldDefs["creator"]; break;
+                case "SubjectPropName": $fieldDef = $fieldDefs["subject"]; break;
+                case "DescriptionPropName": $fieldDef = $fieldDefs["description"]; break;
+                case "PublisherPropName": $fieldDef = $fieldDefs["publisher"]; break;
+                case "ContributorPropName": $fieldDef = $fieldDefs["contributor"]; break;
+                case "DatePropName": $fieldDef = $fieldDefs["date"]; break;
+                case "TypePropName": $fieldDef = $fieldDefs["type"]; break;
+                case "FormatPropName": $fieldDef = $fieldDefs["format"]; break;
+                case "IdentifierPropName": $fieldDef = $fieldDefs["identifier"]; break;
+                case "SourcePropName": $fieldDef = $fieldDefs["source"]; break;
+                case "LanguagePropName": $fieldDef = $fieldDefs["language"]; break;
+                case "RelationPropName": $fieldDef = $fieldDefs["relation"]; break;
+                case "CoveragePropName": $fieldDef = $fieldDefs["coverage"]; break;
+                case "RightsPropName": $fieldDef = $fieldDefs["rights"]; break;
             }
 
             // Continue if unknown si4 field
@@ -46,14 +49,16 @@ class DC extends AbstractMdMapper
 
             foreach ($val as $valIdx => $valValue) {
                 $value = $valValue["value"];
-                $lang = isset($valValue["LangPropName"]) ? $valValue["LangPropName"] : "";
-                if (!$lang) $lang = Si4Helpers::$defaultLang;
 
-                if (Si4Util::getArg($fieldDef, "hasLanguage", false)) {
-                    $result[$fieldDef["fieldName"]][] = [ "lang" => $lang, "value" => $value ];
-                } else {
-                    $result[$fieldDef["fieldName"]][] = [ "value" => $value ];
+                $fieldResult = [ "value" => $value ];
+
+                if ($fieldDef["hasLanguage"]) {
+                    $lang = isset($valValue["LangPropName"]) ? $valValue["LangPropName"] : "";
+                    if (!$lang) $lang = Si4Helpers::$defaultLang;
+                    $fieldResult["lang"] = $lang;
                 }
+
+                $result[$fieldDef["fieldName"]][] = $fieldResult;
             }
         }
 

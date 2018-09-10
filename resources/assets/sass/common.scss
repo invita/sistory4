@@ -290,7 +290,7 @@ input:checked + #collectionSearchIndicator {
 }
 
 .detailsContent .contentWrap {
-  padding: 10px 10px 10px 30px;
+  padding: 0px 10px 10px 30px;
   flex: 1;
 }
 
@@ -303,6 +303,19 @@ input:checked + #collectionSearchIndicator {
 .detailsContent .detailsDcField {
   line-height: 25px;
   margin-bottom: 3px;
+  display: flex;
+  flex-direction: row;
+
+  .fieldKey {
+    width: 150px;
+  }
+  .fieldValue {
+    flex: 1;
+  }
+}
+.detailsContent .detailsDcField.detailsDcTitle {
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .detailsContent .childrenWrap {

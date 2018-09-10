@@ -10,3 +10,10 @@ function first($array) {
 function si4config($key = null, $default = null) {
     return config("si4sites.".env("SI4_SITE").".".$key, $default);
 }
+
+function translateSi4Field($si4FieldName) {
+    $fieldDefs = \App\Helpers\Si4Helpers::$si4FieldDefinitions;
+    if (!isset($fieldDefs[$si4FieldName])) return "(undefined field ".$si4FieldName.")";
+    $translateKey = $fieldDefs[$si4FieldName]["translateKey"];
+    return __('fe.'.$translateKey);
+}

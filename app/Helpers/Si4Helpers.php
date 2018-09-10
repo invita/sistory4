@@ -12,34 +12,104 @@ class Si4Helpers {
 
     // ***** Si4 Model *****
 
-    // Field definitions mapped from any scheme into si4 format
-    public static $si4FieldDefinitions = [
-        /*
-        "fieldName" => [
-            "fieldName" => "fieldname",     // * Mandatory * Field name
-            "translateKey" => "field_key",  // * Mandatory * Translation key
-            "hasLanguage" => true,          // Field data have lang attribute
-            "showAllLanguages" => true,     // Display all languages, not only FE selected language
-        ]
-        */
-        "title" => [
-            "fieldName" => "title",
-            "translateKey" => "field_title",
-            "hasLanguage" => true,
-        ],
-        "creator" => [
-            "fieldName" => "creator",
-            "translateKey" => "field_creator",
-        ],
-        "date" => [
-            "fieldName" => "date",
-            "translateKey" => "field_date",
-        ],
-        "description" => [
-            "fieldName" => "description",
-            "translateKey" => "field_description",
-        ],
-    ];
+    // Return a new field definition assuming default values for non-specified attributes
+    private static function fieldDefinition($fieldDefs) {
+        return [
+            "fieldName" => $fieldDefs["fieldName"],
+            "translateKey" => Si4Util::getArg($fieldDefs, "translateKey", "si4_field_".$fieldDefs["fieldName"]),
+            "hasLanguage" => Si4Util::getArg($fieldDefs, "hasLanguage", false),
+            "showAllLanguages" => Si4Util::getArg($fieldDefs, "showAllLanguages", false),
+            "inline" => Si4Util::getArg($fieldDefs, "inline", false),
+            "inlineSeparator" => Si4Util::getArg($fieldDefs, "inlineSeparator", ", "),
+            "displayOnFrontend" => Si4Util::getArg($fieldDefs, "displayOnFrontend", false),
+        ];
+    }
+
+    // Si4 field definitions
+    public static $si4FieldDefinitions;
+    public static function initFieldDefinitions() {
+        self::$si4FieldDefinitions = [
+            /*
+            // Notes:
+            "fieldName" => self::fieldDefinition([
+                "fieldName" => "fieldname",     // * Mandatory * Field name
+                "translateKey" => "field_key",  // Translation key
+                "hasLanguage" => true,          // Field data have lang attribute
+                "showAllLanguages" => true,     // Display all languages, not only FE selected language
+                "inline" => false,              // Values are displayed inline
+                "inlineSeparator" => ":",       // If inline, defines values separator
+                "displayOnFrontend" => false,   // Should this field be displayed on frontend
+            ]),
+            */
+            "title" => self::fieldDefinition([
+                "fieldName" => "title",
+                "hasLanguage" => true,
+                "showAllLanguages" => true,
+                "displayOnFrontend" => true,
+            ]),
+            "creator" => self::fieldDefinition([
+                "fieldName" => "creator",
+                "inline" => true,
+                "inlineSeparator" => " / ",
+                "displayOnFrontend" => true,
+            ]),
+            "subject" => self::fieldDefinition([
+                "fieldName" => "subject",
+                "inline" => true,
+                "inlineSeparator" => ", ",
+                "displayOnFrontend" => true,
+            ]),
+            "description" => self::fieldDefinition([
+                "fieldName" => "description",
+            ]),
+            "publisher" => self::fieldDefinition([
+                "fieldName" => "publisher",
+                "inline" => true,
+                "inlineSeparator" => " / ",
+                "displayOnFrontend" => true,
+            ]),
+            "contributor" => self::fieldDefinition([
+                "fieldName" => "contributor",
+                "inline" => true,
+                "inlineSeparator" => " / ",
+                "displayOnFrontend" => true,
+            ]),
+            "date" => self::fieldDefinition([
+                "fieldName" => "date",
+            ]),
+            "type" => self::fieldDefinition([
+                "fieldName" => "type",
+                "inline" => true,
+                "inlineSeparator" => " / ",
+            ]),
+            "format" => self::fieldDefinition([
+                "fieldName" => "format",
+            ]),
+            "identifier" => self::fieldDefinition([
+                "fieldName" => "identifier",
+            ]),
+            "source" => self::fieldDefinition([
+                "fieldName" => "source",
+            ]),
+            "language" => self::fieldDefinition([
+                "fieldName" => "language",
+                "inline" => true,
+                "inlineSeparator" => " / ",
+            ]),
+            "relation" => self::fieldDefinition([
+                "fieldName" => "relation",
+            ]),
+            "coverage" => self::fieldDefinition([
+                "fieldName" => "coverage",
+                "inline" => true,
+                "inlineSeparator" => ", ",
+            ]),
+            "rights" => self::fieldDefinition([
+                "fieldName" => "rights",
+            ]),
+        ];
+    }
+
 
     // defaultLang is used for fields with no language data but with hasLanguage definition attribute set to true
     public static $defaultLang = "eng";
@@ -63,28 +133,38 @@ class Si4Helpers {
                 "entity_type" => Si4Util::pathArg($elasticEntity, "_source/entity_type", ""),
                 "active" => Si4Util::pathArg($elasticEntity, "_source/active", ""),
             ],
+            //"si4orig" => Si4Util::pathArg($elasticEntity, "_source/data/si4", []),
             "si4" => [],
         ];
 
+        // Parse si4 metadata for frontend displaying
         foreach (self::$si4FieldDefinitions as $fieldName => $fieldDef) {
+
+            // Skip non-frontend fields
+            if (!$fieldDef["displayOnFrontend"]) continue;
+
+            // Get field elastic data
             $fieldPath = "_source/data/si4/".$fieldName;
             $fieldData = Si4Util::pathArg($elasticEntity, $fieldPath, []);
-
-            $hasLanguage = Si4Util::getArg($fieldDef, "hasLanguage", false);
-            $showAllLanguages = Si4Util::getArg($fieldDef, "showAllLanguages", false);
+            if (!count($fieldData)) continue;
 
             $result["si4"][$fieldName] = [];
 
             foreach($fieldData as $fieldEntry) {
-                $langMatch = !$hasLanguage || $showAllLanguages || SessionLanguage::current() === $fieldEntry["lang"];
+                $langMatch = !$fieldDef["hasLanguage"] || $fieldDef["showAllLanguages"] || SessionLanguage::current() === $fieldEntry["lang"];
                 if (!$langMatch) continue;
                 $result["si4"][$fieldName][] = $fieldEntry["value"];
             }
 
-            // Let Non-titled documents at least have something to display
-            if (!count($result["si4"]["title"])) {
-                $result["si4"]["title"] = [$result["system"]["handle_id"]];
+            // Join array entries into only one, if field definition says inline
+            if ($fieldDef["inline"]) {
+                $result["si4"][$fieldName] = [join($fieldDef["inlineSeparator"], $result["si4"][$fieldName])];
             }
+        }
+
+        // Let Non-titled documents at least have something to display
+        if (!isset($result["si4"]["title"]) || !count($result["si4"]["title"])) {
+            $result["si4"]["title"] = [$result["system"]["handle_id"]];
         }
 
         $result["thumb"] = self::getThumbUrl($elasticEntity);
@@ -163,5 +243,6 @@ class Si4Helpers {
         }
         return FileHelpers::getDefaultThumbForStructType($structType);
     }
-
 }
+
+Si4Helpers::initFieldDefinitions();

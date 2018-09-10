@@ -26,22 +26,26 @@
                         @endforeach
                     </div>
 
-                    <div class="detailsDcField detailsDcCreator">
-                        {{ __('fe.details_dcCreator') }}: {{ join("; ", $data["doc"]["si4"]["creator"]) }}
-                    </div>
 
-                    @if (count($data["doc"]["si4"]["description"]))
-                        <div class="detailsDcField detailsDcDescription">
-                            {{ __('fe.details_dcDescription') }}: {{ join("<br />", $data["doc"]["si4"]["description"]) }}
-                        </div>
-                    @endif
+                    @foreach ($data["doc"]["si4"] as $fieldName => $fieldValueArray)
+                        @if (count($fieldValueArray) && $fieldName != "title")
+                            <div class="detailsDcField detailsDc{{ ucfirst($fieldName) }}">
+                                <div class="fieldKey">{{ translateSi4Field($fieldName) }}:</div>
+                                <div class="fieldValue">
+                                    @foreach ($fieldValueArray as $fieldValue)
+                                        <div class="line">{{ $fieldValue }}</div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
 
                     @if ($data["children"] && count($data["children"]))
                         <div class="detailsChildren">
                             <div class="childrenText">Child entities</div>
                             <ul class="entityChildren">
                                 @foreach ($data["children"] as $child)
-                                    @if ($child["system"]["handle_id"] && count($child["si4"]["creator"]))
+                                    @if ($child["system"]["handle_id"] && isset($child["si4"]["creator"]))
                                         <li>
                                             <span>{{ first($child["si4"]["creator"]) }}:</span>
                                             <a href="/details/{{ $child["system"]["handle_id"] }}">{{ first($child["si4"]["title"]) }}</a>
