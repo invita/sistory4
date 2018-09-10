@@ -69,10 +69,10 @@ return [
     'search_textInCollection' => 'Išči znotraj',
 
     'searchType_all' => 'Vse',
-    'searchType_collection' => 'Zbirke',
-    'searchType_entity' => 'Intelektualne entitete',
-    'searchType_file' => 'Datoteke',
-    'searchType_fullText' => 'Vsebina datoteke',
+    'searchType_collection' => 'Metapodatki zbirk',
+    'searchType_entity' => 'Metapodatki entitet',
+    'searchType_file' => 'Metapodatki datotek',
+    'searchType_fullText' => 'Vsebina datotek',
 
     'advSearch_oper_and' => 'In',
     'advSearch_oper_or' => 'Ali',

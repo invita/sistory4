@@ -67,9 +67,9 @@ return [
     'search_textInCollection' => 'Search inside',
 
     'searchType_all' => 'All',
-    'searchType_collection' => 'Collections',
-    'searchType_entity' => 'Digital objects',
-    'searchType_file' => 'Files',
+    'searchType_collection' => 'Collections metadata',
+    'searchType_entity' => 'Digital objects metadata',
+    'searchType_file' => 'Files metadata',
     'searchType_fullText' => 'File contents',
 
     'advSearch_oper_and' => 'And',

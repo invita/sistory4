@@ -82,9 +82,18 @@ class AjaxController extends Controller
         return mb_substr($str1, 0, $shorterLen) === mb_substr($str2, 0, $shorterLen);
     }
 
-
     private function searchSuggest(Request $request) {
+        $searchType = $request->query("st", "all");
+        if ($searchType == "fullText") {
+            return $this->searchSuggestFullText($request);
+        } else {
+            return $this->searchSuggestMetadata($request);
+        }
+    }
+
+    private function searchSuggestMetadata(Request $request) {
         $term = $request->query("term", "");
+
         $termLower = mb_strtolower($term);
         //echo "termLower: '".$termLower."'\n";
 
@@ -183,7 +192,56 @@ class AjaxController extends Controller
             return json_encode(array_keys($titleResults));
 
         }
+    }
 
+
+    private function searchSuggestFullText(Request $request) {
+        $term = $request->query("term", "");
+        $termLower = mb_strtolower($term);
+        $maxResults = 10;
+        $maxResultLength = 50;
+        $results = [];
+
+        if (strlen($term) > 2) {
+
+            // Find matching files
+            $elasticData = ElasticHelpers::searchString($termLower."*", "fullText", "", 0, 10);
+            $assocData = ElasticHelpers::elasticResultToAssocArray($elasticData);
+            //echo "assocData count ".count($assocData)."\n";
+
+            foreach ($assocData as $elasticEntity) {
+                $fullText = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fullText", "");
+                $startPos = stripos($fullText, $termLower);
+
+                for ($i = 0; $i < 3; $i++) {
+                    if ($startPos === false) break;
+
+                    //echo substr($fullText, $startPos, 30)."... ";
+                    $spacePos = strpos($fullText, " ", $startPos+strlen($term));
+                    $spacePos2 = strpos($fullText, " ", $spacePos +1);
+                    if (!$spacePos2) $spacePos2 = $spacePos;
+                    //echo $startPos.", ".$spacePos.", ".$spacePos2."\n";
+                    if (!$spacePos2) continue;
+
+                    $len = $spacePos2 - $startPos;
+                    if ($len > $maxResultLength) $len = $maxResultLength;
+                    $result = substr($fullText, $startPos, $len);
+                    $results[mb_strtolower($result)] = 1;
+                    //echo "add result ".mb_strtolower($result)."\n";
+                    //print_r($results);
+
+                    if (count(array_keys($results)) >= $maxResults) break; // enough results
+
+                    $startPos = stripos($fullText, $termLower, $startPos + strlen($term));
+                }
+
+                if (count(array_keys($results)) >= $maxResults) break; // enough results
+            }
+        }
+
+        //print_r($assocData);
+        $response = json_encode(array_keys($results));
+        return $response ? $response : "[]";
     }
 
 
