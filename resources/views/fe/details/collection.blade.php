@@ -29,12 +29,21 @@
                         <h3>{{ first($data["doc"]["si4"]["title"]) }}</h3>
                     </div>
 
-                    <div class="detailsDcField detailsDcDescription">
-                        <p><?php echo ""; /* $data["doc"]["html_dc_description"]; */ ?></p>
-                    </div>
+                    @foreach ($data["doc"]["si4"] as $fieldName => $fieldValueArray)
+                        @if (count($fieldValueArray) && $fieldName != "title")
+                            <div class="detailsDcField detailsDc{{ ucfirst($fieldName) }}">
+                                <div class="fieldKey">{{ translateSi4Field($fieldName) }}:</div>
+                                <div class="fieldValue">
+                                    @foreach ($fieldValueArray as $fieldValue)
+                                        <div class="line">{{ $fieldValue }}</div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+
 
                     <div class="childrenWrap">
-
                         @foreach($data["children"] as $child)
                             <a href="/details/{{ $child["system"]["handle_id"] }}">
                                 <div class="child">
