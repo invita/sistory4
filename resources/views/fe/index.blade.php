@@ -34,9 +34,11 @@
                                     </div>
                                     <div class="childDetails">
                                         <div class="childCreators">
-                                            @foreach($listEntity["si4"]["creator"] as $creator)
-                                                <div>{{ $creator }}</div>
-                                            @endforeach
+                                            @if (isset($listEntity["si4"]["creator"]))
+                                                @foreach($listEntity["si4"]["creator"] as $creator)
+                                                    <div>{{ $creator }}</div>
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
