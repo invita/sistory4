@@ -50,7 +50,10 @@ class DC extends AbstractMdMapper
             foreach ($val as $valIdx => $valValue) {
                 $value = $valValue["value"];
 
-                $fieldResult = [ "value" => $value ];
+                $fieldResult = [
+                    "metadataSrc" => $this->mdTypeToHandle(),
+                    "value" => $value
+                ];
 
                 if ($fieldDef["hasLanguage"]) {
                     $lang = isset($valValue["LangPropName"]) ? $valValue["LangPropName"] : "";

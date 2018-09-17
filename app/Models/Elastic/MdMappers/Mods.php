@@ -16,25 +16,37 @@ class Mods extends AbstractMdMapper
         $result = [];
         $fieldDefs = Si4Helpers::$si4FieldDefinitions;
 
-        // Test mods implementation
 
-        $modsTitles = Si4Util::pathArg($xmlData,
-            "ModsPropName/0/RelatedItemPropName/0/RelatedItemPropName/0/TitleInfoPropName/0/TitlePropName", []);
+        // MODS test implementation
+        // TODO: XSD attribute named 'type' does not work with xsd2php...
 
-        $fieldDef = $fieldDefs["title"];
+        $mods = Si4Util::pathArg($xmlData, "ModsPropName/0", null);
+        if (!$mods) return $result;
 
-        foreach ($modsTitles as $modsTitle) {
-            $value = $modsTitle["value"];
-            $lang = Si4Helpers::$defaultLang;
+        // TitleInfo
+        $titleInfos = Si4Util::pathArg($mods, "TitleInfoPropName", []);
+        //print_r($titleInfos);
+        //die();
 
-            if ($fieldDef["hasLanguage"]) {
-                $result[$fieldDef["fieldName"]][] = [ "lang" => $lang, "value" => $value ];
-            } else {
-                $result[$fieldDef["fieldName"]][] = [ "value" => $value ];
+        foreach ($titleInfos as $titleInfo) {
+            $titles = Si4Util::pathArg($titleInfo, "TitlePropName", []);
+            foreach ($titles as $title) {
+                $value = $title["value"];
+                $fieldResult = [
+                    "metadataSrc" => $this->mdTypeToHandle(),
+                    "value" => $value
+                ];
+
+                if ($fieldDefs["title"]["hasLanguage"]) {
+                    $lang = Si4Helpers::$defaultLang;
+                    $fieldResult["lang"] = $lang;
+                }
+
+                $result[$fieldDefs["title"]["fieldName"]][] = $fieldResult;
             }
-
         }
 
         return $result;
     }
+
 }

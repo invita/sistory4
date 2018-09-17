@@ -17,8 +17,9 @@ class Initial extends Controller
             "entityTypes" => Enums::$entityTypes,
             "dcLanguages" => Enums::$dcLanguages,
             "repositoryInfo" => [
-                "name" => "SIstory",
-                "note" => "http://sistory.si"
+                "name" => si4config("siteName"),
+                "note" => si4config("siteUrl"),
+                "handlePrefix" => si4config("handlePrefix"),
             ],
             "status" => true,
             "error" =>  null

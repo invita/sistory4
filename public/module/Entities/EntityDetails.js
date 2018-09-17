@@ -183,7 +183,7 @@ var F = function(args){
                             fLocatEl.setAttribute("USE", "HTTP");
                             fLocatEl.setAttribute("LOCTYPE", "URL");
                             fLocatEl.setAttribute("title", response.data.realFileName);
-                            fLocatEl.setAttribute("href", "http://hdl.handle.net/11686/"+args.row.handle_id);
+                            fLocatEl.setAttribute("href", "http://hdl.handle.net/"+si4.data.repositoryInfo.handlePrefix+"/"+args.row.handle_id);
                             fileEl.appendChild(fLocatEl);
 
 

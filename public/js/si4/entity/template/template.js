@@ -5,7 +5,7 @@ si4.entity.template.getEmptyMetsXml = function(data, callback) {
         systemId: data.id,
         handleId: data.handleId,
         si4id: "si4."+data.handleId,
-        handleUrl: "http://hdl.handle.net/11686/"+data.handleId,
+        handleUrl: "http://hdl.handle.net/"+si4.data.repositoryInfo.handlePrefix+"/"+data.handleId,
         structType: data.structType,
         currentTimestamp: si4.dateToISOString(),
         recordStatus: "Active",

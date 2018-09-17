@@ -73,6 +73,9 @@ $(document).ready(function() {
 
             si4.data.repositoryInfo = response.repositoryInfo;
 
+            // Rename immortal tab to repositoryInfo.name
+            si4.data.mainTab.setCaption(si4.data.repositoryInfo.name);
+
             // Append menus
 
             var menuItems = [];

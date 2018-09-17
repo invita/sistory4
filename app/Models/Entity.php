@@ -132,7 +132,7 @@ class Entity extends Model
 
         $xmlDoc = simplexml_load_string($this->data);
         $xmlDoc['ID'] = $this->handle_id;
-        $xmlDoc['OBJID'] = "http://hdl.handle.net/11686/".$this->handle_id;
+        $xmlDoc['OBJID'] = "http://hdl.handle.net/".si4config("handlePrefix")."/".$this->handle_id;
         $xmlDoc['TYPE'] = $this->struct_type;
 
         // * MetsHdr
@@ -166,7 +166,7 @@ class Entity extends Model
                 $piValueNode[0] = $this->handle_id;
             }
             else if ($piType == "hdl") {
-                $piValueNode[0] = "http://hdl.handle.net/11686/".$this->handle_id;
+                $piValueNode[0] = "http://hdl.handle.net/".si4config("handlePrefix")."/".$this->handle_id;
             }
         }
 
@@ -217,7 +217,7 @@ class Entity extends Model
 
                 $fileSecFileLocat = $fileSecFile->addChild("METS:FLocat");
                 $fileSecFileLocat["LOCTYPE"] = "HANDLE";
-                $fileSecFileLocat["xlink:href"] = "http://hdl.handle.net/11686/".$child["handle_id"];
+                $fileSecFileLocat["xlink:href"] = "http://hdl.handle.net/".si4config("handlePrefix")."/".$child["handle_id"];
             }
 
             //print_r($fileSec->asXML());
@@ -294,7 +294,7 @@ class Entity extends Model
             // METS:structMap/METS:div/METS:mptr - parent mptr
             $structParentMptr = $structParentDiv->addChild("METS:mptr");
             $structParentMptr["LOCTYPE"] = "HANDLE";
-            $structParentMptr["xlink:href"] = "http://hdl.handle.net/11686/".$this->parent;
+            $structParentMptr["xlink:href"] = "http://hdl.handle.net/".si4config("handlePrefix")."/".$this->parent;
 
             // METS:structMap/METS:div/METS:div - currentDiv
             $structCurrentDiv = $structParentDiv->addChild("METS:div");
@@ -319,7 +319,7 @@ class Entity extends Model
                     $structChildDiv["TYPE"] = $childStructType;
                     $structChildMptr = $structChildDiv->addChild("METS:mptr");
                     $structChildMptr["LOCTYPE"] = "HANDLE";
-                    $structChildMptr["xlink:href"] = "http://hdl.handle.net/11686/".$childHandleId;
+                    $structChildMptr["xlink:href"] = "http://hdl.handle.net/".si4config("handlePrefix")."/".$childHandleId;
                 }
             }
         }
