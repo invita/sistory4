@@ -22,6 +22,7 @@ class Si4Helpers {
             "inline" => Si4Util::getArg($fieldDefs, "inline", false),
             "inlineSeparator" => Si4Util::getArg($fieldDefs, "inlineSeparator", ", "),
             "displayOnFrontend" => Si4Util::getArg($fieldDefs, "displayOnFrontend", false),
+            "oai_dcName" => Si4Util::getArg($fieldDefs, "dcName", "dc:".$fieldDefs["fieldName"]),
         ];
     }
 
@@ -39,6 +40,7 @@ class Si4Helpers {
                 "inline" => false,              // Values are displayed inline
                 "inlineSeparator" => ":",       // If inline, defines values separator
                 "displayOnFrontend" => false,   // Should this field be displayed on frontend
+                "oai_dcName" => "dc:fieldName", // oai_dc field output xml tag name
             ]),
             */
             "title" => self::fieldDefinition([

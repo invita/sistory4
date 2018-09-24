@@ -29,6 +29,7 @@ Route::get('/ajax/{name}', "AjaxController@index")->name("ajax.index#get");
 Route::get('/test', "TestController@index")->name("test.index#get");
 Route::get('/test/{id}', "TestController@index")->name("test.index#get");
 
+Route::get('/oai', "OaiController@index")->name("oai.index#get");
 
 
 // *** Storage ***

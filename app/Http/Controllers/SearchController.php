@@ -59,7 +59,7 @@ class SearchController extends FrontendController
             $hdlDocData = $hdlElasticData[array_keys($hdlElasticData)[0]];
             $hdlDoc = Si4Helpers::getEntityListPresentation($hdlDocData);
 
-            $layoutData["hdlTitle"] = $hdlDoc["first_dc_title"];
+            $layoutData["hdlTitle"] = $hdlDoc["si4"]["title"];
         }
 
         return view("fe.search", [

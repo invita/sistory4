@@ -35,7 +35,7 @@
                         <div class="searchResult">
                             <a href="/details/{{ $result["system"]["handle_id"] }}">
                                 <div class="imageWrapper">
-                                    <img src="/img/structType/{{ $result["system"]["struct_type"] }}.png" />
+                                    <img src="{{ $result["thumb"] }}" />
                                 </div>
 
                                 @if ($result["system"]["struct_type"] == "entity")

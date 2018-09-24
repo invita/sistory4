@@ -78,7 +78,7 @@
                             @if ($layoutData["allowInsideSearch"])
                                 <div class="flexRow collectionSearchIndicatorWrap">
                                     <input type="checkbox" name="hdl" value="{{ $layoutData["hdl"] }}" id="searchInsideCurrent" {{ $layoutData["hdl"] ? "checked" : "" }}/>
-                                    <label id="collectionSearchIndicator" for="searchInsideCurrent">{{ __("fe.search_textInCollection") }} {{ $layoutData["hdlTitle"] }}</label>
+                                    <label id="collectionSearchIndicator" for="searchInsideCurrent">{{ __("fe.search_textInCollection") }} {{ first($layoutData["hdlTitle"]) }}</label>
                                 </div>
                             @endif
                         </form>
