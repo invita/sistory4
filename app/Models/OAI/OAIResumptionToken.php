@@ -87,9 +87,9 @@ class OAIResumptionToken extends Model {
         return $oaiResumpToken;
     }
 
-    public function save($options = []) {
+    public function save() {
         $this->packData();
-        parent::save($options);
+        parent::save();
     }
 
     public function packData() {
