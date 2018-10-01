@@ -48,7 +48,7 @@ class DC extends AbstractMdMapper
             if (!isset($result[$fieldDef["fieldName"]])) $result[$fieldDef["fieldName"]] = [];
 
             foreach ($val as $valIdx => $valValue) {
-                $value = $valValue["value"];
+                $value = isset($valValue["value"]) ? $valValue["value"] : "";
 
                 $fieldResult = [
                     "metadataSrc" => $this->mdTypeToHandle(),
