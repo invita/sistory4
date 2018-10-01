@@ -109,6 +109,10 @@ $(document).ready(function() {
                 caption: si4.translate("system_userList_mainTab_text"),
             });
             menuItems.push({
+                loadArgs: { moduleName:'Entities/BehaviourList' },
+                caption: si4.translate("entities_behaviourList_mainTab_text"),
+            });
+            menuItems.push({
                 loadArgs: { moduleName:'Entities/EntityList' },
                 caption: si4.translate("entities_entityList_mainTab_text"),
             });

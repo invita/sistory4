@@ -211,6 +211,7 @@ si4.widget.si4DataTable = function(args)
             _p.insertButton.selector.click(function(e){
                 var row = _p.createEmptyRow();
                 var tabName = si4.mergePlaceholders(_p.entityTitleNew, row);
+                // TODO
                 var editorModuleArgs = si4.mergeObjects(_p.editorModuleArgs, {entityTitle:_p.entityTitleNew});
                 editorModuleArgs.onClosed = function(args){
                     _p.refresh();

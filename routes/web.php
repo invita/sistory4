@@ -69,6 +69,10 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('save-user', "Admin\\Api\\Users@saveUser")->name("admin.api.save-user#post");
             Route::post('delete-user', "Admin\\Api\\Users@deleteUser")->name("admin.api.delete-user#post");
 
+            Route::post('behaviour-list', "Admin\\Api\\Behaviours@behaviourList")->name("admin.api.behaviour-list#post");
+            Route::post('save-behaviour', "Admin\\Api\\Behaviours@saveBehaviour")->name("admin.api.save-behaviour#post");
+            Route::post('delete-behaviour', "Admin\\Api\\Behaviours@deleteBehaviour")->name("admin.api.delete-behaviour#post");
+
             Route::post('dev-tools', "Admin\\Api\\Dev@devTools")->name("admin.api.dev-tools#post");
         });
 

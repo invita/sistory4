@@ -52,6 +52,15 @@ si4.translations = {
     entities_entityDetails_relationsTab_text: "Relations",
     entities_entityDetails_filesTab_text: "Files",
 
+    // Behaviours
+    entities_behaviourList_mainTab_text: "Behaviours",
+    entities_behaviourList_contentTab_text: "List",
+    entities_behaviourTitleNew: "New behaviour",
+    entities_behaviourTitleEdit: "Behaviour [[id]] - [[name]]",
+    entities_behaviourDetails_mainTab_text: "Behaviour [[id]] - [[name]]",
+    entities_behaviourDetails_contentTab_text: "Basic",
+
+
     // UserList
     system_userList_mainTab_text: "User list",
     system_userList_contentTab_text: "List",
@@ -137,6 +146,9 @@ si4.translations = {
 
     field_relatedEntity: "Related entity",
     field_relationType: "Relation type",
+
+    field_data: "Data",
+    field_frontendFields: "Frontend fields",
 
     entityGroup_adminFields: "Administrative fields",
     entityGroup_mdPreview: "Metadata preview",
