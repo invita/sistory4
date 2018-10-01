@@ -35,17 +35,15 @@ class Behaviours extends Controller
         return ["status" => true, "error" =>  null];
     }
 
-    /*
     public function deleteBehaviour(Request $request)
     {
         $postJson = json_decode(file_get_contents("php://input"), true);
         $id = $postJson["data"]["id"];
 
-        $user = User::find($id);
-        if ($user) $user->delete();
+        $behaviour = Behaviour::find($id);
+        if ($behaviour) $behaviour->delete();
 
-        return $this->userList($request);
+        return $this->behaviourList($request);
     }
-    */
 
 }
