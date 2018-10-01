@@ -125,6 +125,12 @@ class FrontendController extends Controller
     // Javascript data
     private function prepareJavascriptData() {
 
+        $data = [];
+
+        // Basic
+
+        $data["siteName"] = si4config("siteName");
+
         // Advanced search - Operators enum
         $advSearch_operators = array_map(function($oper) {
             return [
@@ -141,12 +147,11 @@ class FrontendController extends Controller
             ];
         }, array_keys(ElasticHelpers::$advancedSearchFieldMap));
 
-        $data = [
-            "advancedSearch" => [
-                "operators" => $advSearch_operators,
-                "fieldNames" => $advSearch_fieldNames,
-            ]
+        $data["advancedSearch"] = [
+            "operators" => $advSearch_operators,
+            "fieldNames" => $advSearch_fieldNames,
         ];
+
         return json_encode($data);
     }
 

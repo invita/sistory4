@@ -173,14 +173,14 @@ class DetailsController extends FrontendController
         //print_r($data["doc"]);
 
         $linkPrefix = "/details/";
-        $skipHandles = ["si4", "menuTop"];
+        $skipHandles = [env("SI4_ELASTIC_ROOT_COLLECTION"), "menuTop", "menuBottom"];
         $breadcrumbs = [];
 
         // Add Parents to breadcrumbs
 
         $breadcrumbs[] = [
             "link" => "/",
-            "text" => "Si4"
+            "text" => si4config("siteName")
         ];
 
         //print_r($data);
