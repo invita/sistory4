@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Helpers\EntityHelpers;
+use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
 use App\Models\Behaviour;
@@ -44,6 +45,10 @@ class Behaviours extends Controller
         if ($behaviour) $behaviour->delete();
 
         return $this->behaviourList($request);
+    }
+
+    public function fieldDefinitions(Request $request) {
+        return ["status" => true, "data" => Si4Helpers::$si4FieldDefinitions];
     }
 
 }

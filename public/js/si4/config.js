@@ -8,7 +8,7 @@ si4.config.apiUrl = "/admin/api";
 
 si4.config.apiNames = [
     "entityList", "entityListDb", "saveEntity", "reserveEntityId", "deleteEntity", "entityHierarchy",
-    "behaviourList", "saveBehaviour", "deleteBehaviour",
+    "behaviourList", "saveBehaviour", "deleteBehaviour", "fieldDefinitions",
     "entityRelationsList", "saveEntityRelation", "deleteEntityRelation",
     "userList", "saveUser", "deleteUser",
     "fileList", "saveFile", "deleteFile",

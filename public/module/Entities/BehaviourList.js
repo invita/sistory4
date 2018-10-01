@@ -21,6 +21,7 @@ var F = function(args){
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
+            data: { visible: false },
         },
         cssClass_table: "si4DataTable_table width100percent"
     });
