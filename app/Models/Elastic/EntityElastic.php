@@ -191,7 +191,7 @@ class EntityElastic
             if ($val && count($val)) {
                 // Convert CDATA to string
                 foreach ($val as $i => $v) {
-                    $val[$i]["value"] = (string)$v["value"];
+                    $val[$i]["value"] = (string)(isset($v["value"]) ? $v["value"] : "");
                     $langPropName = (string)$v["LangPropName"];
                     unset($val[$i]["LangPropName"]);
                     if ($langPropName) $val[$i]["lang"] = $langPropName;
