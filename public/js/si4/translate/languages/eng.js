@@ -6,7 +6,31 @@ si4.translations = {
     // Template
     button_save: "Save",
 
-    // Modules
+
+    // *** Modules ***
+
+    // Field Definitions
+    metadataModel_fieldDefinitionList_mainTab_text: "Field definitions",
+    metadataModel_fieldDefinitionList_contentTab_text: "Si4 Model - (Readonly for now)",
+
+    // Mapping
+    metadataModel_mappingGroupList_mainTab_text: "Mapping Groups",
+    metadataModel_mappingGroupList_contentTab_text: "List",
+    metadataModel_mappingGroupDetails_mainTab_text: "Mapping Group [[id]] - [[name]]",
+    metadataModel_mappingGroupDetails_contentTab_text: "Group details",
+    metadataModel_mappingGroupDetails_fieldMappingsTab_text: "Field mappings",
+
+    metadataModel_mappingGroupFieldDetails_mainTab_text: "Mapping - [[target_field]]",
+    metadataModel_mappingGroupFieldDetails_contentTab_text: "Mapping details",
+
+    // Behaviours
+    metadataModel_behaviourList_mainTab_text: "Behaviours",
+    metadataModel_behaviourList_contentTab_text: "List",
+    metadataModel_behaviourTitleNew: "New behaviour",
+    metadataModel_behaviourTitleEdit: "Behaviour [[id]] - [[name]]",
+    metadataModel_behaviourDetails_mainTab_text: "Behaviour [[id]] - [[name]]",
+    metadataModel_behaviourDetails_contentTab_text: "Basic",
+
 
     // EntityList
     entities_entityList_mainTab_text: "Entity list",
@@ -44,6 +68,7 @@ si4.translations = {
     entities_dbEntityList_mainTab_text: "Database entity list",
     entities_dbEntityList_contentTab_text: "List",
 
+
     // EntityDetails
     entities_entityDetails_mainTab_text: "Entity [[handle_id]]",
     entities_entityDetails_contentTab_text: "Basic",
@@ -51,14 +76,6 @@ si4.translations = {
     entities_entityDetails_mdEditorTab_text: "Metadata Editor",
     entities_entityDetails_relationsTab_text: "Relations",
     entities_entityDetails_filesTab_text: "Files",
-
-    // Behaviours
-    entities_behaviourList_mainTab_text: "Behaviours",
-    entities_behaviourList_contentTab_text: "List",
-    entities_behaviourTitleNew: "New behaviour",
-    entities_behaviourTitleEdit: "Behaviour [[id]] - [[name]]",
-    entities_behaviourDetails_mainTab_text: "Behaviour [[id]] - [[name]]",
-    entities_behaviourDetails_contentTab_text: "Basic",
 
 
     // UserList
@@ -150,6 +167,15 @@ si4.translations = {
     field_data: "Data",
     field_frontendFields: "Frontend fields",
 
+    field_source_xpath: "Source XPath",
+    field_value_xpath: "Value XPath",
+    field_lang_xpath: "Lang XPath",
+    field_source_xpath_placeholder: "XPath starting from METS:xmlData element",
+    field_value_xpath_placeholder: "XPath to value starting from base element (found by source XPath)",
+    field_lang_xpath_placeholder: "XPath to language starting from base element (found by source XPath)",
+    field_target_field: "Destination Field",
+
+
     entityGroup_adminFields: "Administrative fields",
     entityGroup_mdPreview: "Metadata preview",
 
@@ -165,7 +191,8 @@ si4.translations = {
     dataTable_confirmDelete: "Are you sure you want to delete record [[record]]?",
 
     saved_confirm_close: "Operation successful. Close?",
-    save_failed: "Save failed. [[reason]]\nDouble check system fields and xml.",
+    save_failed_entity: "Save failed. [[reason]]\nDouble check system fields and xml.",
+    save_failed: "Save failed. [[reason]]",
 
     text_confirm_import_entities: "Zip contains:\n[[importInfo]]\nNote: Import will overwrite existing IDs.\nDo you want to continue?",
     text_import_entities_success: "Import successful.\n - Entities replaced: [[replacedCount]]\n - Total count: [[importCount]]",

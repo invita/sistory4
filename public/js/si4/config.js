@@ -7,8 +7,15 @@ si4.config.uploadApiUrl = "/admin/upload";
 si4.config.apiUrl = "/admin/api";
 
 si4.config.apiNames = [
+
+    "fieldDefinitions", "fieldDefinitionsList",
+    "behaviourList", "saveBehaviour", "deleteBehaviour",
+
+    "mappingGroupList", "saveMappingGroup", "deleteMappingGroup",
+    "mappingGroupFieldsList", "saveMappingGroupField",
+
     "entityList", "entityListDb", "saveEntity", "reserveEntityId", "deleteEntity", "entityHierarchy",
-    "behaviourList", "saveBehaviour", "deleteBehaviour", "fieldDefinitions",
+
     "entityRelationsList", "saveEntityRelation", "deleteEntityRelation",
     "userList", "saveUser", "deleteUser",
     "fileList", "saveFile", "deleteFile",

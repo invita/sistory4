@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Behaviour;
 use \Illuminate\Http\Request;
 
-class Behaviours extends Controller
+class MdBehaviour extends Controller
 {
     public function behaviourList(Request $request)
     {
@@ -46,9 +46,4 @@ class Behaviours extends Controller
 
         return $this->behaviourList($request);
     }
-
-    public function fieldDefinitions(Request $request) {
-        return ["status" => true, "data" => Si4Helpers::$si4FieldDefinitions];
-    }
-
 }

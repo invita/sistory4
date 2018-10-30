@@ -69,10 +69,23 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('save-user', "Admin\\Api\\Users@saveUser")->name("admin.api.save-user#post");
             Route::post('delete-user', "Admin\\Api\\Users@deleteUser")->name("admin.api.delete-user#post");
 
-            Route::post('behaviour-list', "Admin\\Api\\Behaviours@behaviourList")->name("admin.api.behaviour-list#post");
-            Route::post('save-behaviour', "Admin\\Api\\Behaviours@saveBehaviour")->name("admin.api.save-behaviour#post");
-            Route::post('delete-behaviour', "Admin\\Api\\Behaviours@deleteBehaviour")->name("admin.api.delete-behaviour#post");
-            Route::post('field-definitions', "Admin\\Api\\Behaviours@fieldDefinitions")->name("admin.api.field-definitions#post");
+            // Metadata Field definitions
+            Route::post('field-definitions', "Admin\\Api\\MdFieldDefinitions@fieldDefinitions")->name("admin.api.field-definitions#post");
+            Route::post('field-definitions-list', "Admin\\Api\\MdFieldDefinitions@fieldDefinitionsList")->name("admin.api.field-definitions-list#post");
+
+            // Metadata Mapping
+            Route::post('mapping-group-list', "Admin\\Api\\MdMapping@mappingGroupList")->name("admin.api.mapping-group-list#post");
+            Route::post('save-mapping-group', "Admin\\Api\\MdMapping@saveMappingGroup")->name("admin.api.save-mapping-group#post");
+            Route::post('delete-mapping-group', "Admin\\Api\\MdMapping@deleteMappingGroup")->name("admin.api.delete-mapping-group#post");
+
+            Route::post('mapping-group-fields-list', "Admin\\Api\\MdMapping@mappingGroupFieldsList")->name("admin.api.mapping-group-fields-list#post");
+            Route::post('save-mapping-group-field', "Admin\\Api\\MdMapping@saveMappingGroupField")->name("admin.api.save-mapping-group-field#post");
+
+            // Metadata Behaviour
+            Route::post('behaviour-list', "Admin\\Api\\MdBehaviour@behaviourList")->name("admin.api.behaviour-list#post");
+            Route::post('save-behaviour', "Admin\\Api\\MdBehaviour@saveBehaviour")->name("admin.api.save-behaviour#post");
+            Route::post('delete-behaviour', "Admin\\Api\\MdBehaviour@deleteBehaviour")->name("admin.api.delete-behaviour#post");
+
 
             Route::post('dev-tools', "Admin\\Api\\Dev@devTools")->name("admin.api.dev-tools#post");
         });

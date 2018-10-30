@@ -73,6 +73,12 @@ $(document).ready(function() {
 
             si4.data.repositoryInfo = response.repositoryInfo;
 
+            si4.data.fieldDefinitions = response.fieldDefinitions;
+            si4.data.fieldDefinitionNames = {};
+            for (var i in response.fieldDefinitions) si4.data.fieldDefinitionNames[i] = i;
+
+            si4.translations = si4.mergeObjects(si4.translations, response.translations);
+
             // Rename immortal tab to repositoryInfo.name
             si4.data.mainTab.setCaption(si4.data.repositoryInfo.name);
 
@@ -82,6 +88,7 @@ $(document).ready(function() {
             var isAdmin = si4.data.currentUser.name == "Duhec";
 
             if (isAdmin) {
+                // Super Admin
                 menuItems.push({
                     loadArgs: { moduleName:'Dev/TestPage' },
                     caption: si4.translate("dev_testPage_mainTab_text"),
@@ -96,6 +103,7 @@ $(document).ready(function() {
                 });
             }
 
+            // System
             menuItems.push({
                 loadArgs: { moduleName:'System/Dashboard' },
                 caption: si4.translate("system_dashboard_mainTab_text"),
@@ -104,13 +112,27 @@ $(document).ready(function() {
                 loadArgs: { moduleName:'System/Notes' },
                 caption: si4.translate("system_notes_mainTab_text"),
             });
+
+
+            // Metadata Model
+            menuItems.push({
+                loadArgs: { moduleName:'MetadataModel/FieldDefinitionList' },
+                caption: si4.translate("metadataModel_fieldDefinitionList_mainTab_text"),
+            });
+            menuItems.push({
+                loadArgs: { moduleName:'MetadataModel/MappingGroupList' },
+                caption: si4.translate("metadataModel_mappingGroupList_mainTab_text"),
+            });
+            menuItems.push({
+                loadArgs: { moduleName:'MetadataModel/BehaviourList' },
+                caption: si4.translate("metadataModel_behaviourList_mainTab_text"),
+            });
+
+
+            // Entities
             menuItems.push({
                 loadArgs: { moduleName:'System/UserList' },
                 caption: si4.translate("system_userList_mainTab_text"),
-            });
-            menuItems.push({
-                loadArgs: { moduleName:'Entities/BehaviourList' },
-                caption: si4.translate("entities_behaviourList_mainTab_text"),
             });
             menuItems.push({
                 loadArgs: { moduleName:'Entities/EntityList' },
@@ -124,6 +146,7 @@ $(document).ready(function() {
                 loadArgs: { moduleName:'Entities/FileList' },
                 caption: si4.translate("entities_fileList_mainTab_text"),
             });
+
 
             for (var i in menuItems) {
                 var menuItem = menuItems[i];

@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         Commands\EntityTestElasticConvert::class,
         Commands\Si4MigrateDatabase::class,
         Commands\Si4NumSeq::class,
+        Commands\Si4MappingReseed::class,
         Commands\TestTest::class,
     ];
 

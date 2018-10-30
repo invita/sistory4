@@ -29,7 +29,7 @@ var F = function(args){
             readOnly: true,
         });
 
-        args.basicTab.fieldId = args.basicTab.form.addInput({
+        args.basicTab.fieldHandleId = args.basicTab.form.addInput({
             name: "handle_id",
             value: rowValue.handle_id,
             type: "text",
@@ -669,7 +669,7 @@ var F = function(args){
             //console.log("saveEntity callback", data);
         }, function(err) {
             // errorCallback
-            alert(si4.translate("save_failed", { reason: "["+err.status+"] "+err.statusText }));
+            alert(si4.translate("save_failed_entity", { reason: "["+err.status+"] "+err.statusText }));
         });
     };
 

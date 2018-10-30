@@ -20,7 +20,7 @@ class Si4Helpers {
             "hasLanguage" => Si4Util::getArg($fieldDefs, "hasLanguage", false),
             "showAllLanguages" => Si4Util::getArg($fieldDefs, "showAllLanguages", false),
             "inline" => Si4Util::getArg($fieldDefs, "inline", false),
-            "inlineSeparator" => Si4Util::getArg($fieldDefs, "inlineSeparator", ", "),
+            "inlineSeparator" => Si4Util::getArg($fieldDefs, "inlineSeparator", ""),
             "displayOnFrontend" => Si4Util::getArg($fieldDefs, "displayOnFrontend", false),
             "oai_dcName" => Si4Util::getArg($fieldDefs, "dcName", "dc:".$fieldDefs["fieldName"]),
         ];

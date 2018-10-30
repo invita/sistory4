@@ -16,6 +16,7 @@ si4.widget.si4DataTable = function(args)
     this.caption = si4.getArg(args, "caption", "");
     this.primaryKey = si4.getArg(args, "primaryKey", null);
     this.fields = si4.getArg(args, "fields", {});
+    this.fieldOrder = si4.getArg(args, "fieldOrder", "rowData"); // One of: "definedFields" - use order of given fields, "rowData" - use order as received from server
     this.showOnlyDefinedFields = si4.getArg(args, "showOnlyDefinedFields", false);
     this.actions = si4.getArg(args, "actions", {});
     this.filter = si4.getArg(args, "filter", null);
@@ -134,6 +135,7 @@ si4.widget.si4DataTable = function(args)
         if (!_p.bluePrint || _p.bluePrint.noData) {
 
         } else {
+            console.log("_p.bluePrint.fields", _p.bluePrint.fields);
             for (var fieldKey in _p.bluePrint.fields) {
                 var fieldBP = _p.bluePrint.fields[fieldKey];
                 _p.headerRow.addField(fieldBP.fieldKey, fieldBP.fieldLabel, fieldBP);
@@ -485,21 +487,42 @@ si4.widget.si4DataTable = function(args)
 
         // Expand subDataTable
         if (_p.subDataTable) {
-            var exapndName = '_expand';
-            var expandBP = si4.mergeObjects({}, _p.fields[exapndName]);
-            expandBP.fieldKey = exapndName;
+            var expandName = '_expand';
+            var expandBP = si4.mergeObjects({}, _p.fields[expandName]);
+            expandBP.fieldKey = expandName;
             expandBP.fieldLabel = 'Expand';
             expandBP.fieldType = 'expand';
             expandBP.canSort = false;
             expandBP.canFilter = false;
             expandBP.editable = false;
             expandBP.initValue = _p.getInitValueForType(expandBP.fieldType);
-            bluePrint.fields[exapndName] = expandBP;
+            bluePrint.fields[expandName] = expandBP;
         }
+
 
         for (var i in tableData) {
             var row = tableData[i];
-            for (var fieldName in row) {
+
+            var fieldNamesOrdered;
+            switch (this.fieldOrder) {
+                // definedFields ordering strategy
+                case "definedFields":
+                    // First remember field names, order as defined
+                    fieldNamesOrdered = Object.keys(_p.fields);
+                    // Then append non-defined fieldNames from row data
+                    for (var fieldName in row) {
+                        if (fieldNamesOrdered.indexOf(fieldName) === -1) fieldNamesOrdered.push(fieldName);
+                    }
+                    break;
+                // rowData ordering strategy
+                case "rowData": default:
+                    fieldNamesOrdered = Object.keys(row);
+                    break;
+            }
+
+
+            for (var fieldNameIdx in fieldNamesOrdered) {
+                var fieldName = fieldNamesOrdered[fieldNameIdx];
                 if (!bluePrint.fields[fieldName]) {
                     var fieldBP = si4.mergeObjects({}, _p.fields[fieldName]);
                     fieldBP.fieldKey = fieldName;
@@ -1324,7 +1347,13 @@ si4.widget.si4DataTableDataSource = function(args) {
             data:args
         };
 
-        if (_p.staticData) methodCallData.staticData = _p.staticData;
+        if (_p.staticData) {
+            if (typeof(_p.staticData) === "function") {
+                methodCallData.staticData = _p.staticData(_p, methodName, args);
+            } else {
+                methodCallData.staticData = _p.staticData;
+            }
+        }
 
         methodCallData = si4.mergeObjects(methodCallData, _p.getPaginationData());
 
