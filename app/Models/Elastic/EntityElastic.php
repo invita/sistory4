@@ -8,6 +8,7 @@ use App\Helpers\Si4Helpers;
 use App\Helpers\TikaParseDoc;
 use App\Models\Elastic\MdMappers\DC;
 use App\Models\Elastic\MdMappers\Mods;
+use App\Models\Si4Field;
 
 class EntityElastic
 {
@@ -165,7 +166,7 @@ class EntityElastic
                     $si4 = $mdTypeHandler->mapXmlData($xmlData);
 
                     // Merge si4 fields
-                    foreach (Si4Helpers::$si4FieldDefinitions as $fieldName => $fieldDef) {
+                    foreach (Si4Field::getSi4Fields() as $fieldName => $fieldDef) {
                         if (!isset($si4[$fieldName])) continue;
                         if (!isset($this->data["si4"][$fieldName])) $this->data["si4"][$fieldName] = [];
                         foreach ($si4[$fieldName] as $fieldValue)

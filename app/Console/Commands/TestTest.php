@@ -6,6 +6,7 @@ use App\Helpers\ElasticHelpers;
 use App\Helpers\EntitySelect;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
+use App\Models\Si4Field;
 use App\Xsd\AnyTypeHandler;
 use App\Xsd\AsTextTypeHandler;
 use App\Xsd\Base64TypeHandler;
@@ -50,9 +51,14 @@ class TestTest extends Command
     public function handle()
     {
 
+        $si4Fields = Si4Field::getSi4FieldsArray();
+        print_r($si4Fields);
+
+        /*
         $entity = Entity::findOrNew(4);
         $entity->updateXml();
         print_r($entity->data);
+        */
 
         //Artisan::call("thumbs:create", ["entityId" => 4]);
 

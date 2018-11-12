@@ -11,20 +11,16 @@ var F = function(args){
         //entityTitleEdit: si4.lookup[name].entityTitleEdit,
         dataSource: new si4.widget.si4DataTableDataSource({
             select: si4.api["fieldDefinitionsList"],
-            //delete: si4.api["deleteBehaviour"],
+            delete: si4.api["deleteFieldDefinition"],
             pageCount: 20
         }),
-        /*
         editorModuleArgs: {
             moduleName: "MetadataModel/FieldDefinitionDetails"
         },
-        */
-        canInsert: false,
-        canDelete: false,
         tabPage: args.contentTab,
         fields: {
             //data: { visible: false },
-            translateKey: { hintF: function(args) { si4.showHint(si4.translate(args.field.getValue())); } }
+            translate_key: { hintF: function(args) { si4.showHint(si4.translate(args.field.getValue())); } }
         },
         cssClass_table: "si4DataTable_table width100percent"
     });

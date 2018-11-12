@@ -11,7 +11,9 @@ si4.translations = {
 
     // Field Definitions
     metadataModel_fieldDefinitionList_mainTab_text: "Field definitions",
-    metadataModel_fieldDefinitionList_contentTab_text: "Si4 Model - (Readonly for now)",
+    metadataModel_fieldDefinitionList_contentTab_text: "Si4 Fields",
+    metadataModel_fieldDefinitionDetails_mainTab_text: "Si4 Field [[field_name]]",
+    metadataModel_fieldDefinitionDetails_contentTab_text: "Details",
 
     // Mapping
     metadataModel_mappingGroupList_mainTab_text: "Mapping Groups",
@@ -174,6 +176,15 @@ si4.translations = {
     field_value_xpath_placeholder: "XPath to value starting from base element (found by source XPath)",
     field_lang_xpath_placeholder: "XPath to language starting from base element (found by source XPath)",
     field_target_field: "Destination Field",
+
+
+    field_field_name: "Field name",
+    field_translate_key: "Translate key",
+    field_has_language: "Has language",
+    field_show_all_languages: "Show all languages",
+    field_inline: "Inline",
+    field_inline_separator: "Inline separator",
+    field_display_frontend: "Display on frontend",
 
 
     entityGroup_adminFields: "Administrative fields",

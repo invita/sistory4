@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 use App\Http\Middleware\SessionLanguage;
+use App\Models\Si4Field;
 
 /**
  * Class DcHelpers
@@ -172,7 +173,7 @@ class DcHelpers {
 
     private static function si4frontendFormat($elasticEntity) {
         $result = [];
-        $fieldDefs = Si4Helpers::$si4FieldDefinitions;
+        $fieldDefs = Si4Field::getSi4Fields();
         $feLang = SessionLanguage::current();
 
         foreach ($fieldDefs as $fieldName => $fieldDef) {
@@ -180,7 +181,7 @@ class DcHelpers {
             $fieldVals = Si4Util::pathArg($elasticEntity, "_source/data/si4/".$fieldName);
 
             if (isset($fieldVals) && count($fieldVals)) {
-                if (Si4Util::getArg($fieldDef, "hasLanguage", false) && !Si4Util::getArg($fieldDef, "showAllLangauges", false)) {
+                if ($fieldDef->has_language && !$fieldDef->show_all_langauges) {
                     // Filter values in other lang than FE
                     $fieldVals = array_filter($fieldVals, function($x) use ($feLang) { return $x["lang"] === $feLang; });
                 }

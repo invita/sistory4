@@ -5,6 +5,7 @@ namespace App\Models\Elastic\MdMappers;
 use App\Helpers\DcHelpers;
 use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
+use App\Models\Si4Field;
 
 class Mods extends AbstractMdMapper
 {
@@ -14,7 +15,7 @@ class Mods extends AbstractMdMapper
 
     function mapXmlData($xmlData) {
         $result = [];
-        $fieldDefs = Si4Helpers::$si4FieldDefinitions;
+        $fieldDefs = Si4Field::getSi4Fields();
 
 
         // MODS test implementation
@@ -37,12 +38,12 @@ class Mods extends AbstractMdMapper
                     "value" => $value
                 ];
 
-                if ($fieldDefs["title"]["hasLanguage"]) {
+                if ($fieldDefs["title"]->has_language) {
                     $lang = Si4Helpers::$defaultLang;
                     $fieldResult["lang"] = $lang;
                 }
 
-                $result[$fieldDefs["title"]["fieldName"]][] = $fieldResult;
+                $result[$fieldDefs["title"]->field_name][] = $fieldResult;
             }
         }
 

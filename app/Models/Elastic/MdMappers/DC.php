@@ -5,6 +5,7 @@ namespace App\Models\Elastic\MdMappers;
 use App\Helpers\DcHelpers;
 use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
+use App\Models\Si4Field;
 
 class DC extends AbstractMdMapper
 {
@@ -14,7 +15,7 @@ class DC extends AbstractMdMapper
 
     function mapXmlData($xmlData) {
         $result = [];
-        $fieldDefs = Si4Helpers::$si4FieldDefinitions;
+        $fieldDefs = Si4Field::getSi4Fields();
 
         foreach ($xmlData as $key => $val) {
 
@@ -45,7 +46,7 @@ class DC extends AbstractMdMapper
             if (!$fieldDef) continue;
 
             // Prepare an empty array for the field data if not exists yet
-            if (!isset($result[$fieldDef["fieldName"]])) $result[$fieldDef["fieldName"]] = [];
+            if (!isset($result[$fieldDef->field_name])) $result[$fieldDef->field_name] = [];
 
             foreach ($val as $valIdx => $valValue) {
                 $value = isset($valValue["value"]) ? $valValue["value"] : "";
@@ -55,13 +56,13 @@ class DC extends AbstractMdMapper
                     "value" => $value
                 ];
 
-                if ($fieldDef["hasLanguage"]) {
+                if ($fieldDef->has_language) {
                     $lang = isset($valValue["LangPropName"]) ? $valValue["LangPropName"] : "";
                     if (!$lang) $lang = Si4Helpers::$defaultLang;
                     $fieldResult["lang"] = $lang;
                 }
 
-                $result[$fieldDef["fieldName"]][] = $fieldResult;
+                $result[$fieldDef->field_name][] = $fieldResult;
             }
         }
 

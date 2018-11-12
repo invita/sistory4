@@ -8,7 +8,7 @@ si4.config.apiUrl = "/admin/api";
 
 si4.config.apiNames = [
 
-    "fieldDefinitions", "fieldDefinitionsList",
+    "fieldDefinitions", "fieldDefinitionsList", "saveFieldDefinition", "deleteFieldDefinition",
     "behaviourList", "saveBehaviour", "deleteBehaviour",
 
     "mappingGroupList", "saveMappingGroup", "deleteMappingGroup",

@@ -72,6 +72,8 @@ Route::group(['prefix' => 'admin'], function () {
             // Metadata Field definitions
             Route::post('field-definitions', "Admin\\Api\\MdFieldDefinitions@fieldDefinitions")->name("admin.api.field-definitions#post");
             Route::post('field-definitions-list', "Admin\\Api\\MdFieldDefinitions@fieldDefinitionsList")->name("admin.api.field-definitions-list#post");
+            Route::post('save-field-definition', "Admin\\Api\\MdFieldDefinitions@saveFieldDefinition")->name("admin.api.save-field-definition#post");
+            Route::post('delete-field-definition', "Admin\\Api\\MdFieldDefinitions@deleteFieldDefinition")->name("admin.api.delete-field-definition#post");
 
             // Metadata Mapping
             Route::post('mapping-group-list', "Admin\\Api\\MdMapping@mappingGroupList")->name("admin.api.mapping-group-list#post");

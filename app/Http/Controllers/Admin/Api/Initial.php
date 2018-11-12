@@ -6,6 +6,7 @@ use App\Helpers\Enums;
 use App\Helpers\Si4Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\RelationType;
+use App\Models\Si4Field;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 
@@ -18,7 +19,7 @@ class Initial extends Controller
             "structTypes" => Enums::$structTypes,
             "entityTypes" => Enums::$entityTypes,
             "dcLanguages" => Enums::$dcLanguages,
-            "fieldDefinitions" => Si4Helpers::$si4FieldDefinitions,
+            "fieldDefinitions" => Si4Field::getSi4FieldsArray(),
             "translations" => Lang::get('fe'),
             "repositoryInfo" => [
                 "name" => si4config("siteName"),

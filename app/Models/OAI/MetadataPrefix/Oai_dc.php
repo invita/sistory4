@@ -6,6 +6,7 @@ use App\Helpers\Si4Util;
 use App\Models\OAI\OAIHelper;
 use App\Models\OAI\OAIXmlElement;
 use App\Models\OAI\OAIXmlOutput;
+use App\Models\Si4Field;
 
 class OAI_DC extends AbsMetadataPrefixHandler {
 
@@ -28,13 +29,13 @@ class OAI_DC extends AbsMetadataPrefixHandler {
             foreach ($fieldDataArray as $fieldData) {
                 $metadataSrc = Si4Util::getArg($fieldData, "metadataSrc", "");
                 if ($metadataSrc != "DC") continue;
-                $fieldDefinition = Si4Util::getArg(Si4Helpers::$si4FieldDefinitions, $fieldName, null);
-                if (!$fieldDefinition) continue;
+                $fieldDef = Si4Util::getArg(Si4Field::getSi4Fields(), $fieldName, null);
+                if (!$fieldDef) continue;
 
                 $value = Si4Util::getArg($fieldData, "value", "");
                 $lang = Si4Util::getArg($fieldData, "lang", "");
 
-                $fieldEl = new OAIXmlElement($fieldDefinition["oai_dcName"]);
+                $fieldEl = new OAIXmlElement($fieldDef->field_name);
                 $fieldEl->setValue($value);
                 if ($lang) $fieldEl->setAttribute("xml:lang", $lang);
                 $fieldEl->appendTo($oai_dc);

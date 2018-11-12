@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         Commands\Si4MigrateDatabase::class,
         Commands\Si4NumSeq::class,
         Commands\Si4MappingReseed::class,
+        Commands\Si4FieldsReseed::class,
         Commands\TestTest::class,
     ];
 
