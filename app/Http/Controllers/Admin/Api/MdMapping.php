@@ -32,6 +32,7 @@ class MdMapping extends Controller
 
         $mappingGroup = MappingGroup::findOrNew($postJson["id"]);
         $mappingGroup->name = $postJson["name"];
+        $mappingGroup->base_xpath = $postJson["base_xpath"];
         $mappingGroup->description = $postJson["description"];
         $mappingGroup->data = "";
         //$mappingGroup->data = $postJson["data"];

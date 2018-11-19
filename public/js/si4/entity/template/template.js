@@ -15,7 +15,8 @@ si4.entity.template.getEmptyMetsXml = function(data, callback) {
         userFullname: si4.data.currentUser.lastname +", "+ si4.data.currentUser.firstname,
     };
 
-    var templateUrl = "/js/si4/entity/template/template."+data.structType+".xml";
+    var templateName = si4.getArg(data, "template", "template."+data.structType+".xml");
+    var templateUrl = "/js/si4/entity/template/"+templateName;
     $.ajax({ type: "GET", url: templateUrl }).then(function(xml, success, response) {
         var templateText = response.responseText;
 

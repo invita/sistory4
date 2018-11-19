@@ -88,6 +88,8 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('save-behaviour', "Admin\\Api\\MdBehaviour@saveBehaviour")->name("admin.api.save-behaviour#post");
             Route::post('delete-behaviour', "Admin\\Api\\MdBehaviour@deleteBehaviour")->name("admin.api.delete-behaviour#post");
 
+            // Metadata Mapping tests
+            Route::post('xml-to-si4-test', "Admin\\Api\\MdTests@xmlToSi4Test")->name("admin.api.xml-to-si4-test#post");
 
             Route::post('dev-tools', "Admin\\Api\\Dev@devTools")->name("admin.api.dev-tools#post");
         });

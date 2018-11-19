@@ -5,6 +5,7 @@ si4.translations = {
 
     // Template
     button_save: "Save",
+    button_check: "Check",
 
 
     // *** Modules ***
@@ -32,6 +33,11 @@ si4.translations = {
     metadataModel_behaviourTitleEdit: "Behaviour [[id]] - [[name]]",
     metadataModel_behaviourDetails_mainTab_text: "Behaviour [[id]] - [[name]]",
     metadataModel_behaviourDetails_contentTab_text: "Basic",
+
+    // MappingTest
+    metadataModel_mappingTest_mainTab_text: "Mapping Test",
+    metadataModel_mappingTest_contentTab_text: "Xml",
+    metadataModel_mappingTest_resultTab_text: "Result Si4",
 
 
     // EntityList
@@ -168,6 +174,7 @@ si4.translations = {
 
     field_data: "Data",
     field_frontendFields: "Frontend fields",
+    field_base_xpath: "Base XPath",
 
     field_source_xpath: "Source XPath",
     field_value_xpath: "Value XPath",
@@ -176,7 +183,6 @@ si4.translations = {
     field_value_xpath_placeholder: "XPath to value starting from base element (found by source XPath)",
     field_lang_xpath_placeholder: "XPath to language starting from base element (found by source XPath)",
     field_target_field: "Destination Field",
-
 
     field_field_name: "Field name",
     field_translate_key: "Translate key",
@@ -204,6 +210,7 @@ si4.translations = {
     saved_confirm_close: "Operation successful. Close?",
     save_failed_entity: "Save failed. [[reason]]\nDouble check system fields and xml.",
     save_failed: "Save failed. [[reason]]",
+    operation_failed: "Operation failed. [[reason]]",
 
     text_confirm_import_entities: "Zip contains:\n[[importInfo]]\nNote: Import will overwrite existing IDs.\nDo you want to continue?",
     text_import_entities_success: "Import successful.\n - Entities replaced: [[replacedCount]]\n - Total count: [[importCount]]",

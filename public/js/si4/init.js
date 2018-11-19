@@ -127,6 +127,10 @@ $(document).ready(function() {
                 loadArgs: { moduleName:'MetadataModel/BehaviourList' },
                 caption: si4.translate("metadataModel_behaviourList_mainTab_text"),
             });
+            menuItems.push({
+                loadArgs: { moduleName:'MetadataModel/MappingTest' },
+                caption: si4.translate("metadataModel_mappingTest_mainTab_text"),
+            });
 
 
             // Entities

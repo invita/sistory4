@@ -45,22 +45,26 @@ class Si4MappingReseed extends Command
             MappingField::truncate();
             MappingGroup::truncate();
 
+            $dcBaseXPath = "/METS:mets/METS:dmdSec/METS:mdWrap/METS:xmlData";
+            $modsBaseXPath = "/METS:mets/METS:amdSec/METS:techMD/METS:mdWrap/METS:xmlData";
+            $premisBaseXPath = "/METS:mets/METS:amdSec/METS:techMD[@ID='tech.premis']/METS:mdWrap[@MDTYPE='PREMIS:OBJECT']/METS:xmlData";
+
             // *** DC ***
 
-            $groupDC = $this->addMappingGroup("DC", "DublinCore mappings");
+            $groupDC = $this->addMappingGroup("DC", $dcBaseXPath, "DublinCore mappings");
             $this->addMappingField($groupDC, "title",
                 "dc:title",
-                "/",
-                "/@xml:lang");
+                "",
+                "@xml:lang");
             $this->addMappingField($groupDC, "creator",
                 "dc:creator",
-                "/",
+                "",
                 "");
 
 
             // *** Mods ***
 
-            $groupDC = $this->addMappingGroup("Mods", "Mods mappings");
+            $groupDC = $this->addMappingGroup("Mods", $modsBaseXPath, "Mods mappings");
             $this->addMappingField($groupDC, "title",
                 "mods:mods/mods:titleInfo[not(@type='alternative' or @type='translated')]/mods:title",
                 "/",
@@ -74,6 +78,17 @@ class Si4MappingReseed extends Command
                 "/",
                 "/@xml:lang");
 
+
+            // *** Premis ***
+
+            $groupDC = $this->addMappingGroup("Premis", $premisBaseXPath, "Premis mappings");
+            $this->addMappingField($groupDC, "identifier",
+                "premis:objectIdentifier[premis:objectIdentifierType='si4']/premis:objectIdentifierValue",
+                "",
+                "");
+
+
+
             $this->info("Inserted mapping groups: ".MappingGroup::count());
             $this->info("Inserted mapping fields: ".MappingField::count());
             $this->info("All done!");
@@ -81,9 +96,10 @@ class Si4MappingReseed extends Command
     }
 
 
-    private function addMappingGroup($groupName, $groupDesc) {
+    private function addMappingGroup($groupName, $baseXpath, $groupDesc) {
         $mappingGroup = new MappingGroup();
         $mappingGroup->name = $groupName;
+        $mappingGroup->base_xpath = $baseXpath;
         $mappingGroup->description = $groupDesc;
         $mappingGroup->data = "";
         $mappingGroup->save();

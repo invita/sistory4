@@ -703,6 +703,7 @@ var F = function(args){
                 for (var i in args.staticData) args.row[i] = args.staticData[i];
             }
             si4.entity.template.getEmptyMetsXml({
+                template: "template."+args.row.struct_type+".xml",
                 id: args.row.id,
                 handleId: args.row.handle_id,
                 structType: args.row.struct_type,

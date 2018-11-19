@@ -48,14 +48,21 @@ var F = function(args){
         readOnly: true,
     });
 
-    args.basicTab.fieldParent = args.basicTab.form.addInput({
+    args.basicTab.fieldName = args.basicTab.form.addInput({
         name: "name",
         value: rowValue.name,
         type: "text",
         caption: si4.translate("field_name"),
     });
 
-    args.basicTab.fieldParent = args.basicTab.form.addInput({
+    args.basicTab.fieldBaseXpath = args.basicTab.form.addInput({
+        name: "base_xpath",
+        value: rowValue.base_xpath,
+        type: "text",
+        caption: si4.translate("field_base_xpath"),
+    });
+
+    args.basicTab.fieldDescription = args.basicTab.form.addInput({
         name: "description",
         value: rowValue.description,
         type: "textarea",

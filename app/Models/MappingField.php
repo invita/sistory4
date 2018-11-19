@@ -33,4 +33,16 @@ class MappingField extends Model
         'target_field',
         'data',
     ];
+
+    private static $mappingFieldsArray = [];
+    public static function getMappingFieldsForGroup($mappingGroupId) {
+        if (!isset(self::$mappingFieldsArray[$mappingGroupId])) {
+            self::$mappingFieldsArray[$mappingGroupId] = [];
+            $mappingFields = self::query()->where(['mapping_group_id' => $mappingGroupId])->get();
+            foreach ($mappingFields as $mappingField) {
+                self::$mappingFieldsArray[$mappingGroupId][$mappingField->id] = $mappingField->toArray();
+            }
+        }
+        return self::$mappingFieldsArray[$mappingGroupId];
+    }
 }
