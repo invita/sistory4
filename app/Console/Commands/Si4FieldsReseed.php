@@ -54,6 +54,7 @@ class Si4FieldsReseed extends Command
                 $si4Field->inline = $field["inline"];
                 $si4Field->inline_separator = $field["inline_separator"];
                 $si4Field->display_frontend = $field["display_frontend"];
+                $si4Field->enable_adv_search = $field["enable_adv_search"];
                 $si4Field->save();
             }
 
@@ -74,6 +75,7 @@ class Si4FieldsReseed extends Command
             "inline" => Si4Util::getArg($fieldSpecs, "inline", false),
             "inline_separator" => Si4Util::getArg($fieldSpecs, "inline_separator", ""),
             "display_frontend" => Si4Util::getArg($fieldSpecs, "display_frontend", false),
+            "enable_adv_search" => Si4Util::getArg($fieldSpecs, "enable_adv_search", false),
         ];
     }
 
@@ -90,6 +92,7 @@ class Si4FieldsReseed extends Command
                 "inline" => false,               // Values are displayed inline
                 "inline_separator" => ":",       // If inline, defines values separator
                 "display_frontend" => false,     // Should this field be displayed on frontend
+                "enable_adv_search" => false,    // Should this field be displayed in advanced search
             ]),
             */
             "title" => self::si4FieldWithDefaults([
@@ -97,12 +100,14 @@ class Si4FieldsReseed extends Command
                 "has_language" => true,
                 "show_all_languages" => true,
                 "display_frontend" => true,
+                "enable_adv_search" => true,
             ]),
             "creator" => self::si4FieldWithDefaults([
                 "field_name" => "creator",
                 "inline" => true,
                 "inline_separator" => " / ",
                 "display_frontend" => true,
+                "enable_adv_search" => true,
             ]),
             "subject" => self::si4FieldWithDefaults([
                 "field_name" => "subject",

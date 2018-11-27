@@ -7,16 +7,6 @@ $(document).ready(function() {
 function AdvancedSearchFields(mainEl) {
     var _p = this;
 
-    /*
-    this.defaultFieldNameOpts = [
-        { value: "title", text: "Title" },
-        { value: "creator", text: "Creator" },
-    ];
-    this.defaultOperatorOpts = [
-        { value: "and", text: "And" },
-        { value: "or", text: "Or" },
-    ];
-    */
     this.defaultFieldNameOpts = jsData["advancedSearch"]["fieldNames"];
     this.defaultOperatorOpts = jsData["advancedSearch"]["operators"];
 
@@ -138,7 +128,7 @@ function AdvancedSearchFields(mainEl) {
             if (validOperators.indexOf(operator) === -1) continue;
 
             var name = operName[1];
-            var value = decodeURIComponent(kv[1]);
+            var value = decodeURIComponent(kv[1]).replace(/\+/g, " ");
 
             //if (!name || !operator || !value) continue;
 

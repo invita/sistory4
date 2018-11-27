@@ -21,6 +21,7 @@ si4.config.apiNames = [
     "userList", "saveUser", "deleteUser",
     "fileList", "saveFile", "deleteFile",
     "initialData",
+    "translationsList", "saveTranslation", "deleteTranslation", "generateTranslationFiles",
     "devTools"
 ];
 

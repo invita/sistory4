@@ -143,7 +143,7 @@ class Si4MigrateDatabase extends Command
                 $migPub->readAll();
 
                 $entity = $migPub->makeEntity();
-                $entity->data = $migPub->makeMetsXml();
+                $entity->xml = $migPub->makeMetsXml();
                 $entity->save();
 
                 // Reindex Entity
@@ -226,7 +226,7 @@ class Si4MigrateDatabase extends Command
                         $migPub->readAll();
 
                         $entity = $migPub->makeEntity();
-                        $entity->data = $migPub->makeMetsXml();
+                        $entity->xml = $migPub->makeMetsXml();
                         $entity->save();
 
                         // Reindex Entity

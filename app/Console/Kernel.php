@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
         Commands\Si4NumSeq::class,
         Commands\Si4MappingReseed::class,
         Commands\Si4FieldsReseed::class,
+        Commands\LangDbToFile::class,
+        Commands\LangFileToDb::class,
         Commands\TestTest::class,
     ];
 

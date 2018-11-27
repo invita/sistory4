@@ -35,8 +35,17 @@ use Psr\Log\Test\LoggerInterfaceTest;
  * App\Models\Entity
  *
  * @property int $id
- * @property int $struct_type_id
- * @property string $data
+ * @property string $handle_id
+ * @property string $parent
+ * @property string $primary
+ * @property string $collection
+ * @property string $struct_type
+ * @property string $struct_subtype
+ * @property string $entity_type
+ * @property int $child_order
+ * @property string $xml
+ * @property boolean $active
+ * @property boolean $req_text_reindex
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Entity whereCreatedAt($value)
@@ -55,15 +64,15 @@ class Entity extends Model
      * @var array
      */
     protected $fillable = [
+        'handle_id',
         'parent',
         'primary',
         'collection',
-        'name',
         'struct_type',
         'struct_subtype',
         'entity_type',
         'child_order',
-        'data',
+        'xml',
         'active',
         'req_text_reindex'
     ];
@@ -74,9 +83,10 @@ class Entity extends Model
     // public function dataSchemaValidate() : bool
     public function dataSchemaValidate()
     {
-        return self::xmlStringSchemaValidate($this->data, $this->struct_type);
+        return self::xmlStringSchemaValidate($this->xml, $this->struct_type);
     }
 
+    /*
     public function dataToObject()
     {
         if (!$this->data) return null;
@@ -123,6 +133,8 @@ class Entity extends Model
 
         return $array;
     }
+    */
+
 
     public function updateXml() {
 
@@ -130,7 +142,7 @@ class Entity extends Model
 
         Timer::start("xmlParsing");
 
-        $xmlDoc = simplexml_load_string($this->data);
+        $xmlDoc = simplexml_load_string($this->xml);
         $xmlDoc['ID'] = $this->handle_id;
         $xmlDoc['OBJID'] = "http://hdl.handle.net/".si4config("handlePrefix")."/".$this->handle_id;
         $xmlDoc['TYPE'] = $this->struct_type;
@@ -187,6 +199,8 @@ class Entity extends Model
 
         if ($this->struct_type == "entity") {
 
+            // *** Entity struct type ***
+
             // * fileSec
 
             $fileSecArr = $xmlDoc->xpath("METS:fileSec");
@@ -235,10 +249,10 @@ class Entity extends Model
             //$fileSecGrp = $fileSec->addChild("METS:fileGrp");
             //print_r($children);
 
-        } else
+        } else if ($this->struct_type == "file") {
 
-        // File attributes
-        if ($this->struct_type == "file") {
+            // *** File struct type ***
+            // File attributes
 
             $fileSecArr = $xmlDoc->xpath("METS:fileSec");
             if (count($fileSecArr)) $fileSec = $fileSecArr[0];
@@ -331,7 +345,7 @@ class Entity extends Model
         $dom->formatOutput = true;
         $dom->loadXML($xmlDoc->asXML());
 
-        $this->data = $dom->saveXML();
+        $this->xml = $dom->saveXML();
 
         Timer::stop("xmlParsing");
     }
@@ -424,7 +438,7 @@ class Entity extends Model
         $entity = new self;
         $entity->struct_type = $structType;
         $entity->child_order = 0;
-        $entity->data = file_get_contents($uploadedFile->getPathname());
+        $entity->xml = file_get_contents($uploadedFile->getPathname());
         $entity->save();
 
         return $entity;

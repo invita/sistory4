@@ -112,6 +112,10 @@ $(document).ready(function() {
                 loadArgs: { moduleName:'System/Notes' },
                 caption: si4.translate("system_notes_mainTab_text"),
             });
+            menuItems.push({
+                loadArgs: { moduleName:'System/Translations' },
+                caption: si4.translate("system_translations_mainTab_text"),
+            });
 
 
             // Metadata Model

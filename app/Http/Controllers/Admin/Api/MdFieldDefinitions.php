@@ -35,6 +35,12 @@ class MdFieldDefinitions extends Controller
         $si4field = Si4Field::findOrNew($postJson["id"]);
         $si4field->field_name = $postJson["field_name"];
         $si4field->translate_key = $postJson["translate_key"];
+        $si4field->has_language = $postJson["has_language"];
+        $si4field->show_all_languages = $postJson["show_all_languages"];
+        $si4field->inline = $postJson["inline"];
+        $si4field->inline_separator = $postJson["inline_separator"];
+        $si4field->display_frontend = $postJson["display_frontend"];
+        $si4field->enable_adv_search = $postJson["enable_adv_search"];
         $si4field->save();
 
         return ["status" => true, "error" =>  null];

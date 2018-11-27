@@ -524,6 +524,7 @@ input:checked + #collectionSearchIndicator {
 #topMenu {
   border: none;
   border-bottom: silver solid 1px;
+  min-height: 36px; /* Let space for language select when no topMenu items */
 }
 #topMenu > li {
   display: inline-table;

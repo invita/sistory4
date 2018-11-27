@@ -26,6 +26,7 @@ var F = function(args){
     var fieldInline = actionsForm.addInput({name:"inline", value:rowValue.inline, type:"checkbox", caption:si4.translate("field_inline")});
     var fieldInlineSeparator = actionsForm.addInput({name:"inline_separator", value:rowValue.inline_separator, type:"text", caption:si4.translate("field_inline_separator")});
     var fieldDisplayFrontend = actionsForm.addInput({name:"display_frontend", value:rowValue.display_frontend, type:"checkbox", caption:si4.translate("field_display_frontend")});
+    var fieldEnableAdvSearch = actionsForm.addInput({name:"enable_adv_search", value:rowValue.enable_adv_search, type:"checkbox", caption:si4.translate("field_enable_adv_search")});
 
     var saveButton = actionsForm.addInput({value:si4.translate("button_save"), type:"submit", caption:si4.translate("field_actions")});
     saveButton.selector.click(function(){

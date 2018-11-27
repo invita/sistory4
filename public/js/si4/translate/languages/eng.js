@@ -6,6 +6,7 @@ si4.translations = {
     // Template
     button_save: "Save",
     button_check: "Check",
+    button_generate_fe_translation_files: "Generate FE translation files",
 
 
     // *** Modules ***
@@ -101,6 +102,8 @@ si4.translations = {
     system_dashboard_contentTab_text: "Dashboard",
     system_notes_mainTab_text: "Notes",
     system_notes_contentTab_text: "Notes",
+    system_translations_mainTab_text: "Translations",
+    system_translations_contentTab_text: "List",
 
 
     // TestPage
@@ -191,7 +194,10 @@ si4.translations = {
     field_inline: "Inline",
     field_inline_separator: "Inline separator",
     field_display_frontend: "Display on frontend",
+    field_enable_adv_search: "Enable advanced search",
 
+    field_key: "Key",
+    field_value: "Value",
 
     entityGroup_adminFields: "Administrative fields",
     entityGroup_mdPreview: "Metadata preview",

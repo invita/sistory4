@@ -245,11 +245,11 @@ class EntitySelect
 
                 //print_r($data);
 
-                $dcMetadata = Si4Util::pathArg($data, "dmd/dc", []);
-                $title = isset($dcMetadata["title"]) ? join(" : ", DcHelpers::dcTextArray($dcMetadata["title"])) : "";
-                $creator = isset($dcMetadata["creator"]) ? join(" : ", DcHelpers::dcTextArray($dcMetadata["creator"])) : "";
-                //$date = isset($dcMetadata["date"]) ? join("; ", $dcMetadata["date"]) : "";
-                $date = isset($dcMetadata["date"]) ? join(", ", DcHelpers::dcTextArray($dcMetadata["date"])) : "";
+                $si4 = Si4Util::pathArg($data, "si4", []);
+                $title = isset($si4["title"]) ? join(" : ", DcHelpers::dcTextArray($si4["title"])) : "";
+                $creator = isset($si4["creator"]) ? join(" : ", DcHelpers::dcTextArray($si4["creator"])) : "";
+                //$date = isset($si4["date"]) ? join("; ", $si4["date"]) : "";
+                $date = isset($si4["date"]) ? join(", ", DcHelpers::dcTextArray($si4["date"])) : "";
 
                 $fileName = Si4Util::pathArg($data, "files/0/ownerId", "");
                 if ($structType == "file" && $fileName) {

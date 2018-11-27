@@ -105,7 +105,7 @@
 
             <div class="row mt-1 mb-2">
                 <div class="medium-12 columns">
-                    <span class="footerText">{{ __("fe.footerText") }}</span>
+                    <span class="footerText">{{ __("fe.footer_footerText") }}</span>
                 </div>
             </div>
 

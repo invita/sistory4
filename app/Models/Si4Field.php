@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $inline
  * @property string $inline_separator
  * @property boolean $display_frontend
+ * @property boolean $enable_adv_search
  * @mixin \Eloquent
  */
 class Si4Field extends Model
@@ -35,6 +36,7 @@ class Si4Field extends Model
         'inline',
         'inline_separator',
         'display_frontend',
+        'enable_adv_search',
     ];
 
     // Assoc array of Si4Field
@@ -62,5 +64,4 @@ class Si4Field extends Model
         }
         return self::$si4FieldsArray;
     }
-
 }

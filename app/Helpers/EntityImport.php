@@ -73,7 +73,7 @@ class EntityImport
         $entity->primary = "";
         $entity->child_order = $newEntityId;
 
-        $entity->data = $xmlContent;
+        $entity->xml = $xmlContent;
 
         //print_r($entity);
 

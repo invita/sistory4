@@ -41,6 +41,7 @@ class EntityTestElasticConvert extends Command
      */
     public function handle()
     {
+        /*
         $entityId = $this->argument('entityId');
 
         $this->info("Entity {$entityId}");
@@ -53,5 +54,6 @@ class EntityTestElasticConvert extends Command
         } else {
             $this->info("Entity {$entityId} not found");
         }
+        */
     }
 }

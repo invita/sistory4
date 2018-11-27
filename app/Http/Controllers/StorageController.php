@@ -40,7 +40,7 @@ class StorageController extends Controller
 
         $type = "text/xml";
 
-        $response = Response::make($entity->data, 200);
+        $response = Response::make($entity->xml, 200);
         $response->header("Content-Type", $type);
 
         if ($attach) {

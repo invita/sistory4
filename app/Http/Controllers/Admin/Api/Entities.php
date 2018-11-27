@@ -95,7 +95,7 @@ class Entities extends Controller
         $entity->struct_type = in_array($structType, Enums::$structTypes) ? $structType : null;
         $entity->struct_subtype = $structSubtype;
         $entity->child_order = $childOrder;
-        $entity->data = $xml;
+        $entity->xml = $xml;
         $entity->active = $active;
 
         if (!$handle_id) $handle_id = EntityHandleSeq::nextNumSeq($entity->struct_type);

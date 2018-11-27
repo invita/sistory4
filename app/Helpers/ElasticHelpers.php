@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\Models\Si4Field;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -24,21 +25,18 @@ class ElasticHelpers
         ADV_SEARCH_OPERATOR_AND,
         ADV_SEARCH_OPERATOR_OR
     ];
-    public static $advancedSearchFieldMap = [
-        "title" => "data.dmd.dc.title.value",
-        "creator" => "data.dmd.dc.creator.value",
-        "subject" => "data.dmd.dc.subject.value",
-        "description" => "data.dmd.dc.description.value",
-        "publisher" => "data.dmd.dc.publisher.value",
-        "contributor" => "data.dmd.dc.contributor.value",
-        "date" => "data.dmd.dc.date.value",
-        "format" => "data.dmd.dc.format.value",
-        "identifier" => "data.dmd.dc.identifier.value",
-        "source" => "data.dmd.dc.source.value",
-        "relation" => "data.dmd.dc.relation.value",
-        "coverage" => "data.dmd.dc.coverage.value",
-        "rights" => "data.dmd.dc.rights.value",
-    ];
+
+    private static $_advancedSearchFieldsMap = null;
+    public static function getAdvancedSearchFieldsMap() {
+        if (!self::$_advancedSearchFieldsMap) {
+            $si4fields = Si4Field::getSi4FieldsArray();
+            self::$_advancedSearchFieldsMap = [];
+            foreach ($si4fields as $fieldName => $si4field) {
+                if ($si4field["enable_adv_search"]) self::$_advancedSearchFieldsMap[$fieldName] = "data.si4.".$fieldName.".value";
+            }
+        }
+        return self::$_advancedSearchFieldsMap;
+    }
 
     public static $searchTypes = [
         SEARCH_TYPE_ALL,
@@ -105,11 +103,11 @@ class ElasticHelpers
                 "child_order": {
                     "type": "integer"
                 },
-                "data.dmd.dc.title.value": {
+                "data.si4.title.value": {
                     "type": "string",
                     "analyzer": "lowercase_analyzer"
                 },
-                "data.dmd.dc.creator.value": {
+                "data.si4.creator.value": {
                     "type": "string",
                     "analyzer": "lowercase_analyzer"
                 }
@@ -241,8 +239,8 @@ HERE;
     {
 
         $searchFields = [
-            "data.dmd.dc.creator.value",
-            "data.dmd.dc.title.value",
+            "data.si4.creator.value",
+            "data.si4.title.value",
         ];
 
         $searchWords = explode(" ", $queryString);
@@ -326,7 +324,7 @@ HERE;
      * [
      *   [
      *     "operator" => "...",   // One of $advancedSearchOperators
-     *     "fieldName" => "...",  // A key in $advancedSearchFieldMap
+     *     "fieldName" => "...",  // A key in advancedSearchFieldsMap
      *     "fieldValue" => "..."  // String
      *   ],
      *   ...
@@ -347,7 +345,7 @@ HERE;
 
         $query = [ "bool" => [] ];
 
-        $allowedFieldNames = array_keys(self::$advancedSearchFieldMap);
+        $allowedFieldNames = array_keys(self::getAdvancedSearchFieldsMap());
 
         foreach ($params as $param) {
             if (!isset($param["operator"]) || !isset($param["fieldName"]) || !isset($param["fieldValue"])) {
@@ -365,7 +363,7 @@ HERE;
                 throw new Exception("fieldName not allowed: ".$fieldName);
             }
 
-            $fieldElastic = self::$advancedSearchFieldMap[$fieldName];
+            $fieldElastic = self::getAdvancedSearchFieldsMap()[$fieldName];
 
             $queryString = [
                 "query_string" => [
@@ -411,7 +409,7 @@ HERE;
             $must[] = [
                 "query_string" => [
                     "fields" => [
-                        "data.dmd.dc.creator.value",
+                        "data.si4.creator.value",
                     ],
                     "query" => $creatorWord."*"
                 ],
@@ -431,7 +429,7 @@ HERE;
         $query = [
             "query_string" => [
                 "fields" => [
-                    "data.dmd.dc.creator.value",
+                    "data.si4.creator.value",
                 ],
                 "query" => $queryStringWild
             ]
@@ -449,7 +447,7 @@ HERE;
                 $must[] = [
                     "query_string" => [
                         "fields" => [
-                            "data.dmd.dc.creator.value",
+                            "data.si4.creator.value",
                         ],
                         "query" => $creatorWord
                     ],
@@ -462,7 +460,7 @@ HERE;
             $must[] = [
                 "query_string" => [
                     "fields" => [
-                        "data.dmd.dc.title.value",
+                        "data.si4.title.value",
                     ],
                     "query" => $titleWord."*"
                 ],

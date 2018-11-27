@@ -24,7 +24,7 @@ class UploadController extends Controller
 
         $entity = Entity::createFromUpload($structType, $file);
 
-        return ["status" => true, "data" => $entity->data, "error" =>  null];
+        return ["status" => true, "data" => $entity->xml, "error" =>  null];
     }
 
     public function showContent(Request $request)

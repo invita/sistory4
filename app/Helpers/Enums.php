@@ -9,6 +9,7 @@ namespace App\Helpers;
  */
 class Enums {
 
+    public static $feLangModules = ["fe"];
     public static $feLanguages = ["eng", "slv"];
     public static $dcLanguages = ["eng", "slv"];
 

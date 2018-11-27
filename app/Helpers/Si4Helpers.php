@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 use App\Http\Middleware\SessionLanguage;
+use App\Models\Si4Field;
 
 /**
  * Class Si4Helpers
@@ -11,6 +12,11 @@ use App\Http\Middleware\SessionLanguage;
 class Si4Helpers {
 
     // ***** Si4 Model *****
+
+    // Use Si4Field::getSi4Fields() ...
+
+
+    //  TO DELETE the rest of Si4Model here
 
     // Return a new field definition assuming default values for non-specified attributes
     private static function fieldDefinition($fieldDefs) {
@@ -513,11 +519,13 @@ class Si4Helpers {
             "si4" => [],
         ];
 
+        $si4Fields = Si4Field::getSi4Fields();
+
         // Parse si4 metadata for frontend displaying
-        foreach (self::$si4FieldDefinitions as $fieldName => $fieldDef) {
+        foreach ($si4Fields as $fieldName => $fieldDef) {
 
             // Skip non-frontend fields
-            if (!$fieldDef["displayOnFrontend"]) continue;
+            if (!$fieldDef["display_frontend"]) continue;
 
             // Get field elastic data
             $fieldPath = "_source/data/si4/".$fieldName;
@@ -527,14 +535,14 @@ class Si4Helpers {
             $result["si4"][$fieldName] = [];
 
             foreach($fieldData as $fieldEntry) {
-                $langMatch = !$fieldDef["hasLanguage"] || $fieldDef["showAllLanguages"] || SessionLanguage::current() === $fieldEntry["lang"];
+                $langMatch = !$fieldDef["has_language"] || $fieldDef["show_all_languages"] || SessionLanguage::current() === $fieldEntry["lang"];
                 if (!$langMatch) continue;
                 $result["si4"][$fieldName][] = $fieldEntry["value"];
             }
 
             // Join array entries into only one, if field definition says inline
             if ($fieldDef["inline"]) {
-                $result["si4"][$fieldName] = [join($fieldDef["inlineSeparator"], $result["si4"][$fieldName])];
+                $result["si4"][$fieldName] = [join($fieldDef["inline_separator"], $result["si4"][$fieldName])];
             }
         }
 
