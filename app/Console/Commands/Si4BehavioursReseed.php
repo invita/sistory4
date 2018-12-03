@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Behaviour;
 use App\Models\BehaviourField;
+use App\Models\Si4Field;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
@@ -61,6 +62,12 @@ class Si4BehavioursReseed extends Command
             $this->addBehaviourField($behDefault, "relation", false, false, "", false);
             $this->addBehaviourField($behDefault, "coverage", false, true, ", ", false);
             $this->addBehaviourField($behDefault, "rights", false, false, "", false);
+
+            $behEverything = $this->addBehaviour("everything");
+            $si4Fields = Si4Field::getSi4FieldsArray();
+            foreach($si4Fields as $fieldName => $fieldDef) {
+                $this->addBehaviourField($behEverything, $fieldName, true, false, "", true);
+            }
 
             $this->info("Inserted behaviours: ".Behaviour::count());
             $this->info("Inserted behaviour fields: ".BehaviourField::count());
