@@ -10,11 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $field_name
  * @property string $translate_key
  * @property boolean $has_language
- * @property boolean $show_all_languages
- * @property boolean $inline
- * @property string $inline_separator
- * @property boolean $display_frontend
- * @property boolean $enable_adv_search
  * @mixin \Eloquent
  */
 class Si4Field extends Model
@@ -32,11 +27,6 @@ class Si4Field extends Model
         'field_name',
         'translate_key',
         'has_language',
-        'show_all_languages',
-        'inline',
-        'inline_separator',
-        'display_frontend',
-        'enable_adv_search',
     ];
 
     // Assoc array of Si4Field

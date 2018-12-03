@@ -69,8 +69,9 @@ var F = function(args){
         args.basicTab.fieldStructSubtype = args.basicTab.form.addInput({
             name: "struct_subtype",
             value: rowValue.struct_subtype,
-            type: "text",
+            type: "select",
             caption: si4.translate("field_structSubtype"),
+            values: si4.data.behaviourNames,
             //readOnly: true,
         });
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 use App\Http\Middleware\SessionLanguage;
+use App\Models\Behaviour;
 use App\Models\Si4Field;
 
 /**
@@ -511,7 +512,7 @@ class Si4Helpers {
                 "primary" => Si4Util::pathArg($elasticEntity, "_source/primary", ""),
                 "collection" => Si4Util::pathArg($elasticEntity, "_source/collection", ""),
                 "struct_type" => Si4Util::pathArg($elasticEntity, "_source/struct_type", ""),
-                "struct_subtype" => Si4Util::pathArg($elasticEntity, "_source/struct_subtype", ""),
+                "struct_subtype" => Si4Util::pathArg($elasticEntity, "_source/struct_subtype", "default"),
                 "entity_type" => Si4Util::pathArg($elasticEntity, "_source/entity_type", ""),
                 "active" => Si4Util::pathArg($elasticEntity, "_source/active", ""),
             ],
@@ -520,12 +521,14 @@ class Si4Helpers {
         ];
 
         $si4Fields = Si4Field::getSi4Fields();
+        $behaviour = Behaviour::getBehaviourForElasticEntity($elasticEntity);
 
         // Parse si4 metadata for frontend displaying
-        foreach ($si4Fields as $fieldName => $fieldDef) {
+        foreach ($behaviour["fields"] as $fieldName => $fieldBehaviour) {
+            $fieldDef = $si4Fields[$fieldName];
 
             // Skip non-frontend fields
-            if (!$fieldDef["display_frontend"]) continue;
+            if (!$fieldBehaviour["display_frontend"]) continue;
 
             // Get field elastic data
             $fieldPath = "_source/data/si4/".$fieldName;
@@ -535,14 +538,14 @@ class Si4Helpers {
             $result["si4"][$fieldName] = [];
 
             foreach($fieldData as $fieldEntry) {
-                $langMatch = !$fieldDef["has_language"] || $fieldDef["show_all_languages"] || SessionLanguage::current() === $fieldEntry["lang"];
+                $langMatch = !$fieldDef["has_language"] || $fieldBehaviour["show_all_languages"] || SessionLanguage::current() === $fieldEntry["lang"];
                 if (!$langMatch) continue;
                 $result["si4"][$fieldName][] = $fieldEntry["value"];
             }
 
             // Join array entries into only one, if field definition says inline
-            if ($fieldDef["inline"]) {
-                $result["si4"][$fieldName] = [join($fieldDef["inline_separator"], $result["si4"][$fieldName])];
+            if ($fieldBehaviour["inline"]) {
+                $result["si4"][$fieldName] = [join($fieldBehaviour["inline_separator"], $result["si4"][$fieldName])];
             }
         }
 

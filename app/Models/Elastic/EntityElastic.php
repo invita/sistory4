@@ -10,6 +10,8 @@ use App\Models\Elastic\MdMappers\DC;
 use App\Models\Elastic\MdMappers\Mods;
 use App\Models\Si4Field;
 
+// TO delete
+
 class EntityElastic
 {
     private $entityAssoc = null;

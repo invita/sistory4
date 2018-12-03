@@ -7,8 +7,6 @@ var F = function(args){
     var dataTable = new si4.widget.si4DataTable({
         parent: args.contentTab.content.selector,
         primaryKey: ['id'],
-        //entityTitleNew: si4.lookup[name].entityTitleNew,
-        //entityTitleEdit: si4.lookup[name].entityTitleEdit,
         dataSource: new si4.widget.si4DataTableDataSource({
             select: si4.api["fieldDefinitionsList"],
             delete: si4.api["deleteFieldDefinition"],
@@ -24,12 +22,5 @@ var F = function(args){
         },
         cssClass_table: "si4DataTable_table width100percent"
     });
-
-    dataTable.onDataFeedComplete(function(args){
-        //dataTable.dataSource.staticData = args["staticData"];
-        //console.log("onDataFeedComplete", args);
-    });
-
-    //dataTable.refresh(true);
 
 };

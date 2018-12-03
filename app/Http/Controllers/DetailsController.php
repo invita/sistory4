@@ -102,18 +102,15 @@ class DetailsController extends FrontendController
         $childData = ElasticHelpers::searchChildren($hdl);
         $children = [];
         foreach ($childData as $child) {
-            //$children[] = DcHelpers::mapElasticEntity($child);
             $children[] = Si4Helpers::getEntityListPresentation($child);
         }
         $data["children"] = $children;
-
 
         $data["files"] = [];
         $files = ElasticHelpers::searchMust([
             "parent" => $hdl,
             "struct_type" => "file"
         ]);
-        //print_r($files);
 
         foreach ($files as $file) {
             $fileHandleId = Si4Util::pathArg($file, "_source/handle_id");

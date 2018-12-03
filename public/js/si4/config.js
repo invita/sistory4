@@ -10,6 +10,7 @@ si4.config.apiNames = [
 
     "fieldDefinitions", "fieldDefinitionsList", "saveFieldDefinition", "deleteFieldDefinition",
     "behaviourList", "saveBehaviour", "deleteBehaviour",
+    "behaviourFieldList", "saveBehaviourField", "deleteBehaviourField",
 
     "mappingGroupList", "saveMappingGroup", "deleteMappingGroup",
     "mappingGroupFieldsList", "saveMappingGroupField",

@@ -89,7 +89,10 @@ si4.widget.si4InputArray = function(args)
 
     this.getValue = function(){
         var result = [];
-        for (var i in _p.inputs) result.push(_p.inputs[i].getValue());
+        for (var i in _p.inputs) {
+            var val = _p.inputs[i].getValue();
+            if (val) result.push(val);
+        }
         return result;
     };
 

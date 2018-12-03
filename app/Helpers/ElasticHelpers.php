@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\Models\Behaviour;
 use App\Models\Si4Field;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -32,7 +33,8 @@ class ElasticHelpers
             $si4fields = Si4Field::getSi4FieldsArray();
             self::$_advancedSearchFieldsMap = [];
             foreach ($si4fields as $fieldName => $si4field) {
-                if ($si4field["enable_adv_search"]) self::$_advancedSearchFieldsMap[$fieldName] = "data.si4.".$fieldName.".value";
+                //if ($si4field["enable_adv_search"])
+                self::$_advancedSearchFieldsMap[$fieldName] = "data.si4.".$fieldName.".value";
             }
         }
         return self::$_advancedSearchFieldsMap;

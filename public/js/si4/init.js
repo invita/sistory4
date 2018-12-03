@@ -77,6 +77,10 @@ $(document).ready(function() {
             si4.data.fieldDefinitionNames = {};
             for (var i in response.fieldDefinitions) si4.data.fieldDefinitionNames[i] = i;
 
+            si4.data.behaviours = response.behaviours;
+            si4.data.behaviourNames = {};
+            for (var i in response.behaviours) si4.data.behaviourNames[i] = i;
+
             si4.translations = si4.mergeObjects(si4.translations, response.translations);
 
             // Rename immortal tab to repositoryInfo.name

@@ -173,15 +173,18 @@ class DcHelpers {
 
     private static function si4frontendFormat($elasticEntity) {
         $result = [];
+
         $fieldDefs = Si4Field::getSi4Fields();
+        $behaviour = Behaviour::getBehaviourForElasticEntity($elasticEntity);
         $feLang = SessionLanguage::current();
 
-        foreach ($fieldDefs as $fieldName => $fieldDef) {
+        foreach ($behaviour["fields"] as $fieldName => $fieldBehaviour) {
+            $fieldDef = $fieldDefs[$fieldName];
             $result[$fieldName] = [];
             $fieldVals = Si4Util::pathArg($elasticEntity, "_source/data/si4/".$fieldName);
 
             if (isset($fieldVals) && count($fieldVals)) {
-                if ($fieldDef->has_language && !$fieldDef->show_all_langauges) {
+                if ($fieldDef->has_language && !$fieldBehaviour->show_all_langauges) {
                     // Filter values in other lang than FE
                     $fieldVals = array_filter($fieldVals, function($x) use ($feLang) { return $x["lang"] === $feLang; });
                 }

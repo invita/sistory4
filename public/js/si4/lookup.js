@@ -12,7 +12,7 @@ si4.lookup = {
         entityTitleEdit: si4.translate("file_fileTitleEdit"),
     },
     behaviour: {
-        entityTitleNew: si4.translate("entities_behaviourTitleNew"),
-        entityTitleEdit: si4.translate("entities_behaviourTitleEdit"),
+        entityTitleNew: si4.translate("metadataModel_behaviourTitleNew"),
+        entityTitleEdit: si4.translate("metadataModel_behaviourTitleEdit"),
     },
 };

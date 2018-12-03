@@ -34,6 +34,16 @@ si4.translations = {
     metadataModel_behaviourTitleEdit: "Behaviour [[id]] - [[name]]",
     metadataModel_behaviourDetails_mainTab_text: "Behaviour [[id]] - [[name]]",
     metadataModel_behaviourDetails_contentTab_text: "Basic",
+    metadataModel_behaviourDetails_fieldsTab_text: "Fields",
+    metadataModel_behaviourDetails_advSearchTab_text: "Adv. Search",
+    metadataModel_behaviourDetails_templateTab_entity_text: "Entity Template",
+    metadataModel_behaviourDetails_templateTab_collection_text: "Collection Template",
+    metadataModel_behaviourDetails_templateTab_file_text: "File Template",
+
+    metadataModel_behaviourFieldDetails_mainTab_text: "Beh. Field - [[field_name]]",
+    metadataModel_behaviourFieldDetails_contentTab_text: "Details",
+
+
 
     // MappingTest
     metadataModel_mappingTest_mainTab_text: "Mapping Test",

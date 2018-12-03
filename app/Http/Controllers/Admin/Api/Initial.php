@@ -5,6 +5,7 @@ use App\Helpers\EntityHelpers;
 use App\Helpers\Enums;
 use App\Helpers\Si4Helpers;
 use App\Http\Controllers\Controller;
+use App\Models\Behaviour;
 use App\Models\RelationType;
 use App\Models\Si4Field;
 use \Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class Initial extends Controller
             "entityTypes" => Enums::$entityTypes,
             "dcLanguages" => Enums::$dcLanguages,
             "fieldDefinitions" => Si4Field::getSi4FieldsArray(),
+            "behaviours" => Behaviour::getBehavioursArray(),
             "translations" => Lang::get('fe'),
             "repositoryInfo" => [
                 "name" => si4config("siteName"),

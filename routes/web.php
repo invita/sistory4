@@ -88,6 +88,11 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('save-behaviour', "Admin\\Api\\MdBehaviour@saveBehaviour")->name("admin.api.save-behaviour#post");
             Route::post('delete-behaviour', "Admin\\Api\\MdBehaviour@deleteBehaviour")->name("admin.api.delete-behaviour#post");
 
+            // Metadata Behaviour Fields
+            Route::post('behaviour-field-list', "Admin\\Api\\MdBehaviour@behaviourFieldList")->name("admin.api.behaviour-field-list#post");
+            Route::post('save-behaviour-field', "Admin\\Api\\MdBehaviour@saveBehaviourField")->name("admin.api.save-behaviour-field#post");
+            Route::post('delete-behaviour-field', "Admin\\Api\\MdBehaviour@deleteBehaviourField")->name("admin.api.delete-behaviour-field#post");
+
             // Translations
             Route::post('translations-list', "Admin\\Api\\Translations@translationsList")->name("admin.api.translations-list#post");
             Route::post('save-translation', "Admin\\Api\\Translations@saveTranslation")->name("admin.api.save-translation#post");

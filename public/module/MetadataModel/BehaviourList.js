@@ -21,16 +21,11 @@ var F = function(args){
         canDelete: true,
         tabPage: args.contentTab,
         fields: {
-            data: { visible: false },
+            id: { },
+            name: { },
+            description: { },
         },
-        cssClass_table: "si4DataTable_table width100percent"
+        cssClass_table: "si4DataTable_table width100percent",
+        showOnlyDefinedFields: true
     });
-
-    dataTable.onDataFeedComplete(function(args){
-        //dataTable.dataSource.staticData = args["staticData"];
-        //console.log("onDataFeedComplete", args);
-    });
-
-    //dataTable.refresh(true);
-
 };

@@ -338,6 +338,32 @@ class Entity extends Model
             }
         }
 
+        // * Behaviour
+
+        // METS:behaviorSec
+        $behaviorSecArr = $xmlDoc->xpath("METS:behaviorSec");
+        if (count($behaviorSecArr)) $behaviorSec = $behaviorSecArr[0];
+        else $behaviorSec = $xmlDoc->addChild("METS:behaviorSec");
+        //$behaviorSec["xmlns:xlink"] = "http://www.w3.org/1999/xlink";
+        $behaviorSec["ID"] = "si4.behavior";
+
+        // METS:behaviorSec/METS:behavior
+        $behaviorArr = $behaviorSec->xpath("METS:behavior");
+        if (count($behaviorArr)) $behavior = $behaviorArr[0];
+        else $behavior = $behaviorSec->addChild("METS:behavior");
+        $behavior["BTYPE"] = $this->struct_subtype;
+
+        // METS:behaviorSec/METS:behavior/METS:mechanism
+        $bMechanismArr = $behavior->xpath("METS:mechanism");
+        if (count($bMechanismArr)) $bMechanism = $bMechanismArr[0];
+        else $bMechanism = $behavior->addChild("METS:mechanism");
+        $bMechanism["LOCTYPE"] = "URL";
+        //$bMechanism["xlink:href"] = "resources/assets/xsd/default/";
+        //$bMechanism->addAttribute("xlink:href", "resources/assets/xsd/default/", "http://www.w3.org/TR/xlink");
+
+        //var_dump($xmlDoc->getDocNamespaces(true));
+        //die();
+
 
         // Format XML
         $dom = new \DOMDocument();
@@ -426,6 +452,15 @@ class Entity extends Model
         }
         Timer::stop("calculateParents");
     }
+
+    private static $rootEntity = null;
+    public static function getRootEntity() {
+        if (!self::$rootEntity) {
+            self::$rootEntity = self::query()->where(['handle_id' => env("SI4_ELASTIC_ROOT_COLLECTION")])->get()->first();
+        }
+        return self::$rootEntity;
+    }
+
 
     /**
      * @param \App\Models\StructType $structType
