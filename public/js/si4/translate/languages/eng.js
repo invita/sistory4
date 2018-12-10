@@ -5,6 +5,7 @@ si4.translations = {
 
     // Template
     button_save: "Save",
+    button_addAll: "Add all",
     button_check: "Check",
     button_generate_fe_translation_files: "Generate FE translation files",
 

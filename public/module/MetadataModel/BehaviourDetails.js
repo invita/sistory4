@@ -103,12 +103,24 @@ var F = function(args){
             if (rowValue.advanced_search)
                 args.advSearchTab.form.setValue({ advanced_search: JSON.parse(rowValue.advanced_search) });
 
+            // AddAll button
+            args.advSearchTab.setAllButton = args.advSearchTab.form.addInput({
+                value: si4.translate("button_addAll"),
+                type: "button",
+                caption: si4.translate("field_actions")
+            });
+            args.advSearchTab.setAllButton.selector.click(function() {
+                args.advSearchTab.form.setValue({ advanced_search: Object.keys(values) });
+            });
+
+            // Save button
             args.advSearchTab.saveButton = args.advSearchTab.form.addInput({
                 value: si4.translate("button_save"),
                 type: "submit",
-                caption: si4.translate("field_actions")
+                caption: null
             });
             args.advSearchTab.saveButton.selector.click(args.saveBehaviour);
+
         };
         recreateAdvSearchForm(si4.data.fieldDefinitionNames);
 

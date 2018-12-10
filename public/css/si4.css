@@ -57,7 +57,7 @@ div.si4PanelGroup > div.header { font-weight:bold; /*border:silver solid 1px;*/ 
 div.si4PanelGroup > div.content {}
 
 /* si4Input */
-div.si4InputDiv { }
+div.si4InputDiv { vertical-align: top; }
 
 input.si4Input, textarea.si4Input { margin:0px 0px 2px 0px; color:#444; vertical-align: top; }
 input.si4Input.flat { border:none; box-shadow:none; background:inherit; }
