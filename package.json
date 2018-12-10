@@ -12,12 +12,12 @@
   "devDependencies": {
     "axios": "^0.15.3",
     "cross-env": "^3.2.3",
-    "foundation-sites": "^6.4.3",
+    "foundation-sites": "^6.5.1",
     "jquery": "^3.3.1",
     "jquery-ui-bundle": "^1.12.1-migrate",
-    "laravel-mix": "0.*",
-    "lodash": "^4.17.4",
-    "vue": "^2.1.10"
+    "laravel-mix": "^3.0.0",
+    "lodash": "^4.17.11",
+    "vue": "^2.5.20"
   },
   "dependencies": {}
 }

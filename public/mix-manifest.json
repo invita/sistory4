@@ -1,11 +1,8 @@
 {
-  "/js/app.js": "/js/app.js",
-  "/css/app.css": "/css/app.css",
-  "/mix.js": "/mix.js",
-  "/css/common.css": "/css/common.css",
-  "/css/common-fe.css": "/css/common-fe.css",
-  "/sites/sidih/css/fe.css": "/sites/sidih/css/fe.css",
-  "/sites/sistory/css/fe.css": "/sites/sistory/css/fe.css",
-  "/sites/sidih/css/be.css": "/sites/sidih/css/be.css",
-  "/sites/sistory/css/be.css": "/sites/sistory/css/be.css"
+    "/css/common-fe.css": "/css/common-fe.css",
+    "/sites/sidih/css/fe.css": "/sites/sidih/css/fe.css",
+    "/sites/sidih/css/be.css": "/sites/sidih/css/be.css",
+    "/sites/sistory/css/fe.css": "/sites/sistory/css/fe.css",
+    "/sites/sistory/css/be.css": "/sites/sistory/css/be.css",
+    "/js/app.js": "/js/app.js"
 }
