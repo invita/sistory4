@@ -231,15 +231,15 @@ div.si4Dialog { /*position:absolute;*/ position:fixed; left:0px; top:0px; width:
     vertical-align: middle; }
 div.si4Dialog > div.dialogBg { position:fixed; background:black; top:0px; left:0px;
     width:100%; height:100%; z-index:1001; opacity:0.40; }
-div.si4Dialog > div.dialogContainer { position:relative; border:white solid 1px; z-index:1002;
-    top: 10%; display: inline-table; box-shadow: black 2px 2px 2px; background: white; }
-div.si4Dialog > div.dialogContainer > div.dialogHeader { border:silver solid 1px;  z-index:1003;
-    text-align: center; padding:4px; font-weight:bold; }
+div.si4Dialog > div.dialogContainer { position:relative; border:white solid 1px; z-index:1002; top: 10%;
+    display: inline-table; box-shadow: #333 0px 0px 40px; background: white; border-radius: 10px; }
+div.si4Dialog > div.dialogContainer > div.dialogHeader { background: #DDDDDD; z-index:1003;
+    text-align: center; padding:10px; font-weight:bold; border-radius: 10px 10px 0 0; }
 div.si4Dialog > div.dialogContainer > div.dialogHeader > div.titleDiv { display:inline-table; color:inherit; }
 div.si4Dialog > div.dialogContainer > div.dialogHeader > div.closeDiv { display:inline-table; color:inherit;
     opacity:0.6; float:right; cursor:pointer; margin:0px 2px 0px 5px; }
 div.si4Dialog > div.dialogContainer > div.dialogHeader > div.closeDiv:hover { opacity:1; }
-div.si4Dialog > div.dialogContainer > div.dialogContent { z-index:1003; padding:5px; text-align:left; }
+div.si4Dialog > div.dialogContainer > div.dialogContent { z-index:1003; padding:10px; text-align:left; }
 
 div.si4Hint { position:absolute; border:#DDDDDD solid 1px; border-radius:5px; padding:8px; background: #EEEEAA;
     opacity:0.95; color:black; }

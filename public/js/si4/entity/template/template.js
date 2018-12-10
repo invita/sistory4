@@ -15,15 +15,37 @@ si4.entity.template.getEmptyMetsXml = function(data, callback) {
         userFullname: si4.data.currentUser.lastname +", "+ si4.data.currentUser.firstname,
     };
 
-    var templateName = si4.getArg(data, "template", "template."+data.structType+".xml");
-    var templateUrl = "/js/si4/entity/template/"+templateName;
-    $.ajax({ type: "GET", url: templateUrl }).then(function(xml, success, response) {
-        var templateText = response.responseText;
-
+    if (data.xml) {
+        var templateText = data.xml;
         for (var key in templateReplaceMap) {
             templateText = templateText.replace(new RegExp('\\{\\{'+key+'\\}\\}', 'ig'), templateReplaceMap[key]);
         }
-
         callback(templateText);
-    });
+    } else {
+        var templateName = si4.getArg(data, "template", "template."+data.structType+".xml");
+        var templateUrl = "/js/si4/entity/template/"+templateName;
+        $.ajax({ type: "GET", url: templateUrl }).then(function(xml, success, response) {
+            var templateText = response.responseText;
+
+            for (var key in templateReplaceMap) {
+                templateText = templateText.replace(new RegExp('\\{\\{'+key+'\\}\\}', 'ig'), templateReplaceMap[key]);
+            }
+
+            callback(templateText);
+        });
+    }
 };
+
+/*
+ {{systemId}}         - Id, ki ga vedno dodeli sistem
+ {{handleId}}         - Handle prefix (se lahko ročno vnese le ob kreiranju)
+ {{si4id}}            - konstanta "si4." + handleId, npr. "si4.entity123"
+ {{handleUrl}}        - Handle url
+ {{structType}}       - tip (collection/entity/file)
+ {{currentTimestamp}} - trenutni datum čas, npr. "2018-12-10T20:11:13"
+ {{recordStatus}}     - "Active"
+ {{repositoryName}}   - Ime repozitorija
+ {{repositoryNote}}   - Url repozitorija
+ {{userId}}           - Id prijavljenega uporabnika
+ {{userFullname}}     - Polno ime prijavljenega uporabnika
+*/

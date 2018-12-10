@@ -1,7 +1,7 @@
 var F = function(args){
     //console.log("EntityDetails", args);
 
-    var create = function() {
+    args.createEntityDetailsView = function() {
         var rowValue = args.row ? args.row : {};
         //console.log("entity args", args);
         console.log("rowValue", rowValue);
@@ -692,29 +692,69 @@ var F = function(args){
                 args.row.entity_type = "primary";
                 break;
         }
+        args.row.struct_subtype = "default";
         args.row.indexed = true;
         args.row.enabled = true;
 
-        si4.api["reserveEntityId"]({ struct_type: args.row.struct_type }, function(response) {
-            args.row.id = response.data.id;
-            args.row.child_order = response.data.id;
-            args.row.handle_id = response.data.handle_id;
-            args.row.struct_subtype = response.data.struct_subtype;
-            if (args.staticData) {
-                for (var i in args.staticData) args.row[i] = args.staticData[i];
-            }
-            si4.entity.template.getEmptyMetsXml({
-                template: "template."+args.row.struct_type+".xml",
-                id: args.row.id,
-                handleId: args.row.handle_id,
-                structType: args.row.struct_type,
-            }, function(xmlTemplate) {
-                args.row.xmlData = xmlTemplate;
-                create();
+
+        var typeChooseDialog = new si4.widget.si4Dialog({
+            title: si4.translate("entities_entityDetails_typeChooseDlg_title")
+        });
+        var dialogForm = new si4.widget.si4Form({
+            parent: typeChooseDialog.content.selector,
+            captionWidth: "90px"
+        });
+        var dialogFieldStructType = dialogForm.addInput({
+            name: "struct_type",
+            value: args.row.struct_type,
+            type: "select",
+            caption: si4.translate("field_structType"),
+            values: si4.data.structTypes,
+        });
+        var dialogFieldStructSubtype = dialogForm.addInput({
+            name: "struct_subtype",
+            value: args.row.struct_subtype,
+            type: "select",
+            caption: si4.translate("field_structSubtype"),
+            values: si4.data.behaviourNames,
+        });
+        var dialogSubmitButton = dialogForm.addInput({
+            caption: si4.translate("field_actions"),
+            value: si4.translate("button_create"),
+            type:"submit",
+        });
+        dialogForm.onSubmit(function() {
+
+            var reserveData = dialogForm.getValue();
+            args.row.struct_type = reserveData.struct_type;
+
+            typeChooseDialog.close();
+            si4.loading.show();
+
+            si4.api["reserveEntityId"](reserveData, function(response) {
+                args.row.id = response.data.id;
+                args.row.child_order = response.data.id;
+                args.row.handle_id = response.data.handle_id;
+                args.row.struct_subtype = response.data.struct_subtype;
+
+                if (args.staticData) {
+                    for (var i in args.staticData) args.row[i] = args.staticData[i];
+                }
+                si4.entity.template.getEmptyMetsXml({
+                    template: "template."+args.row.struct_type+".xml",
+                    xml: response.data.xml,
+                    id: args.row.id,
+                    handleId: args.row.handle_id,
+                    structType: args.row.struct_type,
+                }, function(xmlTemplate) {
+                    args.row.xmlData = xmlTemplate;
+                    args.createEntityDetailsView();
+                    si4.loading.hide();
+                });
             });
         });
     } else {
-        create();
+        args.createEntityDetailsView();
     }
 
 };

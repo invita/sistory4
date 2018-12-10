@@ -26,6 +26,7 @@ si4.widget.si4Dialog = function(args)
         this.closeDiv = new si4.widget.si4Element({parent:this.header.selector, tagClass:"closeDiv"});
         this.closeDiv.selector.html("x");
         this.closeDiv.selector.click(function(e) { _p.close(); });
+        this.background.selector.click(function(e) { _p.close(); });
     }
 
     this.content = new si4.widget.si4Element({parent:this.container.selector, tagClass:"dialogContent"});

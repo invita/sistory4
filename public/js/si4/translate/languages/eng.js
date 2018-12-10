@@ -7,6 +7,7 @@ si4.translations = {
     button_save: "Save",
     button_addAll: "Add all",
     button_check: "Check",
+    button_create: "Create",
     button_generate_fe_translation_files: "Generate FE translation files",
 
 
@@ -96,6 +97,7 @@ si4.translations = {
     entities_entityDetails_mdEditorTab_text: "Metadata Editor",
     entities_entityDetails_relationsTab_text: "Relations",
     entities_entityDetails_filesTab_text: "Files",
+    entities_entityDetails_typeChooseDlg_title: "New entity",
 
 
     // UserList

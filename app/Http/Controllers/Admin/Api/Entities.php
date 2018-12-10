@@ -8,6 +8,7 @@ use App\Helpers\Enums;
 use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
+use App\Models\Behaviour;
 use App\Models\Entity;
 use App\Models\EntityHandleSeq;
 use Illuminate\Http\Request;
@@ -33,9 +34,16 @@ class Entities extends Controller
 
         $postJson = json_decode(file_get_contents("php://input"), true);
         $struct_type = Si4Util::getArg($postJson, "struct_type", "entity");
+        $struct_subtype = Si4Util::getArg($postJson, "struct_subtype", "default");
 
         $status = true;
         $error = null;
+
+        $behaviour = Behaviour::getBehaviour($struct_subtype);
+        $template = null;
+        if ($behaviour && isset($behaviour["template_".$struct_type]) && $behaviour["template_".$struct_type]) {
+            $template = $behaviour["template_".$struct_type];
+        }
 
         $newEntityId = Si4Util::nextEntityId();
         $entity = Entity::findOrNew($newEntityId);
@@ -47,7 +55,7 @@ class Entities extends Controller
         $entity->collection = "";
 
         $entity->struct_type = $struct_type;
-        $entity->struct_subtype = "default";
+        $entity->struct_subtype = $struct_subtype;
         $entity->entity_type = "";
         $entity->child_order = $newEntityId;
         $entity->save();
@@ -57,7 +65,8 @@ class Entities extends Controller
             "data" => [
                 "id" => $newEntityId,
                 "handle_id" => $entity->handle_id,
-                "struct_subtype" => $entity->struct_subtype
+                "struct_subtype" => $entity->struct_subtype,
+                "xml" => $template
             ]
         ];
     }

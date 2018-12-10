@@ -69,7 +69,7 @@ si4.widget.si4Form = function(args)
         if (args.type != "textarea") input.onKeyPressed(_p._onKeyPressed);
         if (args.type == "submit") {
             _p._submitInput = input;
-            _p._submitInput.selector.click(_p._onSubmit);
+            _p._submitInput.input.selector.click(_p._onSubmit);
         }
         if (args.type == "select") {
 
