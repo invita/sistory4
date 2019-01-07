@@ -30,13 +30,21 @@ class MetsToSi4
         $this->metsXmlDOMDoc->loadXML($this->metsXmlString);
         $this->domXPath = new \DOMXPath($this->metsXmlDOMDoc);
 
+        // Register all the namespaces found through the xml
+        $nsMatches = [];
+        preg_match_all("/xmlns:(.*?)=\\\"(.*?)\\\"/", $this->metsXmlString, $nsMatches);
+        //print_r($nsMatches);
+        if (isset($nsMatches[1]) && $nsMatches[1]) {
+            foreach ($nsMatches[1] as $idx => $nsName)
+                $this->domXPath->registerNamespace($nsMatches[1][$idx], $nsMatches[2][$idx]);
+        }
+
         $this->fieldDefs = Si4Field::getSi4Fields();
         $this->mappingGroups = MappingGroup::getMappingGroups();
         $this->result = [];
     }
 
     private function doMetsStaticMapping() {
-        // TODO
         $this->result["header"] = [];
 
         if ($this->metsXmlDOMDoc) {
@@ -118,8 +126,8 @@ class MetsToSi4
 
                                 try {
 
-                                    $value = $this->domXPath->evaluate($value_xpath, $fieldSourceElement);
-                                    $lang = $this->domXPath->evaluate($lang_xpath, $fieldSourceElement);
+                                    $value = $value_xpath ? $this->domXPath->evaluate($value_xpath, $fieldSourceElement) : "";
+                                    $lang = $lang_xpath ? $this->domXPath->evaluate($lang_xpath, $fieldSourceElement) : "";
 
                                     //echo $target_field." -> '" .$value. "', lang: '" .$lang. "'\n";
 
