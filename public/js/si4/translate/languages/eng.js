@@ -20,7 +20,7 @@ si4.translations = {
     metadataModel_fieldDefinitionDetails_contentTab_text: "Details",
 
     // Mapping
-    metadataModel_mappingGroupList_mainTab_text: "Mapping Groups",
+    metadataModel_mappingGroupList_mainTab_text: "Mapping Definitions",
     metadataModel_mappingGroupList_contentTab_text: "List",
     metadataModel_mappingGroupDetails_mainTab_text: "Mapping Group [[id]] - [[name]]",
     metadataModel_mappingGroupDetails_contentTab_text: "Group details",
@@ -51,6 +51,7 @@ si4.translations = {
     metadataModel_mappingTest_mainTab_text: "Mapping Test",
     metadataModel_mappingTest_contentTab_text: "Xml",
     metadataModel_mappingTest_resultTab_text: "Result Si4",
+    metadataModel_mappingTest_xpathEvalTab_text: "XPath Evaluate Test",
 
 
     // EntityList
@@ -208,6 +209,8 @@ si4.translations = {
     field_inline_separator: "Inline separator",
     field_display_frontend: "Display on frontend",
     field_enable_adv_search: "Enable advanced search",
+
+    field_test_xpath: "Test XPath",
 
     field_key: "Key",
     field_value: "Value",

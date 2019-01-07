@@ -14,7 +14,7 @@ si4.config.apiNames = [
 
     "mappingGroupList", "saveMappingGroup", "deleteMappingGroup",
     "mappingGroupFieldsList", "saveMappingGroupField",
-    "xmlToSi4Test",
+    "xmlToSi4Test", "xmlXPathTest",
 
     "entityList", "entityListDb", "saveEntity", "reserveEntityId", "deleteEntity", "entityHierarchy",
 

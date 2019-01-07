@@ -1,35 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- This is a test xml -->
-
 <METS:mets xmlns:METS="http://www.loc.gov/METS/"
            xmlns:xlink="http://www.w3.org/TR/xlink"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           TYPE="{{structType}}"
-           ID="{{si4id}}"
-           OBJID="{{handleUrl}}">
-    <METS:metsHdr CREATEDATE="{{currentTimestamp}}" LASTMODDATE="{{currentTimestamp}}" RECORDSTATUS="{{recordStatus}}">
+           xmlns:mods="http://www.loc.gov/mods/v3"
+           TYPE="entity"
+           ID="si4.36113"
+           OBJID="http://hdl.handle.net/11686/36113"
+           xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd">
+    <METS:metsHdr CREATEDATE="2016-12-07T11:25:58" LASTMODDATE="2016-12-08T07:21:21" RECORDSTATUS="Active">
         <METS:agent ROLE="DISSEMINATOR" TYPE="ORGANIZATION">
-            <METS:name>{{repositoryName}}</METS:name>
-            <METS:note>{{repositoryNote}}</METS:note>
+            <METS:name>SI-DIH</METS:name>
+            <METS:note>http://sidih.si/</METS:note>
         </METS:agent>
-        <METS:agent ROLE="CREATOR" ID="{{userId}}" TYPE="INDIVIDUAL">
-            <METS:name>{{userFullname}}</METS:name>
+        <METS:agent ROLE="CREATOR" ID="user.11" TYPE="INDIVIDUAL">
+            <METS:name>Pančur, Andrej</METS:name>
         </METS:agent>
     </METS:metsHdr>
-    <METS:dmdSec ID="description">
-        <METS:mdWrap MDTYPE="DC">
-            <METS:xmlData xmlns:dc="http://purl.org/dc/elements/1.1/"
-                          xmlns:dcterms="http://purl.org/dc/terms/"
-                          xmlns:dcmitype="http://purl.org/dc/dcmitype/">
-                <dc:title xml:lang="slv">Test DC slv title</dc:title>
-                <dc:title xml:lang="slv">Test DC slv title 2</dc:title>
-                <dc:title xml:lang="eng">Test DC eng title</dc:title>
-                <dc:title xml:lang="eng">Test DC eng title 2</dc:title>
-                <dc:creator>Test DC creator</dc:creator>
-            </METS:xmlData>
-        </METS:mdWrap>
-    </METS:dmdSec>
     <METS:dmdSec ID="description">
         <METS:mdWrap MDTYPE="MODS">
             <METS:xmlData>
@@ -258,45 +244,66 @@
             </METS:xmlData>
         </METS:mdWrap>
     </METS:dmdSec>
-    <METS:amdSec ID="amd">
+    <METS:amdSec ID="administrative">
         <METS:techMD ID="tech.premis">
             <METS:mdWrap MDTYPE="PREMIS:OBJECT" MIMETYPE="text/xml">
-                <METS:xmlData xmlns:premis="http://www.loc.gov/premis/v3">
+                <METS:xmlData xmlns:premis="http://www.loc.gov/premis/v3" xsi:schemaLocation="http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd">
                     <premis:objectIdentifier>
                         <premis:objectIdentifierType>si4</premis:objectIdentifierType>
-                        <premis:objectIdentifierValue>{{systemId}}</premis:objectIdentifierValue>
+                        <!-- se generira številčni ID ob uvozu v si4 -->
+                        <premis:objectIdentifierValue></premis:objectIdentifierValue>
                     </premis:objectIdentifier>
                     <premis:objectIdentifier>
                         <premis:objectIdentifierType>Local name</premis:objectIdentifierType>
-                        <premis:objectIdentifierValue>{{handleId}}</premis:objectIdentifierValue>
+                        <premis:objectIdentifierValue>36113</premis:objectIdentifierValue>
                     </premis:objectIdentifier>
                     <premis:objectIdentifier>
                         <premis:objectIdentifierType>hdl</premis:objectIdentifierType>
-                        <premis:objectIdentifierValue>{{handleUrl}}</premis:objectIdentifierValue>
+                        <premis:objectIdentifierValue>http://hdl.handle.net/11686/36113</premis:objectIdentifierValue>
                     </premis:objectIdentifier>
                     <premis:objectCategory>Intellectual entity</premis:objectCategory>
                 </METS:xmlData>
             </METS:mdWrap>
         </METS:techMD>
+        <!-- Za si4 aplikacijo potrebni dodatni administrativni tehnični metapodki (use characteristics):
+        XML shemo, ki jo sedaj dostopam lokalno, obvezno shrani na primernem mestu na SIstory!!!!! -->
         <METS:techMD ID="tech.si4">
             <METS:mdWrap MDTYPE="OTHER" OTHERMDTYPE="SI4" MIMETYPE="text/xml">
                 <METS:xmlData xmlns:si4="http://si4.si/schema/">
-                    <si4:additionalMetadata>false</si4:additionalMetadata>
+                    <!-- Dodatni metapodatki, ki niso vključeni v si4 aplikacijski profil -->
+                    <si4:additionalMetadata>true</si4:additionalMetadata>
+                    <si4:additionalMetadataURL>http://www.clarin.si/8888/12345/mets.xml</si4:additionalMetadataURL>
+                    <si4:desc xml:lang="slv">Opisni podatki za slovensko stran, skupaj z morebitnimi <strong>html</strong>.</si4:desc>
+                    <!-- sem se vstavi polje Stran publikacije  -->
+                    <si4:pdfPage>1</si4:pdfPage>
+                    <!-- Sem se vstavi polje URL umaknjene publikacije.
+                         Debata: Naredili bi dve možnosti:
+                           - isto kot sedaj za umaknjeno publikacijo, ki te potem, ko ti pove,
+                             da je digitalni objekt umaknjen, preusmeri na nov naslov;
+                           - če se v repositorij naloži novo verzijo digitalnega objekta,
+                             se pojavi popup, ki te seznani s tem in ti da na izbiro:
+                                - da pogledaš nov digitalni objekt (nato preusmeritev na njega);
+                                - da vseeno pogledaš to verzijo.
+                    -->
+                    <si4:removedTo></si4:removedTo>
+                    <!-- podatke za tage bi odstranili -->
                 </METS:xmlData>
             </METS:mdWrap>
         </METS:techMD>
     </METS:amdSec>
-    <METS:fileSec ID="files" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <!-- System will manage this section when you save (except for files with attribute USE="EXTERNAL") -->
-    </METS:fileSec>
-    <METS:structMap ID="structure" TYPE="" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <!-- System will manage this section when you save -->
+    <METS:structMap ID="structure" TYPE="primary" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <METS:div TYPE="collection">
+            <METS:mptr LOCTYPE="HANDLE" xlink:href="http://hdl.handle.net/11686/menu5"/>
+            <METS:div TYPE="entity" DMDID="description" ADMID="administrative"/>
+        </METS:div>
     </METS:structMap>
     <METS:behaviorSec ID="si4.behavior" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <METS:behavior BTYPE="dublincore">
-            <METS:mechanism LOCTYPE="URL" xlink:href="/xsd/dc"/>
+        <!-- Behavitor se določi z atributom @BTYPE
+             Npr. DC, DCTERMS, MODS, LIDO, OAIRE-DATA
+        -->
+        <METS:behavior BTYPE="MODS">
+            <!-- URL prelje do XML sheme, s katero se parsa mets dokumente za ElasticSearch -->
+            <METS:mechanism LOCTYPE="URL" xlink:href="resources/assets/xsd/"/>
         </METS:behavior>
     </METS:behaviorSec>
 </METS:mets>
-
-

@@ -6,6 +6,7 @@ use App\Helpers\ElasticHelpers;
 use App\Helpers\EntitySelect;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
+use App\Models\Si4\MetsToSi4;
 use App\Models\Si4Field;
 use App\Xsd\AnyTypeHandler;
 use App\Xsd\AsTextTypeHandler;
@@ -51,8 +52,81 @@ class TestTest extends Command
     public function handle()
     {
 
-        $si4Fields = Si4Field::getSi4FieldsArray();
-        print_r($si4Fields);
+        //$xmlFile = __DIR__ ."/../../../public/js/si4/entity/template/template.test.xml";
+        $xmlFile = __DIR__ ."/../../../public/js/si4/entity/template/test.mods.xml";
+        $xml = file_get_contents($xmlFile);
+
+        $metsToSi4 = new MetsToSi4($xml);
+        $result = $metsToSi4->run();
+        print_r($result);
+
+        /*
+        $doc = new \DOMDocument();
+        $doc->loadXML($xml);
+        $domXPath = new \DOMXPath($doc);
+
+        $result = [];
+        $result["ID"] = $domXPath->evaluate("string(/METS:mets/@ID2)");
+
+        print_r($result);
+        */
+
+        /*
+        if ($result instanceof \DOMNodeList) {
+            foreach ($result as $r) {
+                var_dump($r);
+            }
+        } else {
+            var_dump($result);
+        }
+        */
+
+
+
+        /*
+        $agentRolesMap = [
+            "CREATOR" => "creators",
+            "DISSEMINATOR" => "disseminators",
+        ];
+        $result = [];
+
+        // METS:mets/METS:metsHdr/METS:agent[@ROLE='?']
+        foreach ($agentRolesMap as $agentRole => $agentGroup) {
+
+            $agents = $domXPath->query("/METS:mets/METS:metsHdr/METS:agent[@ROLE='" . $agentRole . "']");
+            echo "/METS:mets/METS:metsHdr/METS:agent[@ROLE='" . $agentRole . "']\n";
+            var_dump($agents);
+
+            //$agents = $metsHdr->xpath("METS:agent[@ROLE='".$agentRole."']");
+            if ($agents->length) {
+                $result[$agentGroup] = [];
+                foreach ($agents as $agent) {
+                    $agentResult = [];
+
+                    $name = $domXPath->evaluate("string(METS:name)", $agent);
+                    if ($name) $agentResult["name"] = $name;
+
+                    echo "name: ".$name."\n";
+
+                    $result[$agentGroup][] = $agentResult;
+                }
+            }
+        }
+
+        print_r($result);
+        */
+
+
+
+        /*
+
+
+        */
+
+
+
+        //$si4Fields = Si4Field::getSi4FieldsArray();
+        //print_r($si4Fields);
 
         /*
         $entity = Entity::findOrNew(4);

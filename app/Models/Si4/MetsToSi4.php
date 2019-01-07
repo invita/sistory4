@@ -1,15 +1,15 @@
 <?php
 namespace App\Models\Si4;
 
-use App\Helpers\Si4Util;
 use App\Models\MappingGroup;
 use App\Models\Si4Field;
-use Mockery\CountValidator\Exception;
 
 class MetsToSi4
 {
     private $metsXmlString;
-    private $metsXmlDoc;
+    private $metsXmlDOMDoc;
+    private $domXPath;
+
     private $fieldDefs;
     private $mappingGroups;
     private $result;
@@ -26,7 +26,10 @@ class MetsToSi4
     }
 
     private function prepare() {
-        $this->metsXmlDoc = simplexml_load_string($this->metsXmlString);
+        $this->metsXmlDOMDoc = new \DOMDocument();
+        $this->metsXmlDOMDoc->loadXML($this->metsXmlString);
+        $this->domXPath = new \DOMXPath($this->metsXmlDOMDoc);
+
         $this->fieldDefs = Si4Field::getSi4Fields();
         $this->mappingGroups = MappingGroup::getMappingGroups();
         $this->result = [];
@@ -36,21 +39,17 @@ class MetsToSi4
         // TODO
         $this->result["header"] = [];
 
-        if ($this->metsXmlDoc) {
+        if ($this->metsXmlDOMDoc) {
 
             // METS:mets
-            $mets = Si4Util::getArg($this->metsXmlDoc->xpath("/METS:mets"), '0', null);
-            if (!$mets) { return; /* No METS:mets! */ }
-            if ($mets["ID"]) $this->result["header"]["id"] = (string)$mets["ID"];
-            if ($mets["OBJID"]) $this->result["header"]["objId"] = (string)$mets["OBJID"];
-            if ($mets["TYPE"]) $this->result["header"]["type"] = (string)$mets["TYPE"];
+            $this->result["header"]["id"] = $this->domXPath->evaluate("string(/METS:mets/@ID)");
+            $this->result["header"]["objId"] = $this->domXPath->evaluate("string(/METS:mets/@OBJID)");
+            $this->result["header"]["type"] = $this->domXPath->evaluate("string(/METS:mets/@TYPE)");
 
             // METS:mets/METS:metsHdr
-            $metsHdr = Si4Util::getArg($mets->xpath("METS:metsHdr"), '0', null);
-            if (!$metsHdr) { return; /* No METS:metsHdr! */ }
-            if ($metsHdr["CREATEDATE"]) $this->result["header"]["createDate"] = (string)$metsHdr["CREATEDATE"];
-            if ($metsHdr["LASTMODDATE"]) $this->result["header"]["lastModDate"] = (string)$metsHdr["LASTMODDATE"];
-            if ($metsHdr["RECORDSTATUS"]) $this->result["header"]["recordStatus"] = (string)$metsHdr["RECORDSTATUS"];
+            $this->result["header"]["createDate"] = $this->domXPath->evaluate("string(/METS:mets/METS:metsHdr/@CREATEDATE)");
+            $this->result["header"]["lastModDate"] = $this->domXPath->evaluate("string(/METS:mets/METS:metsHdr/@LASTMODDATE)");
+            $this->result["header"]["recordStatus"] = $this->domXPath->evaluate("string(/METS:mets/METS:metsHdr/@RECORDSTATUS)");
 
             $agentRolesMap = [
                 "CREATOR" => "creators",
@@ -59,19 +58,21 @@ class MetsToSi4
 
             // METS:mets/METS:metsHdr/METS:agent[@ROLE='?']
             foreach ($agentRolesMap as $agentRole => $agentGroup) {
-                $agents = $metsHdr->xpath("METS:agent[@ROLE='".$agentRole."']");
-                if ($agents) {
+                $agents = $this->domXPath->query("/METS:mets/METS:metsHdr/METS:agent[@ROLE='".$agentRole."']");
+                if ($agents->length) {
                     $this->result["header"][$agentGroup] = [];
                     foreach ($agents as $agent) {
                         $agentResult = [];
-                        $name = (string)Si4Util::getArg($agent->xpath("METS:name"), '0', "");
-                        $note = (string)Si4Util::getArg($agent->xpath("METS:note"), '0', "");
-                        $type = (string)Si4Util::getArg($agent->xpath("@TYPE"), '0', "");
-                        $id = (string)Si4Util::getArg($agent->xpath("@ID"), '0', "");
+
+                        $name = $this->domXPath->evaluate("string(METS:name)", $agent);
+                        $note = $this->domXPath->evaluate("string(METS:note)", $agent);
+                        $type = $this->domXPath->evaluate("string(@TYPE)", $agent);
+                        $id = $this->domXPath->evaluate("string(@ID)", $agent);
                         if ($name) $agentResult["name"] = $name;
                         if ($note) $agentResult["note"] = $note;
-                        if ($type) $agentResult["type"] = strtolower($type);
+                        if ($type) $agentResult["type"] = $type;
                         if ($id) $agentResult["id"] = $id;
+
                         $this->result["header"][$agentGroup][] = $agentResult;
                     }
                 }
@@ -84,17 +85,23 @@ class MetsToSi4
 
         $this->result["si4"] = [];
 
-        if ($this->metsXmlDoc) {
+        if ($this->metsXmlDOMDoc) {
+
+            // foreach MappingGroup
             foreach ($this->mappingGroups as $mgName => $mappingGroup) {
 
-                if ($mgName === "Mods") continue;
+                //if ($mgName === "Mods") continue;
 
                 $mappingFields = $mappingGroup["fields"];
                 $base_xpath = $mappingGroup["base_xpath"];
-                $baseXmlElements = $this->metsXmlDoc->xpath($base_xpath);
 
+                // Find MappingGroup's base elements
+                $baseXmlElements = $this->domXPath->query($base_xpath);
+
+                // foreach base MappingGroup element found
                 foreach ($baseXmlElements as $baseXmlElement) {
 
+                    // foreach MappingField in MappingGroup
                     foreach ($mappingFields as $mappingField) {
                         $source_xpath = $mappingField["source_xpath"];
                         $value_xpath = $mappingField["value_xpath"];
@@ -103,23 +110,16 @@ class MetsToSi4
 
                         try {
 
-                            $fieldSourceElements = $baseXmlElement->xpath($source_xpath);
+                            // Find MappingField source elements
+                            $fieldSourceElements = $this->domXPath->query($source_xpath, $baseXmlElement);
+
+                            // foreach MappingField source element found
                             foreach ($fieldSourceElements as $fieldSourceElement) {
 
                                 try {
-                                    if (!$value_xpath || $value_xpath === "/") {
-                                        $value = (string)$fieldSourceElement;
-                                    } else {
-                                        $valueArray = $fieldSourceElement->xpath($value_xpath);
-                                        $value = isset($valueArray[0]) ? (string)$valueArray[0] : "";
-                                    }
 
-                                    if ($lang_xpath) {
-                                        $langArray = $fieldSourceElement->xpath($lang_xpath);
-                                        $lang = isset($langArray[0]) ? (string)$langArray[0] : "";
-                                    } else {
-                                        $lang = "";
-                                    }
+                                    $value = $this->domXPath->evaluate($value_xpath, $fieldSourceElement);
+                                    $lang = $this->domXPath->evaluate($lang_xpath, $fieldSourceElement);
 
                                     //echo $target_field." -> '" .$value. "', lang: '" .$lang. "'\n";
 

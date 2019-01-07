@@ -101,6 +101,7 @@ Route::group(['prefix' => 'admin'], function () {
 
             // Metadata Mapping tests
             Route::post('xml-to-si4-test', "Admin\\Api\\MdTests@xmlToSi4Test")->name("admin.api.xml-to-si4-test#post");
+            Route::post('xml-x-path-test', "Admin\\Api\\MdTests@xmlXPathTest")->name("admin.api.xml-x-path-testt#post");
 
             Route::post('dev-tools', "Admin\\Api\\Dev@devTools")->name("admin.api.dev-tools#post");
         });

@@ -52,21 +52,21 @@ class Si4MappingReseed extends Command
             // *** DC ***
 
             $groupDC = $this->addMappingGroup("DC", $dcBaseXPath, "DublinCore mappings");
-            $this->addMappingField($groupDC, "title", "dc:title", "", "@xml:lang");
-            $this->addMappingField($groupDC, "creator", "dc:creator", "", "");
-            $this->addMappingField($groupDC, "subject", "dc:subject", "", "@xml:lang");
-            $this->addMappingField($groupDC, "description", "dc:description", "", "@xml:lang");
-            $this->addMappingField($groupDC, "publisher", "dc:publisher", "", "");
-            $this->addMappingField($groupDC, "contributor", "dc:contributor", "", "");
-            $this->addMappingField($groupDC, "date", "dc:date", "", "");
-            $this->addMappingField($groupDC, "type", "dc:type", "", "");
-            $this->addMappingField($groupDC, "format", "dc:format", "", "");
-            $this->addMappingField($groupDC, "identifier", "dc:identifier", "", "");
-            $this->addMappingField($groupDC, "source", "dc:source", "", "");
-            $this->addMappingField($groupDC, "language", "dc:language", "", "");
-            $this->addMappingField($groupDC, "relation", "dc:relation", "", "");
-            $this->addMappingField($groupDC, "coverage", "dc:coverage", "", "");
-            $this->addMappingField($groupDC, "rights", "dc:rights", "", "");
+            $this->addMappingField($groupDC, "title", "dc:title", "string()", "string(@xml:lang)");
+            $this->addMappingField($groupDC, "creator", "dc:creator", "string()", "");
+            $this->addMappingField($groupDC, "subject", "dc:subject", "string()", "string(@xml:lang)");
+            $this->addMappingField($groupDC, "description", "dc:description", "string()", "string(@xml:lang)");
+            $this->addMappingField($groupDC, "publisher", "dc:publisher", "string()", "");
+            $this->addMappingField($groupDC, "contributor", "dc:contributor", "string()", "");
+            $this->addMappingField($groupDC, "date", "dc:date", "string()", "");
+            $this->addMappingField($groupDC, "type", "dc:type", "string()", "");
+            $this->addMappingField($groupDC, "format", "dc:format", "string()", "");
+            $this->addMappingField($groupDC, "identifier", "dc:identifier", "string()", "");
+            $this->addMappingField($groupDC, "source", "dc:source", "string()", "");
+            $this->addMappingField($groupDC, "language", "dc:language", "string()", "");
+            $this->addMappingField($groupDC, "relation", "dc:relation", "string()", "");
+            $this->addMappingField($groupDC, "coverage", "dc:coverage", "string()", "");
+            $this->addMappingField($groupDC, "rights", "dc:rights", "string()", "");
 
 
             // *** Mods ***
