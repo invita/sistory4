@@ -25,6 +25,7 @@ si4.widget.si4Input = function(args)
     this.values = si4.getArg(args, "values", {});
     this.addEmptyOption = si4.getArg(args, "addEmptyOption", false);
     this.placeholder = si4.getArg(args, "placeholder", "");
+    this.placeholder2 = si4.getArg(args, "placeholder2", "");
     this.withCode = si4.getArg(args, "withCode", null);
     this.readOnly = si4.getArg(args, "readOnly", false);
     this.disabled = si4.getArg(args, "disabled", false);
@@ -39,6 +40,8 @@ si4.widget.si4Input = function(args)
     this.inputClass = si4.getArg(args, "inputClass", "");
     this.autoComplete = si4.getArg(args, "autoComplete", null);
     this.accept = si4.getArg(args, "accept", null);
+    this.secondInput = si4.getArg(args, "secondInput", false);
+    this.secondInputName = si4.getArg(args, "secondInputName", "value2");
 
     // Events
     this.onKeyDown = function(f) { _p.subscribe("onKeyDown", f); };
@@ -49,7 +52,14 @@ si4.widget.si4Input = function(args)
 
     this.onPaste = function(f) { _p.subscribe("onPaste", f); };
 
+    this.inputs = [];
+
     // Create elements
+    if (this.secondInput) {
+        this.input2 = new si4.widget.si4Element({ parent:this.selector, tagName:"input", tagClass: "si4Input", attr: { type: "text" } });
+        this.inputs.push(this.input2);
+    }
+
     this.input = new si4.widget.si4Element({ parent:this.selector, tagName:this.inputTagName, tagClass:this.inputClass });
     this.input.selector.addClass("si4Input");
     if (this.inputType == "codemirror")
@@ -58,7 +68,7 @@ si4.widget.si4Input = function(args)
     if (this.inputType == "hidden")
         this.selector.hide();
 
-    this.inputs = [this.input];
+    this.inputs.push(this.input);
 
     // Implementation
     if (!this.name) this.name = si4.widget._nextInputId();
@@ -216,6 +226,17 @@ si4.widget.si4Input = function(args)
         }
     };
 
+    this.setPlaceholder2 = function(newPlaceholder2){
+        if (!newPlaceholder2) {
+            _p.placeholder2 = "";
+            _p.input2.selector.removeAttr("placeholder");
+        } else {
+            _p.placeholder2 = newPlaceholder2;
+            _p.input2.selector.attr("placeholder", _p.placeholder2);
+        }
+    };
+
+
     this.getValue = function() {
         var val = _p.input.selector.val();
         if (_p.type == "checkbox")
@@ -226,17 +247,26 @@ si4.widget.si4Input = function(args)
             val = _p.input.selector[0].files[0];
         else if (_p.type == "codemirror") val = _p.codemirror.getValue();
 
-        if (_p.withCode)
+        if (_p.withCode) {
             return { codeId: _p.getCodeId(), value: val };
-        else
+        } else if (_p.secondInput) {
+            var result = { value: val };
+            result[this.secondInputName] = _p.getSecondValue();
+            return result;
+        } else {
             return val;
+        }
     };
 
     this.setValue = function(value){
         if (_p.withCode && value.codeId) {
             _p.setCodeId(value.codeId);
             value = value.value;
+        } else if (_p.secondInput) {
+            _p.setSecondValue(value[_p.secondInputName]);
+            value = value.value;
         }
+
         if (_p.type == "checkbox") {
             value = value ? true : false;
             _p.input.selector.prop("checked", value);
@@ -276,6 +306,16 @@ si4.widget.si4Input = function(args)
     this.setCodeId = function(codeId){
         if (!_p.withCode || !_p.codeSelect) return;
         _p.codeSelect.selector.val(codeId);
+    };
+
+    this.getSecondValue = function(){
+        if (!_p.secondInput) return "";
+        return _p.input2.selector.val();
+    };
+
+    this.setSecondValue = function(value2){
+        if (!_p.secondInput) return;
+        _p.input2.selector.val(value2);
     };
 
     this.calcModified = function(){
@@ -413,6 +453,7 @@ si4.widget.si4Input = function(args)
         this.captionDiv.displayNone();
 
     if (this.placeholder) this.setPlaceholder(this.placeholder);
+    if (this.secondInput && this.placeholder2) this.setPlaceholder2(this.placeholder2);
     if (this.gradient) this.input.setGradient(this.gradient);
 
     if (this.type == "codemirror") {

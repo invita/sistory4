@@ -3,6 +3,7 @@ namespace App\Models\Si4;
 
 use App\Models\MappingGroup;
 use App\Models\Si4Field;
+use Mockery\CountValidator\Exception;
 
 class MetsToSi4
 {
@@ -100,64 +101,79 @@ class MetsToSi4
 
                 //if ($mgName === "Mods") continue;
 
-                $mappingFields = $mappingGroup["fields"];
-                $base_xpath = $mappingGroup["base_xpath"];
+                try {
+                    $mappingFields = $mappingGroup["fields"];
+                    $base_xpath = $mappingGroup["base_xpath"];
 
-                // Find MappingGroup's base elements
-                $baseXmlElements = $this->domXPath->query($base_xpath);
+                    // Find MappingGroup's base elements
+                    $baseXmlElements = $this->domXPath->query($base_xpath);
 
-                // foreach base MappingGroup element found
-                foreach ($baseXmlElements as $baseXmlElement) {
+                    // foreach base MappingGroup element found
+                    foreach ($baseXmlElements as $baseXmlElement) {
 
-                    // foreach MappingField in MappingGroup
-                    foreach ($mappingFields as $mappingField) {
-                        $source_xpath = $mappingField["source_xpath"];
-                        $value_xpath = $mappingField["value_xpath"];
-                        $lang_xpath = $mappingField["lang_xpath"];
-                        $target_field = $mappingField["target_field"];
+                        // foreach MappingField in MappingGroup
+                        foreach ($mappingFields as $mappingField) {
+                            $source_xpath = $mappingField["source_xpath"];
+                            $value_xpath = $mappingField["value_xpath"];
+                            $lang_xpath = $mappingField["lang_xpath"];
+                            $target_field = $mappingField["target_field"];
+                            $variables = $mappingField["variables"];
 
-                        try {
+                            try {
 
-                            // Find MappingField source elements
-                            $fieldSourceElements = $this->domXPath->query($source_xpath, $baseXmlElement);
+                                // Find MappingField source elements
+                                $fieldSourceElements = $this->domXPath->query($source_xpath, $baseXmlElement);
 
-                            // foreach MappingField source element found
-                            foreach ($fieldSourceElements as $fieldSourceElement) {
+                                // foreach MappingField source element found
+                                foreach ($fieldSourceElements as $fieldSourceElement) {
 
-                                try {
+                                    try {
 
-                                    $value = $value_xpath ? $this->domXPath->evaluate($value_xpath, $fieldSourceElement) : "";
-                                    $lang = $lang_xpath ? $this->domXPath->evaluate($lang_xpath, $fieldSourceElement) : "";
+                                        $value = $value_xpath ? $this->domXPath->evaluate($value_xpath, $fieldSourceElement) : "";
+                                        $lang = $lang_xpath ? $this->domXPath->evaluate($lang_xpath, $fieldSourceElement) : "";
 
-                                    //echo $target_field." -> '" .$value. "', lang: '" .$lang. "'\n";
+                                        //echo $target_field." -> '" .$value. "', lang: '" .$lang. "'\n";
 
-                                    $fieldResult = [];
-                                    $fieldResult["metadataSrc"] = strtolower($mgName);
-                                    $fieldResult["value"] = $value;
-                                    if ($lang) $fieldResult["lang"] = $lang;
+                                        $fieldResult = [];
+                                        $fieldResult["metadataSrc"] = strtolower($mgName);
+                                        $fieldResult["value"] = $value;
+                                        if ($lang) $fieldResult["lang"] = $lang;
 
-                                    if (!isset($this->result["si4"][$target_field])) $this->result["si4"][$target_field] = [];
-                                    $this->result["si4"][$target_field][] = $fieldResult;
+                                        if ($variables) {
+                                            foreach ($variables as $var) {
+                                                $var_name = $var["name"];
+                                                $var_xpath = $var["value"];
+                                                $var_value = $var_xpath ? $this->domXPath->evaluate($var_xpath, $fieldSourceElement) : "";
+                                                $fieldResult[$var_name] = $var_value;
+                                            }
+                                        }
 
-                                } catch (\Exception $fieldSourceE) {
-                                    /*
-                                    echo "fieldSourceE\n";
-                                    var_dump($fieldSourceElement);
-                                    echo $fieldSourceE->__toString();
-                                    */
+                                        if (!isset($this->result["si4"][$target_field])) $this->result["si4"][$target_field] = [];
+                                        $this->result["si4"][$target_field][] = $fieldResult;
+
+                                    } catch (\Exception $fieldSourceE) {
+                                        /*
+                                        echo "fieldSourceE\n";
+                                        var_dump($fieldSourceElement);
+                                        echo $fieldSourceE->__toString();
+                                        */
+                                    }
                                 }
-                            }
 
-                        } catch (\Exception $mappingFieldE) {
-                            /*
-                            echo "mappingField Exception\n";
-                            var_dump($mappingField);
-                            echo $mappingFieldE->__toString();
-                            */
+                            } catch (\Exception $mappingFieldE) {
+                                /*
+                                echo "mappingField Exception\n";
+                                var_dump($mappingField);
+                                echo $mappingFieldE->__toString();
+                                */
+                            }
                         }
                     }
+                } catch (\Exception $e) {
+                    // Probably missing namespace for mappingGroup.
+                    // Ignore
+                    //echo $e->getMessage()."\n";
                 }
-
             }
         }
 

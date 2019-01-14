@@ -92,7 +92,7 @@ class MdMapping extends Controller
         $mappingField->value_xpath = $postJson["value_xpath"];
         $mappingField->lang_xpath = $postJson["lang_xpath"];
         $mappingField->target_field = $postJson["target_field"];
-        $mappingField->data = "";
+        $mappingField->variables = $postJson["variables"];
         $mappingField->save();
 
         return ["status" => true, "error" =>  null, "data" => $mappingField->toArray()];

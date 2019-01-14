@@ -31,8 +31,29 @@ class MappingField extends Model
         'value_xpath',
         'lang_xpath',
         'target_field',
-        'data',
+        'variables',
     ];
+
+    private $_parsedVariables = null;
+    public function getParsedVariables() {
+        if (!$this->_parsedVariables) {
+            $variablesParsed = json_decode($this->variables, true);
+            $this->_parsedVariables = [];
+            if ($variablesParsed) {
+                foreach ($variablesParsed as $var) {
+                    if (isset($var["name"]) && $var["name"] && isset($var["value"]) && $var["value"])
+                        $this->_parsedVariables[] = $var;
+                }
+            }
+        }
+        return $this->_parsedVariables;
+    }
+
+    public function toArray() {
+        $result = parent::toArray();
+        $result["variables"] = $this->getParsedVariables();
+        return $result;
+    }
 
     private static $mappingFieldsArray = [];
     public static function getMappingFieldsForGroup($mappingGroupId) {

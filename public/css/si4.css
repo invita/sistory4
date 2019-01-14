@@ -116,6 +116,11 @@ input:-moz-placeholder { color: #DDDDDD; }
 input::-moz-placeholder { color: #DDDDDD; }
 input:-ms-input-placeholder { color: #DDDDDD; }
 
+textarea::-webkit-input-placeholder { color: #DDDDDD; }
+textarea:-moz-placeholder { color: #DDDDDD; }
+textarea::-moz-placeholder { color: #DDDDDD; }
+textarea:-ms-input-placeholder { color: #DDDDDD; }
+
 div.dataTableFormView.si4Form { margin-bottom:10px; }
 div.dataTableFormView.si4Form > div.si4InputDiv { height:20px; }
 div.dataTableFormView.si4Form > hr { margin:4px 0px 2px 0px; }

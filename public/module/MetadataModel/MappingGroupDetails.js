@@ -112,7 +112,7 @@ var F = function(args){
             source_xpath: { },
             value_xpath: { },
             lang_xpath: { },
-            data: { visible: false },
+            variables: { visible: false },
             /*
             id: { caption: "Id" },
             handle_id: { caption: "Handle Id", hintF: si4.entity.hintHelper.displayEntityInfoDT },

@@ -1,13 +1,15 @@
 var F = function(args){
     //console.log("MappingGroupFieldDetails", args);
     var rowValue = args.row ? args.row : {};
-    //console.log("rowValue", rowValue);
+
+    console.log("rowValue", rowValue);
 
     // *** Logic ***
 
     args.saveMappingGroupField = function(){
         var basicFormValue = args.basicTab.form.getValue();
         console.log("formValue", basicFormValue);
+        basicFormValue.variables = JSON.stringify(basicFormValue.variables);
 
         si4.api["saveMappingGroupField"](basicFormValue, function(data) {
             if (data.status) {
@@ -86,6 +88,20 @@ var F = function(args){
         caption: si4.translate("field_lang_xpath"),
         placeholder: si4.translate("field_lang_xpath_placeholder"),
     });
+
+    args.basicTab.form.addHr();
+    args.basicTab.fieldLangXpath = args.basicTab.form.addInput({
+        isArray: true,
+        name: "variables",
+        value: rowValue.variables,
+        type: "textarea",
+        secondInput: true,
+        secondInputName: "name",
+        caption: si4.translate("field_variables"),
+        placeholder: si4.translate("field_varValue_xpath_placeholder"),
+        placeholder2: si4.translate("field_varName_xpath_placeholder"),
+    });
+    args.basicTab.form.addHr();
 
     args.basicTab.saveButton = args.basicTab.form.addInput({
         caption: si4.translate("field_actions"),

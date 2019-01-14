@@ -45,13 +45,16 @@ si4.translations = {
     metadataModel_behaviourFieldDetails_mainTab_text: "Beh. Field - [[field_name]]",
     metadataModel_behaviourFieldDetails_contentTab_text: "Details",
 
-
-
     // MappingTest
     metadataModel_mappingTest_mainTab_text: "Mapping Test",
     metadataModel_mappingTest_contentTab_text: "Xml",
     metadataModel_mappingTest_resultTab_text: "Result Si4",
     metadataModel_mappingTest_xpathEvalTab_text: "XPath Evaluate Test",
+
+
+    // OAI
+    oai_oaiGroupList_mainTab_text: "OAI-PMH",
+    oai_oaiGroupList_contentTab_text: "Prefix list",
 
 
     // EntityList
@@ -199,6 +202,9 @@ si4.translations = {
     field_source_xpath_placeholder: "XPath starting from METS:xmlData element",
     field_value_xpath_placeholder: "XPath to value starting from base element (found by source XPath)",
     field_lang_xpath_placeholder: "XPath to language starting from base element (found by source XPath)",
+    field_variables: "Variables",
+    field_varName_xpath_placeholder: "Variable name",
+    field_varValue_xpath_placeholder: "XPath to variable value",
     field_target_field: "Destination Field",
 
     field_field_name: "Field name",
