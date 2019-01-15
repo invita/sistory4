@@ -56,6 +56,13 @@ si4.translations = {
     oai_oaiGroupList_mainTab_text: "OAI-PMH",
     oai_oaiGroupList_contentTab_text: "Prefix list",
 
+    oai_oaiGroupDetails_mainTab_text: "OAI Group [[id]] - [[name]]",
+    oai_oaiGroupDetails_contentTab_text: "Basic",
+    oai_oaiGroupDetails_fieldsTab_text: "Fields",
+
+    oai_oaiFieldDetails_mainTab_text: "OAI field - [[name]]",
+    oai_oaiFieldDetails_contentTab_text: "Details",
+
 
     // EntityList
     entities_entityList_mainTab_text: "Entity list",
@@ -215,6 +222,10 @@ si4.translations = {
     field_inline_separator: "Inline separator",
     field_display_frontend: "Display on frontend",
     field_enable_adv_search: "Enable advanced search",
+
+    field_xml_path: "Xml path",
+    field_xml_name: "Xml element",
+
 
     field_test_xpath: "Test XPath",
 

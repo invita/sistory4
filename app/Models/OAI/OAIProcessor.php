@@ -113,7 +113,7 @@ class OAIProcessor {
     private function processGetRecord() {
         $getRecord = new OAIXmlElement("GetRecord");
         $record = OAIRecord::getMetadataRecord($this->request->arguments["identifier"]);
-        $record->setOutputAllMetadata($this->request->getOutAsJson());
+        //$record->setOutputAllMetadata($this->request->getOutAsJson());
 
         if (!$record) $this->request->error("idDoesNotExist", "Unknown identifier");
 

@@ -42,6 +42,7 @@ si4.widget.si4Input = function(args)
     this.accept = si4.getArg(args, "accept", null);
     this.secondInput = si4.getArg(args, "secondInput", false);
     this.secondInputName = si4.getArg(args, "secondInputName", "value2");
+    this.halfWidth = si4.getArg(args, "halfWidth", false);
 
     // Events
     this.onKeyDown = function(f) { _p.subscribe("onKeyDown", f); };
@@ -57,6 +58,7 @@ si4.widget.si4Input = function(args)
     // Create elements
     if (this.secondInput) {
         this.input2 = new si4.widget.si4Element({ parent:this.selector, tagName:"input", tagClass: "si4Input", attr: { type: "text" } });
+        if (this.halfWidth) this.input2.selector.addClass("half");
         this.inputs.push(this.input2);
     }
 
@@ -67,6 +69,8 @@ si4.widget.si4Input = function(args)
 
     if (this.inputType == "hidden")
         this.selector.hide();
+
+    if (this.halfWidth) this.input.selector.addClass("half");
 
     this.inputs.push(this.input);
 

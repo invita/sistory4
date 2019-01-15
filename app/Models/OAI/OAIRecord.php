@@ -38,6 +38,19 @@ class OAIRecord {
         return $result;
     }
 
+    public static function getMetadataRecord($identifier) {
+
+        $identifier = str_replace("/".si4config("handlePrefix")."/", "", $identifier);
+
+        $result = null;
+        $listDataElastic = ElasticHelpers::searchByHandleArray([$identifier]);
+        if (count($listDataElastic)) {
+            $result = self::fromElastic($listDataElastic[array_keys($listDataElastic)[0]]);
+        }
+
+        return $result;
+    }
+
     public function __construct($identifier, $id, $dataElastic) {
         $this->identifier = $identifier;
         $this->id = $id;
@@ -97,6 +110,13 @@ class OAIRecord {
             $metadata->setAttribute("metadataPrefix", "unimplemented");
         }
 
+        //$metadata = new OAIXmlElement("metadata");
+        //$metadata->setValue(OAIXmlOutput::wrapInCDATA(print_r($this->dataElastic,true)));
+
+        //echo "<pre>";
+        //unset($this->dataElastic["_source"]["xml"]); print_r($this->dataElastic);
+        //echo "</pre>";
+        //die();
 
         /*
         $metadata = new OAIXmlElement("metadata");

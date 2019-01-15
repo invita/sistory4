@@ -97,12 +97,20 @@ class OAIRequest {
         }
 
         if (isset($this->arguments["identifier"])){
+            if (substr_count($this->arguments["identifier"], "/") != 2) $idExpl = false;
+            else $idExpl = explode("/", $this->arguments["identifier"]);
+            if (!$idExpl || $idExpl[0] || $idExpl[1] != si4config("handlePrefix") || !is_numeric($idExpl[2])) {
+                $this->arguments["identifier"] = null;
+                $this->error("badArgument", "Identifier syntax is invalid");
+            }
+            /*
             if (substr_count($this->arguments["identifier"], ":") != 2) $idExpl = false;
             else $idExpl = explode(":", $this->arguments["identifier"]);
             if (!$idExpl || $idExpl[0] != "SISTORY" || $idExpl[1] != "ID" || !is_numeric($idExpl[2])) {
                 $this->arguments["identifier"] = null;
                 $this->error("badArgument", "Identifier syntax is invalid");
             }
+            */
         }
 
         if ($this->isListRequest()) {

@@ -21,6 +21,7 @@ class OAIHelper {
             'namespace' => 'http://www.openarchives.org/OAI/2.0/oai_dc/',
             'handler' => \App\Models\OAI\MetadataPrefix\OAI_DC::class,
         ),
+        /*
         'oaf' => array(
             'prefix' => 'oaf',
             'schema' => 'http://www.openaire.eu/schema/0.3/oaf-0.3.xsd',
@@ -33,6 +34,7 @@ class OAIHelper {
             'namespace' => 'http://datacite.org/schema/kernel-3'
             //'handler' => \App\Models\OAI\MetadataPrefix\OAI_DC::class,
         ),
+        */
     );
 
 

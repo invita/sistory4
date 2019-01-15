@@ -51,7 +51,7 @@ span.si4TabButton_closeButton > img:hover { opacity:1.0; }
 div.si4Panel { }
 div.si4Panel.si4PanelFlowLayout { display:inline-table; }
 div.si4Panel.si4PanelBlockLayout { display:block; }
-div.si4PanelGroup.si4PanelFlowLayout { display:inline-table; }
+div.si4PanelGroup.si4PanelFlowLayout { display:inline-table; margin-left: 10px; margin-right: 10px; }
 div.si4PanelGroup.si4PanelFlowLayout * { vertical-align: top; }
 div.si4PanelGroup > div.header { font-weight:bold; /*border:silver solid 1px;*/ padding:5px; margin-bottom:6px; }
 div.si4PanelGroup > div.content {}
@@ -65,6 +65,7 @@ div.si4Input.flat { width:300px; border:none; box-shadow:none; background:inheri
     white-space: pre-line; }
 
 input.si4Input[type=text], input.si4Input[type=password], input.si4Input[type=number], textarea.si4Input { width:200px; }
+input.si4Input.half[type=text], input.si4Input.half[type=password], textarea.si4Input.half { width:100px; }
 input.si4Input.short[type=text], input.si4Input.short[type=password], textarea.si4Input.short { width:60px; }
 
 input.si4Input.searchInput[type=text], textarea.si4Input.searchInput { width:120px; }

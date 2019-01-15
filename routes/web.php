@@ -52,8 +52,16 @@ Route::group(['prefix' => 'admin'], function () {
         // API routes
         Route::group(['prefix' => 'api'], function () {
 
+            // Initial data
             Route::post('initial-data', "Admin\\Api\\Initial@initialData")->name("admin.api.initial-data#post");
 
+            // Translations
+            Route::post('translations-list', "Admin\\Api\\Translations@translationsList")->name("admin.api.translations-list#post");
+            Route::post('save-translation', "Admin\\Api\\Translations@saveTranslation")->name("admin.api.save-translation#post");
+            Route::post('delete-translation', "Admin\\Api\\Translations@deleteTranslation")->name("admin.api.delete-translation#post");
+            Route::post('generate-translation-files', "Admin\\Api\\Translations@generateTranslationFiles")->name("admin.api.generate-translation-files#post");
+
+            // Entities
             Route::post('entity-list', "Admin\\Api\\Entities@entityList")->name("admin.api.entity-list#post");
             Route::post('entity-list-db', "Admin\\Api\\Entities@entityListDb")->name("admin.api.entity-list-db#post");
             Route::post('reserve-entity-id', "Admin\\Api\\Entities@reserveEntityId")->name("admin.api.reserve-entity-id#post");
@@ -65,6 +73,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('save-file', "Admin\\Api\\Files@saveFile")->name("admin.api.save-file#post");
             Route::post('delete-file', "Admin\\Api\\Files@deleteFile")->name("admin.api.delete-file#post");
 
+            // Users
             Route::post('user-list', "Admin\\Api\\Users@userList")->name("admin.api.entity-list#post");
             Route::post('save-user', "Admin\\Api\\Users@saveUser")->name("admin.api.save-user#post");
             Route::post('delete-user', "Admin\\Api\\Users@deleteUser")->name("admin.api.delete-user#post");
@@ -93,11 +102,14 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('save-behaviour-field', "Admin\\Api\\MdBehaviour@saveBehaviourField")->name("admin.api.save-behaviour-field#post");
             Route::post('delete-behaviour-field', "Admin\\Api\\MdBehaviour@deleteBehaviourField")->name("admin.api.delete-behaviour-field#post");
 
-            // Translations
-            Route::post('translations-list', "Admin\\Api\\Translations@translationsList")->name("admin.api.translations-list#post");
-            Route::post('save-translation', "Admin\\Api\\Translations@saveTranslation")->name("admin.api.save-translation#post");
-            Route::post('delete-translation', "Admin\\Api\\Translations@deleteTranslation")->name("admin.api.delete-translation#post");
-            Route::post('generate-translation-files', "Admin\\Api\\Translations@generateTranslationFiles")->name("admin.api.generate-translation-files#post");
+            // Oai Groups
+            Route::post('oai-group-list', "Admin\\Api\\Oai@oaiGroupList")->name("admin.api.oai-group-list#post");
+            Route::post('save-oai-group', "Admin\\Api\\Oai@saveOaiGroup")->name("admin.api.save-oai-group#post");
+            Route::post('delete-oai-group', "Admin\\Api\\Oai@deleteOaiGroup")->name("admin.api.delete-oai-group#post");
+
+            // Oai Fields
+            Route::post('oai-group-fields-list', "Admin\\Api\\Oai@oaiGroupFieldsList")->name("admin.api.oai-group-fields-list#post");
+            Route::post('save-oai-group-field', "Admin\\Api\\Oai@saveOaiGroupField")->name("admin.api.save-oai-group-field#post");
 
             // Metadata Mapping tests
             Route::post('xml-to-si4-test', "Admin\\Api\\MdTests@xmlToSi4Test")->name("admin.api.xml-to-si4-test#post");

@@ -89,6 +89,7 @@ $(document).ready(function() {
             // Append menus
 
             var menuItems = [];
+            /*
             var isAdmin = si4.data.currentUser.name == "Duhec";
 
             if (isAdmin) {
@@ -106,6 +107,7 @@ $(document).ready(function() {
                     caption: si4.translate("entities_dbEntityList_mainTab_text"),
                 });
             }
+            */
 
             // System
             menuItems.push({
@@ -138,6 +140,12 @@ $(document).ready(function() {
             menuItems.push({
                 loadArgs: { moduleName:'MetadataModel/MappingTest' },
                 caption: si4.translate("metadataModel_mappingTest_mainTab_text"),
+            });
+
+            // OAI
+            menuItems.push({
+                loadArgs: { moduleName:'Oai/OaiGroupList' },
+                caption: si4.translate("oai_oaiGroupList_mainTab_text"),
             });
 
 
