@@ -46,13 +46,21 @@ class ReindexEntities extends Command
 
             $entities = Entity::all();
             $cnt = 0;
+            $errCnt = 0;
             foreach ($entities as $entity) {
                 $this->info($entity["id"]);
-                Artisan::call("reindex:entity", ["entityId" => $entity["id"]]);
-                $cnt++;
+
+                try {
+                    Artisan::call("reindex:entity", ["entityId" => $entity["id"]]);
+                    $cnt++;
+                } catch (\Exception $e) {
+                    $this->error($e);
+                    $errCnt++;
+                }
             }
 
             $this->info("All done! Entities reindexed: {$cnt}");
+            $this->info("Error count: {$errCnt}");
         }
     }
 }
