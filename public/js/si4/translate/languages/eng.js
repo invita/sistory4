@@ -223,7 +223,7 @@ si4.translations = {
     field_display_frontend: "Display on frontend",
     field_enable_adv_search: "Enable advanced search",
 
-    field_xml_path: "Xml path",
+    field_xml_path: "Common xml path",
     field_xml_name: "Xml element",
 
 

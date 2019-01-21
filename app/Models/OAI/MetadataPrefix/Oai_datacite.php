@@ -5,21 +5,20 @@ use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
 use App\Models\OAI\OAIXmlElement;
 
-class OAI_DC extends AbsMetadataPrefixHandler {
+class OAI_Datacite extends AbsMetadataPrefixHandler {
 
     function metadataToXml($oaiRecord) {
 
         $metadata = new OAIXmlElement("metadata");
 
-        $oai_dc = new OAIXmlElement("oai_dc:dc");
-        $oai_dc->setAttribute("xmlns:oai_dc", $this->mdPrefixData["namespace"]);
-        $oai_dc->setAttribute("xmlns:dc", "http://purl.org/dc/elements/1.1/");
-        $oai_dc->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        $oai_dc->setAttribute("xsi:schemaLocation", $this->mdPrefixData["schema"]);
-        $oai_dc->appendTo($metadata);
+        $oai_datacite = new OAIXmlElement("resource");
+        //$oai_datacite->setAttribute("xmlns", $this->mdPrefixData["namespace"]);
+        //$oai_datacite->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        //$oai_datacite->setAttribute("xsi:schemaLocation", $this->mdPrefixData["schema"]);
+        $oai_datacite->appendTo($metadata);
 
         $si4 = Si4Util::pathArg($oaiRecord->dataElastic, "_source/data/si4", []);
-        //$oai_dc->setValue(OAIXmlOutput::wrapInCDATA(print_r($si4, true)));
+        //$oai_datacite->setValue(OAIXmlOutput::wrapInCDATA(print_r($si4, true)));
 
         foreach ($this->oaiFields as $oaiField) {
             $xml_path = Si4Util::getArg($oaiField, "xml_path", null);
@@ -66,7 +65,7 @@ class OAI_DC extends AbsMetadataPrefixHandler {
                             }
                         }
 
-                        $fieldEl->appendTo($oai_dc->forcePath($xml_path));
+                        $fieldEl->appendTo($oai_datacite->forcePath($xml_path));
                     }
                 }
             }

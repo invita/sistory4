@@ -124,19 +124,26 @@ var F = function(args){
             addEmptyOption: true,
         });
 
-        var valueMappingField = form.addInput({
-            name: "xml_value",
+        var valuesMappingField = form.addInput({
+            name: "xml_values",
             //value: rowValue.mapping,
             type: "text",
+            secondInput: true,
+            secondInputName: "path",
+            //halfWidth: true,
+            isArray: true,
             placeholder: "Element value",
-            caption: "Xml Value (?)",
+            placeholder2: "Element name",
+            caption: "Xml Values (?)",
         });
-        valueMappingField.captionDiv.setHint(
+        valuesMappingField.inputs[Object.keys(valuesMappingField.inputs)[0]].captionDiv.setHint(
             "Each Si4field can have variables defined through mapping in <b>Mapping Definitions -> Group -> Field</b>.<br/>\n" +
             "Variable named <b>'value'</b> is always available, and <b>'lang'</b> when selected field supports language.<br/>\n" +
-            "You can also define and use custom variables.<br/>\n" +
-            "Type variable name for selected Si4field to use for this OAI <b>xml element's value</b>.<br/>");
+            "In the Mapping Definitions you can also define custom variables to use them here.<br/>\n" +
+            "<b>In the left input</b> type OAI Xml subpath (i.e. something/@type to access value for attribute 'type' of element 'something')<br/>\n" +
+            "<b>In the right input</b> type variable name for selected Si4field to use for this OAI <b>Xml subpath value</b>. Use quotes for literal value (i.e. \"info\")<br/>");
 
+        /*
         var attrMappingField = form.addInput({
             name: "xml_attributes",
             //value: rowValue.mapping,
@@ -152,9 +159,16 @@ var F = function(args){
         attrMappingField.inputs[Object.keys(attrMappingField.inputs)[0]].captionDiv.setHint(
             "Variable named <b>'value'</b> is always available, and <b>'lang'</b> when selected field supports language.<br/>\n" +
             "You can also define and use custom variables.<br/>\n" +
-            "In the left input type <b>xml element's attribute name</b>.<br/>\n" +
-            "In the right input type variable name to serve as source for the <b>attribute value</b>.<br/>" +
+            "<b>In the left</b> input type <b>xml element's attribute name</b>.<br/>\n" +
+            "<b>In the right</b> input type variable name to serve as source for the <b>attribute value</b>. Use quotes for literal value (i.e. \"info\")<br/>" +
             "Multiple xml attributes can be defined by adding rows to this input.");
+        */
+
+        var exampleHint = new si4.widget.si4Element({ parent: form.selector, hint: "..." });
+        exampleHint.selector.addClass("exampleHint").html("View example (?)");
+        exampleHint.showHint = function() {
+            si4.showHint(args.mappingHint(form.getValue()));
+        };
 
         var result = {
             panelGroup: panelGroup,
@@ -189,6 +203,143 @@ var F = function(args){
     args.basicTab.addMappingButton.selector.click(function() {
         args.newMapping();
     });
+
+
+
+    // *** Mapping hint
+    args.mappingHint = function(mappingFormValue) {
+        var fieldFormValue = args.basicTab.fieldsForm.getValue();
+        var NL = "<br/>\n";
+        var tab = "&nbsp;&nbsp;&nbsp;&nbsp;";
+        var hint = "";
+        var el = function(name, attrs) { if (!attrs) attrs = ""; else attrs = " "+attrs; return "&lt;"+name+attrs+"&gt;"; };
+        var tabs = function(c) { var result = ""; for (var i = 0; i < c; i++) result += tab; return result; };
+        var val = function(val) { if (!val) val = ""; if (val.startsWith("\"")) return val.replace(/"/g, ""); else return "<i>"+mappingFormValue.si4field+"."+val+"</i>"; }
+
+        var xml_path_components =  fieldFormValue.xml_path.trim() ? fieldFormValue.xml_path.trim().split("/") : [];
+        var xpcl = xml_path_components.length;
+
+        var xml_name =  fieldFormValue.xml_name.trim();
+
+        var render = function(testEl, depth) {
+            var result = "";
+            if (testEl.children.length) {
+                result += tabs(depth)+el(testEl.name, testEl.attrs.join(" "))+NL;
+                for (var cIdx in testEl.children)
+                    result += render(testEl.children[cIdx], depth+1);
+                result += tabs(depth)+el("/"+testEl.name)+NL;
+            } else {
+                result += tabs(depth)+el(testEl.name, testEl.attrs.join(" "))+ val(testEl.value)+ el("/"+testEl.name)+NL;
+            }
+            return result;
+        };
+
+        hint += el("oai_resource")+NL;
+        hint += tab+"..."+NL;
+        hint += "<b>";
+        for (var pcIdx = 0; pcIdx < xml_path_components.length; pcIdx++) {
+            hint += tabs(pcIdx+1)+el(xml_path_components[pcIdx])+NL;
+        }
+
+
+        var testEls = [];
+        for (var i = 0; i < 1; i++) {
+            var testEl = {
+                name: fieldFormValue.xml_name,
+                attrs: [],
+                children: [],
+                value: ""
+            };
+
+            if (fieldFormValue.has_language) testEl.attrs.push("xml:lang=&quot;"+val("lang")+"&quot;");
+
+            for (var j in mappingFormValue.xml_values) {
+                var xmlPath = mappingFormValue.xml_values[j].path;
+                var xmlValue = mappingFormValue.xml_values[j].value;
+                var curEl = testEl;
+
+                if (xmlPath) {
+                    var pathComps = xmlPath.split("/");
+                    for (var k in pathComps) {
+                        if (pathComps[k].startsWith("@")) {
+                            curEl.attrs.push(pathComps[k].replace("@", "")+"=\""+val(xmlValue)+"\"");
+                        } else {
+                            var existing = null;
+                            for (var xi in curEl.children) {
+                                if (curEl.children[xi].name == pathComps[k]) {
+                                    existing = curEl.children[xi];
+                                    break;
+                                }
+                            }
+
+                            //console.log("existing", pathComps[k], existing, curEl);
+                            if (existing) {
+                                curEl = existing;
+                            } else {
+                                var child = {
+                                    name: pathComps[k],
+                                    attrs: [],
+                                    children: [],
+                                    value: xmlValue
+                                };
+                                curEl.children.push(child);
+                                curEl = child;
+                            }
+                        }
+                    }
+                } else {
+                    curEl.value = xmlValue;
+                }
+            }
+
+            console.log(testEl);
+            hint += render(testEl, xpcl +1);
+
+            /*
+            var attrs = "";
+            if (fieldFormValue.has_language) attrs += " xml:lang=&quot;"+val("lang")+"&quot;";
+            for (var j in mappingFormValue.xml_attributes) {
+                if (mappingFormValue.xml_attributes[j].name && mappingFormValue.xml_attributes[j].value)
+                    attrs += " "+mappingFormValue.xml_attributes[j].name+"=&quot;"+val(mappingFormValue.xml_attributes[j].value)+"&quot;";
+            }
+
+            hint += tabs(xpcl+1)+el(xml_name, attrs)+NL;
+
+
+            if (!mappingFormValue.xml_values[0].name) {
+                // Simple
+                hint += tabs(xpcl+2) +val(mappingFormValue.xml_values[0].value) +NL;
+            } else {
+                // Multiple value elements
+                for (var k in mappingFormValue.xml_values) {
+                    hint += tabs(xpcl+2) +
+                    el(mappingFormValue.xml_values[k].name) +
+                    val(mappingFormValue.xml_values[k].value)+
+                    el("/"+mappingFormValue.xml_values[k].name) +NL;
+                }
+            }
+
+            hint += tabs(xpcl+1)+el("/"+xml_name)+NL;
+             */
+        }
+
+        for (var pcIdx = xml_path_components.length - 1; pcIdx >= 0; pcIdx--) {
+            hint += tabs(pcIdx + 1) + el("/" + xml_path_components[pcIdx]) + NL;
+        }
+
+
+        //hint += tab+el("test")+"bla"+el("/test")+NL;
+        hint += "</b>";
+        hint += tab+"..."+NL;
+        hint += el("/oai_resource")+NL;
+        return hint;
+    };
+    // *** End of Mapping hint
+
+
+
+
+
 
     args.setMappingValue(rowValue.mapping);
     if (!args.mappingForms.length) args.newMapping();

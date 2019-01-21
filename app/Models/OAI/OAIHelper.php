@@ -17,9 +17,26 @@ class OAIHelper {
     private static $metadataPrefixList = array(
         'oai_dc' => array(
             'prefix' => 'oai_dc',
-            'schema' => 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
-            'namespace' => 'http://www.openarchives.org/OAI/2.0/oai_dc/',
-            'handler' => \App\Models\OAI\MetadataPrefix\OAI_DC::class,
+            'attributes' => [
+                'xmlns' => 'http://www.openarchives.org/OAI/2.0/oai_dc/',
+                'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
+                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+                'xsi:schemaLocation' => 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd'
+            ],
+            //'schema' => 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
+            //'namespace' => 'http://www.openarchives.org/OAI/2.0/oai_dc/',
+            'handler' => \App\Models\OAI\MetadataPrefix\OAI_SI4::class,
+        ),
+        'oai_datacite' => array(
+            'prefix' => 'oai_datacite',
+            'attributes' => [
+                'xmlns' => 'http://datacite.org/schema/kernel-4',
+                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+                'xsi:schemaLocation' => 'http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd'
+            ],
+            //'schema' => 'http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd',
+            //'namespace' => 'http://datacite.org/schema/kernel-4',
+            'handler' => \App\Models\OAI\MetadataPrefix\OAI_SI4::class,
         ),
         /*
         'oaf' => array(

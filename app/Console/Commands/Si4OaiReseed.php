@@ -46,7 +46,6 @@ class Si4OaiReseed extends Command
             OaiField::truncate();
 
             $group_oai_dc = $this->addOaiGroup("oai_dc");
-            //$this->addOaiField($group_oai_dc, "Title", true, "", "dc:title", json_encode([["si4field" => "title", "xml_value" => "value", "xml_attributes" => [["name" => "oaiAttr", "value" => "si4Attr" ]] ]]));
             $this->addOaiField($group_oai_dc, "Title", true, "", "dc:title", $this->simpleMapping("title"));
             $this->addOaiField($group_oai_dc, "Creator", false, "", "dc:creator", $this->simpleMapping("creator"));
             $this->addOaiField($group_oai_dc, "Subject", false, "", "dc:subject", $this->simpleMapping("subject"));
@@ -63,8 +62,48 @@ class Si4OaiReseed extends Command
             $this->addOaiField($group_oai_dc, "Coverage", false, "", "dc:coverage", $this->simpleMapping("coverage"));
             $this->addOaiField($group_oai_dc, "Rights", false, "", "dc:rights", $this->simpleMapping("rights"));
 
-            $group_oai_data = $this->addOaiGroup("oai_data");
-            // ...
+            $group_oai_datacite = $this->addOaiGroup("oai_datacite");
+
+            $this->addOaiField($group_oai_datacite, "Identifier", false, "", "identifier", $this->elementMapping("identifier", [
+                [ "path" => "", "value" => "value" ],
+                [ "path" => "@identifierType", "value" => "identifierType" ]]));
+            $this->addOaiField($group_oai_datacite, "Title", true, "titles", "title", $this->elementMapping("title", [
+                [ "path" => "", "value" => "value" ],
+                [ "path" => "@titleType", "value" => "titleType" ]]));
+            $this->addOaiField($group_oai_datacite, "Creator", false, "creators", "creator", $this->elementMapping("creator", [
+                [ "path" => "creatorName", "value" => "value" ]]));
+            $this->addOaiField($group_oai_datacite, "Publisher", false, "", "publisher", $this->simpleMapping("publisher"));
+
+            //$this->addOaiField($group_oai_datacite, "Publication Year", false, "", "publicationYear", $this->simpleMapping("publicationYear"));
+
+            $this->addOaiField($group_oai_datacite, "Subject", true, "subjects", "subject", $this->simpleMapping("subject"));
+
+            $this->addOaiField($group_oai_datacite, "Contributor", false, "contributors", "contributor", $this->elementMapping("contributor", [
+                [ "path" => "@contributorType", "value" => "\"Funder\"" ],
+                [ "path" => "contributorName", "value" => "value" ],
+                [ "path" => "nameIdentifier", "value" => "info" ],
+                [ "path" => "nameIdentifier/@nameIdentifierScheme", "value" => "\"info\"" ],
+            ]));
+
+            $this->addOaiField($group_oai_datacite, "Date", false, "dates", "date", $this->elementMapping("date", [
+                [ "path" => "", "value" => "value" ],
+                [ "path" => "@dateType", "value" => "dateType" ]]));
+
+            $this->addOaiField($group_oai_datacite, "Language", false, "", "language", $this->simpleMapping("language"));
+
+            //$this->addOaiField($group_oai_datacite, "Resource Type", false, "", "resourceType", $this->simpleMapping("resourceType"));
+
+            $this->addOaiField($group_oai_datacite, "Size", false, "sizes", "size", $this->simpleMapping("size"));
+            $this->addOaiField($group_oai_datacite, "Format", false, "formats", "format", $this->simpleMapping("format"));
+            $this->addOaiField($group_oai_datacite, "Version", false, "", "version", $this->simpleMapping("version"));
+            $this->addOaiField($group_oai_datacite, "Rights", false, "rightsList", "rights", $this->simpleMapping("rights"));
+
+            $this->addOaiField($group_oai_datacite, "Description", false, "descriptions", "description", $this->elementMapping("description", [
+                [ "path" => "", "value" => "value" ],
+                [ "path" => "@descriptionType", "value" => "descriptionType" ]]));
+
+            // TODO ...
+
 
             $this->info("Inserted OAI groups: ".OaiGroup::count());
             $this->info("Inserted OAI fields: ".OaiField::count());
@@ -92,7 +131,10 @@ class Si4OaiReseed extends Command
         return $oaiField;
     }
 
-    private function simpleMapping($si4field) {
-        return json_encode([["si4field" => $si4field, "xml_value" => "value", "xml_attributes" => [] ]]);
+    private function simpleMapping($si4field, $value = "value") {
+        return json_encode([["si4field" => $si4field, "xml_values" => [["path" => "", "value" => $value]]]]);
+    }
+    private function elementMapping($si4field, $xml_values = []) {
+        return json_encode([["si4field" => $si4field, "xml_values" => $xml_values ]]);
     }
 }

@@ -39,6 +39,31 @@ class OAIXmlElement {
         $parentEl->appendChild($this);
     }
 
+    public function forcePath($path) {
+        $result = $this;
+        if (!$path) return $result;
+
+        $pathComps = explode("/", $path);
+        foreach ($pathComps as $pathComp) {
+            $compFound = false;
+            foreach ($result->children as $existingChild) {
+                if (!$existingChild instanceof self) continue;
+                if ($existingChild->tagName == $pathComp) {
+                    $result = $existingChild;
+                    $compFound = true;
+                    break;
+                }
+            }
+
+            if (!$compFound) {
+                $compChild = new OAIXmlElement($pathComp);
+                $compChild->appendTo($result);
+                $result = $compChild;
+            }
+        }
+        return $result;
+    }
+
     public function toXml() {
         $xml = "";
         if (count($this->children)){

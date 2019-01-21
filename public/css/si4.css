@@ -295,3 +295,9 @@ div.CodeMirror { height:auto; }
 .docs ul { list-style: disc inside; padding-left: 10px; }
 .docs ul li ul { list-style: circle inside; }
 .docs ul pre { display: inline-table; }
+
+.exampleHint {
+    margin: 5px;
+    cursor: pointer;
+    color: #888;
+}

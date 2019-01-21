@@ -3,11 +3,12 @@ namespace App\Models\OAI;
 
 use App\Helpers\ElasticHelpers;
 use App\Helpers\Si4Util;
+use App\Models\OaiField;
 
 class OAIRecord {
 
     public $identifier;
-    public $id;
+    public $metadataPrefix;
     public $dataElastic;
 
     public static function getRecordsArray($request, $filters = array()) {
@@ -38,29 +39,30 @@ class OAIRecord {
         return $result;
     }
 
-    public static function getMetadataRecord($identifier) {
+    public static function getMetadataRecord($request) {
 
-        $identifier = str_replace("/".si4config("handlePrefix")."/", "", $identifier);
+        $identifier = $request->arguments["identifier"];
+        $handle_id = str_replace("/".si4config("handlePrefix")."/", "", $identifier);
 
         $result = null;
-        $listDataElastic = ElasticHelpers::searchByHandleArray([$identifier]);
+        $listDataElastic = ElasticHelpers::searchByHandleArray([$handle_id]);
         if (count($listDataElastic)) {
-            $result = self::fromElastic($listDataElastic[array_keys($listDataElastic)[0]]);
+            $result = self::fromElastic($listDataElastic[array_keys($listDataElastic)[0]], $request->arguments["metadataPrefix"]);
         }
 
         return $result;
     }
 
-    public function __construct($identifier, $id, $dataElastic) {
+    public function __construct($identifier, $metadataPrefix, $dataElastic) {
         $this->identifier = $identifier;
-        $this->id = $id;
+        $this->metadataPrefix = $metadataPrefix;
         $this->dataElastic = $dataElastic;
     }
 
-    public static function fromElastic($dataElastic) {
+    public static function fromElastic($dataElastic, $metadataPrefix) {
         $handle_id = Si4Util::pathArg($dataElastic, "_source/handle_id", null);
         $identifier = "/".si4config("handlePrefix")."/".$handle_id;
-        $record = new OAIRecord($identifier, $handle_id, $dataElastic);
+        $record = new OAIRecord($identifier, $metadataPrefix, $dataElastic);
         return $record;
     }
 
@@ -87,7 +89,7 @@ class OAIRecord {
 
         // datestamp
         $datestamp = new OAIXmlElement("datestamp");
-        $date = Si4Util::pathArg($this->dataElastic, "_source/data/createdAt", "");
+        $date = Si4Util::pathArg($this->dataElastic, "_source/data/header/createDate", "");
         $datestamp->setValue($date);
 
         $header->appendChild($identifier);
@@ -98,11 +100,15 @@ class OAIRecord {
 
     public function metadataToXml() {
 
-        $mdPrefixData = OAIHelper::getMetadataPrefix("oai_dc");
+        $mdPrefixData = OAIHelper::getMetadataPrefix($this->metadataPrefix);
         $mdPrefixHandlerClass = Si4Util::getArg($mdPrefixData, "handler", null);
-        if ($mdPrefixHandlerClass) {
+        $oaiPrefix = Si4Util::getArg($mdPrefixData, "prefix", null);
+
+        if ($oaiPrefix && $mdPrefixHandlerClass) {
+            $oaiFields = OaiField::getOaiFieldsForGroupName($oaiPrefix);
+
             // Call prefix handler
-            $mdPrefixHandler = new $mdPrefixHandlerClass();
+            $mdPrefixHandler = new $mdPrefixHandlerClass($mdPrefixData, $oaiFields);
             $metadata = $mdPrefixHandler->metadataToXml($this);
         } else {
             // Dummy metadata

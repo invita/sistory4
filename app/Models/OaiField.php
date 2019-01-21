@@ -65,4 +65,10 @@ class OaiField extends Model
         }
         return self::$oaiFieldsArray[$oaiGroupId];
     }
+
+    public static function getOaiFieldsForGroupName($oaiGroupName) {
+        $group = OaiGroup::query()->where(['name' => $oaiGroupName])->get()->first();
+        return self::getOaiFieldsForGroup($group->id);
+    }
+
 }

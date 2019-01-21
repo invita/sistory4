@@ -73,6 +73,8 @@ class ReindexEntity extends Command
                 "data" => $si4Data,
             ];
 
+            print_r($si4Data);
+
             Timer::start("elasticIndex");
             ElasticHelpers::indexEntity($entityId, $indexBody);
             Timer::stop("elasticIndex");

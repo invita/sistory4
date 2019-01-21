@@ -141,8 +141,8 @@ class Si4MappingReseed extends Command
             // *** Premis ***
 
             $groupDC = $this->addMappingGroup("Premis", $premisBaseXPath, "Premis mappings");
-            $this->addMappingField($groupDC, "identifier", "premis:objectIdentifier[premis:objectIdentifierType='si4']/premis:objectIdentifierValue", "string()", "",
-                json_encode([["name" => "test", "value" => "string()"]]));
+            $this->addMappingField($groupDC, "identifier", "premis:objectIdentifier/premis:objectIdentifierValue", "string()", "",
+                json_encode([["name" => "identifierType", "value" => "string(../premis:objectIdentifierType)"]]));
 
             // TODO: dcterms
             // TODO: oaire
