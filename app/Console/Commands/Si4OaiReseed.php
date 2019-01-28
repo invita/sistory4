@@ -45,7 +45,19 @@ class Si4OaiReseed extends Command
             OaiGroup::truncate();
             OaiField::truncate();
 
-            $group_oai_dc = $this->addOaiGroup("oai_dc");
+
+            // oai_dc
+
+            $group_oai_dc = $this->addOaiGroup("oai_dc",
+                "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+                "http://www.openarchives.org/OAI/2.0/oai_dc/",
+                ["default"],
+                [
+                    ["key" => "xmlns", "value" => "http://www.openarchives.org/OAI/2.0/oai_dc/"],
+                    ["key" => "xmlns:dc", "value" => "http://purl.org/dc/elements/1.1/"],
+                    ["key" => "xmlns:xsi", "value" => "http://www.w3.org/2001/XMLSchema-instance"],
+                    ["key" => "xsi:schemaLocation", "value" => "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"],
+                ]);
             $this->addOaiField($group_oai_dc, "Title", true, "", "dc:title", $this->simpleMapping("title"));
             $this->addOaiField($group_oai_dc, "Creator", false, "", "dc:creator", $this->simpleMapping("creator"));
             $this->addOaiField($group_oai_dc, "Subject", false, "", "dc:subject", $this->simpleMapping("subject"));
@@ -62,7 +74,18 @@ class Si4OaiReseed extends Command
             $this->addOaiField($group_oai_dc, "Coverage", false, "", "dc:coverage", $this->simpleMapping("coverage"));
             $this->addOaiField($group_oai_dc, "Rights", false, "", "dc:rights", $this->simpleMapping("rights"));
 
-            $group_oai_datacite = $this->addOaiGroup("oai_datacite");
+
+            // oai_datacite
+
+            $group_oai_datacite = $this->addOaiGroup("oai_datacite",
+                "http://schema.datacite.org/meta/kernel-3/metadata.xsd",
+                "http://datacite.org/schema/kernel-3",
+                ["default"],
+                [
+                    ["key" => "xmlns", "value" => "http://datacite.org/schema/kernel-4"],
+                    ["key" => "xmlns:xsi", "value" => "http://www.w3.org/2001/XMLSchema-instance"],
+                    ["key" => "xsi:schemaLocation", "value" => "http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd"],
+                ]);
 
             $this->addOaiField($group_oai_datacite, "Identifier", false, "", "identifier", $this->elementMapping("identifier", [
                 [ "path" => "", "value" => "value" ],
@@ -112,9 +135,13 @@ class Si4OaiReseed extends Command
     }
 
 
-    private function addOaiGroup($groupName) {
+    private function addOaiGroup($groupName, $schema, $namespace, $behaviours, $attrs) {
         $oaiGroup = new OaiGroup();
         $oaiGroup->name = $groupName;
+        $oaiGroup->schema = $schema;
+        $oaiGroup->namespace = $namespace;
+        $oaiGroup->behaviours = json_encode($behaviours);
+        $oaiGroup->attrs = json_encode($attrs);
         $oaiGroup->save();
         return $oaiGroup;
     }

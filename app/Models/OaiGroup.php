@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\OaiGroup
  *
  * @property string $name
+ * @property string $schema
+ * @property string $namespace
  * @property string $behaviours
  * @property string $attrs
  * @mixin \Eloquent
@@ -27,6 +29,8 @@ class OaiGroup extends Model
     protected $fillable = [
         'id',
         'name',
+        'schema',
+        'namespace',
         'attrs',
         'behaviours',
     ];
