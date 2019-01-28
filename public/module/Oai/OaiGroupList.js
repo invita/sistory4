@@ -16,8 +16,8 @@ var F = function(args){
         editorModuleArgs: {
             moduleName: "Oai/OaiGroupDetails"
         },
-        canInsert: false,
-        canDelete: false,
+        canInsert: true,
+        canDelete: true,
         tabPage: args.contentTab,
         fields: {
             id: { },

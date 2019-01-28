@@ -68,6 +68,7 @@ class OaiField extends Model
 
     public static function getOaiFieldsForGroupName($oaiGroupName) {
         $group = OaiGroup::query()->where(['name' => $oaiGroupName])->get()->first();
+        if (!$group) return null;
         return self::getOaiFieldsForGroup($group->id);
     }
 

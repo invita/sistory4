@@ -111,6 +111,7 @@ Route::group(['prefix' => 'admin'], function () {
             // Oai Fields
             Route::post('oai-group-fields-list', "Admin\\Api\\Oai@oaiGroupFieldsList")->name("admin.api.oai-group-fields-list#post");
             Route::post('save-oai-group-field', "Admin\\Api\\Oai@saveOaiGroupField")->name("admin.api.save-oai-group-field#post");
+            Route::post('delete-oai-group-field', "Admin\\Api\\Oai@deleteOaiGroupField")->name("admin.api.delete-oai-group-field#post");
 
             // Metadata Mapping tests
             Route::post('xml-to-si4-test', "Admin\\Api\\MdTests@xmlToSi4Test")->name("admin.api.xml-to-si4-test#post");

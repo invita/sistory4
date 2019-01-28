@@ -31,6 +31,10 @@ class Oai extends Controller
 
         $oaiGroup = OaiGroup::findOrNew($postJson["id"]);
         $oaiGroup->name = $postJson["name"];
+        $oaiGroup->schema = $postJson["schema"];
+        $oaiGroup->namespace = $postJson["namespace"];
+        $oaiGroup->attrs = $postJson["attrs"];
+        $oaiGroup->behaviours = $postJson["behaviours"];
         $oaiGroup->save();
 
         return ["status" => true, "error" =>  null, "data" => $oaiGroup->toArray()];
@@ -42,9 +46,8 @@ class Oai extends Controller
         $id = $postJson["data"]["id"];
 
         if ($id) {
-            // TODO
-            //// Delete group fields
-            //DB::table('mapping_fields')->where('mapping_group_id', $id)->delete();
+            // Delete group fields
+            DB::table('oai_fields')->where('oai_group_id', $id)->delete();
 
             // Delete group itself
             $oaiGroup = OaiGroup::find($id);
@@ -92,6 +95,21 @@ class Oai extends Controller
         $oaiField->save();
 
         return ["status" => true, "error" =>  null, "data" => $oaiField->toArray()];
+    }
+
+    public function deleteOaiGroupField(Request $request)
+    {
+        $postJson = json_decode(file_get_contents("php://input"), true);
+        $id = $postJson["data"]["id"];
+
+        if ($id) {
+            $oaiField = OaiField::find($id);
+            if ($oaiField) {
+                $oaiField->delete();
+            }
+        }
+
+        return $this->oaiGroupFieldsList($request);
     }
 
 

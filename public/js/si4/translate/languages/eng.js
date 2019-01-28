@@ -233,6 +233,12 @@ si4.translations = {
     field_key: "Key",
     field_value: "Value",
 
+    field_attributes: "Attributes",
+    field_behaviours: "Behaviours",
+    field_schema: "Schema",
+    field_namespace: "Namespace",
+
+
     entityGroup_adminFields: "Administrative fields",
     entityGroup_mdPreview: "Metadata preview",
 

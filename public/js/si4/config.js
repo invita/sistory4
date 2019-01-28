@@ -17,7 +17,7 @@ si4.config.apiNames = [
     "xmlToSi4Test", "xmlXPathTest",
 
     "oaiGroupList", "saveOaiGroup", "deleteOaiGroup",
-    "oaiGroupFieldsList", "saveOaiGroupField",
+    "oaiGroupFieldsList", "saveOaiGroupField", "deleteOaiGroupField",
 
 
     "entityList", "entityListDb", "saveEntity", "reserveEntityId", "deleteEntity", "entityHierarchy",

@@ -1,5 +1,6 @@
 <?php
 namespace App\Models\OAI;
+use App\Models\OaiGroup;
 use \Illuminate\Http\Request;
 
 class OAIRequest {
@@ -84,7 +85,7 @@ class OAIRequest {
         }
 
         if (isset($this->arguments["metadataPrefix"])){
-            $mdPrefixData = OAIHelper::getMetadataPrefix($this->arguments["metadataPrefix"]);
+            $mdPrefixData = OaiGroup::getOaiGroup($this->arguments["metadataPrefix"]);
             if (!$mdPrefixData) {
                 $this->arguments["metadataPrefix"] = null;
                 $this->error("cannotDisseminateFormat", "Bad metadataPrefix");

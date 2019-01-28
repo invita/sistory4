@@ -13,9 +13,10 @@ class OAI_SI4 extends AbsMetadataPrefixHandler {
 
         $oai = new OAIXmlElement("resource");
 
-        $attributes = Si4Util::getArg($this->mdPrefixData, "attributes", []);
-        foreach ($attributes as $attrName => $attrValue) {
-            $oai->setAttribute($attrName, $attrValue);
+        $attrs = Si4Util::getArg($this->mdPrefixData, "attrs", []);
+        foreach ($attrs as $attrKeyValue) {
+            if (!isset($attrKeyValue["key"])) continue;
+            $oai->setAttribute($attrKeyValue["key"], Si4Util::getArg($attrKeyValue, "value", ""));
         }
         $oai->appendTo($metadata);
 

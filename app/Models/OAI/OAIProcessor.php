@@ -1,6 +1,8 @@
 <?php
 namespace App\Models\OAI;
 
+use App\Models\OaiGroup;
+
 class OAIProcessor {
 
     private $request;
@@ -59,7 +61,7 @@ class OAIProcessor {
     private function processIdentify(){
         $identify = new OAIXmlElement("Identify");
 
-        $identifyInfo = OAIHelper::$identifyInfo;
+        $identifyInfo = si4config("oai_identifyInfo");
         foreach ($identifyInfo as $nodeName => $nodeValue){
             $node = new OAIXmlElement($nodeName);
             $node->setValue($nodeValue);
@@ -75,10 +77,11 @@ class OAIProcessor {
     private function processListMetadataFormats() {
         $listMetadataFormats = new OAIXmlElement("ListMetadataFormats");
 
-        $metadataFormats = OAIHelper::getMetadataPrefixList();
+        $metadataFormats = OaiGroup::getOaiGroups();
+
         foreach ($metadataFormats as $metaFormat) {
 
-            $prefix = $metaFormat["prefix"];
+            $prefix = $metaFormat["name"];
             $schema = $metaFormat["schema"];
             $namespace = $metaFormat["namespace"];
 

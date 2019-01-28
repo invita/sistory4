@@ -16,8 +16,6 @@ class CreateOaiGroupsTable extends Migration
         Schema::create('oai_groups', function (Blueprint $table) {
             $table->increments("id");
             $table->string("name", 32)->index();
-            //$table->string("behaviour", 32);
-            //$table->text("value");
         });
     }
 

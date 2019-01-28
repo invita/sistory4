@@ -63,7 +63,7 @@ var F = function(args){
     });
     args.basicTab.fieldGroupId = args.basicTab.fieldsForm.addInput({
         name: "oai_group_id",
-        value: rowValue.oai_group_id,
+        value: args.getOaiGroup().id,
         caption: si4.translate("field_systemId"),
         type: "hidden",
         //readOnly: true,
@@ -128,13 +128,13 @@ var F = function(args){
             name: "xml_values",
             //value: rowValue.mapping,
             type: "text",
-            secondInput: true,
-            secondInputName: "path",
-            //halfWidth: true,
             isArray: true,
             placeholder: "Element value",
-            placeholder2: "Element name",
             caption: "Xml Values (?)",
+            secondInput: true,
+            secondInputName: "path",
+            placeholder2: "Element name",
+            //halfWidth: true,
         });
         valuesMappingField.inputs[Object.keys(valuesMappingField.inputs)[0]].captionDiv.setHint(
             "Each Si4field can have variables defined through mapping in <b>Mapping Definitions -> Group -> Field</b>.<br/>\n" +

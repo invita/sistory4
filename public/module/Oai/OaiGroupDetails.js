@@ -23,16 +23,48 @@ var F = function(args){
             value: rowValue.name,
             type: "text",
             caption: si4.translate("field_name"),
-            readOnly: !!rowValue.id
+            //readOnly: !!rowValue.id
         });
-        /*
+        var fieldSchema = args.basicTab.form.addInput({
+            name: "schema",
+            value: rowValue.schema,
+            type: "text",
+            caption: si4.translate("field_schema"),
+        });
+        var fieldNamespace = args.basicTab.form.addInput({
+            name: "namespace",
+            value: rowValue.namespace,
+            type: "text",
+            caption: si4.translate("field_namespace"),
+        });
+        var fieldBehaviours = args.basicTab.form.addInput({
+            name: "behaviours",
+            value: rowValue.behaviours,
+            type: "select",
+            isArray: true,
+            values: si4.data.behaviourNames,
+            caption: si4.translate("field_behaviours"),
+        });
+        var fieldAttrs = args.basicTab.form.addInput({
+            name: "attrs",
+            value: rowValue.attrs,
+            type: "text",
+            isArray: true,
+            caption: si4.translate("field_attributes")+" (?)",
+            secondInput: true,
+            secondInputName: "key",
+            placeholder2: "key",
+            placeholder: "value",
+            //halfWidth: true,
+        });
+        fieldAttrs.inputs[Object.keys(fieldAttrs.inputs)[0]].captionDiv.setHint("XML attributes for OAI base resource element.");
+
         args.basicTab.saveButton = args.basicTab.form.addInput({
             value: si4.translate("button_save"),
             type: "submit",
             caption: si4.translate("field_actions")
         });
         args.basicTab.saveButton.selector.click(args.saveOaiGroup);
-        */
 
 
         // *** Fields Tab ***
@@ -48,17 +80,17 @@ var F = function(args){
             //filter: { enabled: false },
             dataSource: new si4.widget.si4DataTableDataSource({
                 select: si4.api["oaiGroupFieldsList"],
-                //delete: si4.api["deleteOaiField"],
+                delete: si4.api["deleteOaiGroupField"],
                 filter: { oai_group_id: rowValue.id },
                 staticData: { oai_group_id: rowValue.id },
                 pageCount: 20
             }),
             editorModuleArgs: {
                 moduleName:"Oai/OaiFieldDetails",
-                getOaiField: function() { return rowValue; },
+                getOaiGroup: function() { return rowValue; },
             },
-            canInsert: false,
-            canDelete: false,
+            canInsert: true,
+            canDelete: true,
             tabPage: args.contentTab,
             fields: {
                 name: {  },
@@ -78,22 +110,13 @@ var F = function(args){
         });
     };
 
-    /*
     args.saveOaiGroup = function(){
 
         var basicFormValue = args.basicTab.form.getValue();
-        var advSearchFormValue = args.advSearchTab.form.getValue();
-        advSearchFormValue.advanced_search = JSON.stringify(advSearchFormValue.advanced_search);
+        basicFormValue.behaviours = JSON.stringify(basicFormValue.behaviours);
+        basicFormValue.attrs = JSON.stringify(basicFormValue.attrs);
 
-        var templatesFormValue = {}
-        templateNames.forEach(function(templateName, idx) {
-            templatesFormValue["template_"+templateName] = args.templateTab[templateName].form.getValue().template;
-        });
-
-        var behaviourData = Object.assign({}, basicFormValue, advSearchFormValue, templatesFormValue);
-        console.log("behaviourData", behaviourData);
-
-        si4.api["saveOaiGroup"](behaviourData, function (data) {
+        si4.api["saveOaiGroup"](basicFormValue, function (data) {
             if (data.status) {
                 if (confirm(si4.translate("saved_confirm_close"))) {
                     args.mainTab.destroyTab();
@@ -103,13 +126,13 @@ var F = function(args){
             }
         });
     };
-    */
 
 
     // Init
     var rowValue = args.row ? args.row : {};
     if (!rowValue.id) rowValue.id = "";
     if (!rowValue.name) rowValue.name = "";
+    console.log("rowValue", rowValue);
 
     create();
 

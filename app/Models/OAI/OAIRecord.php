@@ -4,6 +4,7 @@ namespace App\Models\OAI;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\Si4Util;
 use App\Models\OaiField;
+use App\Models\OaiGroup;
 
 class OAIRecord {
 
@@ -100,9 +101,9 @@ class OAIRecord {
 
     public function metadataToXml() {
 
-        $mdPrefixData = OAIHelper::getMetadataPrefix($this->metadataPrefix);
-        $mdPrefixHandlerClass = Si4Util::getArg($mdPrefixData, "handler", null);
-        $oaiPrefix = Si4Util::getArg($mdPrefixData, "prefix", null);
+        $mdPrefixData = OaiGroup::getOaiGroup($this->metadataPrefix);
+        $mdPrefixHandlerClass = MetadataPrefix\OAI_SI4::class;
+        $oaiPrefix = Si4Util::getArg($mdPrefixData, "name", null);
 
         if ($oaiPrefix && $mdPrefixHandlerClass) {
             $oaiFields = OaiField::getOaiFieldsForGroupName($oaiPrefix);
