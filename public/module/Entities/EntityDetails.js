@@ -646,6 +646,30 @@ var F = function(args){
         });
         */
 
+
+
+        // *** Mapping preview  ***
+
+
+
+        args.mappingPreviewTab = args.createContentTab("mappingPreviewTab", { canClose: false });
+        args.mappingPreviewTab.output = new si4.widget.si4Element({ parent: args.mappingPreviewTab.content.selector, tagName: "pre" });
+        args.mappingPreviewTab.output.selector.css({ padding: "10px" });
+        args.mappingPreviewTab.onActive(function(tabArgs) {
+            var xmlFormValue = args.xmlTab.form.getValue();
+            si4.api["xmlToSi4Test"](xmlFormValue, function(data) {
+                if (data.status) {
+                    args.mappingPreviewTab.output.selector.html(JSON.stringify(data.data, null, 2));
+                } else {
+                    si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE, data);
+                }
+            }, function(err) {
+                // errorCallback
+                alert(si4.translate("operation_failed", { reason: "["+err.status+"] "+err.statusText }));
+            });
+
+        });
+
     };
 
 

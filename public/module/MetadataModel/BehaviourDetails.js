@@ -71,7 +71,7 @@ var F = function(args){
             canDelete: true,
             tabPage: args.filesTab,
             fields: {
-                behaviour_name: {  },
+                //behaviour_name: {  },
                 field_name: {  },
                 show_all_languages: {  },
                 inline: {  },

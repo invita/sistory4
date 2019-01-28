@@ -108,6 +108,7 @@ si4.translations = {
     entities_entityDetails_mdEditorTab_text: "Metadata Editor",
     entities_entityDetails_relationsTab_text: "Relations",
     entities_entityDetails_filesTab_text: "Files",
+    entities_entityDetails_mappingPreviewTab_text: "Mapping preview",
     entities_entityDetails_typeChooseDlg_title: "New entity",
 
 
