@@ -93,8 +93,8 @@ class AjaxController extends Controller
 
     private function searchSuggestMetadata(Request $request) {
         $term = $request->query("term", "");
-
         $termLower = mb_strtolower($term);
+        $st = $request->query("st", "all");
         //echo "termLower: '".$termLower."'\n";
 
         //$termWords = explode(" ", $term);
@@ -103,14 +103,16 @@ class AjaxController extends Controller
 
         // Find potential creators
 
-        $creatorElasticData = ElasticHelpers::suggestCreators($termLower);
+        $creatorElasticData = ElasticHelpers::suggestCreators($termLower, $st);
         $creatorAssocData = ElasticHelpers::elasticResultToAssocArray($creatorElasticData);
 
         $creatorResults = [];
         foreach ($creatorAssocData as $doc) {
-            $creatorDc = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/creator", []));
-            foreach ($creatorDc as $s) {
-                $creatorClean = mb_strtolower($this->removeSkipCharacters($s));
+            //$creators = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/si4/creator", []));
+            $creators = Si4Util::pathArg($doc, "_source/data/si4/creator", []);
+            foreach ($creators as $creator) {
+                $c = Si4Util::getArg($creator, "value", "");
+                $creatorClean = mb_strtolower($this->removeSkipCharacters($c));
                 //echo "creatorClean ".$creatorClean."\n";
                 $creatorSplit = explode(" ", $creatorClean);
                 $splitCount = count($creatorSplit);
@@ -159,7 +161,7 @@ class AjaxController extends Controller
 
             // Find potential titles
 
-            // If more than one (a few) creators possible, list those with highter length
+            // If more than one (a few) creators possible, list those with higher length
             $titleResults = [];
             if (count($creatorResults) > 1) {
                 foreach (array_keys($creatorResults) as $c) {
@@ -171,13 +173,14 @@ class AjaxController extends Controller
             $termRest = trim(mb_substr($termLower, mb_strlen($oneCreator)));
             //echo "termRest {$termRest}\n";
 
-            $titleElasticData = ElasticHelpers::suggestTitlesForCreator($oneCreator, $termRest, 10);
+            $titleElasticData = ElasticHelpers::suggestTitlesForCreator($oneCreator, $termRest, $st, 10);
             $titleAssocData = ElasticHelpers::elasticResultToAssocArray($titleElasticData);
 
             foreach ($titleAssocData as $doc) {
-                $titleDc = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/dmd/dc/title", []));
-                foreach ($titleDc as $s) {
-                    $titleClean = mb_strtolower($this->removeSkipCharacters($s));
+                $titles = Si4Util::pathArg($doc, "_source/data/si4/title", []);
+                foreach ($titles as $title) {
+                    $t = Si4Util::getArg($title, "value", "");
+                    $titleClean = mb_strtolower($this->removeSkipCharacters($t));
                     $oneCreatorWithTitle = $oneCreator ? $oneCreator." ".$titleClean : $titleClean;
                     if (!$termRest || self::strSameRoot($titleClean, $termRest)) {
                         if (!isset($titleResults[$oneCreatorWithTitle]))

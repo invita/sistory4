@@ -401,7 +401,7 @@ HERE;
 
 
 
-    public static function suggestCreators($creatorTerm, $limit = 30)
+    public static function suggestCreators($creatorTerm, $searchType = "all", $limit = 30)
     {
         /*
         $creatorWords = explode(" ", $creatorTerm);
@@ -439,7 +439,7 @@ HERE;
 
         return self::search($query, 0, $limit, "child_order", "asc");
     }
-    public static function suggestTitlesForCreator($creator, $title, $limit = 30)
+    public static function suggestTitlesForCreator($creator, $title, $searchType = "all", $limit = 30)
     {
         $must = [];
 

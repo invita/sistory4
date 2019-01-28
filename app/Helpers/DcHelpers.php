@@ -199,8 +199,8 @@ class DcHelpers {
 
 
     // *** dcTextArray - simplify elastic data ***
-    // $dcData is an array i.e. [ ["text" => "", ...] , ["text" => "", ...] , ... ]
-    // function extracts texts and put them in a simple array
+    // $dcData is an array i.e. [ ["value" => "", ...] , ["value" => "", ...] , ... ]
+    // function extracts values and put them in a simple array
     public static function dcTextArray($dcData) {
         $result = [];
         foreach ($dcData as $idx => $item) {
