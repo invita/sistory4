@@ -91,6 +91,7 @@ Route::group(['prefix' => 'admin'], function () {
 
             Route::post('mapping-group-fields-list', "Admin\\Api\\MdMapping@mappingGroupFieldsList")->name("admin.api.mapping-group-fields-list#post");
             Route::post('save-mapping-group-field', "Admin\\Api\\MdMapping@saveMappingGroupField")->name("admin.api.save-mapping-group-field#post");
+            Route::post('delete-mapping-group-field', "Admin\\Api\\MdMapping@deleteMappingGroupField")->name("admin.api.delete-mapping-group-field#post");
 
             // Metadata Behaviour
             Route::post('behaviour-list', "Admin\\Api\\MdBehaviour@behaviourList")->name("admin.api.behaviour-list#post");

@@ -98,6 +98,20 @@ class MdMapping extends Controller
         return ["status" => true, "error" =>  null, "data" => $mappingField->toArray()];
     }
 
+    public function deleteMappingGroupField(Request $request)
+    {
+        $postJson = json_decode(file_get_contents("php://input"), true);
+        $id = $postJson["data"]["id"];
+
+        if ($id) {
+            $mappingField = MappingField::find($id);
+            if ($mappingField) {
+                $mappingField->delete();
+            }
+        }
+
+        return $this->mappingGroupFieldsList($request);
+    }
 
 
 }

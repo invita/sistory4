@@ -13,7 +13,7 @@ si4.config.apiNames = [
     "behaviourFieldList", "saveBehaviourField", "deleteBehaviourField",
 
     "mappingGroupList", "saveMappingGroup", "deleteMappingGroup",
-    "mappingGroupFieldsList", "saveMappingGroupField",
+    "mappingGroupFieldsList", "saveMappingGroupField", "deleteMappingGroupField",
     "xmlToSi4Test", "xmlXPathTest",
 
     "oaiGroupList", "saveOaiGroup", "deleteOaiGroup",

@@ -90,8 +90,8 @@ var F = function(args){
         //filter: { enabled: false },
         dataSource: new si4.widget.si4DataTableDataSource({
             select: si4.api["mappingGroupFieldsList"],
+            delete: si4.api["deleteMappingGroupField"],
             /*
-             delete: si4.api["deleteEntity"],
              filter: { struct_type: "file", parent: rowValue.handle_id },
              */
             staticData: function() { return { mapping_group_id: rowValue.id } },
