@@ -238,6 +238,8 @@ si4.translations = {
     field_schema: "Schema",
     field_namespace: "Namespace",
 
+    field_name_metadataPrefix: "Name (metadataPrefix)",
+
 
     entityGroup_adminFields: "Administrative fields",
     entityGroup_mdPreview: "Metadata preview",

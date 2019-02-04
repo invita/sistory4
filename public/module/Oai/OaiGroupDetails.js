@@ -22,7 +22,7 @@ var F = function(args){
             name: "name",
             value: rowValue.name,
             type: "text",
-            caption: si4.translate("field_name"),
+            caption: si4.translate("field_name_metadataPrefix"),
             //readOnly: !!rowValue.id
         });
         var fieldSchema = args.basicTab.form.addInput({

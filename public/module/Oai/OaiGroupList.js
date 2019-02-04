@@ -21,7 +21,7 @@ var F = function(args){
         tabPage: args.contentTab,
         fields: {
             id: { },
-            name: { },
+            name: { caption: si4.translate("field_name_metadataPrefix") },
             //description: { },
         },
         cssClass_table: "si4DataTable_table width100percent",
