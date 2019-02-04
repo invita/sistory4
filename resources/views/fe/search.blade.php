@@ -23,6 +23,11 @@
     @endif
 
     <div class="row">
+        <?php
+            //echo "<pre>"; print_r(array_keys($data)); echo "</pre>";
+            //echo "<pre>"; print_r($data["results"][0]); echo "</pre>";
+        ?>
+
         @if (count($data["results"]) > 0)
 
             <div class="medium-12 columns">

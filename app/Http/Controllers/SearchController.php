@@ -36,8 +36,25 @@ class SearchController extends FrontendController
             $assocData = ElasticHelpers::elasticResultToAssocArray($elasticData);
             //echo "<pre>"; print_r($assocData); echo "</pre>";
 
+            // Also get parents
+            $parentHandles = [];
             foreach ($assocData as $doc) {
-                $result = Si4Helpers::getEntityListPresentation($doc);
+                $parentHandle = Si4Util::pathArg($doc, "_source/parent", null);
+                if ($parentHandle) $parentHandles[] = $parentHandle;
+            }
+            $parentsData = ElasticHelpers::searchByHandleArray($parentHandles);
+            $parentsDataByHandle = [];
+            foreach($parentsData as $parentData) {
+                $handle_id = Si4Util::pathArg($parentData, "_source/handle_id", null);
+                if (!$handle_id) continue;
+                $parentsDataByHandle[$handle_id] = $parentData;
+            }
+            //echo "<pre>"; print_r($parentsDataByHandle); echo "</pre>";
+
+            foreach ($assocData as $doc) {
+                $parent_handle_id = Si4Util::pathArg($doc, "_source/parent", null);
+                $parentData = Si4Util::getArg($parentsDataByHandle, $parent_handle_id, null);
+                $result = Si4Helpers::getEntityListPresentation($doc, $parentData);
 
                 // If fullText search, append fullText hits
                 if ($st == "fullText") {

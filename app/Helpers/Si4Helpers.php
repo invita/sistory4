@@ -502,7 +502,7 @@ class Si4Helpers {
 
     // Entity List presentation
 
-    public static function getEntityListPresentation($elasticEntity) {
+    public static function getEntityListPresentation($elasticEntity, $elasticParent = null) {
 
         $result = [
             "system" => [
@@ -553,7 +553,11 @@ class Si4Helpers {
         if (!isset($result["si4"]["title"]) || !count($result["si4"]["title"])) {
             $surrogateTitle = $result["system"]["handle_id"];
             if ($result["system"]["struct_type"] === "file") {
-                $surrogateTitle = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName", $surrogateTitle);
+                if ($elasticParent) {
+                    $surrogateTitle = Si4Util::pathArg($elasticParent, "_source/data/si4/title/0/value", $surrogateTitle);
+                } else {
+                    $surrogateTitle = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName", $surrogateTitle);
+                }
             }
             $result["si4"]["title"] = [$surrogateTitle];
         }
@@ -594,6 +598,8 @@ class Si4Helpers {
         $beforeCharsCount = 50;
         $afterCharsCount = 50;
 
+        //print_r($qWords); die();
+
         foreach ($qWords as $qWord) {
             $qWordLen = mb_strlen($qWord);
             $pos = -1;
@@ -601,7 +607,9 @@ class Si4Helpers {
                 $pos = stripos($fullText, $qWord, $pos +1);
                 if ($pos === false) break;
 
-                $innerText = substr($fullText, $pos -$beforeCharsCount, $qWordLen +$beforeCharsCount +$afterCharsCount);
+                $startPos = max(0, $pos -$beforeCharsCount);
+                $len = $qWordLen +($pos -$startPos) +$afterCharsCount;
+                $innerText = substr($fullText, $startPos, $len);
 
                 $firstSpacePos = stripos($innerText, " ");
                 if (!$firstSpacePos || $firstSpacePos > $beforeCharsCount) $firstSpacePos = 0;
@@ -609,7 +617,9 @@ class Si4Helpers {
                 $lastSpacePos = strripos($innerText, " ");
                 if (!$lastSpacePos || $lastSpacePos < $beforeCharsCount + $qWordLen) $lastSpacePos = strlen($innerText);
 
-                $innerTextClean = substr($innerText, $firstSpacePos +1, $lastSpacePos -$firstSpacePos -1);
+                $innerTextClean = substr($innerText, $firstSpacePos +1, $lastSpacePos -$firstSpacePos -1) ." ...";
+
+                if ($startPos > 0) $innerTextClean = "... ".$innerTextClean;
 
                 //$innerTextStyled = "...".preg_replace("/(".$qWord.")/i", '<span class="match">$1</span>', $innerTextClean)."...";
 
