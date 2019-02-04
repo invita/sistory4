@@ -7,6 +7,10 @@ use Mockery\CountValidator\Exception;
 
 class MetsToSi4
 {
+    private $mappingStack = [];
+    private $errorReporting = true;
+
+
     private $metsXmlString;
     private $metsXmlDOMDoc;
     private $domXPath;
@@ -19,9 +23,13 @@ class MetsToSi4
     }
 
     public function run() {
-        $this->prepare();
-        $this->doMetsStaticMapping();
-        $this->doSi4Mapping();
+        try {
+            $this->prepare();
+            $this->doMetsStaticMapping();
+            $this->doSi4Mapping();
+        } catch (\Exception $e) {
+            $this->markException("general", $e);
+        }
 
         return $this->result;
     }
@@ -100,8 +108,11 @@ class MetsToSi4
             foreach ($this->mappingGroups as $mgName => $mappingGroup) {
 
                 //if ($mgName === "Mods") continue;
+                if ($this->errorReporting)
+                    array_push($this->mappingStack, "mappingGroup=".$mgName);
 
                 try {
+
                     $mappingFields = $mappingGroup["fields"];
                     $base_xpath = $mappingGroup["base_xpath"];
 
@@ -119,6 +130,9 @@ class MetsToSi4
                             $target_field = $mappingField["target_field"];
                             $variables = $mappingField["variables"];
 
+                            if ($this->errorReporting)
+                                array_push($this->mappingStack, "mappingField=".$target_field);
+
                             try {
 
                                 // Find MappingField source elements
@@ -126,6 +140,9 @@ class MetsToSi4
 
                                 // foreach MappingField source element found
                                 foreach ($fieldSourceElements as $fieldSourceElement) {
+
+                                    if ($this->errorReporting)
+                                        array_push($this->mappingStack, "sourceElement=".$fieldSourceElement->tagName);
 
                                     try {
 
@@ -151,7 +168,13 @@ class MetsToSi4
                                         if (!isset($this->result["si4"][$target_field])) $this->result["si4"][$target_field] = [];
                                         $this->result["si4"][$target_field][] = $fieldResult;
 
+                                        if ($this->errorReporting) array_pop($this->mappingStack);
+
                                     } catch (\Exception $fieldSourceE) {
+                                        if ($this->errorReporting) {
+                                            $this->markException("fieldSource", $fieldSourceE);
+                                            array_pop($this->mappingStack);
+                                        }
                                         /*
                                         echo "fieldSourceE\n";
                                         var_dump($fieldSourceElement);
@@ -160,7 +183,13 @@ class MetsToSi4
                                     }
                                 }
 
+                                if ($this->errorReporting) array_pop($this->mappingStack);
+
                             } catch (\Exception $mappingFieldE) {
+                                if ($this->errorReporting) {
+                                    $this->markException("mappingField", $mappingFieldE);
+                                    array_pop($this->mappingStack);
+                                }
                                 /*
                                 echo "mappingField Exception\n";
                                 var_dump($mappingField);
@@ -169,14 +198,36 @@ class MetsToSi4
                             }
                         }
                     }
+
+                    if ($this->errorReporting) array_pop($this->mappingStack);
+
                 } catch (\Exception $e) {
                     // Probably missing namespace for mappingGroup.
                     // Ignore
                     //echo $e->getMessage()."\n";
+                    if ($this->errorReporting) {
+                        $this->markException("mappingSi4", $e);
+                        array_pop($this->mappingStack);
+                    }
                 }
             }
         }
 
         return $this->result["si4"];
+    }
+
+    private function markException($category, \Exception $e) {
+        if (!$this->errorReporting) return;
+        if (!isset($this->result["mappingErrors"])) $this->result["mappingErrors"] = [];
+        if (count($this->result["mappingErrors"]) >= 10) return;
+        $this->result["mappingErrors"][] = [
+            "category" => $category,
+            "mappingStack" => join("; ", $this->mappingStack),
+            "message" => $e->getMessage(),
+            "code" => $e->getCode(),
+            "file" => $e->getFile(),
+            "line" => $e->getLine()
+        ];
+        return $this->result["mappingErrors"];
     }
 }

@@ -106,8 +106,8 @@ class Si4MappingReseed extends Command
             $this->addMappingField($groupDC, "publisher", "mods:originInfo/mods:publisher", "string()", "");
             $this->addMappingField($groupDC, "pubPlace", "mods:originInfo/mods:place/mods:placeTerm[@type='text']", "string()", "");
             $this->addMappingField($groupDC, "edition", "mods:originInfo/mods:edition", "string()", "");
-            $this->addMappingField($groupDC, "issuance", "mods:originInfo]/mods:issuance", "string()", "");
-            $this->addMappingField($groupDC, "frequency", "mods:originInfo]/mods:frequency", "string()", "");
+            $this->addMappingField($groupDC, "issuance", "mods:originInfo/mods:issuance", "string()", "");
+            $this->addMappingField($groupDC, "frequency", "mods:originInfo/mods:frequency", "string()", "");
             $this->addMappingField($groupDC, "language", "mods:language/mods:languageTerm", "string()", "");
             $this->addMappingField($groupDC, "script", "mods:language/mods:scriptTerm", "string()", "");
             $this->addMappingField($groupDC, "form", "mods:physicalDescription/mods:form", "string()", "");
