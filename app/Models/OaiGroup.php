@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $namespace
  * @property string $behaviours
  * @property string $attrs
+ * @property string $sets
  * @mixin \Eloquent
  */
 class OaiGroup extends Model
@@ -31,8 +32,9 @@ class OaiGroup extends Model
         'name',
         'schema',
         'namespace',
-        'attrs',
         'behaviours',
+        'attrs',
+        'sets',
     ];
 
     private $_parsedAttrs = null;
@@ -64,10 +66,25 @@ class OaiGroup extends Model
         return $this->_parsedBehaviours;
     }
 
+    private $_parsedSets = null;
+    public function getParsedSets() {
+        if (!$this->_parsedSets) {
+            $setsParsed = json_decode($this->sets, true);
+            $this->_parsedSets = [];
+            if ($setsParsed) {
+                foreach ($setsParsed as $set) {
+                    if ($set) $this->_parsedSets[] = $set;
+                }
+            }
+        }
+        return $this->_parsedSets;
+    }
+
     public function toArray() {
         $result = parent::toArray();
-        $result["attrs"] = $this->getParsedAttrs();
         $result["behaviours"] = $this->getParsedBehaviours();
+        $result["attrs"] = $this->getParsedAttrs();
+        $result["sets"] = $this->getParsedSets();
         return $result;
     }
 

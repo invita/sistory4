@@ -45,6 +45,15 @@ var F = function(args){
             values: si4.data.behaviourNames,
             caption: si4.translate("field_behaviours"),
         });
+        var fieldSets = args.basicTab.form.addInput({
+            name: "sets",
+            value: rowValue.sets,
+            type: "text",
+            isArray: true,
+            caption: si4.translate("field_sets") +" (?)",
+        });
+        fieldSets.inputs[Object.keys(fieldSets.inputs)[0]].captionDiv.setHint("Used for OAI <b>setSpec</b> (will also show in verb=ListSets)");
+
         var fieldAttrs = args.basicTab.form.addInput({
             name: "attrs",
             value: rowValue.attrs,
@@ -115,6 +124,7 @@ var F = function(args){
         var basicFormValue = args.basicTab.form.getValue();
         basicFormValue.behaviours = JSON.stringify(basicFormValue.behaviours);
         basicFormValue.attrs = JSON.stringify(basicFormValue.attrs);
+        basicFormValue.sets = JSON.stringify(basicFormValue.sets);
 
         si4.api["saveOaiGroup"](basicFormValue, function (data) {
             if (data.status) {

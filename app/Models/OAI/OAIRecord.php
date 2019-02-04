@@ -18,7 +18,19 @@ class OAIRecord {
         $cursor = $request->resumptionToken->getCursor();
         $batchSize = $request->resumptionToken->getBatchSize();
 
-        $elasticQuery = [ "match_all" => ["boost" => 1] ];
+        //$elasticQuery = [ "match_all" => ["boost" => 1] ];
+
+        // Filter oaiGroup allowed behaviours
+        $oaiGroup = OaiGroup::getOaiGroup($request->arguments["metadataPrefix"]);
+        $elasticQuery = [
+            "constant_score" => [
+                "filter" => [
+                    "terms" => [
+                        "struct_subtype" => $oaiGroup["behaviours"]
+                    ]
+                ]
+            ]
+        ];
 
         $listDataElastic = ElasticHelpers::search($elasticQuery, $cursor, $batchSize);
         $totalHits = Si4Util::pathArg($listDataElastic, "hits/total", 0);
@@ -34,7 +46,7 @@ class OAIRecord {
         foreach ($hits as $hit) {
             //print_r($hit);
             $c++; if ($c > $batchSize) break;
-            $result[] = self::fromElastic($hit);
+            $result[] = self::fromElastic($hit, $request->arguments["metadataPrefix"]);
         }
 
         return $result;

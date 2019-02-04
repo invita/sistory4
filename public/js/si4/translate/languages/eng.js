@@ -235,6 +235,7 @@ si4.translations = {
 
     field_attributes: "Attributes",
     field_behaviours: "Behaviours",
+    field_sets: "Sets",
     field_schema: "Schema",
     field_namespace: "Namespace",
 

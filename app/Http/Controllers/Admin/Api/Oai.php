@@ -35,6 +35,7 @@ class Oai extends Controller
         $oaiGroup->namespace = $postJson["namespace"];
         $oaiGroup->attrs = $postJson["attrs"];
         $oaiGroup->behaviours = $postJson["behaviours"];
+        $oaiGroup->sets = $postJson["sets"];
         $oaiGroup->save();
 
         return ["status" => true, "error" =>  null, "data" => $oaiGroup->toArray()];

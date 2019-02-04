@@ -1,6 +1,6 @@
 var F = function(args){
     args.createMainTab();
-    args.createContentTab();
+    args.createContentTab("contentTab");
 
     var name = "oaiGroup";
     var dataTable = new si4.widget.si4DataTable({

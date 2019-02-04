@@ -65,7 +65,7 @@ class OAIRequest {
 
         $this->verb = $this->arguments["verb"];
         $allowedVerbList = OAIHelper::getAllowedVerbList();
-        if (!in_array($this->verb, $allowedVerbList)) $this->error("badVerb", "Ilegal verb: ".$this->verb);
+        if (!in_array($this->verb, $allowedVerbList)) $this->error("badVerb", "Illegal verb: ".$this->verb);
 
         // check arguments validity
         $possibleArguments = OAIHelper::getAllowedArgumentList();

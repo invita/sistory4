@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\OAI;
 
+use App\Helpers\Si4Util;
 use App\Models\OaiGroup;
 
 class OAIProcessor {
@@ -40,7 +41,8 @@ class OAIProcessor {
                 break;
 
             case "ListSets":
-                $this->request->error("noSetHierarchy", "This repository does not support sets");
+                $resultElement = $this->processListSets();
+                //$this->request->error("noSetHierarchy", "This repository does not support sets");
                 break;
 
             default:
@@ -167,6 +169,44 @@ class OAIProcessor {
 
         $listRecords->setContentXml($content);
         return $listRecords;
+    }
+
+
+    // ListSets
+
+    private function processListSets() {
+        $listSets = new OAIXmlElement("ListSets");
+
+        $metadataFormats = OaiGroup::getOaiGroups();
+        $setsSet = [];
+
+        // Make a set of all set names for each metadataFormat (no duplicates)
+        foreach ($metadataFormats as $metaFormat) {
+            $mdPrefixSets = Si4Util::getArg($metaFormat, "sets");
+            if ($mdPrefixSets && count($mdPrefixSets)) {
+                foreach($mdPrefixSets as $set) {
+                    $setsSet[$set] = true;
+                }
+            }
+        }
+
+        $sets = array_keys($setsSet);
+        foreach ($sets as $set) {
+
+            // Append set elements
+            $setEl = new OAIXmlElement("set");
+            $setEl->appendTo($listSets);
+
+            $setSpec = new OAIXmlElement("setSpec");
+            $setSpec->setValue($set);
+            $setSpec->appendTo($setEl);
+
+            $setName = new OAIXmlElement("setName");
+            $setName->setValue($set);
+            $setName->appendTo($setEl);
+        }
+
+        return $listSets;
     }
 
 }
