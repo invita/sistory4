@@ -49,7 +49,7 @@ class ThumbsCreate extends Command
 
         $elasticEntities = ElasticHelpers::searchByIdArray([$entityId]);
         $elasticEntity = Si4Util::pathArg($elasticEntities, $entityId."/_source");
-        $this->info(print_r($elasticEntity, true));
+        //$this->info(print_r($elasticEntity, true));
 
         $struct_type = Si4Util::pathArg($elasticEntity, "struct_type");
         if ($struct_type == "file") {

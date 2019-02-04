@@ -13,7 +13,9 @@
 
 .flex { display: flex; flex-direction: column; }
 .flexRow { display: flex; flex-direction: row; }
+.flexAlignStart { align-items: flex-start; }
 .flexAlignCenter { align-items: center; }
+.flexAlignEnd { align-items: flex-end; }
 .flexJustifyCenter { justify-content: center; }
 .flexBothCenter { align-items: center; justify-content: center; }
 .flex1 { flex: 1; }
@@ -414,6 +416,7 @@ input:checked + #collectionSearchIndicator {
 }
 .fileList .fileDetails .fileContent {
   margin: 0px 15px;
+  min-width: 320px;
 }
 .fileList .fileDetails pre {
   font-size: 12px;
@@ -421,12 +424,12 @@ input:checked + #collectionSearchIndicator {
   color: gray;
 }
 .fileList .fileDetails .fileDownload {
-  margin-top: 0px;
+  margin-bottom: 15px;
   margin-left: 20px;
 }
 
 .fileDetails {
-  margin-top: 10px;
+  padding: 10px 10px;
 }
 .fileDetails .fileName {
   font-size: 14px;
@@ -456,7 +459,7 @@ input:checked + #collectionSearchIndicator {
 }
 
 #accordionMets {
-  padding: 10px;
+  padding: 15px 10px;
 }
 #accordionMets a {
   margin: 10px 5px;
@@ -473,14 +476,18 @@ input:checked + #collectionSearchIndicator {
 }
 
 /* accordion */
+.accordionWrap {
+  margin-top: 15px;
+  border-radius: 5px;
+  border: silver solid 1px;
+}
+
 .accordion {
   position: relative;
-  border: silver solid 1px;
-  border-radius: 5px;
   padding: 4px 10px;
-  margin-top: 10px;
   cursor: pointer;
 }
+
 .accordion:hover {
 }
 
@@ -506,7 +513,10 @@ input:checked + #collectionSearchIndicator {
 }
 
 .accordionContent {
-  padding: 4px 10px;
+  padding: 5px 10px;
+}
+.accordionContent.fileList {
+  padding: 0px;
 }
 
 

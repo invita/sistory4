@@ -66,16 +66,18 @@
                 </div>
             </div>
 
-            <div class="accordion" for="accordionMets">
-                {{ __('fe.details_allMetadata') }}
-            </div>
-            <div class="accordionContent allMetadata" id="accordionMets">
-                <a class="si4button" href="/storage/mets?handleId={{ $data["doc"]["system"]["handle_id"] }}" target="_blank">
-                    {{ __('fe.details_fileView') }}
-                </a>
-                <a class="si4button" href="/storage/mets?handleId={{ $data["doc"]["system"]["handle_id"] }}&attach=1">
-                    {{ __('fe.details_fileDownload') }}
-                </a>
+            <div class="accordionWrap">
+                <div class="accordion" for="accordionMets">
+                    {{ __('fe.details_allMetadata') }}
+                </div>
+                <div class="accordionContent allMetadata" id="accordionMets">
+                    <a class="si4button" href="/storage/mets?handleId={{ $data["doc"]["system"]["handle_id"] }}" target="_blank">
+                        {{ __('fe.details_fileView') }}
+                    </a>
+                    <a class="si4button" href="/storage/mets?handleId={{ $data["doc"]["system"]["handle_id"] }}&attach=1">
+                        {{ __('fe.details_fileDownload') }}
+                    </a>
+                </div>
             </div>
 
 
