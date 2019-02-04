@@ -42,14 +42,22 @@ class ThumbsCreateAll extends Command
         if ($this->confirm('Are you sure you wish to recreate all thumbnails?', true)) {
 
             $entities = Entity::all();
-            $cnt = 0;
+            $successCnt = 0;
+            $errorCnt = 0;
             foreach ($entities as $entity) {
                 $this->info($entity["id"]);
-                Artisan::call("thumbs:create", ["entityId" => $entity["id"]]);
-                $cnt++;
+                try {
+                    Artisan::call("thumbs:create", ["entityId" => $entity["id"]]);
+                    $successCnt++;
+                } catch (\Exception $e) {
+                    $this->warn($e);
+                    $errorCnt++;
+                }
             }
 
-            $this->info("All done! Thumbnails recreated: {$cnt}");
+            $this->info("Thumbnails recreated: {$successCnt}");
+            $this->info("Errors: {$errorCnt}");
+            $this->info("All done!");
         }
 
     }
