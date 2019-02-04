@@ -2,15 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
-use App\Helpers\TikaParseDoc;
 use App\Helpers\Timer;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class ReindexEntityText extends Command
 {

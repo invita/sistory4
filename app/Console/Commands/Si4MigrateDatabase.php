@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Helpers\ElasticHelpers;
-use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
 use App\Models\Migration\MigCollection;
 use App\Models\Migration\MigFile;
@@ -12,7 +11,6 @@ use App\Models\Migration\MigUtil;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Si4MigrateDatabase extends Command
 {

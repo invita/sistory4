@@ -551,14 +551,18 @@ class Si4Helpers {
 
         // Let Non-titled documents at least have something to display
         if (!isset($result["si4"]["title"]) || !count($result["si4"]["title"])) {
-            $result["si4"]["title"] = [$result["system"]["handle_id"]];
+            $surrogateTitle = $result["system"]["handle_id"];
+            if ($result["system"]["struct_type"] === "file") {
+                $surrogateTitle = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName", $surrogateTitle);
+            }
+            $result["si4"]["title"] = [$surrogateTitle];
         }
 
         $result["thumb"] = self::getThumbUrl($elasticEntity);
 
         if ($result["system"]["struct_type"] === "file") {
             $result["file"] = [
-                "fileName" => Si4Util::pathArg($elasticEntity, "_source/data/files/0/ownerId", ""),
+                "fileName" => Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName", ""),
             ];
         }
 
@@ -622,7 +626,7 @@ class Si4Helpers {
         // Find default file
         $handleId = Si4Util::pathArg($elasticEntity, "_source/handle_id");
         $structType = Si4Util::pathArg($elasticEntity, "_source/struct_type");
-        $fileName = Si4Util::pathArg($elasticEntity, "_source/data/files/0/ownerId");
+        $fileName = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName");
 
         if ($handleId && $fileName) {
             $thumbUrl = FileHelpers::getThumbUrl($handleId, $structType, $fileName);

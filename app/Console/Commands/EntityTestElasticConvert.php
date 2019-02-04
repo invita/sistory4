@@ -2,11 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\ElasticHelpers;
-use App\Models\Entity;
-use App\Models\Elastic\EntityElastic;
 use Illuminate\Console\Command;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class EntityTestElasticConvert extends Command
 {

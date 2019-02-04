@@ -4,13 +4,11 @@ namespace App\Console\Commands;
 
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
-use App\Helpers\TikaParseDoc;
+use App\Helpers\Si4Util;
 use App\Helpers\Timer;
-use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
 use App\Models\Si4\MetsToSi4;
 use Illuminate\Console\Command;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class ReindexEntity extends Command
 {
@@ -51,9 +49,17 @@ class ReindexEntity extends Command
         $entity = Entity::find($entityId);
         if ($entity) {
 
+            Timer::start("keepIndexedFullText");
+            // Keep fullText attributes for files if they exist
+            $prevElasticData = ElasticHelpers::plainEntityById($entityId);
+            $prevFullText = Si4Util::pathArg($prevElasticData, "hits/hits/0/_source/data/files/0/fullText", "");
+            Timer::stop("keepIndexedFullText");
+
             Timer::start("entityMapping");
             $metsToSi4 = new MetsToSi4($entity->xml);
+            if ($prevFullText) $metsToSi4->setFullText($prevFullText);
             $si4Data = $metsToSi4->run();
+            //print_r($si4Data);
             Timer::stop("entityMapping");
 
             $indexBody = [

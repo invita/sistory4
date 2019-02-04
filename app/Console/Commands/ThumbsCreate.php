@@ -3,22 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Helpers\ElasticHelpers;
-use App\Helpers\EntitySelect;
 use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
 use App\Helpers\Timer;
-use App\Models\Elastic\EntityElastic;
-use App\Models\Entity;
-use App\Xsd\AnyTypeHandler;
-use App\Xsd\AsTextTypeHandler;
-use App\Xsd\Base64TypeHandler;
-use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\BaseTypesHandler;
-use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\XmlSchemaDateHandler;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-use JMS\Serializer\Handler\HandlerRegistryInterface;
-use JMS\Serializer\SerializerBuilder;
 
 class ThumbsCreate extends Command
 {
@@ -69,8 +59,8 @@ class ThumbsCreate extends Command
         }
 
         $firstFile = Si4Util::pathArg($elasticEntity, "data/files/0");
-        $firstFileHandleId = Si4Util::pathArg($firstFile, "id");
-        $firstFileName = Si4Util::pathArg($firstFile, "ownerId");
+        $firstFileHandleId = Si4Util::pathArg($firstFile, "handle_id");
+        $firstFileName = Si4Util::pathArg($firstFile, "fileName");
 
         if ($firstFileHandleId && $firstFileName) {
             $this->info("- Recreating thumbnail for entity {$entityId} handle_id={$entity_handle_id}, file_handle={$firstFileHandleId} ({$firstFileName})");

@@ -4,31 +4,14 @@ namespace App\Models;
 
 use App\Helpers\DcHelpers;
 use App\Helpers\EntitySelect;
-use App\Helpers\Enums;
 use App\Helpers\FileHelpers;
 use App\Helpers\Si4Util;
 use App\Helpers\Timer;
 use App\Helpers\XmlHelpers;
-use App\Models\Elastic\EntityNotIndexedException;
-use App\Xsd\AnySimpleTypeHandler;
-use App\Xsd\AnyTypeHandler;
-use App\Xsd\AsTextTypeHandler;
-use App\Xsd\Base64TypeHandler;
-use App\Xsd\XmlDataATypeHandler;
-use App\Xsd\DcTypeHandler;
-use App\Xsd\XsiTypeHandler;
-use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
-use Illuminate\Contracts\Logging\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 
 use Illuminate\Support\Facades\Storage;
-use JMS\Serializer\SerializerBuilder;
-use JMS\Serializer\Handler\HandlerRegistryInterface;
-
-use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\BaseTypesHandler;
-use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\XmlSchemaDateHandler;
-use Psr\Log\Test\LoggerInterfaceTest;
 
 
 /**
@@ -272,10 +255,11 @@ class Entity extends Model
             $storageName = FileHelpers::getPublicStorageName($parent, $fileName);
 
             if (Storage::exists($storageName)) {
+                $fullFilePath = storage_path('app')."/".$storageName;
                 $metsFile["MIMETYPE"] = Storage::mimeType($storageName); // FileHelpers::fileNameMime($fileName);
                 $metsFile["SIZE"] = Storage::size($storageName);
-                $metsFile["CREATED"] = "";
-                $metsFile["CHECKSUM"] = md5_file(storage_path('app')."/".$storageName);
+                $metsFile["CREATED"] = date("Y-m-d\\TH:i:s\\Z", filemtime($fullFilePath));
+                $metsFile["CHECKSUM"] = md5_file($fullFilePath);
                 $metsFile["CHECKSUMTYPE"] = "MD5";
             }
             //print_r($metsFile);

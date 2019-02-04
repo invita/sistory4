@@ -9,6 +9,10 @@
         <div class="medium-12 columns">
             <div class="breadcrumbs">
                 <?php echo $data["html_breadcrumbs"]; ?>
+                <?php
+                    //echo "<pre>"; print_r(array_keys($data)); echo "</pre>";
+                    //echo "<pre>"; print_r($data["files"]); echo "</pre>";
+                ?>
             </div>
 
             <div class="detailsContent">

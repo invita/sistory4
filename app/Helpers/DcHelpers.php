@@ -43,7 +43,7 @@ class DcHelpers {
                     "parser" => DcHelpers::getDcDefaultThumbParser(),
                 ],
                 "fileName" => [
-                    "path" => "_source/data/files/0/ownerId",
+                    "path" => "_source/data/files/0/fileName",
                 ],
 
                 // DC plain
@@ -341,7 +341,7 @@ class DcHelpers {
             //print_r($inputValue);
             $handleId = Si4Util::pathArg($inputValue, "handle_id");
             $structType = Si4Util::pathArg($inputValue, "struct_type");
-            $fileName = Si4Util::pathArg($inputValue, "data/files/0/ownerId");
+            $fileName = Si4Util::pathArg($inputValue, "data/files/0/fileName");
 
             if ($handleId && $fileName) {
                 $thumbUrl = FileHelpers::getThumbUrl($handleId, $structType, $fileName);

@@ -221,6 +221,7 @@ class EntitySelect
             $fileTimestamp = "";
             $fileChecksum = "";
             $fileChecksumType = "";
+            $fileFullTextLength = 0;
 
             $structType = "";
             $entityType = "";
@@ -251,15 +252,17 @@ class EntitySelect
                 //$date = isset($si4["date"]) ? join("; ", $si4["date"]) : "";
                 $date = isset($si4["date"]) ? join(", ", DcHelpers::dcTextArray($si4["date"])) : "";
 
-                $fileName = Si4Util::pathArg($data, "files/0/ownerId", "");
+                $fileName = Si4Util::pathArg($data, "files/0/fileName", "");
                 if ($structType == "file" && $fileName) {
+                    $firstFile = Si4Util::pathArg($data, "files/0", []);
                     $fileUrl = FileHelpers::getPreviewUrl($parent, $structType, $fileName);
                     $fileThumb = FileHelpers::getThumbUrl($parent, $structType, $fileName);
-                    $fileMimeType = Si4Util::pathArg($data, "files/0/mimeType", "");
-                    $fileSize = Si4Util::pathArg($data, "files/0/size", "");
-                    $fileTimestamp = Si4Util::pathArg($data, "files/0/created", "");
-                    $fileChecksum = Si4Util::pathArg($data, "files/0/checksum", "");
-                    $fileChecksumType = Si4Util::pathArg($data, "files/0/checksumType", "");
+                    $fileMimeType = Si4Util::getArg($firstFile, "mimeType", "");
+                    $fileSize = Si4Util::getArg($firstFile, "size", "");
+                    $fileTimestamp = Si4Util::getArg($firstFile, "createDate", "");
+                    $fileChecksum = Si4Util::getArg($firstFile, "checksum", "");
+                    $fileChecksumType = Si4Util::getArg($firstFile, "checksumType", "");
+                    $fileFullTextLength = strlen(Si4Util::getArg($firstFile, "fullText", ""));
                 }
             }
 
@@ -284,6 +287,7 @@ class EntitySelect
                 "fileTimestamp" => $fileTimestamp,
                 "fileChecksum" => $fileChecksum,
                 "fileChecksumType" => $fileChecksumType,
+                "fileFullTextLength" => $fileFullTextLength,
                 "active" => $active,
                 "xmlData" => $xml,
                 "elasticData" => $data,

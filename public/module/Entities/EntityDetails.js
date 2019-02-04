@@ -263,6 +263,13 @@ var F = function(args){
                 caption:si4.translate("field_checksumAlgo"),
                 readOnly: true
             });
+            args.basicTab.fieldFileFullTextLength = args.basicTab.formPreview.addInput({
+                name:"fileFullTextLength",
+                value:rowValue.fileFullTextLength,
+                type:"text",
+                caption:si4.translate("field_fullTextLength"),
+                readOnly: true
+            });
 
             // Preview and Download container
             args.basicTab.fileInfoDiv = new si4.widget.si4Element({

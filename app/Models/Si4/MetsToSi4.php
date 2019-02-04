@@ -22,6 +22,11 @@ class MetsToSi4
         $this->metsXmlString = $metsXmlString;
     }
 
+    private $fullText;
+    public function setFullText($fullText) {
+        $this->fullText = $fullText;
+    }
+
     public function run() {
         try {
             $this->prepare();
@@ -55,6 +60,7 @@ class MetsToSi4
 
     private function doMetsStaticMapping() {
         $this->result["header"] = [];
+        $this->result["files"] = [];
 
         if ($this->metsXmlDOMDoc) {
 
@@ -95,6 +101,64 @@ class MetsToSi4
                 }
             }
 
+            // METS:mets/METS:fileSec
+            $fileSecs = $this->domXPath->query("/METS:mets/METS:fileSec");
+            $firstFile = true;
+            foreach ($fileSecs as $fileSec) {
+                $fileSecID = $this->domXPath->evaluate("string(@ID)", $fileSec);
+
+                // METS:mets/METS:fileSec/METS:fileGrp
+                $fileGrps = $this->domXPath->query("METS:fileGrp", $fileSec);
+                foreach ($fileGrps as $fileGrp) {
+                    $fileGrpUSE = $this->domXPath->evaluate("string(@USE)", $fileGrp);
+
+                    $files = $this->domXPath->query("METS:file", $fileGrp);
+                    foreach ($files as $file) {
+                        $fileID = $this->domXPath->evaluate("string(@ID)", $file);
+                        $fileOWNERID = $this->domXPath->evaluate("string(@OWNERID)", $file);
+                        $fileUSE = $this->domXPath->evaluate("string(@USE)", $file);
+                        if (!$fileUSE) $fileUSE = $fileGrpUSE;
+
+                        $fileCREATED = $this->domXPath->evaluate("string(@CREATED)", $file);
+                        $fileSIZE = $this->domXPath->evaluate("string(@SIZE)", $file);
+                        $fileCHECKSUM = $this->domXPath->evaluate("string(@CHECKSUM)", $file);
+                        $fileCHECKSUMTYPE = $this->domXPath->evaluate("string(@CHECKSUMTYPE)", $file);
+                        $fileMIMETYPE = $this->domXPath->evaluate("string(@MIMETYPE)", $file);
+
+                        if (!$fileID) $fileID = $this->domXPath->evaluate("string(METS:FLocat/@ID)", $file);
+                        $fileLocLOCTYPE = $this->domXPath->evaluate("string(METS:FLocat/@LOCTYPE)", $file);
+                        $fileLocUSE = $this->domXPath->evaluate("string(METS:FLocat/@USE)", $file);
+                        $fileLocTITLE = $this->domXPath->evaluate("string(METS:FLocat/@title)", $file);
+
+                        $fileLocHREF = $this->domXPath->evaluate("string(METS:FLocat/@href)", $file);
+                        if (!$fileLocHREF) $fileLocHREF = $this->domXPath->evaluate("string(METS:FLocat/@xlink:href)", $file);
+
+
+                        $fileMetadata = [
+                            "handle_id" => $fileID,
+                            "fileName" => $fileOWNERID,
+                            "behaviour" => $fileUSE,
+                            "url" => $fileLocHREF,
+                            "fullText" => "",
+                        ];
+
+                        $fileMetadata["createDate"] = $fileCREATED;
+                        $fileMetadata["size"] = $fileSIZE;
+                        $fileMetadata["checksum"] = $fileCHECKSUM;
+                        $fileMetadata["checksumType"] = $fileCHECKSUMTYPE;
+                        $fileMetadata["mimeType"] = $fileMIMETYPE;
+                        $fileMetadata["fullText"] = "";
+
+                        // Keep previous fullText for first file
+                        if ($firstFile && $this->fullText) $fileMetadata["fullText"] = $this->fullText;
+                        $firstFile = false;
+
+                        $this->result["files"][] = $fileMetadata;
+                    }
+                }
+            }
+
+            //print_r($this->result["files"]);
         }
     }
 
@@ -216,7 +280,8 @@ class MetsToSi4
         return $this->result["si4"];
     }
 
-    private function markException($category, \Exception $e) {
+    private function markException($category, \Exception $e)
+    {
         if (!$this->errorReporting) return;
         if (!isset($this->result["mappingErrors"])) $this->result["mappingErrors"] = [];
         if (count($this->result["mappingErrors"]) >= 10) return;

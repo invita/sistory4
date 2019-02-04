@@ -114,10 +114,10 @@ class DetailsController extends FrontendController
 
         foreach ($files as $file) {
             $fileHandleId = Si4Util::pathArg($file, "_source/handle_id");
-            $fileName = Si4Util::pathArg($file, "_source/data/files/0/ownerId");
+            $fileName = Si4Util::pathArg($file, "_source/data/files/0/fileName");
 
             $fileSize = Si4Util::pathArg($file, "_source/data/files/0/size");
-            $fileCreated = Si4Util::pathArg($file, "_source/data/files/0/created");
+            $fileCreated = Si4Util::pathArg($file, "_source/data/files/0/createDate");
 
             $data["files"][] = [
                 "handle_id" => $fileHandleId,
@@ -127,7 +127,7 @@ class DetailsController extends FrontendController
                 "mimeType" => Si4Util::pathArg($file, "_source/data/files/0/mimeType"),
                 "size" => $fileSize,
                 "displaySize" => DcHelpers::fileSizePresentation($fileSize),
-                "created" => $fileCreated,
+                "createDate" => $fileCreated,
                 "displayCreated" => DcHelpers::fileDatePresentation($fileCreated),
                 "checksum" => Si4Util::pathArg($file, "_source/data/files/0/checksum"),
                 "checksumType" => Si4Util::pathArg($file, "_source/data/files/0/checksumType"),
@@ -139,10 +139,10 @@ class DetailsController extends FrontendController
         //print_r($docData);
         $parent = Si4Util::pathArg($docData, "_source/parent", null);
         $file = Si4Util::pathArg($docData, "_source/data/files/0", null);
-        $fileName = Si4Util::pathArg($file, "ownerId", "");
+        $fileName = Si4Util::pathArg($file, "fileName", "");
 
         $size = Si4Util::pathArg($file, "size");
-        $created = Si4Util::pathArg($file, "created");
+        $createDate = Si4Util::pathArg($file, "createDate");
 
         //print_r($file);
         if ($file) {
@@ -155,8 +155,8 @@ class DetailsController extends FrontendController
                 "mimeType" => Si4Util::pathArg($file, "mimeType"),
                 "size" => $size,
                 "displaySize" => DcHelpers::fileSizePresentation($size),
-                "created" => $created,
-                "displayCreated" => DcHelpers::fileDatePresentation($created),
+                "createDate" => $createDate,
+                "displayCreated" => DcHelpers::fileDatePresentation($createDate),
                 "checksum" => Si4Util::pathArg($file, "checksum"),
                 "checksumType" => Si4Util::pathArg($file, "checksumType"),
             ];

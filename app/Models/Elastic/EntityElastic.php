@@ -5,6 +5,7 @@ namespace App\Models\Elastic;
 use App\Helpers\DcHelpers;
 use App\Helpers\FileHelpers;
 use App\Helpers\Si4Helpers;
+use App\Helpers\Si4Util;
 use App\Helpers\TikaParseDoc;
 use App\Models\Elastic\MdMappers\DC;
 use App\Models\Elastic\MdMappers\Mods;
@@ -283,6 +284,7 @@ class EntityElastic
         }
     }
 
+    // TODO: Move to Mets2Si4
     public static function extractTextFromFiles($entityDb, &$entityElastic) {
 
         $entityHandleId = $entityDb->handle_id;
@@ -292,7 +294,10 @@ class EntityElastic
         if (!$files) return false;
 
         foreach ($files as $idx => $file) {
-            $filePath = FileHelpers::getPublicStorageName($entityHandleId, $file["ownerId"]);
+            $fileName = Si4Util::getArg($file, "fileName", null);
+            if (!$fileName) continue;
+
+            $filePath = FileHelpers::getPublicStorageName($entityHandleId, $fileName);
             $docText = TikaParseDoc::parseText($filePath);
             $entityElastic["data"]["files"][$idx]["fullText"] = $docText;
         }

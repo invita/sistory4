@@ -2,19 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\ElasticHelpers;
-use App\Helpers\EntitySelect;
-use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
-use App\Xsd\AnyTypeHandler;
-use App\Xsd\AsTextTypeHandler;
-use App\Xsd\Base64TypeHandler;
-use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\BaseTypesHandler;
-use GoetasWebservices\Xsd\XsdToPhpRuntime\Jms\Handler\XmlSchemaDateHandler;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use JMS\Serializer\Handler\HandlerRegistryInterface;
-use JMS\Serializer\SerializerBuilder;
 
 class ThumbsCreateAll extends Command
 {

@@ -196,6 +196,7 @@ si4.translations = {
     field_timestamp: "Timestamp",
     field_checksum: "Checksum",
     field_checksumAlgo: "Algorithm",
+    field_fullTextLength: "FullText length",
 
     field_relatedEntity: "Related entity",
     field_relationType: "Relation type",
