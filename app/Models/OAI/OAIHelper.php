@@ -11,7 +11,7 @@ class OAIHelper {
 
     private static $listRequestVerbs = array('ListSets', 'ListIdentifiers', 'ListRecords', 'ListMetadataFormats');
 
-    private static $allowedArgumentList = array('verb', 'from', 'until', 'metadataPrefix',
+    private static $allowedArgumentList = array('verb', 'from', 'until', 'metadataPrefix', 'set',
         'cursor', 'resumptionToken', 'batchSize', 'DBGSESSID', 'identifier');
 
     /*
