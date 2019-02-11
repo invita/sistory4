@@ -212,7 +212,7 @@ HERE;
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function search($query, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
+    public static function search($query, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc", $highlight = null)
     {
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
@@ -224,6 +224,10 @@ HERE;
                 "size" => $limit,
             ]
         ];
+
+        if ($highlight) {
+            $requestArgs["body"]["highlight"] = $highlight;
+        }
 
         return \Elasticsearch::connection()->search($requestArgs);
     }
@@ -248,6 +252,7 @@ HERE;
         $searchWords = explode(" ", $queryString);
         $must = [];
         $should = [];
+        $highlight = null;
 
         foreach ($searchWords as $wordIdx => $searchWord) {
             $must[] = [
@@ -298,6 +303,16 @@ HERE;
                         "query" => $queryString
                     ],
                 ]];
+                $highlight = [
+                    "fields" => [
+                        "data.files.fullText" => [
+                            "fragment_size" => 110,
+                            "number_of_fragments" => 3,
+                            "pre_tags" => [""],
+                            "post_tags" => [""]
+                        ]
+                    ]
+                ];
                 break;
         }
 
@@ -317,7 +332,7 @@ HERE;
         if (count($should)) $query["bool"]["should"] = $should;
         if (count($must)) $query["bool"]["must"] = $must;
 
-        return self::search($query, $offset, $limit, "child_order", "asc");
+        return self::search($query, $offset, $limit, "child_order", "asc", $highlight);
     }
 
     /**
@@ -630,6 +645,15 @@ HERE;
                     "id" => $hit["_id"],
                     "_source" => $hit["_source"],
                 ];
+                // Structure highlights if exist
+                if (isset($hit["highlight"])) {
+                    $result[$hit["_id"]]["highlight"] = [];
+                    foreach ($hit["highlight"] as $highlightField => $highlightValuesArray) {
+                        foreach ($highlightValuesArray as $highlightValue) {
+                            $result[$hit["_id"]]["highlight"][] = $highlightValue;
+                        }
+                    }
+                }
             }
         }
         return $result;

@@ -88,7 +88,7 @@
                                     <div class="dataWrapper">
                                         <div class="fullTextHits">
                                             @foreach($result["file"]["fullTextHits"] as $fullTextHit)
-                                                <div class="value fullTextHit"><?php echo $fullTextHit; ?></div>
+                                                <div class="value fullTextHit"><?php echo "...". $fullTextHit ."..."; ?></div>
                                             @endforeach
                                         </div>
                                     </div>
