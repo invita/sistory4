@@ -29,6 +29,12 @@
                         <h3>{{ first($data["doc"]["si4"]["title"]) }}</h3>
                     </div>
 
+                    @if (isset($data["doc"]["si4tech"]["description"]))
+                        <div class="description">
+                            <?php foreach($data["doc"]["si4tech"]["description"] as $desc) echo $desc; ?>
+                        </div>
+                    @endif
+
                     @foreach ($data["doc"]["si4"] as $fieldName => $fieldValueArray)
                         @if (count($fieldValueArray) && $fieldName != "title")
                             <div class="detailsDcField detailsDc{{ ucfirst($fieldName) }}">
@@ -43,26 +49,7 @@
                     @endforeach
 
 
-                    <div class="childrenWrap">
-                        @foreach($data["children"] as $child)
-                            <a href="/details/{{ $child["system"]["handle_id"] }}">
-                                <div class="child">
-                                    <?php /* print_r($child); */ ?>
-                                    <div class="childThumb">
-                                        <img src="{{ $child["thumb"] }}" />
-                                    </div>
-
-                                    <div class="childTitle">
-                                        <h5>{{ first($child["si4"]["title"]) }}</h5>
-                                    </div>
-                                    <div class="childDetails">
-                                        <span class="childCreators"><?php echo ""; /* $child["html_dc_creator_list"]; */ ?></span>
-                                    </div>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
-
+                    @include('fe.includes.entitySearchResults', ["entities" => $data["children"], "style" => $data["doc"]["system"]["child_style"]])
                 </div>
             </div>
 

@@ -520,6 +520,23 @@ class Si4Helpers {
             "si4" => [],
         ];
 
+        $result["si4tech"] = [];
+        $si4tech = Si4Util::pathArg($elasticEntity, "_source/data/si4tech", []);
+        foreach ($si4tech as $key => $val) {
+            if ($key == "description") {
+                // Copy only matching lang description from si4tech
+                foreach ($val as $desc) {
+                    if (!isset($desc["lang"]) || SessionLanguage::current() == $desc["lang"]) {
+                        if (!isset($result["si4tech"][$key])) $result["si4tech"][$key] = [];
+                        $result["si4tech"][$key][] = $desc["value"];
+                    }
+                }
+            } else {
+                // Copy other si4tech fields normally
+                $result["si4tech"][$key] = $val;
+            }
+        }
+
         $si4Fields = Si4Field::getSi4Fields();
         $behaviour = Behaviour::getBehaviourForElasticEntity($elasticEntity);
 
@@ -564,7 +581,13 @@ class Si4Helpers {
 
         $result["thumb"] = self::getThumbUrl($elasticEntity);
 
-        if ($result["system"]["struct_type"] === "file") {
+        if ($result["system"]["struct_type"] === "collection") {
+            // Collection specific
+            $searchResultsShow = Si4Util::getArg($si4tech, "searchResultsShow", "cards");
+            if (!in_array($searchResultsShow, ["cards", "table"])) $searchResultsShow = "cards";
+            $result["system"]["child_style"] = $searchResultsShow;
+        } elseif ($result["system"]["struct_type"] === "file") {
+            // File specific
             $result["file"] = [
                 "fileName" => Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName", ""),
             ];

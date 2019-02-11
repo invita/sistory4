@@ -500,12 +500,19 @@ class EntitySelect
                 }
             }
 
+            // externalCollection
+            $externalCollection = Si4Util::pathArg($source, "data/si4tech/externalCollection", null);
+
+            // url
+            $url = $externalCollection ? $externalCollection : "/details/".$handle_id;
+
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];
             $parentMap[$parentKey][] = [
                 "handle_id" => $handle_id,
                 "parent" => $parent,
                 "title" => $title,
+                "url" => $url,
             ];
         }
 
@@ -571,12 +578,19 @@ class EntitySelect
                 }
             }
 
+            // externalCollection
+            $externalCollection = Si4Util::pathArg($source, "data/si4tech/externalCollection", null);
+
+            // url
+            $url = $externalCollection ? $externalCollection : "/details/".$handle_id;
+
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];
             $parentMap[$parentKey][] = [
                 "handle_id" => $handle_id,
                 "parent" => $parent,
                 "title" => $title,
+                "url" => $url,
             ];
         }
 

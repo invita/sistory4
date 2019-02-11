@@ -19,21 +19,33 @@ $mainColor: #883333;
   .button:hover {
     background-color: darken($mainColor, 10%);
   }
-  .searchResult a {
-    border-bottom: rgba($mainColor,0.3) solid 1px;
-  }
-  .searchResult:nth-child(odd) {
-    background-color: rgba($mainColor,0.02);
-  }
-  .searchResult:nth-child(even) {
-    background-color: rgba($mainColor,0.06);
-  }
-  .searchResult:hover {
-    background-color: rgba($mainColor,0.1);
-  }
-  .searchResult .dataWrapper .match {
-    color: #006;
-    background-color: #FF9;
+  .entitySearchWrap {
+    &.esrCards {
+      .searchResult {
+        box-shadow: 2px 2px 3px 1px desaturate(lighten($mainColor, 10%), 35%);
+        &:hover {
+          box-shadow: 2px 2px 6px 2px desaturate(lighten($mainColor, 10%), 35%);
+        }
+      }
+    }
+    &.esrTable {
+      .searchResult {
+        border-bottom: rgba($mainColor,0.3) solid 1px;
+      }
+      .searchResult:nth-child(odd) {
+        background-color: rgba($mainColor,0.02);
+      }
+      .searchResult:nth-child(even) {
+        background-color: rgba($mainColor,0.06);
+      }
+      .searchResult:hover {
+        background-color: rgba($mainColor,0.1);
+      }
+      .searchResult .dataWrapper .match {
+        color: #006;
+        background-color: #FF9;
+      }
+    }
   }
   .searchAutocompleteTerm {
     color: $mainColor;

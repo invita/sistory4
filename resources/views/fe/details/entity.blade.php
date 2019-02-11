@@ -15,6 +15,12 @@
                 ?>
             </div>
 
+            @if (isset($data["doc"]["si4tech"]["description"]))
+                <div class="description">
+                    <?php foreach($data["doc"]["si4tech"]["description"] as $desc) echo $desc; ?>
+                </div>
+            @endif
+
             <div class="detailsContent">
                 <div class="bigImageWrap">
                     <img class="img" src="{{ $data["doc"]["thumb"] }}" />

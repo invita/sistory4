@@ -15,10 +15,19 @@ class IndexController extends FrontendController
 
         $data = [
             "layoutData" => $this->layoutData($request),
+            "rootDoc" => $this->getRootDoc(),
             "indexEntities" => $this->prepareIndexEntities(),
         ];
 
         return view('fe.index', $data);
+    }
+
+    private function getRootDoc() {
+        $rootHandle = env("SI4_ELASTIC_ROOT_COLLECTION");
+        $docDatas = ElasticHelpers::searchByHandleArray([$rootHandle]);
+        $docData = $docDatas[array_keys($docDatas)[0]];
+        $rootDetails = Si4Helpers::getEntityDetailsPresentation($docData);
+        return $rootDetails;
     }
 
     private function prepareIndexEntities() {

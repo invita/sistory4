@@ -13,8 +13,10 @@ $(document).ready(function() {
             }
         },
         select: function(e, ui) {
-            var handleId = ui.item.children("div").attr("data-handle");
-            location.href = "/details/"+handleId;
+            //var handleId = ui.item.children("div").attr("data-handle");
+            //location.href = "/details/"+handleId;
+            var url = ui.item.children("div").attr("data-url");
+            location.href = url;
         }
     });
 

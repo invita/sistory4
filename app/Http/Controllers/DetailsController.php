@@ -35,6 +35,11 @@ class DetailsController extends FrontendController
             //$data["doc"] = DcHelpers::mapElasticEntity($docData);
             $data["doc"] = Si4Helpers::getEntityDetailsPresentation($docData);
 
+            $externalCollection = Si4Util::pathArg($data, "doc/si4tech/externalCollection", null);
+            if ($externalCollection) {
+                return redirect($externalCollection);
+            }
+
             $struct_type = Si4Util::pathArg($docData, "_source/struct_type", "entity");
             $struct_subtype = Si4Util::pathArg($docData, "_source/struct_subtype", "default");
 
@@ -84,22 +89,28 @@ class DetailsController extends FrontendController
 
     private function prepareDataForCollection(Request $request, $hdl, $docData, &$data) {
 
+        $searchResultsSort = Si4Util::pathArg($docData, "_source/data/si4tech/searchResultsSort", null);
+        $sort = ElasticHelpers::elasticSortFromString($searchResultsSort);
+        //print_r($sort);
+
         // Find children
-        $childData = ElasticHelpers::searchChildren($hdl);
+        $childData = ElasticHelpers::searchChildren($hdl, 0, SI4_DEFAULT_PAGINATION_SIZE, $sort);
         $children = [];
         foreach ($childData as $child) {
             //$children[] = DcHelpers::mapElasticEntity($child);
             $children[] = Si4Helpers::getEntityListPresentation($child);
         }
         $data["children"] = $children;
-
-        //print_r($data);
+        //print_r(array_keys($childData));
     }
 
     private function prepareDataForEntity(Request $request, $hdl, $docData, &$data) {
 
+        $searchResultsSort = Si4Util::pathArg($docData, "_source/data/si4tech/searchResultsSort", null);
+        $sort = ElasticHelpers::elasticSortFromString($searchResultsSort);
+
         // Find children
-        $childData = ElasticHelpers::searchChildren($hdl);
+        $childData = ElasticHelpers::searchChildren($hdl, 0, SI4_DEFAULT_PAGINATION_SIZE, $sort);
         $children = [];
         foreach ($childData as $child) {
             $children[] = Si4Helpers::getEntityListPresentation($child);

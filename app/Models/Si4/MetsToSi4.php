@@ -60,6 +60,7 @@ class MetsToSi4
 
     private function doMetsStaticMapping() {
         $this->result["header"] = [];
+        $this->result["si4tech"] = [];
         $this->result["files"] = [];
 
         if ($this->metsXmlDOMDoc) {
@@ -73,6 +74,74 @@ class MetsToSi4
             $this->result["header"]["createDate"] = $this->domXPath->evaluate("string(/METS:mets/METS:metsHdr/@CREATEDATE)");
             $this->result["header"]["lastModDate"] = $this->domXPath->evaluate("string(/METS:mets/METS:metsHdr/@LASTMODDATE)");
             $this->result["header"]["recordStatus"] = $this->domXPath->evaluate("string(/METS:mets/METS:metsHdr/@RECORDSTATUS)");
+
+
+            // SI4 Technical administrative metadata
+            // elements with single value (only one value allowed per document)
+            $si4techMD_single = [
+                "additionalMetadata" => "additionalMetadata",
+                "pdfPage" => "pdfPage",
+                "removedTo" => "removedTo",
+                "externalCollection" => "externalCollection",
+                "searchResultsSort" => "searchResultsSort",
+                "searchResultsShow" => "searchResultsShow",
+            ];
+            // elements with multiple values (more values allowed per document)
+            $si4techMD_multi = [
+                "additionalMetadataURL" => "additionalMetadataURL",
+            ];
+            // elements with xml:lang parameter
+            $si4techMD_withLang = [
+                "desc" => "description",
+                "description" => "description"
+            ];
+            $si4tech_xmlDatas = $this->domXPath->query("/METS:mets/METS:amdSec/METS:techMD/METS:mdWrap[@OTHERMDTYPE='SI4']/METS:xmlData");
+            if ($si4tech_xmlDatas->length) {
+                foreach ($si4tech_xmlDatas as $si4techXmlData) {
+
+                    // Single
+                    foreach ($si4techMD_single as $elName => $reName) {
+                        $mdValue = $this->domXPath->evaluate("string(si4:".$elName.")", $si4techXmlData);
+                        if ($mdValue) $this->result["si4tech"][$reName] = $mdValue;
+                    }
+
+                    // Multi
+                    foreach ($si4techMD_multi as $elName => $reName) {
+                        $mdEls = $this->domXPath->query("si4:".$elName, $si4techXmlData);
+                        if ($mdEls->length) {
+                            foreach ($mdEls as $mdEl) {
+                                $mdValue = $this->domXPath->evaluate("string()", $mdEl);
+                                if ($mdValue) {
+                                    if (!isset($this->result["si4tech"][$reName])) $this->result["si4tech"][$reName] = [];
+                                    $this->result["si4tech"][$reName][] = $mdValue;
+                                }
+                            }
+                        }
+                    }
+
+                    // WithLang
+                    foreach ($si4techMD_withLang as $elName => $reName) {
+                        $mdEls = $this->domXPath->query("si4:".$elName, $si4techXmlData);
+                        if ($mdEls->length) {
+                            foreach ($mdEls as $mdEl) {
+                                $mdValue = $this->domXPath->evaluate("string()", $mdEl);
+                                if ($mdValue) {
+                                    $lang = $this->domXPath->evaluate("string(@xml:lang)", $mdEl);
+                                    if (!$lang) $lang = $this->domXPath->evaluate("string(@lang)", $mdEl);
+                                    if (!isset($this->result["si4tech"][$reName])) $this->result["si4tech"][$reName] = [];
+                                    $this->result["si4tech"][$reName][] = [
+                                        "lang" => $lang,
+                                        "value" => $mdValue
+                                    ];
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
+
 
             $agentRolesMap = [
                 "CREATOR" => "creators",

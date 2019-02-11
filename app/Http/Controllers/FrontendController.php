@@ -77,7 +77,7 @@ class FrontendController extends Controller
     private function topMenuRecurseChildren($menuItem, $level = 0) {
         $tabs = str_repeat("\t", $level *2);
         $itemResult = $tabs. "\t<li>\n";
-        $itemResult .= $tabs. "\t\t<div data-handle=\"".$menuItem["handle_id"]."\">". $menuItem["title"] ."</div>\n";
+        $itemResult .= $tabs. "\t\t<div data-handle=\"".$menuItem["handle_id"]."\" data-url=\"".$menuItem["url"]."\">". $menuItem["title"] ."</div>\n";
         if (count($menuItem["children"])) {
             $itemResult .= $tabs. "\t\t<ul>\n";
             foreach($menuItem["children"] as $childItem) {
@@ -109,7 +109,7 @@ class FrontendController extends Controller
     private function bottomMenuRecurseChildren($menuItem, $level = 0) {
         $tabs = str_repeat("\t", $level *2);
         $itemResult = $tabs. "\t<li>\n";
-        $itemResult .= $tabs. "\t\t<a href=\"/details/".$menuItem["handle_id"]."\">". $menuItem["title"] ."</a>\n";
+        $itemResult .= $tabs. "\t\t<a data-handle=\"".$menuItem["handle_id"]."\" href=\"".$menuItem["url"]."\">". $menuItem["title"] ."</a>\n";
         if (count($menuItem["children"])) {
             $itemResult .= $tabs. "\t\t<ul>\n";
             foreach($menuItem["children"] as $childItem) {

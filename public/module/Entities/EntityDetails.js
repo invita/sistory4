@@ -767,6 +767,7 @@ var F = function(args){
                 args.row.child_order = response.data.id;
                 args.row.handle_id = response.data.handle_id;
                 args.row.struct_subtype = response.data.struct_subtype;
+                args.row.active = true;
 
                 if (args.staticData) {
                     for (var i in args.staticData) args.row[i] = args.staticData[i];

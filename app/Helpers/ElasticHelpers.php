@@ -100,18 +100,21 @@ class ElasticHelpers
                     "type": "integer"
                 },
                 "handle_id": {
-                    "type": "string"
+                    "type": "string",
+                    "fielddata": true
                 },
                 "child_order": {
                     "type": "integer"
                 },
                 "data.si4.title.value": {
                     "type": "string",
-                    "analyzer": "lowercase_analyzer"
+                    "analyzer": "lowercase_analyzer",
+                    "fielddata": true
                 },
                 "data.si4.creator.value": {
                     "type": "string",
-                    "analyzer": "lowercase_analyzer"
+                    "analyzer": "lowercase_analyzer",
+                    "fielddata": true
                 }
             }
         }
@@ -608,8 +611,14 @@ HERE;
     }
 
 
-    public static function searchChildren($parent, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE)
+    public static function searchChildren($parent, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sort = null)
     {
+        if (!$sort) {
+            $sort = [
+                ["child_order" => [ "order" => "asc" ]]
+            ];
+        }
+
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
             "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
@@ -619,10 +628,7 @@ HERE;
                         "parent" => $parent
                     ]
                 ],
-                "sort" => [
-                    ["child_order" => [ "order" => "asc" ]]
-                ],
-
+                "sort" => $sort,
                 "from" => $offset,
                 "size" => $limit,
             ]
@@ -634,6 +640,40 @@ HERE;
 
         return self::elasticResultToAssocArray($dataElastic);
         // self::mergeElasticResultAndIdArray($dataElastic, $idArray);
+    }
+
+
+    public static function elasticSortFromString($sortStr, $defaultFieldName = "child_order", $defaultOrder = "desc") {
+        if ($sortStr && is_string($sortStr)) {
+            $exp = explode(" ", $sortStr);
+            $fieldName = isset($exp[0]) ? $exp[0] : $defaultFieldName;
+            $order = isset($exp[1]) ? $exp[1] : $defaultOrder;
+
+            $fieldName = strtolower($fieldName);
+            $si4fields = array_keys(Si4Field::getSi4FieldsArray());
+            if (!in_array($fieldName, $si4fields)) {
+                $fieldName = $defaultFieldName;
+                if (!in_array($fieldName, $si4fields)) $fieldName = "child_order";
+            } else {
+                // Valid si4 field
+                $fieldName = "data.si4.".$fieldName.".value";
+            }
+
+            $orders = ["desc", "asc"];
+            $order = @strtolower($order);
+            if ($order === "descending") $order = "desc";
+            if ($order === "ascending") $order = "asc";
+            if (!in_array($order, $orders)) $order = $defaultOrder;
+            if (!in_array($order, $orders)) $order = "asc";
+
+        } else {
+            $fieldName = $defaultFieldName;
+            $order = $defaultOrder;
+        }
+        $result = [
+            [$fieldName => [ "order" => $order ]]
+        ];
+        return $result;
     }
 
 
