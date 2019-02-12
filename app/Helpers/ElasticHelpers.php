@@ -643,7 +643,7 @@ HERE;
     }
 
 
-    public static function elasticSortFromString($sortStr, $defaultFieldName = "child_order", $defaultOrder = "desc") {
+    public static function elasticSortFromString($sortStr, $defaultFieldName = "child_order", $defaultOrder = "asc") {
         if ($sortStr && is_string($sortStr)) {
             $exp = explode(" ", $sortStr);
             $fieldName = isset($exp[0]) ? $exp[0] : $defaultFieldName;
