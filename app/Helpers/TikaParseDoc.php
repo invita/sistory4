@@ -11,6 +11,7 @@ class TikaParseDoc
         if (!self::$tikaClient) {
             $tikaPath = base_path()."/lib/tika-app-1.18.jar";
             self::$tikaClient = Client::make($tikaPath);
+            self::$tikaClient->setOptions([CURLOPT_ENCODING => ""]);
         }
         return self::$tikaClient;
     }
@@ -25,7 +26,15 @@ class TikaParseDoc
         $fullFileName = self::getFullPath($fileName);
 
         print_r("Extracting ".$fullFileName);
+
         $text = $tikaClient->getText($fullFileName);
+        $text2 = mb_convert_encoding($text, 'UTF-8');
+
+        echo "[TEXT ORIG]\n";
+        print_r($text);
+        echo "[TEXT UTF]\n";
+        print_r($text2);
+
         //echo "text: "; print_r($text); echo "\n";
 
         return $text;
