@@ -25,15 +25,14 @@ class TikaParseDoc
         $tikaClient = self::getTikaClient();
         $fullFileName = self::getFullPath($fileName);
 
-        print_r("Extracting ".$fullFileName);
-
+        //print_r("Extracting ".$fullFileName);
         $text = $tikaClient->getText($fullFileName);
-        $text2 = mb_convert_encoding($text, 'UTF-8');
 
-        echo "[TEXT ORIG]\n";
-        print_r($text);
-        echo "[TEXT UTF]\n";
-        print_r($text2);
+        //$text2 = mb_convert_encoding($text, 'UTF-8');
+        //echo "[TEXT ORIG]\n";
+        //print_r($text);
+        //echo "[TEXT UTF]\n";
+        //print_r($text2);
 
         //echo "text: "; print_r($text); echo "\n";
 

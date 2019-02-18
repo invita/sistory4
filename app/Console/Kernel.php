@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
         Commands\Si4OaiReseed::class,
         Commands\LangDbToFile::class,
         Commands\LangFileToDb::class,
+        Commands\TestTikaRead::class,
         Commands\TestTest::class,
     ];
 
