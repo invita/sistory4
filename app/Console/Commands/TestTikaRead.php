@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Helpers\ElasticHelpers;
 use App\Helpers\Si4Util;
+use App\Helpers\TikaParseDoc;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
 use Illuminate\Console\Command;
@@ -59,8 +60,6 @@ class TestTikaRead extends Command
         $elasticSource = $elasticData["hits"]["hits"][0]["_source"];
 
         $this->info("Extracting text from files...");
-
-        echo "ČŠŽ!\n";
 
         $tikaStatus = EntityElastic::extractTextFromFiles($entity, $elasticSource);
 

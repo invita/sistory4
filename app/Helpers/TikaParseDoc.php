@@ -26,6 +26,9 @@ class TikaParseDoc
         $fullFileName = self::getFullPath($fileName);
 
         //print_r("Extracting ".$fullFileName);
+
+        echo "Version: ".$tikaClient->getVersion()."\n";
+
         $text = $tikaClient->getText($fullFileName);
 
         //$text2 = mb_convert_encoding($text, 'UTF-8');
