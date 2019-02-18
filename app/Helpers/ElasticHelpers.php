@@ -100,21 +100,23 @@ class ElasticHelpers
                     "type": "integer"
                 },
                 "handle_id": {
-                    "type": "string",
-                    "fielddata": true
+                    "type": "text"
                 },
                 "child_order": {
                     "type": "integer"
                 },
                 "data.si4.title.value": {
-                    "type": "string",
-                    "analyzer": "lowercase_analyzer",
-                    "fielddata": true
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
                 },
                 "data.si4.creator.value": {
-                    "type": "string",
+                    "type": "text",
+                    "analyzer": "lowercase_analyzer"
+                },
+                "data.files.fullText": {
+                    "type": "text",
                     "analyzer": "lowercase_analyzer",
-                    "fielddata": true
+                    "term_vector": "with_positions_offsets"
                 }
             }
         }
@@ -306,18 +308,18 @@ HERE;
                         "query" => $queryString
                     ],
                 ]];
-                /*
-                $highlight = [
-                    "fields" => [
-                        "data.files.fullText" => [
-                            "fragment_size" => 110,
-                            "number_of_fragments" => 3,
-                            "pre_tags" => [""],
-                            "post_tags" => [""]
+                if (env("SI4_ELASTIC_HIGHLIGHT")) {
+                    $highlight = [
+                        "fields" => [
+                            "data.files.fullText" => [
+                                "fragment_size" => 110,
+                                "number_of_fragments" => 3,
+                                "pre_tags" => [""],
+                                "post_tags" => [""]
+                            ]
                         ]
-                    ]
-                ];
-                */
+                    ];
+                }
                 break;
         }
 

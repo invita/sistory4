@@ -615,49 +615,53 @@ class Si4Helpers {
     public static function findFileFullTextHits(&$entityPresentation, $elasticEntity, $q) {
 
         // This is now done by Elastic.
-        //$entityPresentation["file"]["fullTextHits"] = Si4Util::pathArg($elasticEntity, "highlight", []);
-        //return;
+        if (env("SI4_ELASTIC_HIGHLIGHT")) {
+            $entityPresentation["file"]["fullTextHits"] = Si4Util::pathArg($elasticEntity, "highlight", []);
+        } else {
 
-        if (!isset($entityPresentation["file"])) return;
-        $entityPresentation["file"]["fullTextHits"] = [];
-        $fullText = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fullText", "");
-        //print_r($elasticEntity);
-        if (!$fullText) return;
-        if (!$q) return;
+            // Custom PHP highlighting
+            if (!isset($entityPresentation["file"])) return;
+            $entityPresentation["file"]["fullTextHits"] = [];
+            $fullText = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fullText", "");
+            //print_r($elasticEntity);
+            if (!$fullText) return;
+            if (!$q) return;
 
-        $qWords = explode(" ", $q);
+            $qWords = explode(" ", $q);
 
-        $beforeCharsCount = 50;
-        $afterCharsCount = 50;
+            $beforeCharsCount = 50;
+            $afterCharsCount = 50;
 
-        //print_r($qWords); die();
+            //print_r($qWords); die();
 
-        foreach ($qWords as $qWord) {
-            $qWordLen = mb_strlen($qWord);
-            $pos = -1;
-            for ($i = 0; $i < 3; $i++) {
-                $pos = stripos($fullText, $qWord, $pos +1);
-                if ($pos === false) break;
+            foreach ($qWords as $qWord) {
+                $qWordLen = mb_strlen($qWord);
+                $pos = -1;
+                for ($i = 0; $i < 3; $i++) {
+                    $pos = stripos($fullText, $qWord, $pos +1);
+                    if ($pos === false) break;
 
-                $startPos = max(0, $pos -$beforeCharsCount);
-                $len = $qWordLen +($pos -$startPos) +$afterCharsCount;
-                $innerText = substr($fullText, $startPos, $len);
+                    $startPos = max(0, $pos -$beforeCharsCount);
+                    $len = $qWordLen +($pos -$startPos) +$afterCharsCount;
+                    $innerText = substr($fullText, $startPos, $len);
 
-                $firstSpacePos = stripos($innerText, " ");
-                if (!$firstSpacePos || $firstSpacePos > $beforeCharsCount) $firstSpacePos = 0;
+                    $firstSpacePos = stripos($innerText, " ");
+                    if (!$firstSpacePos || $firstSpacePos > $beforeCharsCount) $firstSpacePos = 0;
 
-                $lastSpacePos = strripos($innerText, " ");
-                if (!$lastSpacePos || $lastSpacePos < $beforeCharsCount + $qWordLen) $lastSpacePos = strlen($innerText);
+                    $lastSpacePos = strripos($innerText, " ");
+                    if (!$lastSpacePos || $lastSpacePos < $beforeCharsCount + $qWordLen) $lastSpacePos = strlen($innerText);
 
-                $innerTextClean = substr($innerText, $firstSpacePos +1, $lastSpacePos -$firstSpacePos -1); //." ...";
+                    $innerTextClean = substr($innerText, $firstSpacePos +1, $lastSpacePos -$firstSpacePos -1); //." ...";
 
-                //if ($startPos > 0) $innerTextClean = "... ".$innerTextClean;
+                    //if ($startPos > 0) $innerTextClean = "... ".$innerTextClean;
 
-                //$innerTextStyled = "...".preg_replace("/(".$qWord.")/i", '<span class="match">$1</span>', $innerTextClean)."...";
+                    //$innerTextStyled = "...".preg_replace("/(".$qWord.")/i", '<span class="match">$1</span>', $innerTextClean)."...";
 
-                $entityPresentation["file"]["fullTextHits"][] = $innerTextClean;
-                //$entityPresentation["file"]["fullTextHitsHtml"][] = $innerTextStyled;
+                    $entityPresentation["file"]["fullTextHits"][] = $innerTextClean;
+                    //$entityPresentation["file"]["fullTextHitsHtml"][] = $innerTextStyled;
+                }
             }
+
         }
     }
 
