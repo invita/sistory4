@@ -20,6 +20,7 @@ class Si4Helpers {
     //  TO DELETE the rest of Si4Model here
 
     // Return a new field definition assuming default values for non-specified attributes
+    /*
     private static function fieldDefinition($fieldDefs) {
         return [
             "fieldName" => $fieldDefs["fieldName"],
@@ -32,11 +33,12 @@ class Si4Helpers {
             "oai_dcName" => Si4Util::getArg($fieldDefs, "dcName", "dc:".$fieldDefs["fieldName"]),
         ];
     }
+    */
 
     // Si4 field definitions
-    public static $si4FieldDefinitions;
-    public static function initFieldDefinitions() {
-        self::$si4FieldDefinitions = [
+    //public static $si4FieldDefinitions;
+    //public static function initFieldDefinitions() {
+    //    self::$si4FieldDefinitions = [
             /*
             // Notes:
             "fieldName" => self::fieldDefinition([
@@ -50,6 +52,7 @@ class Si4Helpers {
                 "oai_dcName" => "dc:fieldName", // oai_dc field output xml tag name
             ]),
             */
+    /*
             "title" => self::fieldDefinition([
                 "fieldName" => "title",
                 "hasLanguage" => true,
@@ -492,6 +495,7 @@ class Si4Helpers {
             ]),
         ];
     }
+    */
 
 
     // defaultLang is used for fields with no language data but with hasLanguage definition attribute set to true
@@ -611,9 +615,8 @@ class Si4Helpers {
     public static function findFileFullTextHits(&$entityPresentation, $elasticEntity, $q) {
 
         // This is now done by Elastic.
-        $entityPresentation["file"]["fullTextHits"] = Si4Util::pathArg($elasticEntity, "highlight", []);
+        //$entityPresentation["file"]["fullTextHits"] = Si4Util::pathArg($elasticEntity, "highlight", []);
 
-        /*
         if (!isset($entityPresentation["file"])) return;
         $entityPresentation["file"]["fullTextHits"] = [];
         $fullText = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fullText", "");
@@ -655,7 +658,6 @@ class Si4Helpers {
                 //$entityPresentation["file"]["fullTextHitsHtml"][] = $innerTextStyled;
             }
         }
-        */
     }
 
 
