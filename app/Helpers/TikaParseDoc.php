@@ -24,6 +24,7 @@ class TikaParseDoc
         $tikaClient = self::getTikaClient();
         $fullFileName = self::getFullPath($fileName);
 
+        print_r("Extracting ".$fullFileName);
         $text = $tikaClient->getText($fullFileName);
         //echo "text: "; print_r($text); echo "\n";
 

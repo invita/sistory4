@@ -300,7 +300,7 @@ class EntityElastic
             $filePath = FileHelpers::getPublicStorageName($entityHandleId, $fileName);
             $docText = TikaParseDoc::parseText($filePath);
             $entityElastic["data"]["files"][$idx]["fullText"] = $docText;
-            print_r($docText);
+            //print_r($docText);
         }
 
         return true;
