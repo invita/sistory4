@@ -601,10 +601,12 @@ input:checked + #collectionSearchIndicator {
       .dataWrapper {
         font-weight: 300;
         &.basic {
+          .value {
+            width: 200px;
+          }
           .title {
             line-height: 21px;
             font-weight: 500;
-            width: 200px;
           }
         }
         &.fullTextHits {
