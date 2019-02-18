@@ -677,4 +677,4 @@ class Si4Helpers {
     }
 }
 
-Si4Helpers::initFieldDefinitions();
+//Si4Helpers::initFieldDefinitions();
