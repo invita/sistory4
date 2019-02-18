@@ -12,7 +12,6 @@ class TikaParseDoc
             $tikaPath = base_path()."/lib/tika-app-1.18.jar";
             self::$tikaClient = Client::make($tikaPath);
             self::$tikaClient->setJava('java -Dfile.encoding=UTF-8');
-            //self::$tikaClient->setOptions([CURLOPT_ENCODING => ""]);
         }
         return self::$tikaClient;
     }

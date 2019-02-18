@@ -615,8 +615,8 @@ class Si4Helpers {
     public static function findFileFullTextHits(&$entityPresentation, $elasticEntity, $q) {
 
         // This is now done by Elastic.
-        $entityPresentation["file"]["fullTextHits"] = Si4Util::pathArg($elasticEntity, "highlight", []);
-        return;
+        //$entityPresentation["file"]["fullTextHits"] = Si4Util::pathArg($elasticEntity, "highlight", []);
+        //return;
 
         if (!isset($entityPresentation["file"])) return;
         $entityPresentation["file"]["fullTextHits"] = [];
@@ -649,9 +649,9 @@ class Si4Helpers {
                 $lastSpacePos = strripos($innerText, " ");
                 if (!$lastSpacePos || $lastSpacePos < $beforeCharsCount + $qWordLen) $lastSpacePos = strlen($innerText);
 
-                $innerTextClean = substr($innerText, $firstSpacePos +1, $lastSpacePos -$firstSpacePos -1) ." ...";
+                $innerTextClean = substr($innerText, $firstSpacePos +1, $lastSpacePos -$firstSpacePos -1); //." ...";
 
-                if ($startPos > 0) $innerTextClean = "... ".$innerTextClean;
+                //if ($startPos > 0) $innerTextClean = "... ".$innerTextClean;
 
                 //$innerTextStyled = "...".preg_replace("/(".$qWord.")/i", '<span class="match">$1</span>', $innerTextClean)."...";
 
