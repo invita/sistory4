@@ -615,7 +615,8 @@ class Si4Helpers {
     public static function findFileFullTextHits(&$entityPresentation, $elasticEntity, $q) {
 
         // This is now done by Elastic.
-        //$entityPresentation["file"]["fullTextHits"] = Si4Util::pathArg($elasticEntity, "highlight", []);
+        $entityPresentation["file"]["fullTextHits"] = Si4Util::pathArg($elasticEntity, "highlight", []);
+        return;
 
         if (!isset($entityPresentation["file"])) return;
         $entityPresentation["file"]["fullTextHits"] = [];

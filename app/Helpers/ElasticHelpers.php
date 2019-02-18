@@ -306,7 +306,6 @@ HERE;
                         "query" => $queryString
                     ],
                 ]];
-                /*
                 $highlight = [
                     "fields" => [
                         "data.files.fullText" => [
@@ -317,6 +316,7 @@ HERE;
                         ]
                     ]
                 ];
+                /*
                 */
                 break;
         }
