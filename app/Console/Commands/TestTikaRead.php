@@ -60,6 +60,8 @@ class TestTikaRead extends Command
 
         $this->info("Extracting text from files...");
 
+        echo "ČŠŽ!\n";
+
         $tikaStatus = EntityElastic::extractTextFromFiles($entity, $elasticSource);
 
         $this->info("tikaStatus: ".$tikaStatus);
