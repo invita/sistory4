@@ -604,6 +604,7 @@ input:checked + #collectionSearchIndicator {
           .title {
             line-height: 21px;
             font-weight: 500;
+            width: 200px;
           }
         }
         &.fullTextHits {
