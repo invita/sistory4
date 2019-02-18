@@ -11,7 +11,7 @@ class TikaParseDoc
         if (!self::$tikaClient) {
             $tikaPath = base_path()."/lib/tika-app-1.18.jar";
             self::$tikaClient = Client::make($tikaPath);
-            self::$tikaClient->setOptions([CURLOPT_ENCODING => ""]);
+            //self::$tikaClient->setOptions([CURLOPT_ENCODING => ""]);
         }
         return self::$tikaClient;
     }
