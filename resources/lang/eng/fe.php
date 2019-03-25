@@ -189,4 +189,5 @@ return [
 	'si4_field_version' => 'Version',
 	'si4_field_volume' => 'Volume',
 	'si4_field_workPackageLeader' => 'Work package leader',
+    'footer_footerText' => '© Copyright 2011-2019 INZ, SISTORY - History of Slovenia'
 ];
