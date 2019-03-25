@@ -59,6 +59,7 @@ class ReindexEntity extends Command
             $metsToSi4 = new MetsToSi4($entity->xml);
             if ($prevFullText) $metsToSi4->setFullText($prevFullText);
             $si4Data = $metsToSi4->run();
+
             //print_r($si4Data);
             Timer::stop("entityMapping");
 

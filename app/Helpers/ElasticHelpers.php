@@ -107,11 +107,21 @@ class ElasticHelpers
                 },
                 "data.si4.title.value": {
                     "type": "text",
-                    "analyzer": "lowercase_analyzer"
+                    "analyzer": "lowercase_analyzer",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword"
+                        }
+                    }
                 },
                 "data.si4.creator.value": {
                     "type": "text",
-                    "analyzer": "lowercase_analyzer"
+                    "analyzer": "lowercase_analyzer",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword"
+                        }
+                    }
                 },
                 "data.files.fullText": {
                     "type": "text",
@@ -461,6 +471,7 @@ HERE;
 
         return self::search($query, 0, $limit, "child_order", "asc");
     }
+
     public static function suggestTitlesForCreator($creator, $title, $searchType = "all", $limit = 30)
     {
         $must = [];
@@ -660,7 +671,11 @@ HERE;
                 if (!in_array($fieldName, $si4fields)) $fieldName = "child_order";
             } else {
                 // Valid si4 field
-                $fieldName = "data.si4.".$fieldName.".value";
+                if ($fieldName == "title" || $fieldName == "creator") {
+                    $fieldName = "data.si4.".$fieldName.".value.keyword";
+                } else {
+                    $fieldName = "data.si4.".$fieldName.".value";
+                }
             }
 
             $orders = ["desc", "asc"];
