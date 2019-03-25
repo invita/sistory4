@@ -1,6 +1,6 @@
 <?php
 // This file is auto-generated using artisan lang:dbToFile command.
-// [date=2018-11-27, module=fe, lang=eng]
+// [date=2019-02-17, module=fe, lang=eng]
 return [
 	'advSearch_field_contributor' => 'Contributor 1234',
 	'advSearch_field_coverage' => 'Coverage',
@@ -44,8 +44,8 @@ return [
 	'search_placeholderPrefix' => 'Search',
 	'search_placeholderPrefixCollection' => 'Search in',
 	'search_searchButton' => 'Search',
-	'search_textInCollection' => 'Search inside',
-	'searchType_all' => 'All',
+	'search_textInCollection' => 'Search inside collection',
+	'searchType_all' => 'All metadata',
 	'searchType_collection' => 'Collections metadata',
 	'searchType_entity' => 'Digital objects metadata',
 	'searchType_file' => 'Files metadata',

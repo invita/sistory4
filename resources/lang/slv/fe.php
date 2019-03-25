@@ -1,6 +1,6 @@
 <?php
 // This file is auto-generated using artisan lang:dbToFile command.
-// [date=2018-11-27, module=fe, lang=slv]
+// [date=2019-02-17, module=fe, lang=slv]
 return [
 	'advSearch_field_contributor' => 'Prispevali tudi test',
 	'advSearch_field_coverage' => 'Pokritje',
@@ -44,8 +44,8 @@ return [
 	'search_placeholderPrefix' => 'Išči',
 	'search_placeholderPrefixCollection' => 'Išči po',
 	'search_searchButton' => 'Išči',
-	'search_textInCollection' => 'Išči znotraj',
-	'searchType_all' => 'Vse',
+	'search_textInCollection' => 'Išči znotraj zbirke',
+	'searchType_all' => 'Vse metapodatke',
 	'searchType_collection' => 'Metapodatki zbirk',
 	'searchType_entity' => 'Metapodatki entitet',
 	'searchType_file' => 'Metapodatki datotek',
