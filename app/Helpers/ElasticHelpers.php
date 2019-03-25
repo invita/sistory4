@@ -264,6 +264,9 @@ HERE;
             "data.si4.title.value",
         ];
 
+        $queryString = mb_ereg_replace("-", " ", $queryString);
+        $queryString = mb_ereg_replace("  ", " ", $queryString);
+
         $searchWords = explode(" ", $queryString);
         $must = [];
         $should = [];
@@ -335,11 +338,9 @@ HERE;
 
         // Apply handle_id filter
         if ($hdl) {
-            // TODO: Must index parent hierarchy to enable search for nested children
-            // For now find only first level children, whose parent is directly $hdl
             $must[] = [
                 "query_string" => [
-                    "fields" => ["parent"],
+                    "fields" => ["hierarchy"],
                     "query" => $hdl
                 ],
             ];
@@ -433,26 +434,8 @@ HERE;
 
 
 
-    public static function suggestCreators($creatorTerm, $searchType = "all", $limit = 30)
+    public static function suggestCreators($creatorTerm, $searchType = "all", $parent = null, $limit = 30)
     {
-        /*
-        $creatorWords = explode(" ", $creatorTerm);
-        $must = [];
-
-        foreach ($creatorWords as $creatorWord) {
-            $must[] = [
-                "query_string" => [
-                    "fields" => [
-                        "data.si4.creator.value",
-                    ],
-                    "query" => $creatorWord."*"
-                ],
-            ];
-        }
-        $query = [
-            "bool" => [ "must" => $must ]
-        ];
-        */
 
         $creatorWords = explode(" ", $creatorTerm);
         $creatorSimple = "";
@@ -460,6 +443,8 @@ HERE;
         if (count($creatorWords) > 1) $creatorSimple .= " ".$creatorWords[1];
 
         $queryStringWild = $creatorSimple."*";
+
+        /*
         $query = [
             "query_string" => [
                 "fields" => [
@@ -468,11 +453,36 @@ HERE;
                 "query" => $queryStringWild
             ]
         ];
+        */
+
+        $must = [];
+        $must[] = [
+            "query_string" => [
+                "fields" => [
+                    "data.si4.creator.value",
+                ],
+                "query" => $queryStringWild
+            ]
+        ];
+
+        if ($parent) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => ["hierarchy"],
+                    "query" => $parent
+                ]
+            ];
+        }
+
+        $query = [
+            "bool" => [ "must" => $must ]
+        ];
+
 
         return self::search($query, 0, $limit, "child_order", "asc");
     }
 
-    public static function suggestTitlesForCreator($creator, $title, $searchType = "all", $limit = 30)
+    public static function suggestTitlesForCreator($creator, $title, $searchType = "all", $parent = null, $limit = 30)
     {
         $must = [];
 
@@ -501,6 +511,16 @@ HERE;
                 ],
             ];
         }
+
+        if ($parent) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => ["hierarchy"],
+                    "query" => $parent
+                ]
+            ];
+        }
+
 
         $query = [
             "bool" => [ "must" => $must ]

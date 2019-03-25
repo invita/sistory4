@@ -15,9 +15,11 @@ $(document).ready(function() {
 
     if (!q) return;
 
+    var badChars = ["%C4%8D", "%C5%A1", "%C5%BE", "%C4%8C", "%C5%A0", "%C5%BD"];
     var qWords = q.split("+");
     for (var i in qWords) {
         var qWord = qWords[i];
+        qWord = qWord.replace(new RegExp(badChars.join("|"), "g"), ".");
         if (!qWord) continue;
         $(".dataWrapper .value").each(function() {
             var html = $(this).html();

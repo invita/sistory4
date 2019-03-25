@@ -95,6 +95,7 @@ class AjaxController extends Controller
         $term = $request->query("term", "");
         $termLower = mb_strtolower($term);
         $st = $request->query("st", "all");
+        $parent = $request->query("parent", null);
         //echo "termLower: '".$termLower."'\n";
 
         //$termWords = explode(" ", $term);
@@ -103,7 +104,7 @@ class AjaxController extends Controller
 
         // Find potential creators
 
-        $creatorElasticData = ElasticHelpers::suggestCreators($termLower, $st);
+        $creatorElasticData = ElasticHelpers::suggestCreators($termLower, $st, $parent);
         $creatorAssocData = ElasticHelpers::elasticResultToAssocArray($creatorElasticData);
 
         $creatorResults = [];
@@ -173,7 +174,7 @@ class AjaxController extends Controller
             $termRest = trim(mb_substr($termLower, mb_strlen($oneCreator)));
             //echo "termRest {$termRest}\n";
 
-            $titleElasticData = ElasticHelpers::suggestTitlesForCreator($oneCreator, $termRest, $st, 10);
+            $titleElasticData = ElasticHelpers::suggestTitlesForCreator($oneCreator, $termRest, $st, $parent, 10);
             $titleAssocData = ElasticHelpers::elasticResultToAssocArray($titleElasticData);
 
             foreach ($titleAssocData as $doc) {

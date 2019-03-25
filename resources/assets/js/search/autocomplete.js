@@ -4,6 +4,10 @@ $(document).ready(function() {
         //source: "/ajax/searchSuggest",
         source: function(request, response) {
             request.st = $("#searchForm select[name=st]").val();
+
+            var searchInsideCurrent = $("#searchInsideCurrent").val();
+            if (searchInsideCurrent) request.parent = searchInsideCurrent;
+
             $.getJSON("/ajax/searchSuggest", request, response);
         },
         open: function(e,ui) {
@@ -13,7 +17,7 @@ $(document).ready(function() {
             //console.log(acData.menu);
             acData.menu.element.find('.ui-menu-item-wrapper').each(function() {
                 var me = $(this);
-                console.log(me.text());
+                //console.log(me.text());
                 me.html(me.text().replace(acData.term, styledTerm));
             });
         }

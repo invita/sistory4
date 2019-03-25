@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\DbHierarchyHelpers;
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\Si4Util;
@@ -47,6 +48,7 @@ class ReindexEntity extends Command
         $this->info("Indexing entity {$entityId}");
 
         $entity = Entity::find($entityId);
+
         if ($entity) {
 
             Timer::start("keepIndexedFullText");
@@ -63,10 +65,15 @@ class ReindexEntity extends Command
             //print_r($si4Data);
             Timer::stop("entityMapping");
 
+            Timer::start("entityParentHierarchy");
+            $hierarchy = DbHierarchyHelpers::getParentHierarchyHandles($entity->handle_id);
+            Timer::stop("entityParentHierarchy");
+
             $indexBody = [
                 "id" => $entity->id,
                 "handle_id" => $entity->handle_id,
                 "parent" => $entity->parent,
+                "hierarchy" => $hierarchy,
                 "primary" => $entity->primary,
                 "collection" => $entity->collection,
                 "struct_type" => $entity->struct_type,
