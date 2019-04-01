@@ -72,7 +72,7 @@ return [
 	'si4_field_coverage' => 'Obseg',
 	'si4_field_coverageSpatial' => 'Prostorska lokacija',
 	'si4_field_coverageTemporal' => 'Časovni okvir',
-	'si4_field_creator' => 'Avtor Bla',
+	'si4_field_creator' => 'Avtor',
 	'si4_field_dataCollector' => 'Zbiralec podatkov',
 	'si4_field_dataCurator' => 'Skrbnik podatkov',
 	'si4_field_dataManager' => 'Upravljalec podatkov',
