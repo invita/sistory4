@@ -32,6 +32,7 @@ return [
 	'details_dcSource' => 'Source',
 	'details_dcSubject' => 'Subject',
 	'details_dcType' => 'Type',
+    'details_childEntities' => 'Child entities',
 	'details_fileCreated' => 'Created',
 	'details_fileDownload' => 'Download',
 	'details_fileSize' => 'Size',

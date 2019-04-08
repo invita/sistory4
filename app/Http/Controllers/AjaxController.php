@@ -109,7 +109,7 @@ class AjaxController extends Controller
 
         $creatorResults = [];
         foreach ($creatorAssocData as $doc) {
-            //$creators = DcHelpers::dcTextArray(Si4Util::pathArg($doc, "_source/data/si4/creator", []));
+            //$creators = Si4Util::arrayValues(Si4Util::pathArg($doc, "_source/data/si4/creator", []));
             $creators = Si4Util::pathArg($doc, "_source/data/si4/creator", []);
             foreach ($creators as $creator) {
                 $c = Si4Util::getArg($creator, "value", "");

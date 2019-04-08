@@ -1,4 +1,4 @@
-const { mix } = require('laravel-mix');
+const mix = require('laravel-mix');
 
 mix.disableNotifications();
 
@@ -14,9 +14,6 @@ mix.disableNotifications();
  |
  */
 
-//mix.js('resources/assets/js/app.js', 'public/js')
-//   .sass('resources/assets/sass/app.scss', 'public/css');
-
 mix.sass('resources/assets/sass/common-fe.scss', 'public/css');
 mix.sass('resources/assets/sass/sites/sidih-fe.scss', 'public/sites/sidih/css/fe.css');
 mix.sass('resources/assets/sass/sites/sidih-be.scss', 'public/sites/sidih/css/be.css');
@@ -27,6 +24,7 @@ mix.combine([
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/jquery-ui-bundle/jquery-ui.min.js',
     'node_modules/foundation-sites/dist/js/foundation.min.js',
+    'resources/assets/js/lib/openseadragon-bin-2.4.0/openseadragon.min.js',
     'resources/assets/js/common/jsData.js',
     'resources/assets/js/common/accordion.js',
     'resources/assets/js/common/topMenu.js',
@@ -36,3 +34,4 @@ mix.combine([
     'resources/assets/js/app.js',
 ], 'public/js/app.js');
 
+mix.copyDirectory('resources/assets/js/lib/openseadragon-bin-2.4.0/images', 'public/images/vendor/openseadragon');

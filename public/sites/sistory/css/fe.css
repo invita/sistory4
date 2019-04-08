@@ -1,1 +1,124 @@
-#si4 .searchFormContainer{border-bottom:2px solid #833;border-left:1px solid #833;border-right:1px solid #833;background:-webkit-gradient(linear,left top,left bottom,from(rgba(136,51,51,.2)),to(transparent));background:linear-gradient(180deg,rgba(136,51,51,.2) 0,transparent)}#si4 .button{background-color:#833;color:#fff}#si4 .button:hover{background-color:#632525}#si4 .entitySearchWrap.esrCards .searchResult{-webkit-box-shadow:2px 2px 3px 1px #836b6b;box-shadow:2px 2px 3px 1px #836b6b}#si4 .entitySearchWrap.esrCards .searchResult:hover{-webkit-box-shadow:2px 2px 6px 2px #836b6b;box-shadow:2px 2px 6px 2px #836b6b}#si4 .entitySearchWrap.esrTable .searchResult{border-bottom:1px solid rgba(136,51,51,.3)}#si4 .entitySearchWrap.esrTable .searchResult:nth-child(odd){background-color:rgba(136,51,51,.02)}#si4 .entitySearchWrap.esrTable .searchResult:nth-child(2n){background-color:rgba(136,51,51,.06)}#si4 .entitySearchWrap.esrTable .searchResult:hover{background-color:rgba(136,51,51,.1)}#si4 .entitySearchWrap.esrTable .searchResult .dataWrapper .match{color:#006;background-color:#ff9}#si4 .searchAutocompleteTerm{color:#833}#si4 .detailsContent .childrenWrap .child:hover{background-color:rgba(136,51,51,.03);border:1px solid rgba(136,51,51,.7)}#si4 .fileDetails .fileName .mime{color:#833}#si4 .si4button{color:#000;border:1px solid silver;border-radius:5px;padding:4px 10px;margin-top:10px;cursor:pointer;background:-webkit-gradient(linear,left top,left bottom,from(rgba(136,51,51,.2)),to(transparent));background:linear-gradient(180deg,rgba(136,51,51,.2) 0,transparent);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#338e130b",endColorstr="#006d0019",GradientType=0)}#si4 .si4button:focus,#si4 .si4button:hover{color:#000;border-color:#833}#si4 .accordion{background:-webkit-gradient(linear,left top,left bottom,from(rgba(136,51,51,.2)),to(transparent));background:linear-gradient(180deg,rgba(136,51,51,.2) 0,transparent)}#si4 .accordion:hover{background:-webkit-gradient(linear,left top,left bottom,from(rgba(136,51,51,.3)),to(transparent));background:linear-gradient(180deg,rgba(136,51,51,.3) 0,transparent)}#si4 #topMenu{border:none;border-bottom:1px solid #833}#si4 #topMenu .ui-widget.ui-widget-content{border:1px solid #833}#si4 #topMenu .ui-state-active{border-color:#833;color:#000;background:-webkit-gradient(linear,left top,left bottom,from(rgba(136,51,51,.2)),to(transparent));background:linear-gradient(180deg,rgba(136,51,51,.2) 0,transparent);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#338e130b",endColorstr="#006d0019",GradientType=0)}
+/* Colors */
+
+#si4 {
+  /* Search box */
+  /* si4button */
+  /* accordion */
+}
+
+#si4 .searchFormContainer {
+  border-bottom: #883333 solid 2px;
+  border-left: #883333 solid 1px;
+  border-right: #883333 solid 1px;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(136, 51, 51, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#si4 .button {
+  background-color: #883333;
+  color: white;
+}
+
+#si4 .button:hover {
+  background-color: #632525;
+}
+
+#si4 .entitySearchWrap.esrCards .searchResult {
+  box-shadow: 2px 2px 3px 1px #836b6b;
+}
+
+#si4 .entitySearchWrap.esrCards .searchResult:hover {
+  box-shadow: 2px 2px 6px 2px #836b6b;
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult {
+  border-bottom: rgba(136, 51, 51, 0.3) solid 1px;
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:nth-child(odd) {
+  background-color: rgba(136, 51, 51, 0.02);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:nth-child(even) {
+  background-color: rgba(136, 51, 51, 0.06);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:hover {
+  background-color: rgba(136, 51, 51, 0.1);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult .dataWrapper .match {
+  color: #006;
+  background-color: #FF9;
+}
+
+#si4 .searchAutocompleteTerm {
+  color: #883333;
+}
+
+#si4 .detailsContent .childrenWrap .child:hover {
+  background-color: rgba(136, 51, 51, 0.03);
+  border: rgba(136, 51, 51, 0.7) solid 1px;
+}
+
+#si4 .fileDetails .fileName .mime {
+  color: #883333;
+}
+
+#si4 .si4button {
+  color: black;
+  border: silver solid 1px;
+  border-radius: 5px;
+  padding: 4px 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(136, 51, 51, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#338e130b", endColorstr="#006d0019",GradientType=0 );
+  /* IE6-9 */
+}
+
+#si4 .si4button:hover,
+#si4 .si4button:focus {
+  color: black;
+  border-color: #883333;
+}
+
+#si4 .accordion {
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(136, 51, 51, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#si4 .accordion:hover {
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(136, 51, 51, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#si4 #topMenu {
+  border: none;
+  border-bottom: #883333 solid 1px;
+}
+
+#si4 #topMenu .ui-widget.ui-widget-content {
+  border: #883333 solid 1px;
+}
+
+#si4 #topMenu .ui-state-active {
+  border-color: #883333;
+  color: black;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(136, 51, 51, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#338e130b", endColorstr="#006d0019",GradientType=0 );
+  /* IE6-9 */
+}
+

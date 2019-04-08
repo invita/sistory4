@@ -21,9 +21,11 @@
                 </div>
             @endif
 
+            <div id="openSeaDragon" style="width: 250px; height: 350px; float:right; border:silver solid 1px; border-radius: 10px;"></div>
+
             <div class="detailsContent">
                 <div class="bigImageWrap">
-                    <img class="img" src="{{ $data["doc"]["thumb"] }}" />
+                    <img class="img iiifImage" src="{{ $data["doc"]["thumb"] }}" />
                 </div>
                 <div class="contentWrap">
                     <div class="detailsDcField detailsDcTitle">
@@ -35,7 +37,6 @@
                             @endif
                         @endforeach
                     </div>
-
 
                     @foreach ($data["doc"]["si4"] as $fieldName => $fieldValueArray)
                         @if (count($fieldValueArray) && $fieldName != "title")
@@ -52,7 +53,7 @@
 
                     @if ($data["children"] && count($data["children"]))
                         <div class="detailsChildren">
-                            <div class="childrenText">Child entities</div>
+                            <div class="childrenText">{{ __('fe.details_childEntities') }}</div>
                             <ul class="entityChildren">
                                 @foreach ($data["children"] as $child)
                                     @if ($child["system"]["handle_id"] && isset($child["si4"]["creator"]))
@@ -82,7 +83,7 @@
                                 <div class="flexRow flexAlignEnd">
                                     <a href="/details/{{$file["handle_id"]}}">
                                         <div class="flexRow">
-                                            <img class="fileThumb" src="{{ $file["thumbUrl"] }}" />
+                                            <img class="fileThumb iiifImage" src="{{ $file["thumbUrl"] }}" />
                                             <div class="fileContent">
                                                 <div class="fileName">{{ $file["fileName"] }}</div>
                                                 <div class="created">{{ __('fe.details_fileCreated') }}: {{ $file["displayCreated"] }}</div>

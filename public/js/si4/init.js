@@ -1,4 +1,3 @@
-var foo = {};
 $(document).ready(function() {
 
     si4.data.contentElement = $('div#pageHolder');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\FileHelpers;
+use App\Helpers\ImageHelpers;
 use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
 use \Illuminate\Http\Request;
@@ -134,7 +135,8 @@ class DetailsController extends FrontendController
                 "handle_id" => $fileHandleId,
                 "fileName" => $fileName,
                 "url" => FileHelpers::getPreviewUrl($hdl, "file", $fileName),
-                "thumbUrl" => FileHelpers::getThumbUrl($hdl, "file", $fileName),
+                //"thumbUrl" => FileHelpers::getThumbUrl($hdl, "file", $fileName),
+                "thumbUrl" => ImageHelpers::getSmallThumbUrl($hdl, $fileName),
                 "mimeType" => Si4Util::pathArg($file, "_source/data/files/0/mimeType"),
                 "size" => $fileSize,
                 "displaySize" => DcHelpers::fileSizePresentation($fileSize),
@@ -162,7 +164,8 @@ class DetailsController extends FrontendController
                 "parent" => $parent,
                 "fileName" => $fileName,
                 "url" => FileHelpers::getPreviewUrl($parent, "file", $fileName),
-                "thumbUrl" => FileHelpers::getThumbUrl($parent, "file", $fileName),
+                //"thumbUrl" => FileHelpers::getThumbUrl($parent, "file", $fileName),
+                "thumbUrl" => ImageHelpers::getMainThumbUrl($parent, $fileName),
                 "mimeType" => Si4Util::pathArg($file, "mimeType"),
                 "size" => $size,
                 "displaySize" => DcHelpers::fileSizePresentation($size),
@@ -203,12 +206,17 @@ class DetailsController extends FrontendController
         }
 
         // Add current doc to breadcrumbs
-        $breadcrumbs[] = [
+        $curDoc = [
             "link" => $linkPrefix.$data["doc"]["system"]["handle_id"],
             "text" => first($data["doc"]["si4"]["title"])
         ];
+        if (!$curDoc["text"] && $data["doc"]["system"]["struct_type"] === "file")
+            $curDoc["text"] = Si4Util::pathArg($data["doc"], "file/fileName");
+
+        $breadcrumbs[] = $curDoc;
+
         $data["breadcrumbs"] = $breadcrumbs;
-        $data["html_breadcrumbs"] = DcHelpers::breadcrumbsPresentation($breadcrumbs);
+        $data["html_breadcrumbs"] = Si4Helpers::breadcrumbsPresentation($breadcrumbs);
 
         //print_r($breadcrumbs);
 

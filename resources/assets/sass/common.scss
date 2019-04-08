@@ -255,6 +255,16 @@ input:checked + #collectionSearchIndicator {
   margin-bottom: 20px;
 }
 
+.detailsContent .detailsChildren {
+  ul {
+    list-style: disc inside;
+  }
+  .childrenText {
+    font-weight: 500;
+    margin-top: 20px;
+  }
+}
+
 
 
 
@@ -276,7 +286,7 @@ input:checked + #collectionSearchIndicator {
 }
 .fileList .fileDetails img.fileThumb {
   max-width: 100px;
-  max-height: 100px;
+  //max-height: 100px;
 }
 .fileList .fileDetails .fileContent {
   margin: 0px 15px;

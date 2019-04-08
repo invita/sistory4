@@ -32,6 +32,7 @@ return [
 	'details_dcSource' => 'Izvor',
 	'details_dcSubject' => 'Predmet',
 	'details_dcType' => 'Tip',
+    'details_childEntities' => 'Vsebovane entitete',
 	'details_fileCreated' => 'Ustvarjen',
 	'details_fileDownload' => 'Prenesi',
 	'details_fileSize' => 'Velikost',

@@ -80,4 +80,17 @@ class Si4Util {
         return $elData;
     }
 
+    // *** arrayValues - simplify array of objects containing a "value" key into a simple string array ***
+    // $data is an array i.e. [ ["value" => "val1", ...] , ["value" => "val2", ...] , ... ]
+    // result would be ["val1", "val2]
+    public static function arrayValues($data) {
+        $result = [];
+        foreach ($data as $idx => $item) {
+            if (isset($item["value"]) && $item["value"])
+                $result[] = $item["value"];
+        }
+        return $result;
+    }
+
+
 }

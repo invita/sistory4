@@ -250,6 +250,7 @@ HERE;
     /**
      * Retrieves all matching documents from elastic search
      * @param $queryString string to match
+     * @param $searchType string SEARCH_TYPE
      * @param $offset Integer offset
      * @param $limit Integer limit
      * @param $sortField string sortField
@@ -747,19 +748,6 @@ HERE;
             if (isset($hits[$i])) $result[$i]["_source"] = $hits[$i]["_source"];
         }
         return $result;
-    }
-
-    public static function elasticAssocStripXml($assocData) {
-        $result = [];
-        foreach ($assocData as $doc) {
-            unset($doc["_source"]["xml"]);
-            $result[] = $doc;
-        }
-        return $result;
-    }
-
-    public static function getDCField($assocData, $fieldName) {
-
     }
 
     public static function escapeValue($value) {

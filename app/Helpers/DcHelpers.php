@@ -11,6 +11,33 @@ use App\Models\Si4Field;
  */
 class DcHelpers {
 
+    public static function fileSizePresentation($fileSizeInBytes) {
+        if ($fileSizeInBytes >= 1048576)
+            $result = number_format($fileSizeInBytes / 1048576, 1) .' MB';
+        elseif ($fileSizeInBytes >= 1024)
+            $result = number_format($fileSizeInBytes / 1024, 1) .' KB';
+        else
+            $result = $fileSizeInBytes .' B';
+
+        return $result;
+    }
+
+    public static function fileDatePresentation($fileDate) {
+        // expected format "2018-06-18T19:53:30Z"
+        //return $result;
+        $time = strtotime($fileDate);
+        $newformat = date('d.m.Y, H:i', $time);
+        return $newformat;
+    }
+
+    public static function dateToISOString($date = null) {
+        if (!$date) $date = time();
+        $newformat = date('Y-m-dTH:i:s', $date);
+        return $newformat;
+    }
+
+
+    /*
     private static $docPathMap = null;
     private static function getElasticEntityPathMap() {
         if (!self::$docPathMap) {
@@ -171,6 +198,7 @@ class DcHelpers {
         return $docResult;
     }
 
+
     private static function si4frontendFormat($elasticEntity) {
         $result = [];
 
@@ -197,24 +225,6 @@ class DcHelpers {
         return $result;
     }
 
-
-    // *** dcTextArray - simplify elastic data ***
-    // $dcData is an array i.e. [ ["value" => "", ...] , ["value" => "", ...] , ... ]
-    // function extracts values and put them in a simple array
-    public static function dcTextArray($dcData) {
-        $result = [];
-        foreach ($dcData as $idx => $item) {
-            if (isset($item["value"]) && $item["value"])
-                $result[] = $item["value"];
-        }
-        return $result;
-
-        /*
-        return array_map(function($item) {
-            return isset($item["value"]) && $item["value"] ? $item["value"] : "";
-        }, $dcData);
-        */
-    }
 
 
     public static function getDcTitlePresentationParser() {
@@ -317,15 +327,8 @@ class DcHelpers {
             }
         };
     }
+    */
 
-    public static function getStructTypeSortValue($structType) {
-        switch($structType) {
-            case "collection": return 30;
-            case "entity": return 20;
-            case "file": return 10;
-            default: return 0;
-        }
-    }
 
     /*
     public static function getDcFirstFileNameParser() {
@@ -333,7 +336,6 @@ class DcHelpers {
             return isset($inputValue[0]["ownerId"]) ? $inputValue[0]["ownerId"] : "";
         };
     }
-    */
 
     public static function getDcDefaultThumbParser() {
         return function($inputName, $inputValue) {
@@ -351,40 +353,6 @@ class DcHelpers {
         };
     }
 
-
-    // $breadcrumbs - [[0] => [ "link" => "/link/1", "text" => "Entity title" ]]
-    public static function breadcrumbsPresentation($breadcrumbs) {
-        return join(
-            '<span class="sep"> / </span>',
-            array_map(function($bcItem) {
-                return '<a href="'.$bcItem["link"].'">'.$bcItem["text"].'</a>';
-            }, $breadcrumbs)
-        );
-    }
-
-    public static function fileSizePresentation($fileSizeInBytes) {
-        if ($fileSizeInBytes >= 1048576)
-            $result = number_format($fileSizeInBytes / 1048576, 1) .' MB';
-        elseif ($fileSizeInBytes >= 1024)
-            $result = number_format($fileSizeInBytes / 1024, 1) .' KB';
-        else
-            $result = $fileSizeInBytes .' B';
-
-        return $result;
-    }
-
-    public static function fileDatePresentation($fileDate) {
-        // expected format "2018-06-18T19:53:30Z"
-        //return $result;
-        $time = strtotime($fileDate);
-        $newformat = date('d.m.Y, H:i', $time);
-        return $newformat;
-    }
-
-    public static function dateToISOString($date = null) {
-        if (!$date) $date = time();
-        $newformat = date('Y-m-dTH:i:s', $date);
-        return $newformat;
-    }
+    */
 
 }

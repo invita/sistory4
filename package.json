@@ -15,9 +15,11 @@
     "foundation-sites": "^6.5.1",
     "jquery": "^3.3.1",
     "jquery-ui-bundle": "^1.12.1-migrate",
-    "laravel-mix": "^3.0.0",
+    "laravel-mix": "^4.0.15",
     "lodash": "^4.17.11",
+    "resolve-url-loader": "^2.3.1",
+    "sass": "^1.17.4",
+    "sass-loader": "^7.1.0",
     "vue": "^2.5.20"
-  },
-  "dependencies": {}
+  }
 }

@@ -77,7 +77,7 @@ class ReindexEntity extends Command
                 "primary" => $entity->primary,
                 "collection" => $entity->collection,
                 "struct_type" => $entity->struct_type,
-                "struct_type_sort" => DcHelpers::getStructTypeSortValue($entity->struct_type),
+                "struct_type_sort" => self::getStructTypeSortValue($entity->struct_type),
                 "struct_subtype" => $entity->struct_subtype,
                 "entity_type" => $entity->entity_type,
                 "child_order" => $entity->child_order,
@@ -120,7 +120,7 @@ class ReindexEntity extends Command
                 "primary" => $entity["primary"],
                 "collection" => $entity["collection"],
                 "struct_type" => $entity["struct_type"],
-                "struct_type_sort" => DcHelpers::getStructTypeSortValue($entity["struct_type"]),
+                "struct_type_sort" => self::getStructTypeSortValue($entity["struct_type"]),
                 "struct_subtype" => $entity["struct_subtype"],
                 "entity_type" => $entity["entity_type"],
                 "child_order" => $entity["child_order"],
@@ -150,4 +150,14 @@ class ReindexEntity extends Command
         //print_r(Timer::getResults());
 
     }
+
+    public static function getStructTypeSortValue($structType) {
+        switch($structType) {
+            case "collection": return 30;
+            case "entity": return 20;
+            case "file": return 10;
+            default: return 0;
+        }
+    }
+
 }

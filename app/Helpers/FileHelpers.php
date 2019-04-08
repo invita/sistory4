@@ -1,7 +1,6 @@
 <?php
 namespace App\Helpers;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class FileHelpers
