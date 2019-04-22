@@ -21,11 +21,15 @@
                 </div>
             @endif
 
-            <div id="openSeaDragon" style="width: 250px; height: 350px; float:right; border:silver solid 1px; border-radius: 10px;"></div>
-
             <div class="detailsContent">
                 <div class="bigImageWrap">
-                    <img class="img iiifImage" src="{{ $data["doc"]["thumb"] }}" />
+                    @if ($data["doc"]["thumbJson"])
+                        <div class="openSeaDragon"
+                            data-jsonUrl="{{ $data["doc"]["thumbJson"] }}"
+                            style="width: 250px; height: 350px;"></div>
+                    @else
+                        <img class="img" src="{{ $data["doc"]["thumb"] }}" />
+                    @endif
                 </div>
                 <div class="contentWrap">
                     <div class="detailsDcField detailsDcTitle">

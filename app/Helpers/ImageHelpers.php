@@ -20,7 +20,7 @@ class ImageHelpers
         $format = "jpg"
     ) {
         if (!$identifier || !is_string($identifier)) return "";
-        $identifierUri = str_replace("/", "%2F", $identifier);
+        $identifierUri = self::escapeIdentifier($identifier);
         return env('IIIF_URL') ."/". $identifierUri ."/". $region ."/". $size ."/". $rotation ."/". $quality .".". $format;
     }
 
@@ -35,4 +35,18 @@ class ImageHelpers
         $imgIdentifier = "entity/".FileHelpers::getIdNamespace($handleId)."/".$handleId."/".$fileName;
         return self::imageUrl($imgIdentifier, "full", "100,");
     }
+
+    // Used for main thumbs (entity details main thumb)
+    public static function getInfoJsonUrl($handleId, $fileName) {
+        $identifier = "entity/".FileHelpers::getIdNamespace($handleId)."/".$handleId."/".$fileName;
+        $identifierUri = self::escapeIdentifier($identifier);
+        return env('IIIF_URL') ."/". $identifierUri ."/info.json";
+    }
+
+
+    private static function escapeIdentifier($identifier) {
+        if (!$identifier || !is_string($identifier)) return "";
+        return str_replace("/", "%2F", $identifier);
+    }
+
 }

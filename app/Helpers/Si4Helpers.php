@@ -95,6 +95,8 @@ class Si4Helpers {
         }
 
         $result["thumb"] = self::getThumbUrl($elasticEntity);
+        $result["thumbJson"] = self::getThumbJsonUrl($elasticEntity);
+
 
         if ($result["system"]["struct_type"] === "collection") {
             // Collection specific
@@ -191,6 +193,23 @@ class Si4Helpers {
             return $thumbUrl;
         }
         return FileHelpers::getDefaultThumbForStructType($structType);
+    }
+
+    private static function getThumbJsonUrl($elasticEntity) {
+
+        $structType = Si4Util::pathArg($elasticEntity, "_source/struct_type");
+        if ($structType === "file") {
+            $handleId = Si4Util::pathArg($elasticEntity, "_source/parent");
+        } else {
+            $handleId = Si4Util::pathArg($elasticEntity, "_source/handle_id");
+        }
+        $fileName = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName");
+
+        if ($handleId && $fileName) {
+            $jsonUrl = ImageHelpers::getInfoJsonUrl($handleId, $fileName);
+            return $jsonUrl;
+        }
+        return "";
     }
 
 
