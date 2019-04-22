@@ -46,7 +46,7 @@ class ImageHelpers
 
     private static function escapeIdentifier($identifier) {
         if (!$identifier || !is_string($identifier)) return "";
-        return str_replace("/", "%2F", $identifier);
+        return str_replace("/", env('IIIF_SLASH'), $identifier);
     }
 
 }
