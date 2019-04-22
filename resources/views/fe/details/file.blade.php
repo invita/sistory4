@@ -26,7 +26,7 @@
                     @if ($data["doc"]["thumbJson"])
                         <div class="openSeaDragon"
                             data-jsonUrl="{{ $data["doc"]["thumbJson"] }}"
-                            style="width: 250px; height: 350px;"></div>
+                            style="width: 230px; height: 330px;"></div>
                     @else
                         <img class="img" src="{{ $data["doc"]["thumb"] }}" />
                     @endif
