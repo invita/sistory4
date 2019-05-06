@@ -56,7 +56,7 @@
                     <!-- Logo -->
                     <div class="medium-4 columns logo">
                         <a href="/">
-                            <img src="/sites/{{env("SI4_SITE")}}/img/logo-header.png" style="height:70px;" />
+                            <img src="/sites/{{env("SI4_SITE")}}/img/logo-header.png" />
                         </a>
                     </div>
 
