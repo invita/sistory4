@@ -12,6 +12,9 @@
     <link href="/css/common-fe.css" rel="stylesheet" type="text/css">
     <link href="/sites/{{env("SI4_SITE")}}/css/fe.css" rel="stylesheet" type="text/css">
 
+    <link href="/css/custom-common.css" rel="stylesheet" type="text/css">
+    <link href="/css/custom-{{env("SI4_SITE")}}.css" rel="stylesheet" type="text/css">
+
     <script>var si4site = '{{env("SI4_SITE")}}';</script>
     <script src="/js/app.js"></script>
 
