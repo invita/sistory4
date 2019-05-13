@@ -62,21 +62,23 @@
 
                     <div class="medium-9 columns mt-1">
                         <div class="flexRow">
-                            <div class="flex1 flexRow">
+                            <div class="flex3 flexRow show-for-large">
                                 @foreach($layoutData["searchTabs"] as $searchTab)
                                     <a class="searchTab{{$searchTab["active"] ? " active" : ""}}" href="{{$searchTab["link"]}}">
                                         {{$searchTab["title"]}}
                                     </a>
                                 @endforeach
                             </div>
-                            <div class="flexRow flexBothEnd mb-025">
+                            <!--
+                            <div class="flex1 flexRow flexBothEnd mb-025">
                                 <a class="default" href="/advanced-search">{{ __("fe.search_advancedSearch") }}</a>
                             </div>
+                            -->
                         </div>
 
                         <!-- Search Form -->
                         <form action="/search" id="searchForm">
-                            <div class="flexRow">
+                            <div class="flexRow" style="position:relative;">
                                 <input id="searchInput" class="query flex7" type="text" name="q"
                                     value="{{ $layoutData["q"] }}"
                                     placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
@@ -85,7 +87,18 @@
                                         <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
                                     @endforeach
                                 </select>
+                                <a class="searchFormSubmit" onclick="document.getElementById('searchForm').submit();">
+                                    <img src="/images/ico-search.png" width="16">
+                                </a>
+                                <a class="searchFormSubmitDropdown" onclick="$('#searchSubMenu').toggle()">
+                                    <img src="/images/expandWhite.png" width="10">
+                                </a>
+                                <!--
                                 <input class="submit flex1" type="submit" value="{{ __("fe.search_searchButton") }}">
+                                -->
+                                <div id="searchSubMenu">
+                                    <a class="default" href="/advanced-search">{{ __("fe.search_advancedSearch") }}</a>
+                                </div>
                             </div>
                             @if ($layoutData["allowInsideSearch"])
                                 <div class="flexRow collectionSearchIndicatorWrap">

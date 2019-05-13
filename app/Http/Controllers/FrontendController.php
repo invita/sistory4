@@ -58,7 +58,7 @@ class FrontendController extends Controller
             [
                 "title" => __("fe.searchTab_pubs"),
                 "link" => "http://www.sistory.si/",
-                "active" => false
+                "active" => true
             ],
             [
                 "title" => __("fe.searchTab_zv1"),
