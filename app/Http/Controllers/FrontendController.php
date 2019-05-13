@@ -28,6 +28,9 @@ class FrontendController extends Controller
         // Available search types
         $layoutData["searchTypes"] = $this->prepareSearchTypes();
 
+        // Available search tabs
+        $layoutData["searchTabs"] = $this->prepareSearchTabs();
+
         // Available langauges
         $layoutData["langauges"] = $this->prepareLanguages();
 
@@ -47,6 +50,37 @@ class FrontendController extends Controller
     // Search types
     private function prepareSearchTypes() {
         return ElasticHelpers::$searchTypes;
+    }
+
+    // Search tabs
+    private function prepareSearchTabs() {
+        return [
+            [
+                "title" => __("fe.searchTab_pubs"),
+                "link" => "http://www.sistory.si/",
+                "active" => false
+            ],
+            [
+                "title" => __("fe.searchTab_zv1"),
+                "link" => "http://zv1.sistory.si/?lang=sl",
+                "active" => false
+            ],
+            [
+                "title" => __("fe.searchTab_zv2"),
+                "link" => "http://www.sistory.si/zrtve",
+                "active" => false
+            ],
+            [
+                "title" => __("fe.searchTab_pops"),
+                "link" => "http://www.sistory.si/popis",
+                "active" => false
+            ],
+            [
+                "title" => __("fe.searchTab_zic"),
+                "link" => "http://www.sistory.si/zic",
+                "active" => false
+            ],
+        ];
     }
 
     // Languages

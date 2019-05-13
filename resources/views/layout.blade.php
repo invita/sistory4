@@ -54,15 +54,24 @@
             <div class="searchFormContainer">
                 <div class="row">
                     <!-- Logo -->
-                    <div class="medium-4 columns logo">
+                    <div class="medium-3 columns logo">
                         <a href="/">
                             <img src="/sites/{{env("SI4_SITE")}}/img/logo-header.png" />
                         </a>
                     </div>
 
-                    <div class="medium-8 columns mt-1">
-                        <div class="textAlignRight mb-025">
-                            <a class="default" href="/advanced-search">{{ __("fe.search_advancedSearch") }}</a>
+                    <div class="medium-9 columns mt-1">
+                        <div class="flexRow">
+                            <div class="flex1 flexRow">
+                                @foreach($layoutData["searchTabs"] as $searchTab)
+                                    <a class="searchTab{{$searchTab["active"] ? " active" : ""}}" href="{{$searchTab["link"]}}">
+                                        {{$searchTab["title"]}}
+                                    </a>
+                                @endforeach
+                            </div>
+                            <div class="flexRow flexBothEnd mb-025">
+                                <a class="default" href="/advanced-search">{{ __("fe.search_advancedSearch") }}</a>
+                            </div>
                         </div>
 
                         <!-- Search Form -->
