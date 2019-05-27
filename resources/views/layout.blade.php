@@ -57,13 +57,13 @@
             <div class="searchFormContainer">
                 <div class="row">
                     <!-- Logo -->
-                    <div class="medium-3 small-12 columns logo">
+                    <div class="large-3 medium-12 columns logo">
                         <a href="/">
                             <img src="/sites/{{env("SI4_SITE")}}/img/logo-header.png" />
                         </a>
                     </div>
 
-                    <div class="medium-9 small-12 columns mt-1">
+                    <div class="large-9 medium-12 columns mt-1">
                         <div class="flexRow">
                             <div class="flex3 flexRow show-for-large">
                                 @foreach($layoutData["searchTabs"] as $searchTab)
@@ -71,6 +71,13 @@
                                         {{$searchTab["title"]}}
                                     </a>
                                 @endforeach
+                            </div>
+                            <div class="flex3 flexRow hide-for-large">
+                                <select name="st" class="mobileSearchTabs" onchange="location.href=$(this).val();">
+                                    @foreach($layoutData["searchTabs"] as $idx => $searchTab)
+                                        <option value="{{$searchTab["link"]}}" {{ !$idx ? "selected" : "" }}>{{$searchTab["title"]}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <!--
                             <div class="flex1 flexRow flexBothEnd mb-025">
@@ -85,12 +92,12 @@
                                 <input id="searchInput" class="query flex7" type="text" name="q"
                                     value="{{ $layoutData["q"] }}"
                                     placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
-                                <select name="st" class="flex2 searchTypeSelect">
-                                    @foreach($layoutData["searchTypes"] as $searchType)
-                                        <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
-                                    @endforeach
-                                </select>
                                 <div class="flexRow">
+                                    <select name="st" class="flex2 searchTypeSelect">
+                                        @foreach($layoutData["searchTypes"] as $searchType)
+                                            <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
+                                        @endforeach
+                                    </select>
                                     <a class="searchFormSubmit" onclick="document.getElementById('searchForm').submit();">
                                         <img src="/images/ico-search.png" width="16" />
                                     </a>

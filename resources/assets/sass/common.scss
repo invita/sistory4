@@ -15,11 +15,11 @@
 .flexRow { display: flex; flex-direction: row; }
 .flexResponsive {
   display: flex;
-  @media screen and (max-width: 979px) {
+  @media screen and (max-width: 64em) {
     flex-direction: column;
     margin-bottom: 10px;
   }
-  @media screen and (min-width: 980px) {
+  @media screen and (min-width: 64em) {
     flex-direction: row;
   }
 }
@@ -117,9 +117,10 @@
   //background: #f5f5f5;
 
   & > .row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    //display: flex;
+    //align-items: center;
+    //justify-content: center;
+    text-align: center;
   }
 
   form { position: relative; }
@@ -136,7 +137,7 @@
     }
   }
 
-  .searchTypeSelect {
+  .searchTypeSelect, .mobileSearchTabs {
     font-size: 0.8125rem;
   }
 
