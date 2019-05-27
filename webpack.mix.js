@@ -23,6 +23,7 @@ mix.sass('resources/assets/sass/sites/sistory-be.scss', 'public/sites/sistory/cs
 mix.combine([
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/jquery-ui-bundle/jquery-ui.min.js',
+    'node_modules/hc-offcanvas-nav/dist/hc-offcanvas-nav.js',
     'node_modules/foundation-sites/dist/js/foundation.min.js',
     'resources/assets/js/lib/openseadragon-bin-2.4.0/openseadragon.min.js',
     'resources/assets/js/common/jsData.js',
@@ -31,6 +32,7 @@ mix.combine([
     'resources/assets/js/search/autocomplete.js',
     'resources/assets/js/search/advancedSearch.js',
     'resources/assets/js/search/matchHighlighter.js',
+    'resources/assets/js/search/mobileMenu.js',
     'resources/assets/js/app.js',
 ], 'public/js/app.js');
 

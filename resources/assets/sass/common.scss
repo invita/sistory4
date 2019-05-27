@@ -13,6 +13,16 @@
 
 .flex { display: flex; flex-direction: column; }
 .flexRow { display: flex; flex-direction: row; }
+.flexResponsive {
+  display: flex;
+  @media screen and (max-width: 979px) {
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  @media screen and (min-width: 980px) {
+    flex-direction: row;
+  }
+}
 .flexAlignStart { align-items: flex-start; }
 .flexAlignCenter { align-items: center; }
 .flexAlignEnd { align-items: flex-end; }
@@ -41,13 +51,20 @@
   font-weight: 500;
   color: #303030;
 }
-a.default:hover {
+.default:hover {
   text-decoration: underline;
   color: #303030;
 }
 
 .button {
   padding: 10px 20px;
+}
+
+[type=text], [type=password], [type=date], [type=datetime],
+[type=datetime-local], [type=month], [type=week], [type=email],
+[type=number], [type=search], [type=tel], [type=time],
+[type=url], [type=color], textarea, select {
+  margin-bottom: 0.25rem;
 }
 
 /* Index */
@@ -141,11 +158,13 @@ a.default:hover {
     }
   }
   .searchFormSubmitDropdown {
+    position: relative;
     height: 39px;
     width: 3.5rem;
     background-color: #BA1810;
     color: white;
-    border-color: #ccc;
+    //border-color: #ccc;
+    border-left: silver;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -179,10 +198,12 @@ a.default:hover {
   position: absolute;
   background: white;
   border: silver solid 1px;
-  display: none;
+  display: block;
   right: 0;
   top: 40px;
   padding: 0.25rem 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 /* Advanced search */
@@ -215,7 +236,6 @@ a.default:hover {
 
 /* Collection search */
 .collectionSearchIndicatorWrap {
-  margin-top: -10px;
 }
 
 input + #collectionSearchIndicator {
@@ -496,8 +516,26 @@ input:checked + #collectionSearchIndicator {
   //padding: 10px;
   background: #333333;
 
+  .topMenu {
+    display: none;
+    @media screen and (min-width: 980px) {
+      display: block;
+    }
+  }
+  .topMenuMobile {
+    display: none;
+  }
+  .topMenuMobile + .hc-nav-trigger {
+    display: none;
+    @media screen and (max-width: 979px) {
+      display: block;
+    }
+  }
+
+
   .topMenuHolder {
     position: relative;
+    min-height: 46px;
   }
   #topMenu {
     border: none;
@@ -540,7 +578,6 @@ input:checked + #collectionSearchIndicator {
     /* First level menu -> icon down instead of right */
   }
 }
-
 
 /* bottomMenu */
 .bottomMenuWrap {

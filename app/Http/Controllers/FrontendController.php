@@ -8,6 +8,7 @@ use App\Helpers\Enums;
 use App\Helpers\Si4Util;
 use App\Http\Middleware\SessionLanguage;
 use \Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
@@ -185,6 +186,8 @@ class FrontendController extends Controller
             "operators" => $advSearch_operators,
             "fieldNames" => $advSearch_fieldNames,
         ];
+
+        $data["translations"] = Lang::get('fe');
 
         return json_encode($data);
     }

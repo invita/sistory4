@@ -51,7 +51,9 @@ $mainColor: #668833;
       }
     }
   }
-
+  .searchFormSubmitDropdown {
+    border-left: lighten(desaturate($mainColor, 20%), 20%) solid 1px;
+  }
   .searchAutocompleteTerm {
     color: $mainColor;
   }

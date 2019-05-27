@@ -36,6 +36,9 @@
                     <nav class="topMenu">
                         <?php echo  $layoutData["topMenuHtml"]; ?>
                     </nav>
+                    <nav class="topMenuMobile">
+                        <?php echo  $layoutData["topMenuHtml"]; ?>
+                    </nav>
                     <div id="langSelect">
                         <select>
                             @foreach ($layoutData["langauges"] as $langVal => $langText)
@@ -54,13 +57,13 @@
             <div class="searchFormContainer">
                 <div class="row">
                     <!-- Logo -->
-                    <div class="medium-3 columns logo">
+                    <div class="medium-3 small-12 columns logo">
                         <a href="/">
                             <img src="/sites/{{env("SI4_SITE")}}/img/logo-header.png" />
                         </a>
                     </div>
 
-                    <div class="medium-9 columns mt-1">
+                    <div class="medium-9 small-12 columns mt-1">
                         <div class="flexRow">
                             <div class="flex3 flexRow show-for-large">
                                 @foreach($layoutData["searchTabs"] as $searchTab)
@@ -78,7 +81,7 @@
 
                         <!-- Search Form -->
                         <form action="/search" id="searchForm">
-                            <div class="flexRow" style="position:relative;">
+                            <div class="flexResponsive" style="position:relative;">
                                 <input id="searchInput" class="query flex7" type="text" name="q"
                                     value="{{ $layoutData["q"] }}"
                                     placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
@@ -87,17 +90,16 @@
                                         <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
                                     @endforeach
                                 </select>
-                                <a class="searchFormSubmit" onclick="document.getElementById('searchForm').submit();">
-                                    <img src="/images/ico-search.png" width="16">
-                                </a>
-                                <a class="searchFormSubmitDropdown" onclick="$('#searchSubMenu').toggle()">
-                                    <img src="/images/expandWhite.png" width="10">
-                                </a>
-                                <!--
-                                <input class="submit flex1" type="submit" value="{{ __("fe.search_searchButton") }}">
-                                -->
-                                <div id="searchSubMenu">
-                                    <a class="default" href="/advanced-search">{{ __("fe.search_advancedSearch") }}</a>
+                                <div class="flexRow">
+                                    <a class="searchFormSubmit" onclick="document.getElementById('searchForm').submit();">
+                                        <img src="/images/ico-search.png" width="16" />
+                                    </a>
+                                    <a class="searchFormSubmitDropdown" onclick="$('#searchSubMenu').toggle()">
+                                        <img src="/images/expandWhite.png" width="10" />
+                                        <span id="searchSubMenu" style="display:none">
+                                            <span class="default" onclick="location.href='/advanced-search';">{{ __("fe.search_advancedSearch") }}</span>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                             @if ($layoutData["allowInsideSearch"])

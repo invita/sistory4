@@ -195,5 +195,7 @@ return [
 	'si4_field_version' => 'Verzija',
 	'si4_field_volume' => 'Letnik',
 	'si4_field_workPackageLeader' => 'Vodja delovne skupine',
-    'footer_footerText' => '© Copyright 2011-2019 INZ, Zgodovina Slovenije - SIstory'
+    'footer_footerText' => '© Copyright 2011-2019 INZ, Zgodovina Slovenije - SIstory',
+    'mobileMenu_labelClose' => 'Zapri',
+    'mobileMenu_labelBack' => 'Nazaj',
 ];

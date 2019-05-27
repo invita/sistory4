@@ -52,6 +52,9 @@ $mainColor: #883333;
       }
     }
   }
+  .searchFormSubmitDropdown {
+    border-left: lighten(desaturate(#BA1810, 25%), 15%) solid 0.5px;
+  }
   .searchAutocompleteTerm {
     color: $mainColor;
   }
@@ -117,5 +120,28 @@ $mainColor: #883333;
     //background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
     //background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
+  }
+
+  // Menu mobile
+  .hc-nav-trigger span, .hc-nav-trigger span::before, .hc-nav-trigger span::after {
+    background: white;
+  }
+  .hc-nav-trigger {
+    zoom: 0.75;
+  }
+  .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav li.nav-back a {
+    background: #333;
+    border-color: #666;
+  }
+  .hc-offcanvas-nav .nav-container, .hc-offcanvas-nav .nav-wrapper, .hc-offcanvas-nav ul {
+    background: #444;
+    border-color: #666;
+  }
+  .hc-offcanvas-nav li.nav-close a:hover, .hc-offcanvas-nav li.nav-back a:hover {
+    background: #444;
+    border-color: #666;
+  }
+  .hc-offcanvas-nav a, .hc-offcanvas-nav .nav-item {
+    border-color: #666;
   }
 }
