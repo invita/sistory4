@@ -23,11 +23,14 @@ $mainColor: #883333;
   }
   .entitySearchWrap {
     &.esrCards {
-      .searchResult .imageWrapper {
+      .searchResult .imageWrapper img, {
         box-shadow: 1px 1px 10px -5px desaturate(lighten($mainColor, 10%), 35%);
       }
-      .searchResult:hover .imageWrapper{
+      .searchResult:hover .imageWrapper img {
         box-shadow: 1px 1px 10px -2px desaturate(lighten($mainColor, 10%), 35%);
+      }
+      .searchResult.collection .imageWrapper img {
+        box-shadow: none;
       }
     }
     &.esrTable {
@@ -61,20 +64,22 @@ $mainColor: #883333;
   }
   /* si4button */
   .si4button {
-    color: black;
-    border: silver solid 1px;
-    border-radius: 5px;
-    padding: 4px 10px;
-    margin-top: 10px;
-    cursor: pointer;
-    background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
+    color: white;
+    background: #BA1810;
+    transition: background-color 300ms ease-out;
+    //cursor: pointer;
+    //padding: 6px 15px;
+    //margin-top: 10px;
+    //border: silver solid 1px;
+    //border-radius: 5px;
+    //background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    //background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    //background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
   }
   .si4button:hover, .si4button:focus {
-    color: black;
-    border-color: rgba($mainColor,1);
+    color: white;
+    background: black;
   }
   /* accordion */
   .accordion {

@@ -82,7 +82,7 @@
                                 <input id="searchInput" class="query flex7" type="text" name="q"
                                     value="{{ $layoutData["q"] }}"
                                     placeholder="{{ __("fe.search_placeholderPrefix") }}..." autocomplete="off" />
-                                <select name="st" class="flex2">
+                                <select name="st" class="flex2 searchTypeSelect">
                                     @foreach($layoutData["searchTypes"] as $searchType)
                                         <option value="{{$searchType}}" {{ $layoutData["st"] == $searchType ? "selected" : "" }}>{{__("fe.searchType_".$searchType)}}</option>
                                     @endforeach

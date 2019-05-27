@@ -84,7 +84,7 @@ function AdvancedSearchFields(mainEl) {
 
         // fieldValue input
         input.fieldValue = document.createElement("input");
-        input.fieldValue.className = "fieldValue";
+        input.fieldValue.className = "fieldValue advSearchInput";
         input.fieldValue.type = "text";
         input.wrap.appendChild(input.fieldValue);
 
@@ -110,6 +110,10 @@ function AdvancedSearchFields(mainEl) {
         // Append wrap to el
         _p.inputs.push(input);
         _p.fieldsEl.appendChild(input.wrap);
+
+        applyAutosuggest(input.fieldValue, function() {
+            return { scope: "advSearch", fieldName: $(input.fieldName).val() };
+        });
 
         return input;
     };

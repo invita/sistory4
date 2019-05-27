@@ -119,6 +119,10 @@ a.default:hover {
     }
   }
 
+  .searchTypeSelect {
+    font-size: 0.8125rem;
+  }
+
   .searchFormSubmit {
     height: 39px;
     width: 6rem;
@@ -158,6 +162,7 @@ a.default:hover {
   color: #222;
   cursor: pointer;
   text-transform: uppercase;
+  font-size: 0.8125rem;
 
   &:hover {
     background-color: #e1e1e1;
@@ -287,6 +292,10 @@ input:checked + #collectionSearchIndicator {
     color: #303030;
     &:last-child {
       color: #8e130b;
+    }
+    .breadcrumbsIcon {
+      height: 16px;
+      margin: -4px 6px 0 0;
     }
   }
 }
@@ -427,8 +436,8 @@ input:checked + #collectionSearchIndicator {
 
 /* si4button */
 .si4button {
-  border-radius: 5px;
-  padding: 4px 10px;
+  //border-radius: 5px;
+  padding: 6px 15px;
   margin-top: 10px;
   cursor: pointer;
 }
@@ -498,6 +507,7 @@ input:checked + #collectionSearchIndicator {
 
     color: white;
     background: unset;
+    font-size: 0.8125rem;
 
     & > li {
       display: inline-table;
@@ -514,7 +524,7 @@ input:checked + #collectionSearchIndicator {
     }
 
     li.ui-menu-item {
-      line-height: 2.8125rem;
+      line-height: 2.25rem;
     }
     div.ui-menu-item-wrapper {
       white-space: nowrap;
@@ -648,12 +658,14 @@ input:checked + #collectionSearchIndicator {
           width: 180px;
           height: 220px;
           padding: 0px 10px;
-          margin-bottom: 5px;
+          margin-bottom: 8px;
+          margin-top: 4px;
           //border: silver solid 1px;
           img {
             max-width: 180px;
             max-height: 220px;
-            opacity: 0.4;
+            opacity: 0.6;
+            border-radius: 10px;
           }
         }
 
@@ -699,7 +711,7 @@ input:checked + #collectionSearchIndicator {
           img {
             width: 64px;
             height: 64px;
-            opacity: 0.25;
+            opacity: 0.5;
           }
         }
       }

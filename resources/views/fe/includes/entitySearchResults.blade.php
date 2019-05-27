@@ -3,7 +3,7 @@
     <div class="entitySearchWrap esr{{ucfirst($style)}}">
         @foreach($entities as $entity)
             @if ($style == "cards")
-                <div class="searchResult">
+                <div class="searchResult {{ $entity["system"]["struct_type"] }}">
                     <a href="/details/{{ $entity["system"]["handle_id"] }}">
                         <?php /* print_r($entity); */ ?>
                         <div class="imageWrapper">
@@ -23,7 +23,7 @@
 
             @elseif ($style == "table")
 
-                <div class="searchResult">
+                <div class="searchResult {{ $entity["system"]["struct_type"] }}">
                     <a href="/details/{{ $entity["system"]["handle_id"] }}">
                         <div class="imageWrapper">
                             <img src="{{ $entity["thumb"] }}" />

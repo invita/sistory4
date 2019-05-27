@@ -83,11 +83,73 @@ class AjaxController extends Controller
     }
 
     private function searchSuggest(Request $request) {
-        $searchType = $request->query("st", "all");
-        if ($searchType == "fullText") {
-            return $this->searchSuggestFullText($request);
-        } else {
-            return $this->searchSuggestMetadata($request);
+
+        $scope = $request->query("scope", "search");
+
+        switch($scope) {
+            case "search": default:
+                $searchType = $request->query("st", "all");
+                if ($searchType == "fullText") {
+                    return $this->searchSuggestFullText($request);
+                } else {
+                    return $this->searchSuggestMetadata($request);
+                }
+                break;
+            case "advSearch":
+                return $this->searchSuggestForField($request);
+                break;
+        }
+    }
+
+    private function searchSuggestForField(Request $request) {
+        $fieldName = $request->query("fieldName", null);
+        $term = $request->query("term", "");
+        $termLower = mb_strtolower($term);
+
+        $words = explode(" ", $term);
+        $termWord = "";
+        $termRest = "";
+
+        if (count($words) > 0) {
+            $termWord = array_pop($words);
+            $termRest = join(" ", $words);
+        }
+
+        //echo $termWord." (".$termRest.")\n";
+
+        // Find potential matches
+
+        try {
+            $elasticData = ElasticHelpers::suggestForField($fieldName, $termLower);
+            $assocData = ElasticHelpers::elasticResultToAssocArray($elasticData);
+
+            $resultsDict = [];
+            foreach ($assocData as $doc) {
+                $fieldVals = Si4Util::pathArg($doc, "_source/data/si4/".$fieldName, []);
+                foreach ($fieldVals as $fieldVal) {
+                    $c = Si4Util::getArg($fieldVal, "value", "");
+                    $fieldValClean = mb_strtolower($this->removeSkipCharacters($c));
+
+                    $fieldWords = explode(" ", $fieldValClean);
+                    foreach ($fieldWords as $fieldWord) {
+
+                        // If field word starts with term word
+                        if (mb_strtolower(substr($fieldWord, 0, strlen($termWord))) === $termWord) {
+                            $resultsDict[mb_strtolower($fieldWord)] = 1;
+                        }
+                    }
+                }
+            }
+
+            $results = [];
+            foreach ($resultsDict as $resultKey => $_) {
+                $results[] = ($termRest ? $termRest." " : "").$resultKey;
+            }
+
+            return $results;
+
+        } catch (\Exception $e) {
+            return [];
         }
     }
 

@@ -435,6 +435,31 @@ HERE;
 
 
 
+    public static function suggestForField($fieldName, $term, $limit = 30)
+    {
+        $words = explode(" ", $term);
+        $must = [];
+
+        foreach($words as $wordIdx => $word) {
+            $isLast = $wordIdx === count($words) -1;
+            $must[] = [
+                "query_string" => [
+                    "fields" => [
+                        "data.si4.".$fieldName.".value",
+                    ],
+                    "query" => $isLast ? $word."*" : $word
+                ]
+            ];
+        }
+
+        $query = [
+            "bool" => [ "must" => $must ]
+        ];
+
+
+        return self::search($query, 0, $limit, "child_order", "asc");
+    }
+
     public static function suggestCreators($creatorTerm, $searchType = "all", $parent = null, $limit = 30)
     {
 

@@ -1,13 +1,24 @@
 $(document).ready(function() {
+    applyAutosuggest(document.getElementById("searchInput"), function() {
+        return { scope: "search", st: $("#searchForm select[name=st]").val() };
+    });
+});
+
+function applyAutosuggest(inputEl, getConfigF) {
+    console.log("applyAutosuggest", inputEl);
     var termTemplate = "<span class=\"searchAutocompleteTerm\">%s</span>";
-    $("#searchInput").autocomplete({
+    $(inputEl).autocomplete({
         //source: "/ajax/searchSuggest",
         source: function(request, response) {
-            request.st = $("#searchForm select[name=st]").val();
+            if (getConfigF && typeof(getConfigF) === "function") {
+                var reqConf = getConfigF();
+                for (var p in reqConf) request[p] = reqConf[p];
+            }
 
             var searchInsideCurrent = $("#searchInsideCurrent").val();
             if (searchInsideCurrent) request.parent = searchInsideCurrent;
 
+            console.log(request);
             $.getJSON("/ajax/searchSuggest", request, response);
         },
         open: function(e,ui) {
@@ -22,4 +33,4 @@ $(document).ready(function() {
             });
         }
     });
-});
+}

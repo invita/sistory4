@@ -220,7 +220,9 @@ class Si4Helpers {
         return join(
             '<span class="sep"> / </span>',
             array_map(function($bcItem) {
-                return '<a href="'.$bcItem["link"].'">'.$bcItem["text"].'</a>';
+                $icon = isset($bcItem["link"]) && $bcItem["link"] === "/" ?
+                    '<img src="/images/home.png" class="breadcrumbsIcon" />' : '';
+                return '<a href="'.$bcItem["link"].'">'.$icon.$bcItem["text"].'</a>';
             }, $breadcrumbs)
         );
     }
