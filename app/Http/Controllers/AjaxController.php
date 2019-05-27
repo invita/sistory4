@@ -134,7 +134,7 @@ class AjaxController extends Controller
                     foreach ($fieldWords as $fieldWord) {
 
                         // If field word starts with term word
-                        if (mb_strtolower(substr($fieldWord, 0, strlen($termWord))) === $termWord) {
+                        if (mb_strtolower(substr($fieldWord, 0, strlen($termWord))) === mb_strtolower($termWord)) {
                             $resultsDict[mb_strtolower($fieldWord)] = 1;
                         }
                     }
