@@ -9,6 +9,7 @@ si4.translations = {
     button_check: "Check",
     button_create: "Create",
     button_generate_fe_translation_files: "Generate FE translation files",
+    button_forceTextReindex: "Force full-text reindex",
 
 
     // *** Modules ***

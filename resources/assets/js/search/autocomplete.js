@@ -16,9 +16,9 @@ function applyAutosuggest(inputEl, getConfigF) {
             }
 
             var searchInsideCurrent = $("#searchInsideCurrent").val();
-            if (searchInsideCurrent) request.parent = searchInsideCurrent;
+            var searchInsideCurrentChecked = $("#searchInsideCurrent")[0] && $("#searchInsideCurrent")[0].checked;
+            if (searchInsideCurrent && searchInsideCurrentChecked) request.parent = searchInsideCurrent;
 
-            //console.log(request);
             $.getJSON("/ajax/searchSuggest", request, response);
         },
         open: function(e,ui) {

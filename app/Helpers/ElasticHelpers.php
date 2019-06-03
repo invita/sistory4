@@ -257,7 +257,7 @@ HERE;
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function searchString($queryString, $searchType = "all", $hdl = "", $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
+    public static function searchString($queryString, $searchType = SEARCH_TYPE_ALL, $hdl = "", $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
     {
 
         $searchFields = [
@@ -435,7 +435,7 @@ HERE;
 
 
 
-    public static function suggestForField($fieldName, $term, $limit = 30)
+    public static function suggestForField($fieldName, $term, $searchType = SEARCH_TYPE_ALL, $parent = null, $limit = 30)
     {
         $words = explode(" ", $term);
         $must = [];
@@ -452,10 +452,26 @@ HERE;
             ];
         }
 
+        if ($searchType !== SEARCH_TYPE_ALL) {
+            $must[] = [
+                "term" => [
+                    "struct_type" => $searchType
+                ]
+            ];
+        }
+
+        if ($parent) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => ["hierarchy"],
+                    "query" => $parent
+                ]
+            ];
+        }
+
         $query = [
             "bool" => [ "must" => $must ]
         ];
-
 
         return self::search($query, 0, $limit, "child_order", "asc");
     }
@@ -490,6 +506,14 @@ HERE;
                 "query" => $queryStringWild
             ]
         ];
+
+        if ($searchType !== SEARCH_TYPE_ALL) {
+            $must[] = [
+                "term" => [
+                    "struct_type" => $searchType
+                ]
+            ];
+        }
 
         if ($parent) {
             $must[] = [
@@ -538,6 +562,14 @@ HERE;
             ];
         }
 
+        if ($searchType !== SEARCH_TYPE_ALL) {
+            $must[] = [
+                "term" => [
+                    "struct_type" => $searchType
+                ]
+            ];
+        }
+
         if ($parent) {
             $must[] = [
                 "query_string" => [
@@ -546,7 +578,6 @@ HERE;
                 ]
             ];
         }
-
 
         $query = [
             "bool" => [ "must" => $must ]

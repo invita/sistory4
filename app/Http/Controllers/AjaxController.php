@@ -91,6 +91,8 @@ class AjaxController extends Controller
                 $searchType = $request->query("st", "all");
                 if ($searchType == "fullText") {
                     return $this->searchSuggestFullText($request);
+                } else if ($searchType == "collection") {
+                    return $this->searchSuggestCollection($request);
                 } else {
                     return $this->searchSuggestMetadata($request);
                 }
@@ -126,6 +128,59 @@ class AjaxController extends Controller
             $resultsDict = [];
             foreach ($assocData as $doc) {
                 $fieldVals = Si4Util::pathArg($doc, "_source/data/si4/".$fieldName, []);
+                foreach ($fieldVals as $fieldVal) {
+                    $c = Si4Util::getArg($fieldVal, "value", "");
+                    $fieldValClean = mb_strtolower($this->removeSkipCharacters($c));
+
+                    $fieldWords = explode(" ", $fieldValClean);
+                    foreach ($fieldWords as $fieldWord) {
+
+                        // If field word starts with term word
+                        if (mb_strtolower(substr($fieldWord, 0, strlen($termWord))) === mb_strtolower($termWord)) {
+                            $resultsDict[mb_strtolower($fieldWord)] = 1;
+                        }
+                    }
+                }
+            }
+
+            $results = [];
+            foreach ($resultsDict as $resultKey => $_) {
+                $results[] = ($termRest ? $termRest." " : "").$resultKey;
+            }
+
+            return $results;
+
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    private function searchSuggestCollection(Request $request) {
+        $st = $request->query("st", "all");
+        $parent = $request->query("parent", null);
+        $term = $request->query("term", "");
+        $termLower = mb_strtolower($term);
+
+        $words = explode(" ", $term);
+        $termWord = "";
+        $termRest = "";
+
+        if (count($words) > 0) {
+            $termWord = array_pop($words);
+            $termRest = join(" ", $words);
+        }
+
+        //echo $termWord." (".$termRest.")\n";
+
+        // Find potential matches
+
+        try {
+            $elasticData = ElasticHelpers::suggestForField("title", $termLower, $st, $parent);
+            $assocData = ElasticHelpers::elasticResultToAssocArray($elasticData);
+
+            $resultsDict = [];
+            foreach ($assocData as $doc) {
+                $fieldVals = Si4Util::pathArg($doc, "_source/data/si4/title", []);
                 foreach ($fieldVals as $fieldVal) {
                     $c = Si4Util::getArg($fieldVal, "value", "");
                     $fieldValClean = mb_strtolower($this->removeSkipCharacters($c));
@@ -241,11 +296,13 @@ class AjaxController extends Controller
 
             foreach ($titleAssocData as $doc) {
                 $titles = Si4Util::pathArg($doc, "_source/data/si4/title", []);
+
                 foreach ($titles as $title) {
                     $t = Si4Util::getArg($title, "value", "");
                     $titleClean = mb_strtolower($this->removeSkipCharacters($t));
                     $oneCreatorWithTitle = $oneCreator ? $oneCreator." ".$titleClean : $titleClean;
-                    if (!$termRest || self::strSameRoot($titleClean, $termRest)) {
+
+                    if (!count($creatorResults) || !$termRest || self::strSameRoot($titleClean, $termRest)) {
                         if (!isset($titleResults[$oneCreatorWithTitle]))
                             $titleResults[$oneCreatorWithTitle] = 1;
                         else

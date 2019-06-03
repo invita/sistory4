@@ -21,6 +21,7 @@ $(document).ready(function() {
         var qWord = qWords[i];
         qWord = qWord.replace(new RegExp(badChars.join("|"), "g"), ".");
         if (!qWord) continue;
+        if (qWord.length < 3) continue;
         $(".dataWrapper .value").each(function() {
             var html = $(this).html();
             html = html.replace(new RegExp("("+qWord+")", "gi"), '<span class="match">$1</span>');

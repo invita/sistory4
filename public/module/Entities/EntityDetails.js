@@ -204,12 +204,21 @@ var F = function(args){
             });
         }
 
+        // Save
         args.basicTab.saveButton = args.basicTab.form.addInput({
             caption: si4.translate("field_actions"),
             value: si4.translate("button_save"),
             type:"submit",
         });
         args.basicTab.saveButton.selector.click(args.saveEntity);
+
+        // Force reindex
+        args.basicTab.forceReindex = args.basicTab.form.addInput({
+            caption: null,
+            value: si4.translate("button_forceTextReindex"),
+            type:"button",
+        });
+        args.basicTab.forceReindex.selector.click(args.forceReindex);
 
 
         // -- Preview metadata
@@ -701,6 +710,25 @@ var F = function(args){
             //console.log("saveEntity callback", data);
         }, function(err) {
             // errorCallback
+            alert(si4.translate("save_failed_entity", { reason: "["+err.status+"] "+err.statusText }));
+        });
+    };
+
+    args.forceReindex = function(){
+        var id = args.basicTab.form.getValue().id;
+
+        si4.loading.show();
+        si4.api["forceReindexEntity"]({ id: id }, function(data) {
+            si4.loading.hide();
+            if (data.status) {
+                alert("OK");
+            } else {
+                si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE, data);
+            }
+            //console.log("saveEntity callback", data);
+        }, function(err) {
+            // errorCallback
+            si4.loading.hide();
             alert(si4.translate("save_failed_entity", { reason: "["+err.status+"] "+err.statusText }));
         });
     };

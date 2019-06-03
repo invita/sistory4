@@ -156,4 +156,21 @@ class Entities extends Controller
         $postJson = json_decode(file_get_contents("php://input"), true);
         return EntitySelect::selectEntityHierarchy($postJson);
     }
+
+    public function forceReindexEntity(Request $request) {
+        $postJson = json_decode(file_get_contents("php://input"), true);
+        $id = $postJson["id"];
+
+        $status = true;
+        $error = null;
+
+        $entity = Entity::find($id);
+
+        Artisan::call("reindex:entityText", ["entityId" => $id]);
+
+        return [
+            "status" => $status,
+            "error" => $error,
+        ];
+    }
 }

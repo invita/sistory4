@@ -20,7 +20,8 @@ si4.config.apiNames = [
     "oaiGroupFieldsList", "saveOaiGroupField", "deleteOaiGroupField",
 
 
-    "entityList", "entityListDb", "saveEntity", "reserveEntityId", "deleteEntity", "entityHierarchy",
+    "entityList", "entityListDb", "saveEntity", "reserveEntityId", "deleteEntity",
+    "entityHierarchy", "forceReindexEntity",
 
     "entityRelationsList", "saveEntityRelation", "deleteEntityRelation",
     "userList", "saveUser", "deleteUser",
