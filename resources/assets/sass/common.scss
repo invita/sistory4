@@ -731,6 +731,33 @@ input:checked + #collectionSearchIndicator {
         opacity: 0.8;
       }
     }
+
+    .searchResult.collection {
+      .imageWrapper {
+        position: relative;
+        &:before {
+          position: absolute;
+          //border: red solid 1px;
+          content: "";
+          width: 20px;
+          height: 154px;
+          top: 20px;
+          right: -11px;
+          background-image: url(/img/structType/collection_tab.png);
+          background-size: 20px 154px;
+          background-repeat: no-repeat;
+          background-position: -5px;
+          transition: background-position 0.2s;
+        }
+      }
+    }
+    .searchResult.collection:hover {
+      .imageWrapper {
+        &:before {
+          background-position: -2px;
+        }
+      }
+    }
   }
 
   // searchResult style row

@@ -30,7 +30,7 @@ $mainColor: #883333;
         box-shadow: 1px 1px 10px -2px desaturate(lighten($mainColor, 10%), 35%);
       }
       .searchResult.collection .imageWrapper img {
-        box-shadow: none;
+        //box-shadow: none;
       }
     }
     &.esrTable {
