@@ -21,14 +21,6 @@ class AjaxController extends Controller
     }
 
 
-    private static $skipChars = [",", "\\."];
-    private function removeSkipCharacters($str) {
-        foreach (self::$skipChars as $skipChar) {
-            $str = mb_ereg_replace($skipChar, "", $str);
-        }
-        return $str;
-    }
-
     private static function strStartsWith($str, $startPart) {
         return mb_substr($str, 0, mb_strlen($startPart)) === $startPart;
     }
@@ -106,7 +98,16 @@ class AjaxController extends Controller
     private function searchSuggestForField(Request $request) {
         $fieldName = $request->query("fieldName", null);
         $term = $request->query("term", "");
+        $hdl = $request->query("hdl", null);
         $termLower = mb_strtolower($term);
+
+        // Field data
+        $fieldData = [];
+        $fd = $request->query("fd", null);
+        if ($fd) {
+            $fieldData = json_decode(base64_decode($fd), true);
+        }
+
 
         $words = explode(" ", $term);
         $termWord = "";
@@ -122,7 +123,7 @@ class AjaxController extends Controller
         // Find potential matches
 
         try {
-            $elasticData = ElasticHelpers::suggestForField($fieldName, $termLower);
+            $elasticData = ElasticHelpers::suggestForField($fieldName, $termLower, $fieldData, \App\Helpers\SEARCH_TYPE_ALL, $hdl);
             $assocData = ElasticHelpers::elasticResultToAssocArray($elasticData);
 
             $resultsDict = [];
@@ -130,7 +131,7 @@ class AjaxController extends Controller
                 $fieldVals = Si4Util::pathArg($doc, "_source/data/si4/".$fieldName, []);
                 foreach ($fieldVals as $fieldVal) {
                     $c = Si4Util::getArg($fieldVal, "value", "");
-                    $fieldValClean = mb_strtolower($this->removeSkipCharacters($c));
+                    $fieldValClean = mb_strtolower(ElasticHelpers::removeSkipCharacters($c));
 
                     $fieldWords = explode(" ", $fieldValClean);
                     foreach ($fieldWords as $fieldWord) {
@@ -183,7 +184,7 @@ class AjaxController extends Controller
                 $fieldVals = Si4Util::pathArg($doc, "_source/data/si4/title", []);
                 foreach ($fieldVals as $fieldVal) {
                     $c = Si4Util::getArg($fieldVal, "value", "");
-                    $fieldValClean = mb_strtolower($this->removeSkipCharacters($c));
+                    $fieldValClean = mb_strtolower(ElasticHelpers::removeSkipCharacters($c));
 
                     $fieldWords = explode(" ", $fieldValClean);
                     foreach ($fieldWords as $fieldWord) {
@@ -230,7 +231,7 @@ class AjaxController extends Controller
             $creators = Si4Util::pathArg($doc, "_source/data/si4/creator", []);
             foreach ($creators as $creator) {
                 $c = Si4Util::getArg($creator, "value", "");
-                $creatorClean = mb_strtolower($this->removeSkipCharacters($c));
+                $creatorClean = mb_strtolower(ElasticHelpers::removeSkipCharacters($c));
                 //echo "creatorClean ".$creatorClean."\n";
                 $creatorSplit = explode(" ", $creatorClean);
                 $splitCount = count($creatorSplit);
@@ -299,7 +300,7 @@ class AjaxController extends Controller
 
                 foreach ($titles as $title) {
                     $t = Si4Util::getArg($title, "value", "");
-                    $titleClean = mb_strtolower($this->removeSkipCharacters($t));
+                    $titleClean = mb_strtolower(ElasticHelpers::removeSkipCharacters($t));
                     $oneCreatorWithTitle = $oneCreator ? $oneCreator." ".$titleClean : $titleClean;
 
                     if (!count($creatorResults) || !$termRest || self::strSameRoot($titleClean, $termRest)) {
@@ -319,6 +320,20 @@ class AjaxController extends Controller
 
 
     private function searchSuggestFullText(Request $request) {
+        $term = $request->query("term", "");
+        $termLower = mb_strtolower($term);
+        $results = [];
+
+        if (strlen($term) > 2) {
+            $results = ElasticHelpers::suggestFullTextWords($termLower);
+        }
+
+        $response = json_encode($results);
+        return $response ? $response : "[]";
+    }
+
+
+    private function searchSuggestFullText_old(Request $request) {
         $term = $request->query("term", "");
         $termLower = mb_strtolower($term);
         $maxResults = 10;

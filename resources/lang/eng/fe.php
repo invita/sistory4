@@ -2,6 +2,9 @@
 // This file is auto-generated using artisan lang:dbToFile command.
 // [date=2019-02-17, module=fe, lang=eng]
 return [
+    'advSearch_title' => 'Advanced search',
+    'advSearch_noResults' => 'No results.',
+    'advSearch_emptyFirstSearch' => 'Enter search criteria',
 	'advSearch_field_contributor' => 'Contributor 1234',
 	'advSearch_field_coverage' => 'Coverage',
 	'advSearch_field_creator' => 'Creator',

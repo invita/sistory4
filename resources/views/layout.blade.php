@@ -104,7 +104,7 @@
                                     <a class="searchFormSubmitDropdown" onclick="$('#searchSubMenu').toggle()">
                                         <img src="/images/expandWhite.png" width="10" />
                                         <span id="searchSubMenu" style="display:none">
-                                            <span class="default" onclick="location.href='/advanced-search';">{{ __("fe.search_advancedSearch") }}</span>
+                                            <span class="default" onclick="location.href='<?php echo $layoutData["hdl"] ? "/advanced-search?hdl=".$layoutData["hdl"] : "/advanced-search" ?>';">{{ __("fe.search_advancedSearch") }}</span>
                                         </span>
                                     </a>
                                 </div>

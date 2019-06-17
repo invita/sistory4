@@ -234,11 +234,14 @@ HERE;
             "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
             "body" => [
                 "query" => $query,
-                "sort" => [$sortField => [ "order" => $sortDir ]],
                 "from" => $offset,
                 "size" => $limit,
             ]
         ];
+
+        if ($sortField) {
+            $requestArgs["body"]["sort"] = [$sortField => [ "order" => $sortDir ]];
+        }
 
         if ($highlight) {
             $requestArgs["body"]["highlight"] = $highlight;
@@ -365,13 +368,14 @@ HERE;
      *   ],
      *   ...
      * ]
+     * @param $hdl string search inside handle_id
      * @param $offset Integer offset
      * @param $limit Integer limit
      * @param $sortField string sortField
      * @param $sortDir string sort direction (asc/desc)
      * @return array
      */
-    public static function searchAdvanced($params, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
+    public static function searchAdvanced($params, $hdl = null, $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
     {
         // "should" query is OR
         // "must" query is AND
@@ -420,6 +424,14 @@ HERE;
             }
         }
 
+        if ($hdl) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => ["hierarchy"],
+                    "query" => $hdl
+                ],
+            ];
+        }
 
         if (count($must)) {
             $query["bool"]["must"] = $must;
@@ -435,10 +447,11 @@ HERE;
 
 
 
-    public static function suggestForField($fieldName, $term, $searchType = SEARCH_TYPE_ALL, $parent = null, $limit = 30)
+    public static function suggestForField($fieldName, $term, $fieldData = [], $searchType = SEARCH_TYPE_ALL, $parent = null, $limit = 30)
     {
         $words = explode(" ", $term);
         $must = [];
+        $should = [];
 
         foreach($words as $wordIdx => $word) {
             $isLast = $wordIdx === count($words) -1;
@@ -451,6 +464,68 @@ HERE;
                 ]
             ];
         }
+
+
+        if ($fieldData && count($fieldData)) {
+            $allowedFieldNames = array_keys(self::getAdvancedSearchFieldsMap());
+            $queryParams = [];
+            foreach ($fieldData as $operAndNameStr => $val) {
+                $operAndName = explode("-", $operAndNameStr);
+                if (count($operAndName) != 2) continue;
+                if (!in_array($operAndName[0], ElasticHelpers::$advancedSearchOperators)) continue;
+
+                $operator = $operAndName[0];
+                $pName = $operAndName[1];
+                $pValue = $val;
+
+                if ($pName == $fieldName) continue; // skip the one suggesting for
+                if (!$pValue) continue; // skip if no value
+
+                $queryParams[] = [
+                    "operator" => $operator,
+                    "fieldName" => $pName,
+                    "fieldValue" => $pValue,
+                ];
+            }
+
+            foreach ($queryParams as $param) {
+                if (!isset($param["operator"]) || !isset($param["fieldName"]) || !isset($param["fieldValue"])) {
+                    throw new Exception("Advanced search parameters invalid");
+                }
+
+                $operator = $param["operator"];
+                $pName = $param["fieldName"];
+                $pValue = $param["fieldValue"];
+
+                if (!in_array($operator, self::$advancedSearchOperators)) {
+                    throw new Exception("Invalid operator: ".$operator);
+                }
+                if (!in_array($pName, $allowedFieldNames)) {
+                    throw new Exception("fieldName not allowed: ".$pName);
+                }
+
+                $fieldElastic = self::getAdvancedSearchFieldsMap()[$pName];
+
+                $queryString = [
+                    "query_string" => [
+                        "fields" => [
+                            $fieldElastic,
+                        ],
+                        "query" => $pValue
+                    ],
+                ];
+
+                switch ($operator) {
+                    case ADV_SEARCH_OPERATOR_AND:
+                        $must[] = $queryString;
+                        break;
+                    case ADV_SEARCH_OPERATOR_OR:
+                        $should[] = $queryString;
+                        break;
+                }
+            }
+        }
+
 
         if ($searchType !== SEARCH_TYPE_ALL) {
             $must[] = [
@@ -469,9 +544,9 @@ HERE;
             ];
         }
 
-        $query = [
-            "bool" => [ "must" => $must ]
-        ];
+        $query = [ "bool" => [] ];
+        if (count($should)) $query["bool"]["should"] = $should;
+        if (count($must)) $query["bool"]["must"] = $must;
 
         return self::search($query, 0, $limit, "child_order", "asc");
     }
@@ -584,6 +659,68 @@ HERE;
         ];
 
         return self::search($query, 0, $limit, "child_order", "asc");
+    }
+
+    public static function suggestFullTextWords($term, $parent = null, $limit = 30)
+    {
+        $term = self::removeSkipCharacters($term);
+        $words = explode(" ", $term);
+        if (!$words || count($words) > 1) return [];
+
+        $word = $words[0];
+        $queryStringWild = $word."*";
+
+        $must = [];
+
+        $must[] = [
+            "query_string" => [
+                "fields" => ["data.files.fullText"],
+                "query" => $queryStringWild
+            ],
+        ];
+
+        if ($parent) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => ["hierarchy"],
+                    "query" => $parent
+                ]
+            ];
+        }
+
+        $query = [
+            "bool" => [ "must" => $must ]
+        ];
+
+        $highlight = [
+            "fields" => [
+                "data.files.fullText" => [
+                    "fragment_size" => 18,
+                    "number_of_fragments" => 5,
+                    "pre_tags" => [""],
+                    "post_tags" => [""]
+                ]
+            ]
+        ];
+
+        $elasticData = self::search($query, 0, $limit, null, null, $highlight);
+        $assocData = self::elasticResultToAssocArray($elasticData);
+        $results = [];
+        $len = mb_strlen($word);
+
+        foreach ($assocData as $elasticEntity) {
+            if (isset($elasticEntity["highlight"]) && count($elasticEntity["highlight"])) {
+                foreach ($elasticEntity["highlight"] as $hlinst) {
+                    $hlinst =  self::removeSkipCharacters(mb_strtolower($hlinst));
+                    $startPos = mb_stripos($hlinst, $word);
+                    $spacePos = mb_strpos($hlinst, " ", $startPos+$len);
+                    $result = trim(mb_substr($hlinst, $startPos, $spacePos -$startPos));
+                    $results[$result] = true;
+                }
+            }
+        }
+
+        return array_keys($results);
     }
 
 
@@ -810,4 +947,14 @@ HERE;
         if (!is_string($value)) return $value;
         return str_replace(".", "\\.", $value);
     }
+
+    public static $skipChars = [",", "\\."];
+    public static function removeSkipCharacters($str) {
+        foreach (self::$skipChars as $skipChar) {
+            $str = mb_ereg_replace($skipChar, "", $str);
+        }
+        return $str;
+    }
+
+
 }

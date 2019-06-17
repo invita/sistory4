@@ -112,7 +112,17 @@ function AdvancedSearchFields(mainEl) {
         _p.fieldsEl.appendChild(input.wrap);
 
         applyAutosuggest(input.fieldValue, function() {
-            return { scope: "advSearch", fieldName: $(input.fieldName).val() };
+            var formValue = {};
+            for (var i = 0; i < _p.inputs.length; i++) {
+                formValue[_p.inputs[i].fieldValue.name] = $(_p.inputs[i].fieldValue).val();
+            }
+            //console.log("formValue", formValue);
+            return {
+                scope: "advSearch",
+                fieldName: $(input.fieldName).val(),
+                fd: btoa(JSON.stringify(formValue)),
+                hdl: $("#advSearchInsideCurrent").val()
+            };
         });
 
         return input;

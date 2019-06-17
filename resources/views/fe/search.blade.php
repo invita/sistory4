@@ -11,10 +11,16 @@
             <div class="row">
                 <div class="medium-12 columns">
                     <h4>
-                        Advanced search
+                        {{ __("fe.advSearch_title") }}
                     </h4>
                     <form action="/advanced-search">
                         <div class="advancedSearchFields"></div>
+                        @if (isset($layoutData["hdl"]) && $layoutData["hdl"])
+                            <div class="flexRow advCollectionSearchIndicatorWrap">
+                                <input type="checkbox" name="hdl" value="{{ $layoutData["hdl"] }}" id="advSearchInsideCurrent" {{ $layoutData["hdl"] ? "checked" : "" }}/>
+                                <label id="advCollectionSearchIndicator" for="advSearchInsideCurrent">{{ __("fe.search_textInCollection") }} {{ first($layoutData["hdlTitle"]) }}</label>
+                            </div>
+                        @endif
                     </form>
                 </div>
             </div>
@@ -42,16 +48,16 @@
                 <?php echo $paginatorBot; ?>
             </div>
 
-        @elseif ($layoutData["q"] && !count($data["results"]))
+        @elseif (isset($advQ) && count($advQ) && !count($data["results"]))
             <div class="medium-12 columns">
                 <div class="searchNoResultsWrapper">
-                    No results...
+                    {{ __("fe.advSearch_noResults") }}
                 </div>
             </div>
         @else
             <div class="medium-12 columns">
                 <div class="searchNoResultsWrapper">
-                    Si4 Search
+                    {{ __("fe.advSearch_emptyFirstSearch") }}
                 </div>
             </div>
         @endif

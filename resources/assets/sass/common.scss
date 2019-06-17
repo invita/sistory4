@@ -238,8 +238,11 @@
 /* Collection search */
 .collectionSearchIndicatorWrap {
 }
+.advCollectionSearchIndicatorWrap {
+  margin-top: -45px;
+}
 
-input + #collectionSearchIndicator {
+input + #collectionSearchIndicator, input + #advCollectionSearchIndicator {
   margin: 0px 5px;
   line-height: 14px;
   font-size: 12px;

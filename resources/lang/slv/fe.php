@@ -2,7 +2,10 @@
 // This file is auto-generated using artisan lang:dbToFile command.
 // [date=2019-02-17, module=fe, lang=slv]
 return [
-	'advSearch_field_contributor' => 'Prispevali tudi test',
+    'advSearch_title' => 'Napredno iskanje',
+    'advSearch_noResults' => 'Brez zadetkov.',
+    'advSearch_emptyFirstSearch' => 'Izberite iskalne kriterije',
+    'advSearch_field_contributor' => 'Prispevali tudi test',
 	'advSearch_field_coverage' => 'Pokritje',
 	'advSearch_field_creator' => 'Avtor',
 	'advSearch_field_date' => 'Datum',

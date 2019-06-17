@@ -27,7 +27,7 @@ class SearchController extends FrontendController
         ];
 
         if ($q) {
-            $elasticData = ElasticHelpers::searchString($q, $st, $hdl, $offset, $size);
+            $elasticData = ElasticHelpers::searchString($q, $st, $hdl, $offset, $size, null);
 
             $data["took"] = Si4Util::getArg($elasticData, "took", 0);
             $data["totalHits"] = Si4Util::pathArg($elasticData, "hits/total", 0);
@@ -68,16 +68,6 @@ class SearchController extends FrontendController
         //echo "<pre>"; print_r($data); echo "</pre>";
 
         $layoutData = $this->layoutData($request);
-        if ($hdl) {
-            $layoutData["allowInsideSearch"] = true;
-            $layoutData["hdl"] = $hdl;
-
-            $hdlElasticData = ElasticHelpers::searchByHandleArray([$hdl]);
-            $hdlDocData = $hdlElasticData[array_keys($hdlElasticData)[0]];
-            $hdlDoc = Si4Helpers::getEntityListPresentation($hdlDocData);
-
-            $layoutData["hdlTitle"] = $hdlDoc["si4"]["title"];
-        }
 
         return view("fe.search", [
             "layoutData" => $layoutData,
@@ -90,6 +80,7 @@ class SearchController extends FrontendController
 
     public function advanced(Request $request) {
 
+        $hdl = $request->query("hdl", ""); // Handle id filter
         $offset = $request->query("offset", 0);
         $size = $request->query("size", SI4_DEFAULT_PAGINATION_SIZE);
 
@@ -126,7 +117,7 @@ class SearchController extends FrontendController
 
         if ($queryParams) {
 
-            $elasticData = ElasticHelpers::searchAdvanced($queryParams, $offset, $size);
+            $elasticData = ElasticHelpers::searchAdvanced($queryParams, $hdl, $offset, $size, null);
 
             $data["took"] = Si4Util::getArg($elasticData, "took", 0);
             $data["totalHits"] = Si4Util::pathArg($elasticData, "hits/total", 0);
@@ -140,12 +131,15 @@ class SearchController extends FrontendController
             }
         }
 
+        $layoutData = $this->layoutData($request);
+
         //echo "<pre>"; print_r($data); echo "</pre>";
 
         return view("fe.search", [
-            "layoutData" => $this->layoutData($request),
+            "layoutData" => $layoutData,
             "searchType" => "advanced-search",
             "q" => "",
+            "advQ" => $queryParams,
             "data" => $data,
             "paginatorTop" => $this->preparePaginator($data, "top"),
             "paginatorBot" => $this->preparePaginator($data, "bottom"),

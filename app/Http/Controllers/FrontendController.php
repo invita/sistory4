@@ -5,6 +5,7 @@ use App\Helpers\DcHelpers;
 use App\Helpers\ElasticHelpers;
 use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
+use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
 use App\Http\Middleware\SessionLanguage;
 use \Illuminate\Http\Request;
@@ -21,10 +22,21 @@ class FrontendController extends Controller
         // Search parameters remain
         $layoutData["lang"] = SessionLanguage::current(); // Selected language
         $layoutData["q"] = $request->query("q", ""); // Query string
+        //$layoutData["advSearch"] = "";
         $layoutData["st"] = $request->query("st", "all"); // Search type
         $layoutData["hdl"] = $request->query("hdl", ""); // Handle filter
         $layoutData["allowInsideSearch"] = false;
         $layoutData["hdlTitle"] = "";
+
+        if ($layoutData["hdl"]) {
+            if ($request->path() == "search") $layoutData["allowInsideSearch"] = true;
+
+            $hdlElasticData = ElasticHelpers::searchByHandleArray([$layoutData["hdl"]]);
+            $hdlDocData = $hdlElasticData[array_keys($hdlElasticData)[0]];
+            $hdlDoc = Si4Helpers::getEntityListPresentation($hdlDocData);
+
+            $layoutData["hdlTitle"] = $hdlDoc["si4"]["title"];
+        }
 
         // Available search types
         $layoutData["searchTypes"] = $this->prepareSearchTypes();
