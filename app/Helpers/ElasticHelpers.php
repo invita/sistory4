@@ -77,6 +77,26 @@ class ElasticHelpers
         $createIndexArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
         ];
+
+        /*
+                "left_ngram_analyzer": {
+                    "tokenizer": "left_ngram_tokenizer",
+                    "filter": [ "lowercase" ]
+                }
+            "tokenizer": {
+                "left_ngram_tokenizer": {
+                    "type": "edge_ngram",
+                    "min_gram": 3,
+                    "max_gram": 20,
+                    "token_chars": [
+                        "letter",
+                        "digit"
+                    ]
+                }
+            }
+
+        */
+
         $createIndexArgs["body"] = <<<HERE
 {
     "settings": {
@@ -661,7 +681,7 @@ HERE;
         return self::search($query, 0, $limit, "child_order", "asc");
     }
 
-    public static function suggestFullTextWords($term, $parent = null, $limit = 30)
+    public static function suggestFullTextWords_slow($term, $parent = null, $limit = 30)
     {
         $term = self::removeSkipCharacters($term);
         $words = explode(" ", $term);
@@ -719,6 +739,78 @@ HERE;
                 }
             }
         }
+
+        return array_keys($results);
+    }
+
+    public static function suggestFullTextWords($term, $parent = null, $limit = 30)
+    {
+        $term = self::removeSkipCharacters($term);
+        $words = explode(" ", $term);
+        if (!$words || count($words) > 1) return [];
+
+        $word = $words[0];
+        $queryStringWild = $word."*";
+
+        $must = [];
+
+        $must[] = [
+            "query_string" => [
+                "fields" => ["data.files.fullText"],
+                "query" => $queryStringWild
+            ],
+        ];
+
+        if ($parent) {
+            $must[] = [
+                "term" => [
+                    "hierarchy" => $parent
+                ]
+            ];
+        }
+
+        $query = [
+            "bool" => [ "must" => $must ]
+        ];
+
+        $highlight = [
+            "fields" => [
+                "data.files.fullText" => [
+                    "fragment_size" => 18,
+                    "number_of_fragments" => 5,
+                    "pre_tags" => [""],
+                    "post_tags" => [""]
+                ]
+            ]
+        ];
+
+        $elasticData = self::search($query, 0, $limit, null, null, $highlight);
+
+        Timer::start("suggestParsing");
+
+        $assocData = self::elasticResultToAssocArray($elasticData);
+        $results = [];
+        $len = mb_strlen($word);
+
+        foreach ($assocData as $elasticEntity) {
+            if (isset($elasticEntity["highlight"]) && count($elasticEntity["highlight"])) {
+                foreach ($elasticEntity["highlight"] as $hlinst) {
+                    $hlinst =  self::removeSkipCharacters(mb_strtolower($hlinst));
+                    $hlinst = mb_ereg_replace("\n.*", "", $hlinst);
+                    $startPos = mb_stripos($hlinst, $word);
+                    if ($startPos) {
+                        $spacePos = mb_strpos($hlinst, " ", $startPos+$len);
+                        $result = trim(mb_substr($hlinst, $startPos, $spacePos -$startPos));
+                        if ($result) $results[$result] = true;
+                    }
+                }
+            }
+        }
+
+        $tookParsing = round(Timer::stop("suggestParsing") *1000);
+
+        $results["elastic took:".$elasticData["took"]] = true;
+        $results["parsing took:".$tookParsing] = true;
 
         return array_keys($results);
     }
