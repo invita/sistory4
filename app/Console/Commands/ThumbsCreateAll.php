@@ -13,7 +13,7 @@ class ThumbsCreateAll extends Command
      *
      * @var string
      */
-    protected $signature = 'thumbs:createAll';
+    protected $signature = 'thumbs:createAll {method=imagick}';
 
     /**
      * The console command description.
@@ -39,6 +39,9 @@ class ThumbsCreateAll extends Command
      */
     public function handle()
     {
+        $method = $this->argument('method');
+        $this->info("Using thumb generation method: ".$method);
+
         if ($this->confirm('Are you sure you wish to recreate all thumbnails?', true)) {
 
             $entities = Entity::all();
@@ -47,7 +50,7 @@ class ThumbsCreateAll extends Command
             foreach ($entities as $entity) {
                 $this->info($entity["id"]);
                 try {
-                    Artisan::call("thumbs:create", ["entityId" => $entity["id"]]);
+                    Artisan::call("thumbs:create", ["entityId" => $entity["id"], "method" => $method]);
                     $successCnt++;
                 } catch (\Exception $e) {
                     $this->warn($e);

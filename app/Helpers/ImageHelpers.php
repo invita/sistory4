@@ -27,7 +27,7 @@ class ImageHelpers
     // Used for main thumbs (entity details main thumb)
     public static function getMainThumbUrl($handleId, $fileName) {
         $imgIdentifier = "entity/".FileHelpers::getIdNamespace($handleId)."/".$handleId."/".$fileName;
-        return self::imageUrl($imgIdentifier, "full", "230,");
+        return self::imageUrl($imgIdentifier, "full", "320,");
     }
 
     // Used for small thumbs (entity files)

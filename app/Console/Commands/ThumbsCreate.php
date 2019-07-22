@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Helpers\ElasticHelpers;
 use App\Helpers\FileHelpers;
+use App\Helpers\ImageHelpers;
 use App\Helpers\Si4Util;
 use App\Helpers\Timer;
 use Illuminate\Console\Command;
@@ -17,7 +18,7 @@ class ThumbsCreate extends Command
      *
      * @var string
      */
-    protected $signature = 'thumbs:create {entityId}';
+    protected $signature = 'thumbs:create {entityId} {method=imagick}';
 
     /**
      * The console command description.
@@ -46,12 +47,15 @@ class ThumbsCreate extends Command
 
         $entityId = $this->argument('entityId');
         $this->comment("Fetching entity {$entityId}");
-
         $elasticEntities = ElasticHelpers::searchByIdArray([$entityId]);
         $elasticEntity = Si4Util::pathArg($elasticEntities, $entityId."/_source");
         //$this->info(print_r($elasticEntity, true));
 
+        $method = $this->argument('method');
+
+        $handle_id = Si4Util::pathArg($elasticEntity, "handle_id");
         $struct_type = Si4Util::pathArg($elasticEntity, "struct_type");
+
         if ($struct_type == "file") {
             $entity_handle_id = Si4Util::pathArg($elasticEntity, "parent");
         } else {
@@ -73,16 +77,24 @@ class ThumbsCreate extends Command
             if (file_exists($fullPath)) {
                 $ext = pathinfo($fullPath, PATHINFO_EXTENSION);
 
-                $imInput = $fullPath;
-                if (strtolower($ext) == "pdf") $imInput .= "[0]";
-
-                $image = new \Imagick($imInput);
-                $image->setResolution(320, 0);
-                $image->setCompressionQuality(85);
-                $image->setImageFormat('jpeg');
-                $image->writeImage($fullPath.SI4_THUMB_FILE_POSTFIX);
-                $image->clear();
-                $image->destroy();
+                switch ($method) {
+                    case "iiif":
+                        $thumbData = file_get_contents(ImageHelpers::getMainThumbUrl($entity_handle_id, $firstFileName));
+                        file_put_contents($fullPath.SI4_THUMB_FILE_POSTFIX, $thumbData);
+                        break;
+                    case "imagick":
+                    default:
+                        $imInput = $fullPath;
+                        if (strtolower($ext) == "pdf") $imInput .= "[0]";
+                        $image = new \Imagick($imInput);
+                        $image->setResolution(320, 0);
+                        $image->setCompressionQuality(85);
+                        $image->setImageFormat('jpeg');
+                        $image->writeImage($fullPath.SI4_THUMB_FILE_POSTFIX);
+                        $image->clear();
+                        $image->destroy();
+                        break;
+                }
             } else {
                 $this->warn("File does not exist: ".$fullPath);
             }
