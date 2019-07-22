@@ -116,7 +116,7 @@ class Entities extends Controller
         $entity->save();
 
         Artisan::call("reindex:entity", ["entityId" => $entity->id]);
-        Artisan::call("thumbs:create", ["entityId" => $entity->id]);
+        Artisan::call("thumbs:create", ["entityId" => $entity->id, "method" => "iiif"]);
 
         ElasticHelpers::refreshIndex();
 
