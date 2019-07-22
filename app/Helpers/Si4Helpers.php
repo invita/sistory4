@@ -188,8 +188,8 @@ class Si4Helpers {
         $fileName = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName");
 
         if ($handleId && $fileName) {
-            //$thumbUrl = FileHelpers::getThumbUrl($handleId, $structType, $fileName);
-            $thumbUrl = ImageHelpers::getMainThumbUrl($handleId, $fileName);
+            $thumbUrl = FileHelpers::getThumbUrl($handleId, $structType, $fileName);
+            //$thumbUrl = ImageHelpers::getMainThumbUrl($handleId, $fileName);
             return $thumbUrl;
         }
         return FileHelpers::getDefaultThumbForStructType($structType);

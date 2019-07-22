@@ -154,6 +154,31 @@ class ElasticHelpers
 }
 HERE;
 
+/*
+                "left_ngram_analyzer": {
+                    "tokenizer": "left_ngram_tokenizer",
+                    "filter": [ "lowercase" ]
+                }
+            },
+            "tokenizer": {
+                "left_ngram_tokenizer": {
+                    "type": "edge_ngram",
+                    "min_gram": 3,
+                    "max_gram": 20,
+                    "token_chars": [
+                        "letter",
+                        "digit"
+                    ]
+                }
+            }
+
+                "fullText_suggest": {
+                    "type": "text",
+                    "analyzer": "left_ngram_analyzer",
+                    "search_analyzer": "lowercase_analyzer",
+                }
+*/
+
         return \Elasticsearch::connection()->indices()->create($createIndexArgs);
     }
 
