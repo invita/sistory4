@@ -157,9 +157,12 @@ var F = function(args){
                             // Find <METS:fileSec>
                             var xmlFileSec = xmlDoc.querySelector("fileSec");
 
-                            // Remove all children from fileSec
-                            for (var i = xmlFileSec.children.length -1; i >= 0; i--)
-                                xmlFileSec.removeChild(xmlFileSec.children[i]);
+                            // Remove all DEFAULT children from fileSec
+                            for (var i = xmlFileSec.children.length -1; i >= 0; i--) {
+                                if (xmlFileSec.children[i].getAttribute("USE") == "DEFAULT") {
+                                    xmlFileSec.removeChild(xmlFileSec.children[i]);
+                                }
+                            }
 
                             // METS:fileGrp
                             var fileGrpEl = xmlDoc.createElement("METS:fileGrp");
@@ -204,6 +207,99 @@ var F = function(args){
             });
         }
 
+
+        args.basicTab.thumbFile = args.basicTab.form.addInput({
+            name: "thumbFile",
+            value: "",
+            type: "file",
+            caption: si4.translate("field_thumbFile")
+        });
+        args.basicTab.realThumbName = args.basicTab.form.addInput({ name: "realThumbName", value: "", type: "hidden" });
+        args.basicTab.tempThumbName = args.basicTab.form.addInput({ name: "tempThumbName", value: "", type: "hidden" });
+
+        args.basicTab.thumbFile.selector.change(function() {
+            //console.log("change", fieldFile.getValue());
+            var url = "/admin/upload/upload-file";
+            var formData = new FormData();
+            formData.append("file", args.basicTab.thumbFile.getValue());
+            //console.log("post ", url, formData);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    console.log("callback", response);
+                    if (response.status) {
+                        args.uploadedThumbFile = response.data;
+                        var fileExt = response.data.realFileName.split(".").pop();
+                        args.basicTab.realThumbName.setValue("thumbnail."+fileExt);
+                        args.basicTab.tempThumbName.setValue(response.data.tempFileName);
+
+                        // File Preview
+                        if (["jpg", "jpeg", "png"].indexOf(fileExt.toLowerCase()) != -1) {
+                            args.basicTab.thumbPreviewImg.selector.attr("src", response.data.url);
+                            args.basicTab.thumbPreviewDiv.display();
+                        }
+
+
+                        // Put to XML...
+                        var xmlStr = args.xmlTab.fieldXml.getValue();
+                        var parser = new DOMParser();
+                        var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+
+                        // Find METS:mets
+                        var xmlMets = xmlDoc.querySelector("mets");
+
+                        // Find <METS:fileSec> or create one
+                        var xmlFileSec = xmlDoc.querySelector("fileSec");
+                        if (!xmlFileSec) {
+                            xmlFileSec = xmlDoc.createElement("METS:fileSec");
+                            xmlFileSec.setAttribute("ID", "files");
+                            xmlMets.appendChild(xmlFileSec);
+                        }
+
+                        // Remove all THUMB children from fileSec
+                        for (var i = xmlFileSec.children.length -1; i >= 0; i--) {
+                            if (xmlFileSec.children[i].getAttribute("USE") == "THUMB") {
+                                xmlFileSec.removeChild(xmlFileSec.children[i]);
+                            }
+                        }
+
+                        // METS:fileGrp
+                        var fileGrpEl = xmlDoc.createElement("METS:fileGrp");
+                        fileGrpEl.setAttribute("USE", "THUMB");
+                        xmlFileSec.appendChild(fileGrpEl);
+
+                        // METS:file
+                        var fileEl = xmlDoc.createElement("METS:file");
+                        fileEl.setAttribute("ID", "thumbnail");
+                        fileGrpEl.appendChild(fileEl);
+
+                        // METS:FLocat
+                        var fLocatEl = xmlDoc.createElement("METS:FLocat");
+                        fLocatEl.setAttribute("LOCTYPE", "URL");
+                        fLocatEl.setAttribute("href", "thumbnail."+fileExt);
+                        fileEl.appendChild(fLocatEl);
+
+
+                        // Put xml into editor
+                        var xmlText = new XMLSerializer().serializeToString(xmlDoc);
+                        var xmlTextPretty = vkbeautify.xml(xmlText);
+                        args.xmlTab.fieldXml.setValue(xmlTextPretty);
+
+                        //args.xmlTab.selectTab();
+                        args.xmlTab.fieldXml.codemirror.refresh();
+
+                        //args.saveEntity(true);
+
+                    }
+                }
+            });
+        });
+
+
         // Save
         args.basicTab.saveButton = args.basicTab.form.addInput({
             caption: si4.translate("field_actions"),
@@ -228,6 +324,10 @@ var F = function(args){
             parent: args.basicTab.panelGroupPreview.content.selector,
             captionWidth: "90px"
         });
+
+        // Preview, Thumb and Download container
+        args.basicTab.fileInfoDiv = new si4.widget.si4Element({
+            parent: args.basicTab.panelGroupPreview.content.selector, tagClass: "fileInfoDiv" });
 
         if (struct_type == "file") {
             args.basicTab.fieldFileName = args.basicTab.formPreview.addInput({
@@ -280,10 +380,6 @@ var F = function(args){
                 readOnly: true
             });
 
-            // Preview and Download container
-            args.basicTab.fileInfoDiv = new si4.widget.si4Element({
-                parent: args.basicTab.panelGroupPreview.content.selector, tagClass: "fileInfoDiv" });
-
             // Download div
             args.basicTab.fileDownloadDiv = new si4.widget.si4Element({
                 parent: args.basicTab.fileInfoDiv.selector, tagClass: "fileDownloadDiv" });
@@ -304,7 +400,6 @@ var F = function(args){
             args.basicTab.filePreviewImg = new si4.widget.si4Element({
                 parent: args.basicTab.filePreviewDiv.selector, tagName: "img" });
             args.basicTab.filePreviewDiv.displayNone();
-
 
             // File Preview
             var fileName = rowValue.fileName;
@@ -350,8 +445,27 @@ var F = function(args){
             }
         }
 
+        // Thumb Preview div
+        args.basicTab.thumbPreviewDiv = new si4.widget.si4Element({
+            parent: args.basicTab.fileInfoDiv.selector, tagClass: "thumbPreviewDiv" });
+        args.basicTab.thumbPreviewText = new si4.widget.si4Element({
+            parent: args.basicTab.thumbPreviewDiv.selector, tagName: "div" });
+        args.basicTab.thumbPreviewText.selector.html("Thumb");
+        args.basicTab.thumbPreviewImg = new si4.widget.si4Element({
+            parent: args.basicTab.thumbPreviewDiv.selector, tagName: "img" });
+        args.basicTab.thumbPreviewDiv.displayNone();
 
-        // *** Xml Tab ***
+        // Thumb Preview
+        var fileThumb = rowValue.fileThumb;
+        if (fileThumb) {
+            args.basicTab.thumbPreviewImg.selector.attr("src", fileThumb);
+            args.basicTab.thumbPreviewDiv.display();
+        }
+
+
+
+
+    // *** Xml Tab ***
         args.xmlTab = args.createContentTab("xmlTab", { canClose: false });
         args.xmlTab.panel = new si4.widget.si4Panel({ parent: args.xmlTab.content.selector });
         args.xmlTab.panelGroup = args.xmlTab.panel.addGroup();

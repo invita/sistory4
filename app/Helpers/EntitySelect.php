@@ -231,6 +231,8 @@ class EntitySelect
             $_source = Si4Util::getArg($hit, "_source", null);
 
             if ($_source) {
+                //print_r($_source);
+
                 $structType = Si4Util::getArg($_source, "struct_type", "");
                 $structSubtype = Si4Util::getArg($_source, "struct_subtype", "");
                 $entityType = Si4Util::getArg($_source, "entity_type", "");
@@ -264,6 +266,15 @@ class EntitySelect
                     $fileChecksumType = Si4Util::getArg($firstFile, "checksumType", "");
                     $fileFullTextLength = strlen(Si4Util::getArg($firstFile, "fullText", ""));
                 }
+
+                $files = Si4Util::pathArg($data, "files", []);
+                foreach ($files as $file) {
+                    if (strtoupper($file["behaviour"]) === "THUMB") {
+                        $fileThumb = FileHelpers::getPreviewUrl($handle_id, $structType, $file["url"]);
+                        break;
+                    }
+                }
+
             }
 
             $result[] = [

@@ -9,6 +9,7 @@ use App\Helpers\Si4Util;
 use App\Helpers\Timer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ThumbsCreate extends Command
@@ -79,8 +80,15 @@ class ThumbsCreate extends Command
 
                 switch ($method) {
                     case "iiif":
-                        $thumbData = file_get_contents(ImageHelpers::getMainThumbUrl($entity_handle_id, $firstFileName));
-                        file_put_contents($fullPath.SI4_THUMB_FILE_POSTFIX, $thumbData);
+                        try {
+                            $thumbData = file_get_contents(ImageHelpers::getMainThumbUrl($entity_handle_id, $firstFileName));
+                            file_put_contents($fullPath.SI4_THUMB_FILE_POSTFIX, $thumbData);
+                        } catch (\Exception $e) {
+                            //
+                            Log::warning("Thumb could not be created via iiif. ".
+                                "sourceFile=".ImageHelpers::getMainThumbUrl($entity_handle_id, $firstFileName).", ".
+                                "destination=".$fullPath.SI4_THUMB_FILE_POSTFIX." e:".$e->getMessage());
+                        }
                         break;
                     case "imagick":
                     default:

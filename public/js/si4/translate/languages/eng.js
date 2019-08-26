@@ -162,6 +162,7 @@ si4.translations = {
     field_subject: "Subject",
     field_type: "Type",
     field_physicalFile: "Physical file",
+    field_thumbFile: "Thumbnail",
 
     field_year: "Year",
     field_structType: "Content type",

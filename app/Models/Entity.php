@@ -191,15 +191,24 @@ class Entity extends Model
             else $fileSec = $xmlDoc->addChild("METS:fileSec");
 
             $fileSec["ID"] = "files";
+            $fileSecGrp = null;
 
             // Remove METS:fileSec/METS:fileGrp and reconstruct
             $fileSecGrpArray = $xmlDoc->xpath("METS:fileSec/METS:fileGrp");
-            if (count($fileSecGrpArray)) $fileSecGrp = $fileSecGrpArray[0];
-            else $fileSecGrp = $fileSec->addChild("METS:fileGrp");
+            if (count($fileSecGrpArray)) {
+                for ($i = 0; $i < count($fileSecGrpArray); $i++) {
+                    if (strtoupper($fileSecGrpArray[$i]["USE"]) == "DEFAULT") {
+                        $fileSecGrp = $fileSecGrpArray[$i];
+                        break;
+                    }
+                }
+            }
+            if (!$fileSecGrp) $fileSecGrp = $fileSec->addChild("METS:fileGrp");
 
-            $existingMetsFiles = $xmlDoc->xpath("METS:fileSec/METS:fileGrp/METS:file");
+            $existingMetsFiles = $fileSecGrp->xpath("METS:fileSec/METS:fileGrp/METS:file");
             for ($i = 0; $i < count($existingMetsFiles); $i++) {
-                if (strtoupper($existingMetsFiles[$i]["USE"]) != "EXTERNAL") {
+                $use = strtoupper($existingMetsFiles[$i]["USE"]);
+                if ($use != "EXTERNAL") {
                     unset($existingMetsFiles[$i][0]);
                 }
             }

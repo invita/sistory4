@@ -99,6 +99,16 @@ class Entities extends Controller
             Storage::move($tempStorageName, $destStorageName);
         }
 
+        // Custom Thumbnail
+        $realThumbName = Si4Util::getArg($postJson, "realThumbName", "");
+        $tempThumbName = Si4Util::getArg($postJson, "tempThumbName", "");
+        if ($tempThumbName && $realThumbName) {
+            $tempStorageName = "public/temp/".$tempThumbName;
+            $destStorageName = FileHelpers::getPublicStorageName($handle_id, $realThumbName);
+            if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
+            Storage::move($tempStorageName, $destStorageName);
+        }
+
         $entity = Entity::findOrNew($id);
         $entity->parent = $parent;
         $entity->struct_type = in_array($structType, Enums::$structTypes) ? $structType : null;

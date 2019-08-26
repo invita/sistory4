@@ -97,6 +97,16 @@ class Si4Helpers {
         $result["thumb"] = self::getThumbUrl($elasticEntity);
         $result["thumbJson"] = self::getThumbJsonUrl($elasticEntity);
 
+        // Override thumb if THUMB file is defined
+        $files = Si4Util::pathArg($elasticEntity, "_source/data/files", []);
+        foreach ($files as $file) {
+            if (strtoupper($file["behaviour"]) === "THUMB") {
+                $result["thumb"] = FileHelpers::getPreviewUrl($result["system"]["handle_id"], $result["system"]["struct_type"], $file["url"]);
+                break;
+            }
+        }
+
+
 
         if ($result["system"]["struct_type"] === "collection") {
             // Collection specific

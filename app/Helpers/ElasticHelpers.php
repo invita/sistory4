@@ -313,21 +313,48 @@ HERE;
             "data.si4.title.value",
         ];
 
-        $queryString = mb_ereg_replace("-", " ", $queryString);
-        $queryString = mb_ereg_replace("  ", " ", $queryString);
+        $searchWords = self::tokenize($queryString);
+        $searchWords = self::cleanUpWords($searchWords);
 
-        $searchWords = explode(" ", $queryString);
+        //$searchWords = explode(" ", $queryString);
         $must = [];
         $should = [];
         $highlight = null;
 
         foreach ($searchWords as $wordIdx => $searchWord) {
+            /*
+            print_r($searchWord." ".
+                "isQuoted:".(self::isQuoted($searchWord) ? "true" : "false").", ".
+                "replace:".mb_ereg_replace('"', '\"', $searchWord).", ".
+                "\n");
+            */
+
+            if (self::isQuoted($searchWord)) {
+                $s = [
+                    "bool" => [ "should" => [] ]
+                ];
+                foreach ($searchFields as $searchField) {
+                    $s["bool"]["should"][] = ["match_phrase" => [ $searchField => $searchWord ]];
+                }
+                $must[] = $s;
+            } else {
+                $must[] = [
+                    "query_string" => [
+                        "fields" => $searchFields,
+                        "query" => '*'.$searchWord.'*',
+                    ],
+                ];
+            }
+
+            /*
             $must[] = [
                 "query_string" => [
                     "fields" => $searchFields,
-                    "query" => '*'.$searchWord.'*'
+                    "query" => mb_ereg_replace('"', '\"', $searchWord),
+                    //"query" => self::isQuoted($searchWord) ? $searchWord : '*'.$searchWord.'*',
                 ],
             ];
+            */
         }
 
         // Apply search type filter
@@ -399,6 +426,7 @@ HERE;
         if (count($should)) $query["bool"]["should"] = $should;
         if (count($must)) $query["bool"]["must"] = $must;
 
+        //print_r($query);
         return self::search($query, $offset, $limit, "child_order", "asc", $highlight);
     }
 
@@ -1072,6 +1100,33 @@ HERE;
         }
         return $str;
     }
+
+    public static function isQuoted($str) {
+        return strpos($str, "\"") === 0 && strrpos($str, "\"") === strlen($str) -1;
+    }
+
+    public static function tokenize($str) {
+        preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $str, $matches);
+        return $matches[0];
+    }
+
+    public static function cleanUpWords($array) {
+        $result = [];
+        foreach ($array as $wordIdx => $word) {
+            $result[] = self::cleanUpWord($word);
+        }
+        return $result;
+    }
+
+    public static function cleanUpWord($str) {
+        $str = mb_ereg_replace("-", " ", $str);
+        $str = mb_ereg_replace("  ", " ", $str);
+        if (!self::isQuoted($str)) {
+            $str = mb_ereg_replace("\"", "", $str);
+        }
+        return $str;
+    }
+
 
 
 }

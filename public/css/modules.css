@@ -31,3 +31,6 @@
 
 #pageHolder .filePreviewDiv { margin: 8px; border: silver dashed 1px; }
 .filePreviewDiv img { max-width: 256px; max-height: 256px; }
+
+#pageHolder .thumbPreviewDiv { margin: 8px; }
+#pageHolder .thumbPreviewDiv > img {  border: silver solid 2px; max-width: 170px; max-height: 220px; }

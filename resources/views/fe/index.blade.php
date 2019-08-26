@@ -9,7 +9,6 @@
         <div class="medium-12 columns">
 
             <hr />
-
             <div class="detailsContent">
                 <div class="contentWrap">
 
