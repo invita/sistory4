@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Helpers\ElasticHelpers;
+use App\Helpers\Si4Util;
 use App\Helpers\Timer;
 use App\Models\Elastic\EntityElastic;
 use App\Models\Entity;
@@ -54,6 +55,11 @@ class ReindexEntityText extends Command
             return;
         }
 
+        if (!$entity || $entity->struct_type !== "file") {
+            $this->info("Entity struct_type is not file. Skipping.");
+            return;
+        }
+
         $this->info("Indexing basic entity.");
         Artisan::call("reindex:entity", ["entityId" => $entityId]);
         ElasticHelpers::refreshIndex();
@@ -72,6 +78,7 @@ class ReindexEntityText extends Command
         $this->info("Extracting text from files...");
         Timer::start("fileTextExtraction");
         $tikaStatus = EntityElastic::extractTextFromFiles($entity, $elasticSource);
+        $fullTextLen = @strlen(Si4Util::pathArg($elasticSource, "data/files/0/fullText", ""));
         Timer::stop("fileTextExtraction");
 
         if (!$tikaStatus) {
@@ -83,6 +90,8 @@ class ReindexEntityText extends Command
 
         Timer::start("elasticIndex");
         ElasticHelpers::indexEntity($entityId, $elasticSource);
+        $this->info("Indexed full text characters: ".$fullTextLen);
+
         Timer::stop("elasticIndex");
 
         $entity->req_text_reindex = false;

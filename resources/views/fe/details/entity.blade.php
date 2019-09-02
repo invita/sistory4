@@ -15,13 +15,25 @@
                 ?>
             </div>
 
+            @if (isset($data["doc"]["si4tech"]["newVersion"]))
+                <div class="newVersion">
+                    {{__('fe.details_newVersion')}} <a href="{{$data["doc"]["si4tech"]["newVersion"]}}">{{__('fe.details_linkHere')}}</a>
+                </div>
+            @endif
+
+            @if (isset($data["doc"]["si4tech"]["removedTo"]))
+                <div class="removedTo">
+                     {{__('fe.details_removedTo')}} <a href="{{$data["doc"]["si4tech"]["removedTo"]}}">{{__('fe.details_linkHere')}}</a>
+                </div>
+            @endif
+
             @if (isset($data["doc"]["si4tech"]["description"]))
                 <div class="description">
                     <?php foreach($data["doc"]["si4tech"]["description"] as $desc) echo $desc; ?>
                 </div>
             @endif
 
-            <div class="detailsContent">
+            <div class="detailsContent entity">
                 <div class="bigImageWrap">
                     @if ($data["doc"]["thumbJson"])
                         <div class="openSeaDragon"

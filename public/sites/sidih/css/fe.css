@@ -1,1 +1,130 @@
-#si4 .searchFormContainer{border-bottom:2px solid #683;border-left:1px solid #683;border-right:1px solid #683;background:linear-gradient(180deg,rgba(102,136,51,.2) 0,transparent)}#si4 .button{background-color:#683;color:#fff}#si4 .button:hover{background-color:#4a6325}#si4 .entitySearchWrap.esrCards .searchResult .imageWrapper img{box-shadow:1px 1px 10px -5px #79836b}#si4 .entitySearchWrap.esrCards .searchResult:hover .imageWrapper img{box-shadow:1px 1px 10px -2px #79836b}#si4 .entitySearchWrap.esrCards .searchResult.collection .imageWrapper img{box-shadow:none}#si4 .entitySearchWrap.esrTable .searchResult{border-bottom:1px solid rgba(102,136,51,.3)}#si4 .entitySearchWrap.esrTable .searchResult:nth-child(odd){background-color:rgba(102,136,51,.02)}#si4 .entitySearchWrap.esrTable .searchResult:nth-child(2n){background-color:rgba(102,136,51,.06)}#si4 .entitySearchWrap.esrTable .searchResult:hover{background-color:rgba(102,136,51,.1)}#si4 .entitySearchWrap.esrTable .searchResult .dataWrapper .match{color:#006;background-color:#ff9}#si4 .searchFormSubmitDropdown{border-left:1px solid #96ad74}#si4 .searchAutocompleteTerm{color:#683}#si4 .detailsContent .childrenWrap .child:hover{background-color:rgba(102,136,51,.03);border:1px solid rgba(102,136,51,.7)}#si4 .fileDetails .fileName .mime{color:#683}#si4 .si4button{color:#fff;background:#000;transition:background-color .3s ease-out}#si4 .si4button:focus,#si4 .si4button:hover{color:#fff;background:#683}#si4 .accordion{background:linear-gradient(180deg,rgba(102,136,51,.2) 0,transparent)}#si4 .accordion:hover{background:linear-gradient(180deg,rgba(102,136,51,.3) 0,transparent)}#si4 #topMenu{border:none;border-bottom:1px solid #683}#si4 #topMenu .ui-widget.ui-widget-content{border:1px solid #683}#si4 #topMenu .ui-state-active{border-color:#683;color:#fff;background:linear-gradient(180deg,rgba(102,136,51,.2) 0,transparent);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#338e130b",endColorstr="#006d0019",GradientType=0)}
+/* Colors */
+
+#si4 {
+  /* Search box */
+  /* si4button */
+  /* accordion */
+}
+
+#si4 .searchFormContainer {
+  border-bottom: #668833 solid 2px;
+  border-left: #668833 solid 1px;
+  border-right: #668833 solid 1px;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(102, 136, 51, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#si4 .button {
+  background-color: #668833;
+  color: white;
+}
+
+#si4 .button:hover {
+  background-color: #4a6325;
+}
+
+#si4 .entitySearchWrap.esrCards .searchResult .imageWrapper img {
+  box-shadow: 1px 1px 10px -5px #79836b;
+}
+
+#si4 .entitySearchWrap.esrCards .searchResult:hover .imageWrapper img {
+  box-shadow: 1px 1px 10px -2px #79836b;
+}
+
+#si4 .entitySearchWrap.esrCards .searchResult.collection .imageWrapper img {
+  box-shadow: none;
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult {
+  border-bottom: rgba(102, 136, 51, 0.3) solid 1px;
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:nth-child(odd) {
+  background-color: rgba(102, 136, 51, 0.02);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:nth-child(even) {
+  background-color: rgba(102, 136, 51, 0.06);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:hover {
+  background-color: rgba(102, 136, 51, 0.1);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult .dataWrapper .match {
+  color: #006;
+  background-color: #FF9;
+}
+
+#si4 .searchFormSubmitDropdown {
+  border-left: #96ad74 solid 1px;
+}
+
+#si4 .searchAutocompleteTerm {
+  color: #668833;
+}
+
+#si4 .detailsContent .childrenWrap .child:hover {
+  background-color: rgba(102, 136, 51, 0.03);
+  border: rgba(102, 136, 51, 0.7) solid 1px;
+}
+
+#si4 .fileDetails .fileName .mime {
+  color: #668833;
+}
+
+#si4 .si4button {
+  color: white;
+  background: black;
+  transition: background-color 300ms ease-out;
+  /*
+  border: silver solid 1px;
+  border-radius: 5px;
+  padding: 4px 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  */
+}
+
+#si4 .si4button:hover,
+#si4 .si4button:focus {
+  color: white;
+  background: #668833;
+}
+
+#si4 .accordion {
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(102, 136, 51, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#si4 .accordion:hover {
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(102, 136, 51, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#si4 #topMenu {
+  border: none;
+  border-bottom: #668833 solid 1px;
+}
+
+#si4 #topMenu .ui-widget.ui-widget-content {
+  border: #668833 solid 1px;
+}
+
+#si4 #topMenu .ui-state-active {
+  border-color: #668833;
+  color: white;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(102, 136, 51, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#338e130b", endColorstr="#006d0019",GradientType=0 );
+  /* IE6-9 */
+}
+

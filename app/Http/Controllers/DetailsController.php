@@ -41,6 +41,19 @@ class DetailsController extends FrontendController
                 return redirect($externalCollection);
             }
 
+            /*
+            // TODO "newVersion" => "newVersion",
+            $newVersion = Si4Util::pathArg($data, "doc/si4tech/newVersion", null);
+            if ($newVersion) {
+                //return redirect($newVersion);
+            }
+            // TODO "removedTo" => "removedTo",
+            $removedTo = Si4Util::pathArg($data, "doc/si4tech/removedTo", null);
+            if ($removedTo) {
+                //return redirect($removedTo);
+            }
+            */
+
             $struct_type = Si4Util::pathArg($docData, "_source/struct_type", "entity");
             $struct_subtype = Si4Util::pathArg($docData, "_source/struct_subtype", "default");
 

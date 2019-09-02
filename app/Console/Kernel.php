@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel
         Commands\ReindexEntities::class,
         Commands\ReindexEntityText::class,
         Commands\ReindexEntitiesText::class,
+        Commands\ReindexCleanEntity::class,
+        Commands\ReindexCleanEntities::class,
         Commands\ThumbsCreate::class,
         Commands\ThumbsCreateAll::class,
         Commands\EntityTestElasticConvert::class,

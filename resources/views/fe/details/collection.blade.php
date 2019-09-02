@@ -11,6 +11,18 @@
                 <?php echo $data["html_breadcrumbs"]; ?>
             </div>
 
+            @if (isset($data["doc"]["si4tech"]["newVersion"]))
+                <div class="newVersion">
+                    {{__('fe.details_newVersion')}} <a href="{{$data["doc"]["si4tech"]["newVersion"]}}">{{__('fe.details_linkHere')}}</a>
+                </div>
+            @endif
+
+            @if (isset($data["doc"]["si4tech"]["removedTo"]))
+                <div class="removedTo">
+                     {{__('fe.details_removedTo')}} <a href="{{$data["doc"]["si4tech"]["removedTo"]}}">{{__('fe.details_linkHere')}}</a>
+                </div>
+            @endif
+
 <!--
             <div class="collectionSearch">
                 <form action="/search" class="flexRow">

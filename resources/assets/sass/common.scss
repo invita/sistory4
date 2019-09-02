@@ -324,10 +324,32 @@ input:checked + #collectionSearchIndicator {
   }
 }
 
-.detailsContent {
+.newVersion, .removedTo {
+  border: 1px solid #BA1810;
+  border-radius: 3px;
+  padding: 4px 10px;
+  margin: 10px 20px 1rem;
+  background: #f4f4f4;
+  a {
+    color: #8e130b;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.detailsContent.entity {
+  padding: 4px 10px;
+  margin: 10px 20px 1rem;
   display: flex;
   flex-direction: row;
 }
+
+.description {
+  padding: 4px 10px;
+  margin: 10px 20px 1rem;
+}
+
 .detailsContent .bigImageWrap {
   width: 250px;
   max-height: 350px;

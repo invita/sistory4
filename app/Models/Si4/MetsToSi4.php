@@ -81,6 +81,7 @@ class MetsToSi4
             $si4techMD_single = [
                 "additionalMetadata" => "additionalMetadata",
                 "pdfPage" => "pdfPage",
+                "newVersion" => "newVersion",
                 "removedTo" => "removedTo",
                 "externalCollection" => "externalCollection",
                 "searchResultsSort" => "searchResultsSort",
