@@ -180,7 +180,7 @@ class DetailsController extends FrontendController
                     $defaultParentFile["isParentFile"] = true;
                     $defaultParentFile["urlPostfix"] = "#page=".$pdfPage;
                     $files[] = $defaultParentFile;
-                    print_r($defaultParentFile);
+                    //print_r($defaultParentFile);
                 }
 
             }
