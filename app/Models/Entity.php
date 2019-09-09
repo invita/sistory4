@@ -11,6 +11,7 @@ use App\Helpers\XmlHelpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -119,6 +120,8 @@ class Entity extends Model
     */
 
 
+    private static $doNotTouch_metsFileUses = ["EXTERNAL", "YOUTUBE"];
+
     public function updateXml() {
 
         $currentUser = \Auth::user();
@@ -205,10 +208,12 @@ class Entity extends Model
             }
             if (!$fileSecGrp) $fileSecGrp = $fileSec->addChild("METS:fileGrp");
 
-            $existingMetsFiles = $fileSecGrp->xpath("METS:fileSec/METS:fileGrp/METS:file");
+            $existingMetsFiles = $fileSecGrp->xpath("METS:file");
             for ($i = 0; $i < count($existingMetsFiles); $i++) {
                 $use = strtoupper($existingMetsFiles[$i]["USE"]);
-                if ($use != "EXTERNAL") {
+
+                // Remove only METS:file if its "use" attribute is not in the doNotTouch array.
+                if (!in_array($use, self::$doNotTouch_metsFileUses)) {
                     unset($existingMetsFiles[$i][0]);
                 }
             }

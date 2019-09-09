@@ -95,26 +95,41 @@
                     </div>
                     <div class="accordionContent fileList" id="accordionFiles">
                         @foreach ($data["files"] as $file)
-                            <div class="fileDetails">
-                                <div class="flexRow flexAlignEnd">
-                                    <a href="/details/{{$file["handle_id"]}}">
-                                        <div class="flexRow">
-                                            <img class="fileThumb iiifImage" src="{{ $file["thumbUrl"] }}" />
-                                            <div class="fileContent">
-                                                <div class="fileName">{{ $file["fileName"] }}</div>
-                                                <div class="created">{{ __('fe.details_fileCreated') }}: {{ $file["displayCreated"] }}</div>
-                                                <div class="size">{{ __('fe.details_fileSize') }}: {{ $file["displaySize"] }}</div>
-                                                <div class="checksum">{{ $file["checksumType"] }}: {{ $file["checksum"] }}</div>
+                            @if ($file["display"])
+                                <?php /* print_r($file); */ ?>
+                                <div class="fileDetails">
+                                    <div class="flexRow flexAlignEnd">
+                                        <a href="{{ $file["detailsUrl"]}}" {{ $file["isExternal"] ? 'target=_blank' : '' }}>
+                                            <div class="flexRow">
+                                                <img class="fileThumb iiifImage" src="{{ $file["thumbUrl"] }}" />
+                                                <div class="fileContent">
+                                                    <div class="fileName">{{ $file["fileName"] }}</div>
+                                                    @if ($file["displayCreated"])
+                                                        <div class="created">{{ __('fe.details_fileCreated') }}: {{ $file["displayCreated"] }}</div>
+                                                    @endif
+                                                    @if ($file["displaySize"])
+                                                        <div class="size">{{ __('fe.details_fileSize') }}: {{ $file["displaySize"] }}</div>
+                                                    @endif
+                                                    @if ($file["checksumType"])
+                                                        <div class="checksum">{{ $file["checksumType"] }}: {{ $file["checksum"] }}</div>
+                                                    @endif
+                                                    @if ($file["description"])
+                                                        <div class="desc">{{ $file["description"] }}</div>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                    <div class="fileDownload">
-                                        <a class="si4button download" href="{{ $file["url"] }}" target="_blank">
-                                            {{ __('fe.details_fileDownload') }}
                                         </a>
+
+                                        @if (!$file["isExternal"])
+                                            <div class="fileDownload">
+                                                <a class="si4button download" href="{{ $file["downloadUrl"] }}" target="_blank">
+                                                    {{ __('fe.details_fileOpen') }}
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         @endforeach
                     </div>
                 </div>

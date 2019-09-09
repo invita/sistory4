@@ -7,6 +7,7 @@ use App\Helpers\FileHelpers;
 use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
 use App\Helpers\TikaParseDoc;
+use App\Helpers\Timer;
 use App\Models\Elastic\MdMappers\DC;
 use App\Models\Elastic\MdMappers\Mods;
 use App\Models\Si4Field;
@@ -301,6 +302,12 @@ class EntityElastic
             $docText = TikaParseDoc::parseText($filePath);
             $entityElastic["data"]["files"][$idx]["fullText"] = $docText;
             //print_r($docText);
+
+            //Timer::start("makeFullTextSuggest");
+            //$suggestFields = self::makeFullTextSuggest($docText);
+            //$entityElastic["data"]["files"][$idx]["fullTextSuggest"] = $suggestFields;
+            //Timer::stop("makeFullTextSuggest");
+
         }
 
         return true;

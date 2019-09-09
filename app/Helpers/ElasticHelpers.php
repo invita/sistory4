@@ -153,6 +153,12 @@ class ElasticHelpers
     }
 }
 HERE;
+/*
+                "data.files.fullTextSuggest" : {
+                    "type" : "completion",
+                    "analyzer": "lowercase_analyzer"
+                }
+*/
 
 /*
                 "left_ngram_analyzer": {
@@ -295,6 +301,7 @@ HERE;
         return \Elasticsearch::connection()->search($requestArgs);
     }
 
+
     /**
      * Retrieves all matching documents from elastic search
      * @param $queryString string to match
@@ -306,6 +313,130 @@ HERE;
      * @return array
      */
     public static function searchString($queryString, $searchType = SEARCH_TYPE_ALL, $hdl = "", $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
+    {
+
+        $searchFields = [
+            "data.si4.creator.value",
+            "data.si4.title.value",
+        ];
+
+        $must = [];
+        $should = [];
+        $highlight = null;
+
+        // Apply search string
+        switch ($searchType) {
+            case SEARCH_TYPE_FULL_TEXT:
+                $must[] = [
+                    "simple_query_string" => [
+                        "fields" => ["data.files.fullText"],
+                        "query" => $queryString,
+                    ],
+                ];
+                break;
+            default:
+                $must[] = [
+                    "simple_query_string" => [
+                        "fields" => $searchFields,
+                        "query" => $queryString,
+                    ],
+                ];
+                break;
+
+        }
+
+        // Apply search type filter
+        switch ($searchType) {
+            case SEARCH_TYPE_ALL:
+                // No additional filter
+                break;
+
+            case SEARCH_TYPE_COLLECTION:
+                $must[] = [
+                    "query_string" => [
+                        "fields" => ["struct_type"],
+                        "query" => 'collection'
+                    ],
+                ];
+                break;
+
+            case SEARCH_TYPE_ENTITY:
+                $must[] = [
+                    "query_string" => [
+                        "fields" => ["struct_type"],
+                        "query" => 'entity'
+                    ],
+                ];
+                break;
+
+            case SEARCH_TYPE_FILE:
+                $must[] = [
+                    "query_string" => [
+                        "fields" => ["struct_type"],
+                        "query" => 'file'
+                    ],
+                ];
+                break;
+            case SEARCH_TYPE_FULL_TEXT:
+                $must[] = [
+                    "query_string" => [
+                        "fields" => ["struct_type"],
+                        "query" => 'file'
+                    ],
+                ];
+                /*
+                $should = $must;
+                $must = [[
+                    "query_string" => [
+                        "fields" => ["data.files.fullText"],
+                        "query" => $queryString
+                    ],
+                ]];
+                */
+                if (env("SI4_ELASTIC_HIGHLIGHT")) {
+                    $highlight = [
+                        "fields" => [
+                            "data.files.fullText" => [
+                                "fragment_size" => 110,
+                                "number_of_fragments" => 3,
+                                "pre_tags" => [""],
+                                "post_tags" => [""]
+                            ]
+                        ]
+                    ];
+                }
+                break;
+        }
+
+        // Apply handle_id filter
+        if ($hdl) {
+            $must[] = [
+                "query_string" => [
+                    "fields" => ["hierarchy"],
+                    "query" => $hdl
+                ],
+            ];
+        }
+
+        $query = [ "bool" => [] ];
+        if (count($should)) $query["bool"]["should"] = $should;
+        if (count($must)) $query["bool"]["must"] = $must;
+
+        //print_r($query);
+        return self::search($query, $offset, $limit, "child_order", "asc", $highlight);
+    }
+
+    /**
+     * Retrieves all matching documents from elastic search
+     * @param $queryString string to match
+     * @param $searchType string SEARCH_TYPE
+     * @param $offset Integer offset
+     * @param $limit Integer limit
+     * @param $sortField string sortField
+     * @param $sortDir string sort direction (asc/desc)
+     * @return array
+     */
+    public static function searchString_old($queryString, $searchType = SEARCH_TYPE_ALL, $hdl = "", $offset = 0, $limit = SI4_DEFAULT_PAGINATION_SIZE, $sortField = "child_order", $sortDir = "asc")
     {
 
         $searchFields = [
@@ -993,15 +1124,37 @@ HERE;
             ];
         }
 
+        $must = [];
+
+        // Apply match parent
+        $must[] = [
+            "match" => [
+                "parent" => $parent
+            ],
+        ];
+
+        // Only Active entities
+        $must[] = [
+            "match" => [
+                "data.header.recordStatus" => "Active"
+            ],
+        ];
+
+        $query = ["bool" => [ "must" => $must ] ];
+
+        /*
+        $query = [
+            "match" => [
+                "parent" => $parent
+            ]
+        ];
+        */
+
         $requestArgs = [
             "index" => env("SI4_ELASTIC_ENTITY_INDEX", "entities"),
             "type" => env("SI4_ELASTIC_ENTITY_DOCTYPE", "entity"),
             "body" => [
-                "query" => [
-                    "match" => [
-                        "parent" => $parent
-                    ]
-                ],
+                "query" => $query,
                 "sort" => $sort,
                 "from" => $offset,
                 "size" => $limit,
@@ -1072,6 +1225,17 @@ HERE;
                         }
                     }
                 }
+            }
+        }
+        return $result;
+    }
+
+    public static function makeHandleIdMap($dataElastic) {
+        $result = [];
+        foreach ($dataElastic as $record){
+            $handle_id = Si4Util::pathArg($record, "_source/handle_id", null);
+            if ($handle_id) {
+                $result[$handle_id] = $record;
             }
         }
         return $result;

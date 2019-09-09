@@ -12,6 +12,8 @@ use App\Models\Si4Field;
 class DcHelpers {
 
     public static function fileSizePresentation($fileSizeInBytes) {
+        if (!$fileSizeInBytes) return "";
+
         if ($fileSizeInBytes >= 1048576)
             $result = number_format($fileSizeInBytes / 1048576, 1) .' MB';
         elseif ($fileSizeInBytes >= 1024)
@@ -25,6 +27,7 @@ class DcHelpers {
     public static function fileDatePresentation($fileDate) {
         // expected format "2018-06-18T19:53:30Z"
         //return $result;
+        if (!$fileDate) return "";
         $time = strtotime($fileDate);
         $newformat = date('d.m.Y, H:i', $time);
         return $newformat;

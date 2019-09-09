@@ -15,14 +15,15 @@ $(document).ready(function() {
 
     if (!q) return;
 
-    var removedChars = ["%22"];
+    //                   #      -    +      (      )
+    var removedChars = ["%22", "-", "%2B", "%28", "%29"];
     var badChars = ["%C4%8D", "%C5%A1", "%C5%BE", "%C4%8C", "%C5%A0", "%C5%BD"];
     var qWords = q.split("+");
     for (var i in qWords) {
         var qWord = qWords[i];
         qWord = qWord.replace(new RegExp(removedChars.join("|"), "g"), "");
         qWord = qWord.replace(new RegExp(badChars.join("|"), "g"), ".");
-        //console.log("qWord", qWord);
+        console.log("qWord", qWord);
         if (!qWord) continue;
         if (qWord.length < 3) continue;
         $(".dataWrapper .value").each(function() {

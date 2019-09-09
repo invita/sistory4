@@ -38,6 +38,7 @@ return [
     'details_childEntities' => 'Child entities',
 	'details_fileCreated' => 'Created',
 	'details_fileDownload' => 'Download',
+    'details_fileOpen' => 'Open',
 	'details_fileSize' => 'Size',
 	'details_fileView' => 'View',
 	'details_sectionFiles' => 'Files',

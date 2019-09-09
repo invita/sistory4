@@ -21,7 +21,7 @@
                 </div>
             @endif
 
-            <div class="detailsContent">
+            <div class="detailsContent file">
                 <div class="bigImageWrap">
                     @if ($data["doc"]["thumbJson"])
                         <div class="openSeaDragon"
@@ -59,7 +59,7 @@
 
                             <div class="fileDownload">
                                 <a class="si4button download" href="{{ $data["file"]["url"] }}" target="_blank">
-                                    {{ __('fe.details_fileDownload') }}
+                                    {{ __('fe.details_fileOpen') }}
                                 </a>
                             </div>
                         </div>

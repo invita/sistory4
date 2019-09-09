@@ -187,7 +187,6 @@ class MetsToSi4
                         $fileID = $this->domXPath->evaluate("string(@ID)", $file);
                         $fileOWNERID = $this->domXPath->evaluate("string(@OWNERID)", $file);
                         $fileUSE = $this->domXPath->evaluate("string(@USE)", $file);
-                        if (!$fileUSE) $fileUSE = $fileGrpUSE;
 
                         $fileCREATED = $this->domXPath->evaluate("string(@CREATED)", $file);
                         $fileSIZE = $this->domXPath->evaluate("string(@SIZE)", $file);
@@ -199,17 +198,24 @@ class MetsToSi4
                         $fileLocLOCTYPE = $this->domXPath->evaluate("string(METS:FLocat/@LOCTYPE)", $file);
                         $fileLocUSE = $this->domXPath->evaluate("string(METS:FLocat/@USE)", $file);
                         $fileLocTITLE = $this->domXPath->evaluate("string(METS:FLocat/@title)", $file);
+                        if (!$fileLocTITLE) $fileLocTITLE = $this->domXPath->evaluate("string(METS:FLocat/@xlink:title)", $file);
 
                         $fileLocHREF = $this->domXPath->evaluate("string(METS:FLocat/@href)", $file);
                         if (!$fileLocHREF) $fileLocHREF = $this->domXPath->evaluate("string(METS:FLocat/@xlink:href)", $file);
 
 
+                        $behaviour = $fileLocUSE;
+                        if (!$behaviour) $behaviour = $fileUSE;
+                        if (!$behaviour) $behaviour = $fileGrpUSE;
+
                         $fileMetadata = [
                             "handle_id" => $fileID,
                             "fileName" => $fileOWNERID,
-                            "behaviour" => $fileUSE,
-                            "url" => $fileLocHREF,
+                            "behaviour" => $behaviour,
                             "fullText" => "",
+                            "url" => $fileLocHREF,
+                            "extLocType" => $fileLocLOCTYPE,
+                            "extTitle" => $fileLocTITLE,
                         ];
 
                         $fileMetadata["createDate"] = $fileCREATED;

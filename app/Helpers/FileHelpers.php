@@ -33,6 +33,12 @@ class FileHelpers
         }
     }
 
+    public static function getDefaultThumbForUse($useName) {
+        switch ($useName) {
+            case "youtube": return SI4_DEFAULT_YOUTUBE_THUMB;
+        }
+    }
+
     public static function getPublicStorageName($handleId, $fileName) {
         return "public/".self::getStorageName($handleId, $fileName);
     }

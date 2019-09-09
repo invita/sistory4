@@ -120,6 +120,9 @@ class DetailsController extends FrontendController
 
     private function prepareDataForEntity(Request $request, $hdl, $docData, &$data) {
 
+        $parent = Si4Util::pathArg($docData, "_source/parent");
+        $struct_type = Si4Util::pathArg($docData, "_source/struct_type", "entity");
+
         $searchResultsSort = Si4Util::pathArg($docData, "_source/data/si4tech/searchResultsSort", null);
         $sort = ElasticHelpers::elasticSortFromString($searchResultsSort);
 
@@ -132,23 +135,136 @@ class DetailsController extends FrontendController
         $data["children"] = $children;
 
         $data["files"] = [];
-        $files = ElasticHelpers::searchMust([
+
+        $internalFiles = ElasticHelpers::makeHandleIdMap(ElasticHelpers::searchMust([
             "parent" => $hdl,
             "struct_type" => "file"
-        ]);
+        ]));
+        //print_r($internalFiles);
+
+        $files = Si4Util::pathArg($docData, "_source/data/files", []);
+
+        // Fake parent's default file when pdfPage is given
+        /*
+            elseif (isset($data["si4tech"]) && isset($data["si4tech"]["pdfPage"]))
+                <div class="fileDownload">
+                    <a class="si4button download" href="{{ $file["downloadUrl"] }}" target="_blank">
+                        {{ __('fe.details_fileDownload') }}
+                    </a>
+                </div>
+            <!--
+            #page=7
+            -->
+        */
+        //if ()
+        //print_r($docData);
+        $pdfPage = Si4Util::pathArg($docData, "_source/data/si4tech/pdfPage");
+        if ($pdfPage && $parent) {
+            $parentEntityHits = ElasticHelpers::searchByHandleArray([$parent]);
+            if (count($parentEntityHits)) {
+                $parentEntity = $parentEntityHits[array_keys($parentEntityHits)[0]];
+
+                $parentFiles = Si4Util::pathArg($parentEntity, "_source/data/files", []);
+
+                // Search for default parent file
+                $defaultParentFile = null;
+                foreach ($parentFiles as $parentFile) {
+                    if ($parentFile["behaviour"] === "default") {
+                        $defaultParentFile = $parentFile;
+                        break;
+                    }
+                }
+
+                if ($defaultParentFile) {
+                    // Default parent file found
+                    $defaultParentFile["isParentFile"] = true;
+                    $defaultParentFile["urlPostfix"] = "#page=".$pdfPage;
+                    $files[] = $defaultParentFile;
+                    print_r($defaultParentFile);
+                }
+
+            }
+        }
 
         foreach ($files as $file) {
-            $fileHandleId = Si4Util::pathArg($file, "_source/handle_id");
-            $fileName = Si4Util::pathArg($file, "_source/data/files/0/fileName");
 
-            $fileSize = Si4Util::pathArg($file, "_source/data/files/0/size");
-            $fileCreated = Si4Util::pathArg($file, "_source/data/files/0/createDate");
+            /*
+            "handle_id" : "external.1",
+            "fileName" : "",
+            "behaviour" : "YOUTUBE",
+            "fullText" : "",
+            "url" : "http://www.youtube.com/embed/6HvZKFT90zw",
+            "extLocType" : "URL",
+            "extTitle" : "Opcijski opis",
+            "createDate" : "",
+            "size" : "",
+            "checksum" : "",
+            "checksumType" : "",
+            "mimeType" : ""
+            */
+
+            $fileHandleId = Si4Util::pathArg($file, "handle_id");
+            $behaviour = Si4Util::pathArg($file, "behaviour");
+            $isExternal = !!$behaviour && strtolower($behaviour) !== "default";
+            $isParentFile = Si4Util::pathArg($file, "isParentFile", false);
+
+            $fileName = Si4Util::pathArg($file, "fileName");
+            $fileSize = Si4Util::pathArg($file, "size");
+            $fileCreated = Si4Util::pathArg($file, "createDate");
+            $thumbUrl = FileHelpers::getThumbUrl($hdl, "file", $fileName);
+            $detailsUrl = "/details/".$fileHandleId;
+            $downloadUrl = "";
+            $description = "";
+
+            $internalFile = null;
+
+            if ($isParentFile) {
+                $thumbUrl = FileHelpers::getThumbUrl($parent, "file", $fileName);
+                $urlPostfix = Si4Util::pathArg($file, "urlPostfix", "");
+                $downloadUrl = FileHelpers::getPreviewUrl($parent, "file", $fileName).$urlPostfix;
+            } else {
+                if (!$isExternal) {
+                    // Internal file
+                    if ($fileHandleId && isset($internalFiles[$fileHandleId])) {
+                        $internalFile = $internalFiles[$fileHandleId];
+                        $fileName = Si4Util::pathArg($internalFile, "_source/data/files/0/fileName", $fileName);
+                        $fileSize = Si4Util::pathArg($internalFile, "_source/data/files/0/size", $fileSize);
+                        $fileCreated = Si4Util::pathArg($internalFile, "_source/data/files/0/createDate", $fileCreated);
+                        $downloadUrl = FileHelpers::getPreviewUrl($hdl, "file", $fileName);
+                    }
+                } else {
+                    // External file
+                    $fileName = Si4Util::pathArg($file, "extTitle", $fileName);
+                    $detailsUrl = Si4Util::pathArg($file, "url", "");
+                    $description = $detailsUrl;
+
+                    if (strtolower($behaviour) === "thumb") {
+                        if (!$fileName) $fileName = "Default thumbnail";
+                        $detailsUrl = FileHelpers::getPreviewUrl($hdl, $struct_type, $detailsUrl);
+                        $thumbUrl = $detailsUrl;
+                        //FileHelpers::getPreviewUrl($result["system"]["handle_id"], $result["system"]["struct_type"], $file["url"])
+
+                    }
+                    if (strtolower($behaviour) === "youtube") {
+                        $thumbUrl = FileHelpers::getDefaultThumbForUse("youtube");
+                    }
+                }
+            }
+
+            //$fileName = Si4Util::pathArg($file, "fileName");
+            //$fileSize = Si4Util::pathArg($file, "size");
+            //$fileCreated = Si4Util::pathArg($file, "createDate");
+
 
             $data["files"][] = [
+                "behaviour" => $behaviour,
+                "isExternal" => $isExternal,
                 "handle_id" => $fileHandleId,
                 "fileName" => $fileName,
-                "url" => FileHelpers::getPreviewUrl($hdl, "file", $fileName),
-                "thumbUrl" => FileHelpers::getThumbUrl($hdl, "file", $fileName),
+                "description" => $description,
+                "downloadUrl" => $downloadUrl,
+                "detailsUrl" => $detailsUrl,
+                "thumbUrl" => $thumbUrl,
                 "thumbIIIF" => ImageHelpers::getSmallThumbUrl($hdl, $fileName),
                 "mimeType" => Si4Util::pathArg($file, "_source/data/files/0/mimeType"),
                 "size" => $fileSize,
@@ -157,6 +273,7 @@ class DetailsController extends FrontendController
                 "displayCreated" => DcHelpers::fileDatePresentation($fileCreated),
                 "checksum" => Si4Util::pathArg($file, "_source/data/files/0/checksum"),
                 "checksumType" => Si4Util::pathArg($file, "_source/data/files/0/checksumType"),
+                "display" => true,
             ];
         }
     }

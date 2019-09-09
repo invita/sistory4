@@ -338,7 +338,7 @@ input:checked + #collectionSearchIndicator {
   }
 }
 
-.detailsContent.entity {
+.detailsContent.entity, .detailsContent.file {
   padding: 4px 10px;
   margin: 10px 20px 1rem;
   display: flex;
@@ -441,10 +441,11 @@ input:checked + #collectionSearchIndicator {
 .fileList .fileDetails .fileDownload {
   margin-bottom: 15px;
   margin-left: 20px;
+  margin-top: 10px;
 }
 
 .fileDetails {
-  padding: 10px 10px;
+  padding: 10px 0px;
 }
 .fileDetails .fileName {
   font-size: 14px;
@@ -468,10 +469,21 @@ input:checked + #collectionSearchIndicator {
   font-size: 14px;
   color: gray;
 }
+.fileDetails .desc {
+  font-size: 12px;
+  color: gray;
+}
 
 .fileDetails .fileDownload {
   margin-top: 6px;
 }
+
+/*
+.detailsContent.entity {
+}
+.detailsContent.file {
+}
+*/
 
 #accordionMets {
   padding: 15px 10px;

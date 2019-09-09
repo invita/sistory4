@@ -332,7 +332,7 @@ class AjaxController extends Controller
         return $response ? $response : "[]";
     }
 
-
+    /*
     private function searchSuggestFullText_old(Request $request) {
         $term = $request->query("term", "");
         $termLower = mb_strtolower($term);
@@ -381,6 +381,6 @@ class AjaxController extends Controller
         $response = json_encode(array_keys($results));
         return $response ? $response : "[]";
     }
-
+    */
 
 }
