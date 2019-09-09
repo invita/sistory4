@@ -120,6 +120,35 @@ class Entity extends Model
     */
 
 
+    /*
+    var templateReplaceMap = {
+        systemId: data.id,
+        handleId: data.handleId,
+        si4id: "si4."+data.handleId,
+        handleUrl: "http://hdl.handle.net/"+si4.data.repositoryInfo.handlePrefix+"/"+data.handleId,
+        structType: data.structType,
+        currentTimestamp: si4.dateToISOString(),
+        recordStatus: "Active",
+        repositoryName: si4.data.repositoryInfo.name,
+        repositoryNote: si4.data.repositoryInfo.note,
+        userId: si4.data.currentUser.id,
+        userFullname: si4.data.currentUser.lastname +", "+ si4.data.currentUser.firstname,
+    };
+
+     {{systemId}}         - Id, ki ga vedno dodeli sistem
+     {{handleId}}         - Handle prefix (se lahko ročno vnese le ob kreiranju)
+     {{si4id}}            - konstanta "si4." + handleId, npr. "si4.entity123"
+     {{handleUrl}}        - Handle url
+     {{structType}}       - tip (collection/entity/file)
+     {{currentTimestamp}} - trenutni datum čas, npr. "2018-12-10T20:11:13"
+     {{recordStatus}}     - "Active"
+     {{repositoryName}}   - Ime repozitorija
+     {{repositoryNote}}   - Url repozitorija
+     {{userId}}           - Id prijavljenega uporabnika
+     {{userFullname}}     - Polno ime prijavljenega uporabnika
+
+    */
+
     private static $doNotTouch_metsFileUses = ["EXTERNAL", "YOUTUBE"];
 
     public function updateXml() {
@@ -129,7 +158,7 @@ class Entity extends Model
         Timer::start("xmlParsing");
 
         $xmlDoc = simplexml_load_string($this->xml);
-        $xmlDoc['ID'] = $this->handle_id;
+        $xmlDoc['ID'] = "si4.".$this->handle_id;
         $xmlDoc['OBJID'] = "http://hdl.handle.net/".si4config("handlePrefix")."/".$this->handle_id;
         $xmlDoc['TYPE'] = $this->struct_type;
 
@@ -138,11 +167,26 @@ class Entity extends Model
         $metsHdr["LASTMODDATE"] = DcHelpers::dateToISOString();
         $metsHdr["RECORDSTATUS"] = $this->active ? "Active" : "Inactive";
 
-        $agentCreator = $metsHdr->xpath("METS:agent[@ROLE='CREATOR']")[0];
-        $agentCreator["ID"] = $currentUser->id;
-        $agentCreator["TYPE"] = "INDIVIDUAL";
-        $agentCreatorName = $agentCreator->xpath("METS:name")[0];
-        $agentCreatorName[0] = $currentUser->lastname.", ".$currentUser->firstname;
+        $agentDisseminatorArr = $metsHdr->xpath("METS:agent[@ROLE='DISSEMINATOR']");
+        if (!count($agentDisseminatorArr)) {
+            $agentDisseminator = $metsHdr->addChild("METS:agent");
+            $agentDisseminator["ROLE"] = "DISSEMINATOR";
+            $agentDisseminator["TYPE"] = "ORGANIZATION";
+            $agentDisseminatorName = $agentDisseminator->addChild("METS:name");
+            $agentDisseminatorName[0] = si4config("siteName");
+            $agentDisseminatorNote = $agentDisseminator->addChild("METS:note");
+            $agentDisseminatorNote[0] = si4config("siteUrl");
+        }
+
+        $agentCreatorArr = $metsHdr->xpath("METS:agent[@ROLE='CREATOR']");
+        if (!count($agentCreatorArr)) {
+            $agentCreator = $metsHdr->addChild("METS:agent");
+            $agentCreator["ROLE"] = "CREATOR";
+            $agentCreator["ID"] = $currentUser->id;
+            $agentCreator["TYPE"] = "INDIVIDUAL";
+            $agentCreatorName = $agentCreator->addChild("METS:name");
+            $agentCreatorName[0] = $currentUser->lastname.", ".$currentUser->firstname;
+        }
 
         // * DmdSec
 
@@ -207,6 +251,7 @@ class Entity extends Model
                 }
             }
             if (!$fileSecGrp) $fileSecGrp = $fileSec->addChild("METS:fileGrp");
+            $fileSecGrp["USE"] = "DEFAULT";
 
             $existingMetsFiles = $fileSecGrp->xpath("METS:file");
             for ($i = 0; $i < count($existingMetsFiles); $i++) {
@@ -284,16 +329,21 @@ class Entity extends Model
 
         // * structMap
 
-        if (count($parents)) {
+        // METS:structMap
+        $structMapArr = $xmlDoc->xpath("METS:structMap");
+        if (count($structMapArr)) $structMap = $structMapArr[0];
+        else $structMap = $xmlDoc->addChild("METS:structMap");
+
+
+        if (!count($parents)) {
+            // No parents.
+            $structMap["TYPE"] = "primary";
+        } else {
             $parent = $parents[count($parents) -1];
 
-            // METS:structMap
-            $structMapArr = $xmlDoc->xpath("METS:structMap");
-            if (count($structMapArr)) $structMap = $structMapArr[0];
-            else $structMap = $xmlDoc->addChild("METS:structMap");
-
-            $structMap["ID"] = "default.structure";
-            $structMap["TYPE"] = $parent["entity_type"];
+            $structMap["ID"] = "structure";
+            //$structMap["TYPE"] = $parent["entity_type"];
+            $structMap["TYPE"] = $this->entity_type;
 
             // Remove METS:structMap/METS:div and reconstruct
             unset($xmlDoc->xpath("METS:structMap/METS:div")[0][0]);
@@ -311,8 +361,8 @@ class Entity extends Model
             // METS:structMap/METS:div/METS:div - currentDiv
             $structCurrentDiv = $structParentDiv->addChild("METS:div");
             $structCurrentDiv["TYPE"] = $this->struct_type;
-            $structCurrentDiv["DMDID"] = "default.dc default.mods";
-            $structCurrentDiv["AMDID"] = "default.amd";
+            //$structCurrentDiv["DMDID"] = "default.dc default.mods";
+            //$structCurrentDiv["AMDID"] = "default.amd";
 
             //$children = $hierarchy["data"]["children"];
             //print_r(array_keys($children[0]));

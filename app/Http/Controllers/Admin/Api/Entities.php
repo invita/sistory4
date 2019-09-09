@@ -14,6 +14,7 @@ use App\Models\EntityHandleSeq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class Entities extends Controller
@@ -131,17 +132,28 @@ class Entities extends Controller
         ElasticHelpers::refreshIndex();
 
         // Update parent
-        /*
         if ($entity->parent) {
+
+            Log::warning("Updating parent (".$entity->parent.") for ".$entity->handle_id);
             $parentEntity = Entity::where(["handle_id" => $entity->parent])->first();
-            $parentEntity->updateXml();
+            if ($parentEntity) {
+                Log::warning("Parent found");
+                $parentEntity->calculateParents();
+                $parentEntity->updateXml();
 
-            $entity->save();
+                $parentEntity->save();
+                Log::warning("Parent saved");
 
-            Artisan::call("reindex:entity", ["entityId" => $parentEntity->id]);
+                Artisan::call("reindex:entity", ["entityId" => $parentEntity->id]);
 
-            ElasticHelpers::refreshIndex();
+                Log::warning("Parent reindexed");
+
+                ElasticHelpers::refreshIndex();
+            } else {
+                Log::warning("Parent entity (".$entity->parent.") not found for entity ".$entity->handle_id);
+            }
         }
+        /*
         */
 
         return ["status" => $status, "error" => $error];

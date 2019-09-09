@@ -1,6 +1,8 @@
 si4.entity.template = {};
 si4.entity.template.getEmptyMetsXml = function(data, callback) {
 
+    // WARNING: This code only mutates XML on the frontend.
+    // When modifying also check app/Models/Entity.php method: updateXml()
     var templateReplaceMap = {
         systemId: data.id,
         handleId: data.handleId,

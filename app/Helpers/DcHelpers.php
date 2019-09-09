@@ -35,7 +35,7 @@ class DcHelpers {
 
     public static function dateToISOString($date = null) {
         if (!$date) $date = time();
-        $newformat = date('Y-m-dTH:i:s', $date);
+        $newformat = date('Y-m-d\TH:i:s', $date);
         return $newformat;
     }
 
