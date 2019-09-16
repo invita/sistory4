@@ -69,7 +69,7 @@ class MdBehaviour extends Controller
         $error = "";
 
         if ($behaviour_name) {
-            $query = BehaviourField::query()->where("behaviour_name", $behaviour_name);
+            $query = BehaviourField::query()->where("behaviour_name", $behaviour_name)->orderBy("sort_order");
             $rowCount = $query->select()->count();
             $behaviourFields = $query->offset($pageStart)->limit($pageCount)->get();
         } else {
@@ -89,6 +89,9 @@ class MdBehaviour extends Controller
         if (!isset($postJson["behaviour_name"]) || !$postJson["behaviour_name"])
             return ["status" => false, "error" =>  "Missing behaviour_name"];
 
+        $sort_order = intval($postJson["sort_order"]);
+        if (!$sort_order) $sort_order = BehaviourField::getLastSortOrder($postJson["behaviour_name"]) +1;
+
         $behaviourField = BehaviourField::findOrNew($postJson["id"]);
         $behaviourField->behaviour_name = $postJson["behaviour_name"];
         $behaviourField->field_name = $postJson["field_name"];
@@ -96,7 +99,11 @@ class MdBehaviour extends Controller
         $behaviourField->inline = $postJson["inline"];
         $behaviourField->inline_separator = $postJson["inline_separator"];
         $behaviourField->display_frontend = $postJson["display_frontend"];
+        $behaviourField->sort_order = $sort_order;
         $behaviourField->save();
+
+        // Resort all
+        BehaviourField::recalculateSort($postJson["behaviour_name"]);
 
         return ["status" => true, "error" =>  null];
     }

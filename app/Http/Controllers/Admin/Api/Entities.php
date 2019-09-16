@@ -188,6 +188,8 @@ class Entities extends Controller
 
         $entity = Entity::find($id);
 
+        Artisan::call("reindex:entity", ["entityId" => $id]);
+
         Artisan::call("reindex:entityText", ["entityId" => $id]);
 
         return [

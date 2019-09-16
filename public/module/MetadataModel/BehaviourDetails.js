@@ -77,6 +77,7 @@ var F = function(args){
                 inline: {  },
                 inline_separator: {  },
                 display_frontend: {  },
+                sort_order: {  },
             },
             showOnlyDefinedFields: true,
             cssClass_table: "si4DataTable_table width100percent"

@@ -145,5 +145,15 @@
 
         </div>
     </footer>
+
+    <script>
+        // Wrap URLs in <a> when contains "linkUrls" class
+        $(".linkUrls").each(function() {
+            var html = $(this).html();
+            var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+            html = html.replace(exp, "<a href='$1'>$1</a>");
+            $(this).html(html);
+        });
+    </script>
 </body>
 </html>

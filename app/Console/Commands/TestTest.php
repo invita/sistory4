@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\BehaviourField;
 use App\Models\Si4\MetsToSi4;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -40,6 +41,10 @@ class TestTest extends Command
     public function handle()
     {
 
+        $last_order = BehaviourField::getLastSortOrder("default");
+        echo "lastSortOrder: ".$last_order."\n";
+
+        /*
         //$xmlFile = __DIR__ ."/../../../public/js/si4/entity/template/template.test.xml";
         $xmlFile = __DIR__ ."/../../../public/js/si4/entity/template/test.mods.xml";
         $xml = file_get_contents($xmlFile);
@@ -47,6 +52,7 @@ class TestTest extends Command
         $metsToSi4 = new MetsToSi4($xml);
         $result = $metsToSi4->run();
         print_r($result);
+        */
 
         /*
         $doc = new \DOMDocument();

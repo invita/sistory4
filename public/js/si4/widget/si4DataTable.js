@@ -1265,7 +1265,7 @@ si4.widget.si4DataTableField = function(tableRowWnd, args) {
     this._recalcInputWidth = function(){
         if (_p.hasInput && _p.editorType != "select") {
             _p.input.input.selector.css("width", "");
-            var newWidth = _p.selector.width() +8;
+            var newWidth = _p.selector.width() +6;
             if (_p.width && newWidth < _p.width) newWidth = _p.width;
             _p.input.input.selector.css("width", newWidth+"px");
         }

@@ -89,6 +89,14 @@ var F = function(args){
         caption: si4.translate("field_display_frontend"),
     });
 
+    args.basicTab.fieldSortOrder = args.basicTab.form.addInput({
+        name: "sort_order",
+        value: rowValue.sort_order,
+        type: "text",
+        caption: si4.translate("field_sort_order"),
+    });
+
+
     args.basicTab.saveButton = args.basicTab.form.addInput({
         caption: si4.translate("field_actions"),
         value: si4.translate("button_save"),

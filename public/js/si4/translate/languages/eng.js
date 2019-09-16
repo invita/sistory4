@@ -225,6 +225,7 @@ si4.translations = {
     field_inline: "Inline",
     field_inline_separator: "Inline separator",
     field_display_frontend: "Display on frontend",
+    field_sort_order: "Sort order",
     field_enable_adv_search: "Enable advanced search",
 
     field_xml_path: "Common xml path",

@@ -60,7 +60,7 @@
                                 <div class="fieldKey">{{ translateSi4Field($fieldName) }}:</div>
                                 <div class="fieldValue">
                                     @foreach ($fieldValueArray as $fieldValue)
-                                        <div class="line">{{ $fieldValue }}</div>
+                                        <div class="line linkUrls">{{ $fieldValue }}</div>
                                     @endforeach
                                 </div>
                             </div>

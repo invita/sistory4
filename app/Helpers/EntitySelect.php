@@ -139,9 +139,9 @@ class EntitySelect
         "struct_type" => "struct_type",
         "struct_subtype" => "struct_subtype",
         "entity_type" => "entity_type",
-        "title" => "data.dmd.dc.title.value",
-        "creator" => "data.dmd.dc.creator",
-        "date" => "data.dmd.dc.date",
+        "title" => "data.si4.title.value",
+        "creator" => "data.si4.creator.value",
+        "date" => "data.si4.date.value",
     ];
 
     private static function makeTermsFromFilter($filter) {
@@ -171,7 +171,13 @@ class EntitySelect
                     ];
                 } else {
                     $queryFilterMust[] = [
-                        "wildcard" => [ $termKey => $termVal ]
+                        //"wildcard" => [ $termKey => $termVal ]
+                        //"simple_query_string" => [ $termKey => $termVal ]
+                        "simple_query_string" => [
+                            "fields" => [ $termKey ],
+                            "query" => $termVal
+                        ]
+
                     ];
                 }
             }
@@ -186,6 +192,8 @@ class EntitySelect
                 ]
             ]
         ];
+
+        //print_r($query);
         return $query;
     }
 
