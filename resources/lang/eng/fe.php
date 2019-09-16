@@ -205,4 +205,6 @@ return [
     'footer_footerText' => '© Copyright 2011-2019 INZ, SISTORY - History of Slovenia',
     'mobileMenu_labelClose' => 'Close',
     'mobileMenu_labelBack' => 'Back',
+    'showMore' => 'Show more hits...',
+    'showLess' => 'Show less hits',
 ];

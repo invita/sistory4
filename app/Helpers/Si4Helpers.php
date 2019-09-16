@@ -160,7 +160,7 @@ class Si4Helpers {
             foreach ($qWords as $qWord) {
                 $qWordLen = mb_strlen($qWord);
                 $pos = -1;
-                for ($i = 0; $i < 3; $i++) {
+                for ($i = 0; $i < env("SI4_ELASTIC_HIGHLIGHT_COUNT"); $i++) {
                     $pos = stripos($fullText, $qWord, $pos +1);
                     if ($pos === false) break;
 

@@ -205,4 +205,6 @@ return [
     'footer_footerText' => '© Copyright 2011-2019 INZ, Zgodovina Slovenije - SIstory',
     'mobileMenu_labelClose' => 'Zapri',
     'mobileMenu_labelBack' => 'Nazaj',
+    'showMore' => 'Več zadetkov...',
+    'showLess' => 'Manj zadetkov',
 ];

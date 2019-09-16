@@ -40,6 +40,20 @@ class ElasticHelpers
         return self::$_advancedSearchFieldsMap;
     }
 
+    private static $_advancedSearchDefaultFields = null;
+    public static function getAdvancedSearchDefaultFields() {
+        if (!self::$_advancedSearchDefaultFields) {
+            $defaultBehaviour = Behaviour::getBehaviour("default");
+            $advFieldNames = json_decode($defaultBehaviour["advanced_search"], true);
+            self::$_advancedSearchDefaultFields = [];
+            foreach ($advFieldNames as $fieldName) {
+                //if ($si4field["enable_adv_search"])
+                self::$_advancedSearchDefaultFields[$fieldName] = "data.si4.".$fieldName.".value";
+            }
+        }
+        return self::$_advancedSearchDefaultFields;
+    }
+
     public static $searchTypes = [
         SEARCH_TYPE_ALL,
         SEARCH_TYPE_COLLECTION,
@@ -339,6 +353,7 @@ HERE;
                     "simple_query_string" => [
                         "fields" => $searchFields,
                         "query" => $queryString,
+                        "default_operator" => "and",
                     ],
                 ];
                 break;
@@ -398,7 +413,7 @@ HERE;
                         "fields" => [
                             "data.files.fullText" => [
                                 "fragment_size" => 110,
-                                "number_of_fragments" => 3,
+                                "number_of_fragments" => env("SI4_ELASTIC_HIGHLIGHT_COUNT"),
                                 "pre_tags" => [""],
                                 "post_tags" => [""]
                             ]

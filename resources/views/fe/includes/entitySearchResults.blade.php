@@ -72,9 +72,31 @@
 
                         @if (isset($entity["file"]) && isset($entity["file"]["fullTextHits"]))
                             <div class="dataWrapper fullTextHits">
-                                @foreach($entity["file"]["fullTextHits"] as $fullTextHit)
+                                <!--
+                                foreach($entity["file"]["fullTextHits"] as $fullTextHit)
+                                    <div class="value fullTextHit"><php echo "...". $fullTextHit ."..."; ></div>
+                                endforeach
+                                -->
+
+                                <!-- First 10 hits -->
+                                @for ($i = 0; $i < min(10, count($entity["file"]["fullTextHits"])); $i++)
+                                    <?php $fullTextHit = $entity["file"]["fullTextHits"][$i]; ?>
                                     <div class="value fullTextHit"><?php echo "...". $fullTextHit ."..."; ?></div>
-                                @endforeach
+                                @endfor
+
+                                <!-- Additional hits -->
+                                @if (count($entity["file"]["fullTextHits"]) > 10)
+                                    <div class="moreHits" style="overflow:hidden;">
+                                        @for ($i = 10; $i < min(30, count($entity["file"]["fullTextHits"])); $i++)
+                                            <?php $fullTextHit = $entity["file"]["fullTextHits"][$i]; ?>
+                                            <div class="value fullTextHit"><?php echo "...". $fullTextHit ."..."; ?></div>
+                                        @endfor
+                                    </div>
+
+                                    <button class="toggleMoreHits"
+                                        data-showMore="{{ __("fe.showMore") }}"
+                                        data-showLess="{{ __("fe.showLess") }}"></button>
+                                @endif
                             </div>
                         @endif
                     </a>
@@ -82,6 +104,29 @@
             @endif
         @endforeach
     </div>
+    <script>
+        function toggleMoreHits(parentEl) {
+            var moreHits = $(parentEl).find(".moreHits");
+            var moreHitsButton = $(parentEl).find(".toggleMoreHits");
+            console.log("toggleMoreHits", moreHits.height());
+            if (moreHits.height()) {
+                moreHits.css("height", "0px");
+                moreHitsButton.html(moreHitsButton.attr("data-showMore"));
+            } else {
+                moreHits.css("height", moreHits[0].scrollHeight+"px");
+                moreHitsButton.html(moreHitsButton.attr("data-showLess"));
+            }
+        }
+        $(".fullTextHits button.toggleMoreHits").click(function(e) {
+            e.preventDefault();
+            toggleMoreHits($(this).parent()[0]);
+        });
+        $(document).ready(function() {
+            $(".fullTextHits .moreHits").each(function() {
+                toggleMoreHits($(this).parent()[0]);
+            });
+        });
+    </script>
 @else
     <!-- No entities -->
 @endif

@@ -192,7 +192,7 @@ class FrontendController extends Controller
                 "value" => $fieldName,
                 "text" => __("fe.advSearch_field_".$fieldName)
             ];
-        }, array_keys(ElasticHelpers::getAdvancedSearchFieldsMap()));
+        }, array_keys(ElasticHelpers::getAdvancedSearchDefaultFields()));
 
         $data["advancedSearch"] = [
             "operators" => $advSearch_operators,
