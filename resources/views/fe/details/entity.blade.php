@@ -101,7 +101,9 @@
                                     <div class="flexRow flexAlignEnd">
                                         <a href="{{ $file["detailsUrl"]}}" {{ $file["isExternal"] ? 'target=_blank' : '' }}>
                                             <div class="flexRow">
-                                                <img class="fileThumb iiifImage" src="{{ $file["thumbUrl"] }}" />
+                                                <div>
+                                                    <img class="fileThumb iiifImage" src="{{ $file["thumbUrl"] }}" />
+                                                </div>
                                                 <div class="fileContent">
                                                     <div class="fileName">{{ $file["fileName"] }}</div>
                                                     @if ($file["displayCreated"])
@@ -115,6 +117,23 @@
                                                     @endif
                                                     @if ($file["description"])
                                                         <div class="desc">{{ $file["description"] }}</div>
+                                                    @endif
+
+                                                    @if ($file["isYoutube"])
+                                                        <iframe
+                                                            width="320"
+                                                            height="240"
+                                                            src="{{$file["detailsUrl"]}}"
+                                                            frameborder="0"
+                                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                            allowfullscreen></iframe>
+                                                    @endif
+
+                                                    <!-- TODO -->
+                                                    @if ($file["isVideo"])
+                                                        <video width="320" height="240" controls>
+                                                            <source src="{{ $file["detailsUrl"] }}">
+                                                        </video>
                                                     @endif
                                                 </div>
                                             </div>

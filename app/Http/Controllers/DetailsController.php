@@ -208,6 +208,10 @@ class DetailsController extends FrontendController
             $isExternal = !!$behaviour && strtolower($behaviour) !== "default";
             $isParentFile = Si4Util::pathArg($file, "isParentFile", false);
 
+            $behaviourLC = strtolower($behaviour);
+            $isVideo = $behaviourLC === "video"; // TODO
+            $isYoutube = $behaviourLC === "youtube";
+
             $fileName = Si4Util::pathArg($file, "fileName");
             $fileSize = Si4Util::pathArg($file, "size");
             $fileCreated = Si4Util::pathArg($file, "createDate");
@@ -238,14 +242,14 @@ class DetailsController extends FrontendController
                     $detailsUrl = Si4Util::pathArg($file, "url", "");
                     $description = $detailsUrl;
 
-                    if (strtolower($behaviour) === "thumb") {
+                    if ($behaviourLC === "thumb") {
                         if (!$fileName) $fileName = "Default thumbnail";
                         $detailsUrl = FileHelpers::getPreviewUrl($hdl, $struct_type, $detailsUrl);
                         $thumbUrl = $detailsUrl;
                         //FileHelpers::getPreviewUrl($result["system"]["handle_id"], $result["system"]["struct_type"], $file["url"])
 
                     }
-                    if (strtolower($behaviour) === "youtube") {
+                    if ($behaviourLC === "youtube") {
                         $thumbUrl = FileHelpers::getDefaultThumbForUse("youtube");
                     }
                 }
@@ -259,6 +263,8 @@ class DetailsController extends FrontendController
             $data["files"][] = [
                 "behaviour" => $behaviour,
                 "isExternal" => $isExternal,
+                "isVideo" => $isVideo,
+                "isYoutube" => $isYoutube,
                 "handle_id" => $fileHandleId,
                 "fileName" => $fileName,
                 "description" => $description,
