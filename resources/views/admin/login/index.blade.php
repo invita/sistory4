@@ -32,7 +32,8 @@
         @endif
 
         <div style="width: 300px">
-            <form method="POST" action="{{ route("admin.login.index#post") }}">
+            <!-- { { route("admin.login.index#post") } } -->
+            <form method="POST" action="/admin/login">
                 {{ csrf_field() }}
                 <input class="si4Input" type="text" name="name" placeholder="Username" />
                 <input class="si4Input" type="password" name="password" placeholder="Password" />
