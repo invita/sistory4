@@ -80,9 +80,9 @@ class ThumbsCreateAll extends Command
             }
 
             //print_r(Timer::getResults());
-            $this->info("Thumbnails recreated: {$successCnt}");
+            $this->info("All done! Thumbnails recreated: {$successCnt}");
             $this->info("Errors: {$errorCnt}");
-            $this->info("All done!");
+            $this->info("Finished at ".date("Y-m-d H:i:s"));
         }
 
     }

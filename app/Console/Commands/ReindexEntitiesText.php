@@ -71,6 +71,7 @@ class ReindexEntitiesText extends Command
 
             print_r(Timer::getResults());
             $this->info("All done! Entities text reindexed: {$cnt}");
+            $this->info("Finished at ".date("Y-m-d H:i:s"));
         }
     }
 }
