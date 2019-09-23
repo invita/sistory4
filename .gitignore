@@ -21,3 +21,6 @@ out.txt
 /app/Xsd/Test
 /app/Xsd/Xsi
 npm-debug.log
+cron_reindexFullText.sh
+cron_generateThumbnails.sh
+
