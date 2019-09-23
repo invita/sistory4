@@ -78,13 +78,15 @@
                                     </a>
                                 @endforeach
                             </div>
-                            <div class="flex3 flexRow hide-for-large">
-                                <select name="st" class="mobileSearchTabs" onchange="location.href=$(this).val();">
-                                    @foreach($layoutData["searchTabs"] as $idx => $searchTab)
-                                        <option value="{{$searchTab["link"]}}" {{ !$idx ? "selected" : "" }}>{{$searchTab["title"]}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            @if ($layoutData["searchTabs"] && count($layoutData["searchTabs"]))
+                                <div class="flex3 flexRow hide-for-large">
+                                    <select name="st" class="mobileSearchTabs" onchange="location.href=$(this).val();">
+                                        @foreach($layoutData["searchTabs"] as $idx => $searchTab)
+                                            <option value="{{$searchTab["link"]}}" {{ !$idx ? "selected" : "" }}>{{$searchTab["title"]}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
                             <!--
                             <div class="flex1 flexRow flexBothEnd mb-025">
                                 <a class="default" href="/advanced-search">{{ __("fe.search_advancedSearch") }}</a>
