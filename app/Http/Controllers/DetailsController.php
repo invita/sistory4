@@ -82,7 +82,11 @@ class DetailsController extends FrontendController
                     $this->prepareDataForEntity($request, $hdl, $docData, $data);
                     break;
             }
+
         }
+
+        // Fill missing data from parent
+        $this->parentFillData($request, $hdl, $docData, $data);
 
         $layoutData = $this->layoutData($request);
 
@@ -315,6 +319,34 @@ class DetailsController extends FrontendController
         //print_r($data["file"]);
     }
 
+    private function parentFillData(Request $request, $hdl, $docData, &$data) {
+
+        //print_r($data);
+        $struct_type = Si4Util::pathArg($data, "doc/system/struct_type");
+        $defaultThumb = FileHelpers::getDefaultThumbForStructType($struct_type);
+        $thumb = Si4Util::pathArg($data, "doc/thumb");
+
+        // Gather relevant parent data for same struct_type (i.e. thumbnail)
+        if (isset($data["parents"]) && $data["parents"]) {
+            foreach ($data["parents"] as $parent) {
+                $p_struct_type = Si4Util::pathArg($parent, "system/struct_type");
+                $p_defaultThumb = FileHelpers::getDefaultThumbForStructType($p_struct_type);
+                $p_thumb = Si4Util::pathArg($parent, "thumb");
+                if ($struct_type == $p_struct_type) {
+
+                    // Only if doc's thumb is default, but parent's thumb is not.
+                    if ($thumb == $defaultThumb && $p_thumb != $p_defaultThumb) {
+                        $data["doc"]["thumb"] = $p_thumb;
+                    }
+
+                } else {
+                    break;
+                }
+            }
+        }
+
+
+    }
 
     private function prepareBreadcrumbs(Request $request, $hdl, $docData, &$data) {
         //print_r($data["doc"]);
