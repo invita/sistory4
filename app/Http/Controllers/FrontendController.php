@@ -98,6 +98,7 @@ class FrontendController extends Controller
                 ],
             ];
         } else {
+            /*
             $result = [
                 [
                     "title" => ucfirst(env("SI4_SITE")),
@@ -105,6 +106,7 @@ class FrontendController extends Controller
                     "active" => true
                 ]
             ];
+            */
         }
 
         return $result;

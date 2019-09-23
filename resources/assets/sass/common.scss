@@ -513,7 +513,7 @@ input:checked + #collectionSearchIndicator {
   position: relative;
   padding: 4px 10px;
   cursor: pointer;
-  line-height: 2.2rem;
+  //line-height: 2.2rem;
 }
 
 .accordion:hover {
@@ -523,7 +523,7 @@ input:checked + #collectionSearchIndicator {
   content: '';
   position: absolute;
   right: 0.75rem;
-  top: 1rem;
+  top: 0.6rem;
   width: 32px;
   height: 32px;
   background: transparent url(/img/expand.png) no-repeat right top;

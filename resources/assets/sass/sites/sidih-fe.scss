@@ -68,8 +68,8 @@ $mainColor: #668833;
   }
   /* si4button */
   .si4button {
+    background: $mainColor;
     color: white;
-    background: darken($mainColor, 40%);
     transition: background-color 300ms ease-out;
     /*
     border: silver solid 1px;
@@ -84,19 +84,20 @@ $mainColor: #668833;
     //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
   }
   .si4button:hover, .si4button:focus {
+    background: darken($mainColor, 10%);
     color: white;
-    background: $mainColor;
   }
   /* accordion */
   .accordion {
-    //border: silver solid 1px;
-    background: #f4f4f4;
+    border: silver solid 1px;
+    background: #dcdcdc;
+    border-radius: 3px;
     //background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
     //background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
     //background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
   .accordion:hover {
-    background: gainsboro;
+    background: #e8e8e8;
     //background: -moz-linear-gradient(top, rgba($mainColor,0.3) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
     //background: -webkit-linear-gradient(top, rgba($mainColor,0.3) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
     //background: linear-gradient(to bottom, rgba($mainColor,0.3) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -171,7 +172,7 @@ $mainColor: #668833;
       color: white;
       border-color: #ccc;
       &:hover {
-        background-color: #212121;
+        background-color: darken($mainColor, 10%);
       }
     }
 
@@ -180,7 +181,7 @@ $mainColor: #668833;
       color: white;
       border-color: #ccc;
       &:hover {
-        background-color: #212121;
+        background-color: darken($mainColor, 10%);
       }
     }
     .searchFormSubmitDropdown {
@@ -189,7 +190,7 @@ $mainColor: #668833;
       //border-color: #ccc;
       border-left-color: lighten($mainColor, 20%);
       &:hover {
-        background-color: #212121;
+        background-color: darken($mainColor, 10%);
       }
     }
   }

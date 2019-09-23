@@ -71,7 +71,7 @@
 
                     <div class="large-9 medium-12 columns mt-1">
                         <div class="flexRow">
-                            <div class="flex3 flexRow show-for-large">
+                            <div class="flex3 flexRow show-for-large" style="min-height:36px;">
                                 @foreach($layoutData["searchTabs"] as $searchTab)
                                     <a class="searchTab{{$searchTab["active"] ? " active" : ""}}" href="{{$searchTab["link"]}}">
                                         {{$searchTab["title"]}}
