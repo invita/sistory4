@@ -26,7 +26,7 @@ class DbHierarchyHelpers
         if (!self::$handleToParentMap) self::loadHierarchyMap();
 
         $result = [];
-        if ($handle_id && self::$handleToParentMap[$handle_id]) {
+        if ($handle_id && isset(self::$handleToParentMap[$handle_id])) {
             $last = self::$handleToParentMap[$handle_id];
             $cyclicPreventCounter = 0;
             while ($last && $cyclicPreventCounter < 25) {
