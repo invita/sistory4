@@ -142,6 +142,7 @@ class Si4OaiReseed extends Command
         $oaiGroup->namespace = $namespace;
         $oaiGroup->behaviours = json_encode($behaviours);
         $oaiGroup->attrs = json_encode($attrs);
+        $oaiGroup->sets = "";
         $oaiGroup->save();
         return $oaiGroup;
     }
