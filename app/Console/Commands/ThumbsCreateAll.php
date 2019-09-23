@@ -52,7 +52,7 @@ class ThumbsCreateAll extends Command
             $this->info("forceAll - All entities' thumbs will be regenerated!");
             $this->warn("This may take a lot of time!");
         } else {
-            $this->info("Only require-thumb-generation marked entities' thumbs will be created");
+            $this->info("Only require-thumb-generation marked entities will be processed");
         }
 
         $noPrompt = $this->option("noPrompt");

@@ -45,9 +45,9 @@ class ReindexEntitiesText extends Command
 
         $forceAll = $this->option("forceAll");
         if ($forceAll) {
-            $this->info("forceAll - All entities texts will be reindexed");
+            $this->info("forceAll enabled - all entities will be reindexed!");
         } else {
-            $this->info("Only marked entities texts will be reindexed");
+            $this->info("Only require-fullText-reindex marked entities will be processed");
         }
 
         $noPrompt = $this->option("noPrompt");
