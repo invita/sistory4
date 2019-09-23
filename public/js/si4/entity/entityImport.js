@@ -53,6 +53,10 @@ si4.entity.entityImport = function(formData, dataTable) {
                                 dataTable.refresh();
                                 si4.loading.hide();
                             }, 2000);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log("Error", jqXHR, textStatus, errorThrown);
+                            alert("Error during import:\n["+textStatus+"] "+errorThrown);
                         }
                     });
                 }
