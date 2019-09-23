@@ -231,7 +231,7 @@ class Si4Helpers {
             '<span class="sep"> / </span>',
             array_map(function($bcItem) {
                 $icon = isset($bcItem["link"]) && $bcItem["link"] === "/" ?
-                    '<img src="/images/home.png" class="breadcrumbsIcon" />' : '';
+                    '<img src="/sites/'.env("SI4_SITE").'/img/home.png" class="breadcrumbsIcon" />' : '';
                 return '<a href="'.$bcItem["link"].'">'.$icon.$bcItem["text"].'</a>';
             }, $breadcrumbs)
         );

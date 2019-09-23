@@ -4,12 +4,14 @@ $mainColor: #668833;
 #si4 {
   /* Search box */
   .searchFormContainer {
+    /*
     border-bottom: $mainColor solid 2px;
     border-left: $mainColor solid 1px;
     border-right: $mainColor solid 1px;
-    background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    */
+    //background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    //background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    //background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
 
   .button {
@@ -29,7 +31,7 @@ $mainColor: #668833;
         box-shadow: 1px 1px 10px -2px desaturate(lighten($mainColor, 10%), 35%);
       }
       .searchResult.collection .imageWrapper img {
-        box-shadow: none;
+        //box-shadow: none;
       }
     }
     &.esrTable {
@@ -88,28 +90,108 @@ $mainColor: #668833;
   /* accordion */
   .accordion {
     //border: silver solid 1px;
-    background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: #f4f4f4;
+    //background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    //background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    //background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
   .accordion:hover {
-    background: -moz-linear-gradient(top, rgba($mainColor,0.3) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, rgba($mainColor,0.3) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, rgba($mainColor,0.3) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: gainsboro;
+    //background: -moz-linear-gradient(top, rgba($mainColor,0.3) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    //background: -webkit-linear-gradient(top, rgba($mainColor,0.3) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    //background: linear-gradient(to bottom, rgba($mainColor,0.3) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
   #topMenu {
     border: none;
-    border-bottom: $mainColor solid 1px;
+    //border-bottom: $mainColor solid 1px;
   }
   #topMenu .ui-widget.ui-widget-content {
-    border: $mainColor solid 1px;
+    //border: $mainColor solid 1px;
+    border: none;
+    color: white;
+    background: #333;
   }
   #topMenu .ui-state-active {
+    background: #222;
+    border: none;
+    margin: 0;
     border-color: $mainColor;
     color: white;
-    background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
+    //background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    //background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    //background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
   }
+
+  // Menu mobile
+  .hc-nav-trigger span, .hc-nav-trigger span::before, .hc-nav-trigger span::after {
+    background: white;
+  }
+  .hc-nav-trigger {
+    zoom: 0.75;
+  }
+  .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav li.nav-back a {
+    background: #333;
+    border-color: #666;
+  }
+  .hc-offcanvas-nav .nav-container, .hc-offcanvas-nav .nav-wrapper, .hc-offcanvas-nav ul {
+    background: #444;
+    border-color: #666;
+  }
+  .hc-offcanvas-nav li.nav-close a:hover, .hc-offcanvas-nav li.nav-back a:hover {
+    background: #444;
+    border-color: #666;
+  }
+  .hc-offcanvas-nav a, .hc-offcanvas-nav .nav-item {
+    border-color: #666;
+  }
+
+  .breadcrumbs {
+    a {
+      color: #303030;
+      &:last-child {
+        color: $mainColor;
+      }
+    }
+  }
+  .newVersion, .removedTo {
+    border: 1px solid $mainColor;
+    background: #f4f4f4;
+    a {
+      color: $mainColor;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .searchFormContainer {
+    input.submit {
+      background-color: $mainColor;
+      color: white;
+      border-color: #ccc;
+      &:hover {
+        background-color: #212121;
+      }
+    }
+
+    .searchFormSubmit {
+      background-color: $mainColor;
+      color: white;
+      border-color: #ccc;
+      &:hover {
+        background-color: #212121;
+      }
+    }
+    .searchFormSubmitDropdown {
+      background-color: $mainColor;
+      color: white;
+      //border-color: #ccc;
+      border-left-color: lighten($mainColor, 20%);
+      &:hover {
+        background-color: #212121;
+      }
+    }
+  }
+
 }

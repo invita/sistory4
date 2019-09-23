@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class FileHelpers
 {
+
     // $handleId -> file's parent handle_id
     public static function getPreviewUrl($handleId, $structType, $fileName) {
         $storageName = self::getStorageName($handleId, $fileName);
@@ -27,15 +28,15 @@ class FileHelpers
     }
     public static function getDefaultThumbForStructType($structType) {
         switch ($structType) {
-            case "collection": return SI4_DEFAULT_COLLECTION_THUMB;
-            case "entity": return SI4_DEFAULT_ENTITY_THUMB;
-            case "file": default: return SI4_DEFAULT_FILE_THUMB;
+            case "collection": return "/sites/".env("SI4_SITE")."/img/structType/collection.png";
+            case "entity": return "/sites/".env("SI4_SITE")."/img/structType/entity.png";
+            case "file": default: return "/sites/".env("SI4_SITE")."/img/structType/file.png";
         }
     }
 
     public static function getDefaultThumbForUse($useName) {
         switch ($useName) {
-            case "youtube": return SI4_DEFAULT_YOUTUBE_THUMB;
+            case "youtube": return "/sites/".env("SI4_SITE")."/img/structType/youtube.png";
         }
     }
 

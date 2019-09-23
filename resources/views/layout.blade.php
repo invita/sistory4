@@ -20,6 +20,12 @@
 
     <link rel="icon" type="image/png" href="/sites/{{env("SI4_SITE")}}/img/icon.png">
 
+    <style>
+    .entitySearchWrap.esrCards .searchResult.collection .imageWrapper:before {
+      background-image: url(/sites/{{env("SI4_SITE")}}/img/structType/collection_tab.png);
+    }
+    </style>
+
 @yield("head")
 
 </head>

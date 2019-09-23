@@ -21,6 +21,7 @@ $mainColor: #883333;
   .button:hover {
     background-color: darken($mainColor, 10%);
   }
+
   .entitySearchWrap {
     &.esrCards {
       .searchResult .imageWrapper img, {
@@ -144,4 +145,53 @@ $mainColor: #883333;
   .hc-offcanvas-nav a, .hc-offcanvas-nav .nav-item {
     border-color: #666;
   }
+
+  .breadcrumbs {
+    a {
+      color: #303030;
+      &:last-child {
+        color: $mainColor;
+      }
+    }
+  }
+  .newVersion, .removedTo {
+    border: 1px solid $mainColor;
+    background: #f4f4f4;
+    a {
+      color: $mainColor;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .searchFormContainer {
+    input.submit {
+      background-color: $mainColor;
+      color: white;
+      border-color: #ccc;
+      &:hover {
+        background-color: #212121;
+      }
+    }
+
+    .searchFormSubmit {
+      background-color: $mainColor;
+      color: white;
+      border-color: #ccc;
+      &:hover {
+        background-color: #212121;
+      }
+    }
+    .searchFormSubmitDropdown {
+      background-color: $mainColor;
+      color: white;
+      //border-color: #ccc;
+      border-left-color: lighten($mainColor, 20%);
+      &:hover {
+        background-color: #212121;
+      }
+    }
+  }
+
 }
