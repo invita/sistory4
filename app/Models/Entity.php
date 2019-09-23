@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Storage;
  * @property string $xml
  * @property boolean $active
  * @property boolean $req_text_reindex
+ * @property boolean $req_thumb_regen
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Entity whereCreatedAt($value)
@@ -58,7 +59,8 @@ class Entity extends Model
         'child_order',
         'xml',
         'active',
-        'req_text_reindex'
+        'req_text_reindex',
+        'req_thumb_regen'
     ];
 
     /**

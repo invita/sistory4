@@ -117,6 +117,7 @@ class Entities extends Controller
         $entity->child_order = $childOrder;
         $entity->xml = $xml;
         $entity->active = $active;
+        $entity->req_thumb_regen = false;
 
         if (!$handle_id) $handle_id = EntityHandleSeq::nextNumSeq($entity->struct_type);
         $entity->handle_id = $handle_id;

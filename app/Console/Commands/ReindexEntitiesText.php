@@ -38,6 +38,11 @@ class ReindexEntitiesText extends Command
      */
     public function handle()
     {
+        $this->info("--------------------");
+
+        date_default_timezone_set('Europe/Ljubljana');
+        $this->info("Starting entities fullText reindex at ".date("Y-m-d H:i:s"));
+
         $forceAll = $this->option("forceAll");
         if ($forceAll) {
             $this->info("forceAll - All entities texts will be reindexed");
@@ -59,7 +64,7 @@ class ReindexEntitiesText extends Command
 
             $cnt = 0;
             foreach ($entities as $entity) {
-                $this->info($entity["id"]);
+                if (!$noPrompt) $this->info($entity["id"]);
                 Artisan::call("reindex:entityText", ["entityId" => $entity["id"]]);
                 $cnt++;
             }

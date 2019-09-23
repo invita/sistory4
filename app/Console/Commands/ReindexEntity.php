@@ -84,6 +84,7 @@ class ReindexEntity extends Command
                 "xml" => $entity->xml,
                 "active" => $entity->active,
                 "req_text_reindex" => $entity->req_text_reindex,
+                "req_thumb_regen" => $entity->req_thumb_regen,
                 "data" => $si4Data,
             ];
 

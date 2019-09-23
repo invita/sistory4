@@ -7,6 +7,7 @@ use App\Helpers\FileHelpers;
 use App\Helpers\ImageHelpers;
 use App\Helpers\Si4Util;
 use App\Helpers\Timer;
+use App\Models\Entity;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +20,7 @@ class ThumbsCreate extends Command
      *
      * @var string
      */
-    protected $signature = 'thumbs:create {entityId} {method=imagick}';
+    protected $signature = 'thumbs:create {entityId} {method=iiif}';
 
     /**
      * The console command description.
@@ -48,6 +49,13 @@ class ThumbsCreate extends Command
 
         $entityId = $this->argument('entityId');
         $this->comment("Fetching entity {$entityId}");
+
+        $entity = Entity::find($entityId);
+        if (!$entity) {
+            $this->info("Entity not in DB... Skipping thumb generation. entityId={$entityId}");
+            return;
+        }
+
         $elasticEntities = ElasticHelpers::searchByIdArray([$entityId]);
         $elasticEntity = Si4Util::pathArg($elasticEntities, $entityId."/_source");
         //$this->info(print_r($elasticEntity, true));
@@ -109,5 +117,8 @@ class ThumbsCreate extends Command
 
             Timer::stop("thumbGeneration");
         }
+
+        $entity->req_thumb_regen = false;
+        $entity->save();
     }
 }

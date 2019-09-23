@@ -75,7 +75,11 @@ class EntityImport
 
         $entity->xml = $xmlContent;
 
-        //print_r($entity);
+        // Mark both flags, required full text reindex and thumb regeneration.
+        $entity->req_text_reindex = true;
+        $entity->req_thumb_regen = true;
+
+        //prin
 
         $entity->save();
 

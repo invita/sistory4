@@ -57,6 +57,8 @@ class ReindexEntityText extends Command
 
         if (!$entity || $entity->struct_type !== "file") {
             $this->info("Entity struct_type is not file. Skipping.");
+            $entity->req_text_reindex = false;
+            $entity->save();
             return;
         }
 

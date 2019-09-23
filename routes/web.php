@@ -55,6 +55,9 @@ Route::group(['prefix' => 'admin'], function () {
             // Initial data
             Route::post('initial-data', "Admin\\Api\\Initial@initialData")->name("admin.api.initial-data#post");
 
+            // Dashboard
+            Route::post('dashboard-files', "Admin\\Api\\Dashboard@dashboardFiles")->name("admin.api.dashboard-files#post");
+
             // Translations
             Route::post('translations-list', "Admin\\Api\\Translations@translationsList")->name("admin.api.translations-list#post");
             Route::post('save-translation', "Admin\\Api\\Translations@saveTranslation")->name("admin.api.save-translation#post");

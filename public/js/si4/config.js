@@ -8,6 +8,8 @@ si4.config.apiUrl = "/admin/api";
 
 si4.config.apiNames = [
 
+    "dashboardFiles",
+
     "fieldDefinitions", "fieldDefinitionsList", "saveFieldDefinition", "deleteFieldDefinition",
     "behaviourList", "saveBehaviour", "deleteBehaviour",
     "behaviourFieldList", "saveBehaviourField", "deleteBehaviourField",
