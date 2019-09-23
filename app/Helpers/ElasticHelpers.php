@@ -46,9 +46,11 @@ class ElasticHelpers
             $defaultBehaviour = Behaviour::getBehaviour("default");
             $advFieldNames = json_decode($defaultBehaviour["advanced_search"], true);
             self::$_advancedSearchDefaultFields = [];
-            foreach ($advFieldNames as $fieldName) {
-                //if ($si4field["enable_adv_search"])
-                self::$_advancedSearchDefaultFields[$fieldName] = "data.si4.".$fieldName.".value";
+            if ($advFieldNames) {
+                foreach ($advFieldNames as $fieldName) {
+                    //if ($si4field["enable_adv_search"])
+                    self::$_advancedSearchDefaultFields[$fieldName] = "data.si4.".$fieldName.".value";
+                }
             }
         }
         return self::$_advancedSearchDefaultFields;
