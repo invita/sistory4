@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Sistory 4</title>
+    <title>{{ si4config("siteName") }}</title>
 
     <link href="/css/common-fe.css" rel="stylesheet" type="text/css">
     <link href="/sites/{{env("SI4_SITE")}}/css/fe.css" rel="stylesheet" type="text/css">
