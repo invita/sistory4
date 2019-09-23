@@ -44,7 +44,8 @@ class IndexController extends FrontendController
         return $result;
     }
 
-    public function lang(Request $request, $lang = 'eng') {
+    public function lang(Request $request, $lang) {
+        if (!$lang) $lang = si4config('defaultLang', 'slv');
         if (in_array($lang, Enums::$feLanguages)) {
             session(["lang" => $lang]);
         }

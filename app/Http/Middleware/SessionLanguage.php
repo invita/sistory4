@@ -21,7 +21,7 @@ class SessionLanguage
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $sessionLang = $request->session()->get('lang', 'eng');
+        $sessionLang = $request->session()->get('lang', si4config('defaultLang', 'slv'));
         self::$currentLang = $sessionLang;
         app()->setLocale($sessionLang);
 

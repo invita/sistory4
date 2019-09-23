@@ -3,6 +3,7 @@ return [
     "siteName" => "SIstory",
     "siteUrl" => "http://sistory.si",
     "handlePrefix" => "11686",
+    "defaultLang" => "slv",
     "oai_identifyInfo" => array(
         "repositoryName" => "Sistory.si OAI Repository",
         "baseURL" => "http://www.sistory.si/oai",

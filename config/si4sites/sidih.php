@@ -3,6 +3,7 @@ return [
     "siteName" => "Sidih",
     "siteUrl" => "http://sidih.si",
     "handlePrefix" => "11686",
+    "defaultLang" => "slv",
     "oai_identifyInfo" => array(
         "repositoryName" => "Sidih.si OAI Repository",
         "baseURL" => "http://www.sidih.si/oai",
