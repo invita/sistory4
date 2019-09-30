@@ -6,6 +6,7 @@ si4.translations = {
     // Template
     button_save: "Shrani",
     button_forceTextReindex: "Ponovno indeksiranje",
+    button_forceRegenThumb: "Ustvari thumb",
 
     // Modules
 

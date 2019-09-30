@@ -14,7 +14,7 @@ class ThumbsCreateAll extends Command
      *
      * @var string
      */
-    protected $signature = 'thumbs:createAll {method=iiif} {--forceAll} {--noPrompt}';
+    protected $signature = 'thumbs:createAll {method=imagick} {--forceAll} {--noPrompt}';
 
     /**
      * The console command description.

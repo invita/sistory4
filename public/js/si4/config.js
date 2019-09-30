@@ -23,7 +23,7 @@ si4.config.apiNames = [
 
 
     "entityList", "entityListDb", "saveEntity", "reserveEntityId", "deleteEntity",
-    "entityHierarchy", "forceReindexEntity",
+    "entityHierarchy", "forceReindexEntity", "forceRegenThumb",
 
     "entityRelationsList", "saveEntityRelation", "deleteEntityRelation",
     "userList", "saveUser", "deleteUser",

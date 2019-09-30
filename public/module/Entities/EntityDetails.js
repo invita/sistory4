@@ -316,6 +316,15 @@ var F = function(args){
         });
         args.basicTab.forceReindex.selector.click(args.forceReindex);
 
+        if (struct_type == "file") {
+            // Force regen thumb
+            args.basicTab.forceRegenThumb = args.basicTab.form.addInput({
+                caption: null,
+                value: si4.translate("button_forceRegenThumb"),
+                type:"button",
+            });
+            args.basicTab.forceRegenThumb.selector.click(args.forceRegenThumb);
+        }
 
         // -- Preview metadata
         args.basicTab.panelGroupPreview = args.basicTab.panel.addGroup(si4.translate("entityGroup_mdPreview"));
@@ -836,6 +845,27 @@ var F = function(args){
             si4.loading.hide();
             if (data.status) {
                 alert("OK");
+            } else {
+                si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE, data);
+            }
+            //console.log("saveEntity callback", data);
+        }, function(err) {
+            // errorCallback
+            si4.loading.hide();
+            alert(si4.translate("save_failed_entity", { reason: "["+err.status+"] "+err.statusText }));
+        });
+    };
+
+    args.forceRegenThumb = function(){
+        var id = args.basicTab.form.getValue().id;
+
+        si4.loading.show();
+        si4.api["forceRegenThumb"]({ id: id }, function(data) {
+            si4.loading.hide();
+            if (data.status) {
+                alert("OK");
+                args.basicTab.thumbPreviewImg.selector.attr("src", data.thumb);
+                args.basicTab.thumbPreviewDiv.display();
             } else {
                 si4.error.show(si4.translate(si4.error.ERR_API_STATUS_FALSE), si4.error.ERR_API_STATUS_FALSE, data);
             }

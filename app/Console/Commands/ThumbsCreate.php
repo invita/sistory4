@@ -20,14 +20,14 @@ class ThumbsCreate extends Command
      *
      * @var string
      */
-    protected $signature = 'thumbs:create {entityId} {method=iiif}';
+    protected $signature = 'thumbs:create {entityId} {method=imagick}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create thumbs';
+    protected $description = 'Create thumbs for specified entityId. Available methods: iiif, imagick';
 
     /**
      * Create a new command instance.
@@ -76,12 +76,13 @@ class ThumbsCreate extends Command
         $firstFileName = Si4Util::pathArg($firstFile, "fileName");
 
         if ($firstFileHandleId && $firstFileName) {
-            $this->info("- Recreating thumbnail for entity {$entityId} handle_id={$entity_handle_id}, file_handle={$firstFileHandleId} ({$firstFileName})");
+            $this->info("- Recreating thumbnail for entity {$entityId} handle_id={$entity_handle_id}, file_handle={$firstFileHandleId} ({$firstFileName}), method:{$method}");
 
             Timer::start("thumbGeneration");
 
             $storageName = FileHelpers::getPublicStorageName($entity_handle_id, $firstFileName);
             $fullPath = storage_path('app')."/".$storageName;
+            $this->info("  fullPath: ".$fullPath);
 
             if (file_exists($fullPath)) {
                 $ext = pathinfo($fullPath, PATHINFO_EXTENSION);

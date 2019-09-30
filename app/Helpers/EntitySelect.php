@@ -67,6 +67,7 @@ class EntitySelect
         $rowCount = Si4Util::pathArg($dataElastic, "hits/total", 0);
         $hits = ElasticHelpers::elasticResultToAssocArray($dataElastic);
         $result = self::processElasticResponse($hits);
+        //print_r("hits: ".count($hits));
 
         return ["status" => true, "data" => $result, "rowCount" => $rowCount, "error" => null];
     }
@@ -569,7 +570,7 @@ class EntitySelect
 
     public static function selectChildren($handle_id) {
 
-        $children = EntitySelect::selectEntitiesByParentHandle($handle_id);
+        $children = EntitySelect::selectEntitiesByParentHandle($handle_id, ["pageCount" => 1000]);
         $children = isset($children["data"]) ? $children["data"] : [];
 
         return ["status" => true, "data" => $children];

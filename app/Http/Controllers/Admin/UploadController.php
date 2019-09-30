@@ -13,6 +13,7 @@ use App\Models\Relation;
 use Elasticsearch\ClientBuilder;
 use \Illuminate\Http\Request;
 use Elasticsearch;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
@@ -238,6 +239,7 @@ class UploadController extends Controller
 
             //echo "zipFileShort ".$zipFileShort."\n";
 
+            Log::info("Processing ".$zipFileShort);
             $pathExplode = explode("/", $zipFileShort);
             $fileName = array_pop($pathExplode);
             //$currentZipPath = substr($zipFile, 0, strlen($zipFile) - strlen($fileName));
@@ -249,6 +251,13 @@ class UploadController extends Controller
             $handleId = array_pop($pathExplode);
             $depthLevel = count($pathExplode);
 
+            // Parse struct_type from handle format
+            $struct_type = "entity";
+            $ss = substr($handleId, 0, 4);
+            if ($ss == "file") $struct_type = "file";
+            if ($ss == "menu") $struct_type = "collection";
+
+
             $parentHandleId = array_pop($pathExplode);
             if (!$parentHandleId) $parentHandleId = "";
             $content = $archive->getFromName($zipFile);
@@ -258,6 +267,7 @@ class UploadController extends Controller
                 // Process mets.xml and import entity
 
 
+                Log::info("Importing entity handle_id=".$handleId.", parent=".$parentHandleId);
                 $importResult = EntityImport::importEntity($handleId, $parentHandleId, $content);
                 $entity = $importResult["entity"];
                 $importCount += 1;
@@ -269,8 +279,13 @@ class UploadController extends Controller
             } else {
                 // Not mets.xml, copy file to appropriate path
 
+                $handleForFile = $handleId;
+                if ($struct_type == "file") {
+                    $handleForFile = $parentHandleId;
+                }
+
                 Timer::start("fileCopy");
-                $destStorageName = FileHelpers::getPublicStorageName($parentHandleId, $fileName);
+                $destStorageName = FileHelpers::getPublicStorageName($handleForFile, $fileName);
                 if (Storage::exists($destStorageName)) Storage::delete($destStorageName);
                 Storage::put($destStorageName, $content);
                 //echo "Put file ".$destStorageName."\n";
@@ -282,14 +297,49 @@ class UploadController extends Controller
 
         $archive->close();
 
+
+        // Note: Reindex is required firstly from top to bottom (from root to leaves in a hierarchy tree)
+        // Because children require some of their parent metadata to exist before they can be indexed.
+        // That is why parent must be indexed first, before children are allowed to.
+        // But the parent must update their METS xml after children have also been indexed.
+        // So we index top to bottom first, then do all over again but from bottom to top.
+
+
         // Remember imported entities by hierarchy depth level (children have higher value than their parents)
         $levels = array_keys($importedEntitiesByLevel);
         sort($levels);
 
+        Log::info("Starting import post process...");
+
+        // From top to bottom
         foreach ($levels as $level) {
             foreach ($importedEntitiesByLevel[$level] as $insertId) {
                 try {
-                    EntityImport::postImportEntity($insertId);
+                    Log::info("Downwards post process L".$level." ".$insertId);
+                    EntityImport::postImportEntityDownward($insertId);
+                } catch (EntityNotIndexedException $eNotIndexed) {
+                    $errors[] = $eNotIndexed->getMessage();
+                }
+            }
+
+            // Because Elastic is not real time, we need to refresh index for each insert depth level
+            // It is important that i.e. "parent" menus can be found in index before indexing it's child entities
+            if (count($importedEntitiesByLevel[$level]))
+                ElasticHelpers::refreshIndex();
+        }
+
+        ElasticHelpers::refreshIndex();
+        sleep(1);
+
+
+        // From the bottom to top
+        $levels_rev = array_reverse($levels);
+
+        foreach ($levels_rev as $level) {
+            foreach ($importedEntitiesByLevel[$level] as $insertId) {
+                try {
+                    Log::info("Upwards post process L".$level." ".$insertId);
+                    EntityImport::postImportEntityUpwards($insertId);
                 } catch (EntityNotIndexedException $eNotIndexed) {
                     $errors[] = $eNotIndexed->getMessage();
                 }
@@ -306,6 +356,9 @@ class UploadController extends Controller
         Timer::stop("total");
 
         $data["durations"] = Timer::getResults();
+
+        Log::info(print_r($data, true));
+        Log::info("Import finished.");
 
         return ["status" => true, "data" => $data, "errors" => $errors];
     }

@@ -72,6 +72,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('delete-entity', "Admin\\Api\\Entities@deleteEntity")->name("admin.api.delete-entity#post");
             Route::post('entity-hierarchy', "Admin\\Api\\Entities@entityHierarchy")->name("admin.api.entity-hierarchy#post");
             Route::post('force-reindex-entity', "Admin\\Api\\Entities@forceReindexEntity")->name("admin.api.force-reindex-entity#post");
+            Route::post('force-regen-thumb', "Admin\\Api\\Entities@forceRegenThumb")->name("admin.api.force-regen-thumb#post");
 
             Route::post('file-list', "Admin\\Api\\Files@fileList")->name("admin.api.file-list#post");
             Route::post('save-file', "Admin\\Api\\Files@saveFile")->name("admin.api.save-file#post");

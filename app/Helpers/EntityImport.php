@@ -99,13 +99,36 @@ class EntityImport
 
     }
 
-    public static function postImportEntity($sysId) {
+    public static function postImportEntityDownward($sysId) {
 
+        Timer::start("database");
+        $entity = Entity::find($sysId);
+
+        //Timer::stop("database");
+
+        //$entity->calculateParents();
+
+        /*
+        Timer::start("xmlParsing");
+        $entity->updateXml();
+        Timer::stop("xmlParsing");
+        */
+
+        //Timer::start("database");
+
+        $entity->save();
+        Timer::stop("database");
+
+        // Reindex
+        Artisan::call("reindex:entity", ["entityId" => $sysId]);
+    }
+
+    public static function postImportEntityUpwards($sysId) {
         Timer::start("database");
         $entity = Entity::find($sysId);
         Timer::stop("database");
 
-        $entity->calculateParents();
+        //$entity->calculateParents();
 
         Timer::start("xmlParsing");
         $entity->updateXml();
@@ -117,10 +140,6 @@ class EntityImport
 
         // Reindex
         Artisan::call("reindex:entity", ["entityId" => $sysId]);
-
-        // Create thumb
-        // TODO: cron job, to run thumb generator
-        //Artisan::call("thumbs:create", ["entityId" => $sysId]);
     }
 
 }

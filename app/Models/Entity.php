@@ -265,8 +265,10 @@ class Entity extends Model
                 }
             }
 
+            //print_r($children);
             foreach ($children as $child) {
                 if ($child["struct_type"] !== "file") continue;
+                //print_r($child);
 
                 $fileSecFile = $fileSecGrp->addChild("METS:file");
                 $fileSecFile["ID"] = $child["handle_id"];

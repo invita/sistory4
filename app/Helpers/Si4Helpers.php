@@ -193,12 +193,17 @@ class Si4Helpers {
 
     private static function getThumbUrl($elasticEntity) {
         // Find default file
+        $parent = Si4Util::pathArg($elasticEntity, "_source/parent");
         $handleId = Si4Util::pathArg($elasticEntity, "_source/handle_id");
         $structType = Si4Util::pathArg($elasticEntity, "_source/struct_type");
         $fileName = Si4Util::pathArg($elasticEntity, "_source/data/files/0/fileName");
 
         if ($handleId && $fileName) {
-            $thumbUrl = FileHelpers::getThumbUrl($handleId, $structType, $fileName);
+            if ($structType == "file") {
+                $thumbUrl = FileHelpers::getThumbUrl($parent, "entity", $fileName);
+            } else {
+                $thumbUrl = FileHelpers::getThumbUrl($handleId, $structType, $fileName);
+            }
             //$thumbUrl = ImageHelpers::getMainThumbUrl($handleId, $fileName);
             return $thumbUrl;
         }

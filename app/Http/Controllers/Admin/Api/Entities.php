@@ -6,6 +6,7 @@ use App\Helpers\EntityHelpers;
 use App\Helpers\EntitySelect;
 use App\Helpers\Enums;
 use App\Helpers\FileHelpers;
+use App\Helpers\Si4Helpers;
 use App\Helpers\Si4Util;
 use App\Http\Controllers\Controller;
 use App\Models\Behaviour;
@@ -128,7 +129,7 @@ class Entities extends Controller
         $entity->save();
 
         Artisan::call("reindex:entity", ["entityId" => $entity->id]);
-        Artisan::call("thumbs:create", ["entityId" => $entity->id, "method" => "iiif"]);
+        Artisan::call("thumbs:create", ["entityId" => $entity->id]);
 
         ElasticHelpers::refreshIndex();
 
@@ -187,7 +188,7 @@ class Entities extends Controller
         $status = true;
         $error = null;
 
-        $entity = Entity::find($id);
+        //$entity = Entity::find($id);
 
         Artisan::call("reindex:entity", ["entityId" => $id]);
 
@@ -198,4 +199,34 @@ class Entities extends Controller
             "error" => $error,
         ];
     }
+
+    public function forceRegenThumb(Request $request) {
+        $postJson = json_decode(file_get_contents("php://input"), true);
+        $id = $postJson["id"];
+
+        $status = true;
+        $error = null;
+
+        Artisan::call("thumbs:create", ["entityId" => $id]);
+
+        $entity = Entity::find($id);
+
+        $hdlElasticData = ElasticHelpers::searchByHandleArray([$entity->handle_id]);
+        $hdlDocData = $hdlElasticData[array_keys($hdlElasticData)[0]];
+        $hdlDoc = Si4Helpers::getEntityListPresentation($hdlDocData);
+        //print_r($hdlDocData);
+        //print_r($hdlDoc);
+
+        $thumb = Si4Util::getArg($hdlDoc, "thumb", FileHelpers::getDefaultThumbForStructType($entity->struct_type));
+
+        //$firstFile
+        //FileHelpers::getThumbUrl($entity->handle_id, $entity->struct_type, $firstFile);
+
+        return [
+            "status" => $status,
+            "thumb" => $thumb,
+            "error" => $error,
+        ];
+    }
+
 }

@@ -10,6 +10,7 @@ si4.translations = {
     button_create: "Create",
     button_generate_fe_translation_files: "Generate FE translation files",
     button_forceTextReindex: "Force full-text reindex",
+    button_forceRegenThumb: "Force thumb generation",
 
 
     // *** Modules ***
