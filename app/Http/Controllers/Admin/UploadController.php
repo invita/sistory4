@@ -227,6 +227,8 @@ class UploadController extends Controller
         $archive = new \ZipArchive();
         $archive->open($zipFileName, \ZipArchive::CREATE);
 
+        Log::info("Common path: ".$zipInfo["commonPath"]);
+
         foreach ($zipInfo["fileList"] as $zipFile) {
 
             //echo "zipFile ".$zipFile."\n";
