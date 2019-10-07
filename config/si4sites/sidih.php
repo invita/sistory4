@@ -1,8 +1,8 @@
 <?php
 return [
     "siteName" => "Sidih",
-    "siteUrl" => "http://sidih.si",
-    "handlePrefix" => "11686",
+    "siteUrl" => "https://sidih.si",
+    "handlePrefix" => "20.500.12325",
     "defaultLang" => "slv",
     "oai_identifyInfo" => array(
         "repositoryName" => "Sidih.si OAI Repository",

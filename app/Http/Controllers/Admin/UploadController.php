@@ -389,7 +389,7 @@ class UploadController extends Controller
         $data = [
             "tempFileName" => $tempFileName,
             "realFileName" => $realFileName,
-            "url" => "/storage/preview/?path=temp/".$tempFileName,
+            "url" => "/storage/preview?path=temp/".$tempFileName,
             "checksum" => $checksum,
             "size" => $size,
             "mimeType" => $mimeType,
