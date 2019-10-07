@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-    <link rel="icon" type="image/png" href="/img/icon.png">
+    <link rel="icon" type="image/png" href="/sites/{{ si4config("siteName") }}/img/icon.png">
     <title>{{ si4config("siteName") }} - Admin</title>
 
     <script src="/lib/jquery/jquery-2.1.1.js"></script>
