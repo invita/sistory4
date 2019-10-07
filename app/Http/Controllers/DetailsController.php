@@ -220,7 +220,7 @@ class DetailsController extends FrontendController
             $fileSize = Si4Util::pathArg($file, "size");
             $fileCreated = Si4Util::pathArg($file, "createDate");
             $thumbUrl = FileHelpers::getThumbUrl($hdl, "file", $fileName);
-            $detailsUrl = "/details/".$fileHandleId;
+            $detailsUrl = details_link($fileHandleId);
             $downloadUrl = "";
             $description = "";
 
@@ -351,7 +351,6 @@ class DetailsController extends FrontendController
     private function prepareBreadcrumbs(Request $request, $hdl, $docData, &$data) {
         //print_r($data["doc"]);
 
-        $linkPrefix = "/details/";
         $skipHandles = [env("SI4_ELASTIC_ROOT_COLLECTION"), "menuTop", "menuBottom"];
         $breadcrumbs = [];
 
@@ -368,14 +367,14 @@ class DetailsController extends FrontendController
         foreach ($parentsReverse as $parent) {
             if (in_array($parent["system"]["handle_id"], $skipHandles)) continue;
             $breadcrumbs[] = [
-                "link" => $linkPrefix.$parent["system"]["handle_id"],
+                "link" => details_link($parent["system"]["handle_id"]),
                 "text" => first($parent["si4"]["title"])
             ];
         }
 
         // Add current doc to breadcrumbs
         $curDoc = [
-            "link" => $linkPrefix.$data["doc"]["system"]["handle_id"],
+            "link" => details_link($data["doc"]["system"]["handle_id"]),
             "text" => first($data["doc"]["si4"]["title"])
         ];
         if (!$curDoc["text"] && $data["doc"]["system"]["struct_type"] === "file")

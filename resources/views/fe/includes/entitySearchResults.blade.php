@@ -4,7 +4,7 @@
         @foreach($entities as $entity)
             @if ($style == "cards")
                 <div class="searchResult {{ $entity["system"]["struct_type"] }}">
-                    <a href="/details/{{ $entity["system"]["handle_id"] }}">
+                    <a href="{{ details_link($entity["system"]["handle_id"]) }}">
                         <?php /* print_r($entity); */ ?>
                         <div class="imageWrapper">
                             <img src="{{ $entity["thumb"] }}" />
@@ -24,7 +24,7 @@
             @elseif ($style == "table")
 
                 <div class="searchResult {{ $entity["system"]["struct_type"] }}">
-                    <a href="/details/{{ $entity["system"]["handle_id"] }}">
+                    <a href="{{ details_link($entity["system"]["handle_id"]) }}">
                         <div class="imageWrapper">
                             <img src="{{ $entity["thumb"] }}" />
                         </div>

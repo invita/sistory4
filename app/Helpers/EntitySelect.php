@@ -380,7 +380,7 @@ class EntitySelect
             $externalCollection = Si4Util::pathArg($source, "data/si4tech/externalCollection", null);
 
             // url
-            $url = $externalCollection ? $externalCollection : "/details/".$handle_id;
+            $url = $externalCollection ? $externalCollection : details_link($handle_id);
 
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];
@@ -458,7 +458,7 @@ class EntitySelect
             $externalCollection = Si4Util::pathArg($source, "data/si4tech/externalCollection", null);
 
             // url
-            $url = $externalCollection ? $externalCollection : "/details/".$handle_id;
+            $url = $externalCollection ? $externalCollection : details_link($handle_id);
 
             $parentKey = $parent ? $parent : "_noparent";
             if (!isset($parentMap[$parentKey])) $parentMap[$parentKey] = [];

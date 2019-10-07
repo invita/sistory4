@@ -75,7 +75,7 @@
                                     @if ($child["system"]["handle_id"] && isset($child["si4"]["creator"]))
                                         <li>
                                             <span>{{ first($child["si4"]["creator"]) }}:</span>
-                                            <a href="/details/{{ $child["system"]["handle_id"] }}">{{ first($child["si4"]["title"]) }}</a>
+                                            <a href="{{ details_link($child["system"]["handle_id"]) }}">{{ first($child["si4"]["title"]) }}</a>
                                         </li>
                                     @endif
                                 @endforeach

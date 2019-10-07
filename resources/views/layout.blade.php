@@ -32,7 +32,7 @@
 
 <body id="si4">
     @if (isset($layoutData) && isset($layoutData["jsData"]))
-        <div id="jsData" class="displayNone"><?php echo $layoutData["jsData"]; ?></div>
+        <div id="jsData" class="displayNone" style="display:none;"><?php echo $layoutData["jsData"]; ?></div>
     @endif
 
     @if (isset($layoutData) && isset($layoutData["topMenuHtml"]))

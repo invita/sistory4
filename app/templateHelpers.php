@@ -17,3 +17,8 @@ function translateSi4Field($si4FieldName) {
     $translateKey = $fieldDefs[$si4FieldName]["translate_key"];
     return __('fe.'.$translateKey);
 }
+
+function details_link($handle_id) {
+    return "/".si4config('handlePrefix')."/".$handle_id;
+    //return "/details/".$handle_id;
+}

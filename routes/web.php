@@ -22,7 +22,8 @@ Route::get('/lang/{lang}', "IndexController@lang")->name("index.lang#get");
 Route::get('/', "IndexController@index")->name("index.index#get");
 Route::get('/search', "SearchController@index")->name("search.index#get");
 Route::get('/advanced-search', "SearchController@advanced")->name("search.advanced#get");
-Route::get('/details/{hdl}', "DetailsController@index")->name("details.index#get");
+Route::get('/'.si4config('handlePrefix').'/{hdl}', "DetailsController@index")->name("details.index#get");
+//Route::get('/details/{hdl}', "DetailsController@index")->name("details.index#get");
 
 Route::get('/ajax/{name}', "AjaxController@index")->name("ajax.index#get");
 
