@@ -83,6 +83,8 @@ class DetailsController extends FrontendController
                     break;
             }
 
+            $data["childStyle"] = $request->query("layout", Si4Util::pathArg($data, "doc/system/child_style", "cards"));
+
         }
 
         // Fill missing data from parent
@@ -112,13 +114,21 @@ class DetailsController extends FrontendController
         //print_r($sort);
 
         // Find children
-        $childData = ElasticHelpers::searchChildren($hdl, 0, SI4_DEFAULT_PAGINATION_SIZE, $sort);
+        $offset = $request->query("offset", 0);
+        $limit = $request->query("limit", SI4_DEFAULT_PAGINATION_SIZE);
+        $childData = ElasticHelpers::searchChildren($hdl, $offset, $limit, $sort);
+        $assocData = $childData["assocData"];
+
         $children = [];
-        foreach ($childData as $child) {
+        foreach ($assocData as $child) {
             //$children[] = DcHelpers::mapElasticEntity($child);
             $children[] = Si4Helpers::getEntityListPresentation($child);
         }
         $data["children"] = $children;
+        $data["totalHits"] = $childData["totalHits"];
+        $data["took"] = $childData["took"];
+        $data["offset"] = $offset;
+        $data["limit"] = $limit;
         //print_r(array_keys($childData));
     }
 
@@ -131,12 +141,20 @@ class DetailsController extends FrontendController
         $sort = ElasticHelpers::elasticSortFromString($searchResultsSort);
 
         // Find children
-        $childData = ElasticHelpers::searchChildren($hdl, 0, SI4_DEFAULT_PAGINATION_SIZE, $sort);
+        $offset = $request->query("offset", 0);
+        $limit = $request->query("limit", SI4_DEFAULT_PAGINATION_SIZE);
+        $childData = ElasticHelpers::searchChildren($hdl, $offset, $limit, $sort);
+        $assocData = $childData["assocData"];
+
         $children = [];
-        foreach ($childData as $child) {
+        foreach ($assocData as $child) {
             $children[] = Si4Helpers::getEntityListPresentation($child);
         }
         $data["children"] = $children;
+        $data["totalHits"] = $childData["totalHits"];
+        $data["took"] = $childData["took"];
+        $data["offset"] = $offset;
+        $data["limit"] = $limit;
 
         $data["files"] = [];
 

@@ -16,8 +16,9 @@ class IndexController extends FrontendController
         $data = [
             "layoutData" => $this->layoutData($request),
             "rootDoc" => $this->getRootDoc(),
-            "indexEntities" => $this->prepareIndexEntities(),
         ];
+
+        $this->prepareIndexEntities($request, $data);
 
         return view('fe.index', $data);
     }
@@ -30,9 +31,12 @@ class IndexController extends FrontendController
         return $rootDetails;
     }
 
-    private function prepareIndexEntities() {
+    private function prepareIndexEntities(Request $request, &$data) {
         $topMenuHandle = ElasticHelpers::getTopMenuHandleId();
-        $assocData = ElasticHelpers::searchChildren($topMenuHandle);
+        $offset = $request->query("offset", 0);
+        $limit = $request->query("limit", SI4_DEFAULT_PAGINATION_SIZE);
+        $childData = ElasticHelpers::searchChildren($topMenuHandle, $offset, $limit);
+        $assocData = $childData["assocData"];
         $result = [];
         foreach ($assocData as $doc) {
             //$result[] = DcHelpers::mapElasticEntity($doc);
@@ -40,6 +44,12 @@ class IndexController extends FrontendController
         }
 
         //print_r($result);
+
+        $data["indexEntities"] = $result;
+        $data["totalHits"] = $childData["totalHits"];
+        $data["took"] = $childData["took"];
+        $data["offset"] = $offset;
+        $data["limit"] = $limit;
 
         return $result;
     }

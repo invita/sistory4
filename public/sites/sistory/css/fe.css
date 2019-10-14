@@ -1,1 +1,211 @@
-#si4 .button{background-color:#833;color:#fff}#si4 .button:hover{background-color:#632525}#si4 .entitySearchWrap.esrCards .searchResult .imageWrapper img{box-shadow:1px 1px 10px -5px #836b6b}#si4 .entitySearchWrap.esrCards .searchResult:hover .imageWrapper img{box-shadow:1px 1px 10px -2px #836b6b}#si4 .entitySearchWrap.esrTable .searchResult{border-bottom:1px solid rgba(136,51,51,.3)}#si4 .entitySearchWrap.esrTable .searchResult:nth-child(odd){background-color:rgba(136,51,51,.02)}#si4 .entitySearchWrap.esrTable .searchResult:nth-child(2n){background-color:rgba(136,51,51,.06)}#si4 .entitySearchWrap.esrTable .searchResult:hover{background-color:rgba(136,51,51,.1)}#si4 .entitySearchWrap.esrTable .searchResult .dataWrapper .match{color:#006;background-color:#ff9}#si4 .searchFormSubmitDropdown{border-left:.5px solid #d04d47}#si4 .searchAutocompleteTerm{color:#833}#si4 .detailsContent .childrenWrap .child:hover{background-color:rgba(136,51,51,.03);border:1px solid rgba(136,51,51,.7)}#si4 .fileDetails .fileName .mime{color:#833}#si4 .si4button{color:#fff;background:#ba1810;transition:background-color .3s ease-out}#si4 .si4button:focus,#si4 .si4button:hover{color:#fff;background:#000}#si4 .accordion{background:#f4f4f4}#si4 .accordion:hover{background:#dcdcdc}#si4 #topMenu{border:none}#si4 #topMenu .ui-widget.ui-widget-content{border:none;color:#fff;background:#333}#si4 #topMenu .ui-state-active{background:#222;border:none;margin:0;color:#fff}#si4 .hc-nav-trigger span,#si4 .hc-nav-trigger span:after,#si4 .hc-nav-trigger span:before{background:#fff}#si4 .hc-nav-trigger{zoom:.75}#si4 .hc-offcanvas-nav li.nav-back a,#si4 .hc-offcanvas-nav li.nav-close a{background:#333;border-color:#666}#si4 .hc-offcanvas-nav .nav-container,#si4 .hc-offcanvas-nav .nav-wrapper,#si4 .hc-offcanvas-nav li.nav-back a:hover,#si4 .hc-offcanvas-nav li.nav-close a:hover,#si4 .hc-offcanvas-nav ul{background:#444;border-color:#666}#si4 .hc-offcanvas-nav .nav-item,#si4 .hc-offcanvas-nav a{border-color:#666}#si4 .breadcrumbs a{color:#303030}#si4 .breadcrumbs a:last-child{color:#833}#si4 .newVersion,#si4 .removedTo{border:1px solid #833;background:#f4f4f4}#si4 .newVersion a,#si4 .removedTo a{color:#833}#si4 .newVersion a:hover,#si4 .removedTo a:hover{text-decoration:underline}#si4 .searchFormContainer input.submit{background-color:#833;color:#fff;border-color:#ccc}#si4 .searchFormContainer input.submit:hover{background-color:#212121}#si4 .searchFormContainer .searchFormSubmit{background-color:#833;color:#fff;border-color:#ccc}#si4 .searchFormContainer .searchFormSubmit:hover{background-color:#212121}#si4 .searchFormContainer .searchFormSubmitDropdown{background-color:#833;color:#fff;border-left-color:#c35e5e}#si4 .searchFormContainer .searchFormSubmitDropdown:hover{background-color:#212121}
+/* Colors */
+
+#si4 {
+  /* Search box */
+  /* si4button */
+  /* accordion */
+}
+
+#si4 .defLink {
+  color: #883333;
+}
+
+#si4 .searchFormContainer {
+  /*
+  border-bottom: $mainColor solid 2px;
+  border-left: $mainColor solid 1px;
+  border-right: $mainColor solid 1px;
+  */
+}
+
+#si4 .button {
+  background-color: #883333;
+  color: white;
+}
+
+#si4 .button:hover {
+  background-color: #632525;
+}
+
+#si4 .entitySearchWrap.esrCards .searchResult .imageWrapper img {
+  box-shadow: 1px 1px 10px -5px #836b6b;
+}
+
+#si4 .entitySearchWrap.esrCards .searchResult:hover .imageWrapper img {
+  box-shadow: 1px 1px 10px -2px #836b6b;
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult {
+  border-bottom: rgba(136, 51, 51, 0.3) solid 1px;
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:nth-child(odd) {
+  background-color: rgba(136, 51, 51, 0.02);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:nth-child(even) {
+  background-color: rgba(136, 51, 51, 0.06);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult:hover {
+  background-color: rgba(136, 51, 51, 0.1);
+}
+
+#si4 .entitySearchWrap.esrTable .searchResult .dataWrapper .match {
+  color: #006;
+  background-color: #FF9;
+}
+
+#si4 .searchFormSubmitDropdown {
+  border-left: #d04d47 solid 0.5px;
+}
+
+#si4 .searchAutocompleteTerm {
+  color: #883333;
+}
+
+#si4 .detailsContent .childrenWrap .child:hover {
+  background-color: rgba(136, 51, 51, 0.03);
+  border: rgba(136, 51, 51, 0.7) solid 1px;
+}
+
+#si4 .fileDetails .fileName .mime {
+  color: #883333;
+}
+
+#si4 .si4button {
+  color: #883333;
+  border: #883333 solid 2px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#si4 .si4button:hover,
+#si4 .si4button:focus {
+  background: #883333;
+  color: white;
+}
+
+#si4 .accordion {
+  background: #f4f4f4;
+}
+
+#si4 .accordion:hover {
+  background: gainsboro;
+}
+
+#si4 #topMenu {
+  border: none;
+}
+
+#si4 #topMenu .ui-widget.ui-widget-content {
+  border: none;
+  color: white;
+  background: #333;
+}
+
+#si4 #topMenu .ui-state-active {
+  background: #222;
+  border: none;
+  margin: 0;
+  color: white;
+}
+
+#si4 .hc-nav-trigger span,
+#si4 .hc-nav-trigger span::before,
+#si4 .hc-nav-trigger span::after {
+  background: white;
+}
+
+#si4 .hc-nav-trigger {
+  zoom: 0.75;
+}
+
+#si4 .hc-offcanvas-nav li.nav-close a,
+#si4 .hc-offcanvas-nav li.nav-back a {
+  background: #333;
+  border-color: #666;
+}
+
+#si4 .hc-offcanvas-nav .nav-container,
+#si4 .hc-offcanvas-nav .nav-wrapper,
+#si4 .hc-offcanvas-nav ul {
+  background: #444;
+  border-color: #666;
+}
+
+#si4 .hc-offcanvas-nav li.nav-close a:hover,
+#si4 .hc-offcanvas-nav li.nav-back a:hover {
+  background: #444;
+  border-color: #666;
+}
+
+#si4 .hc-offcanvas-nav a,
+#si4 .hc-offcanvas-nav .nav-item {
+  border-color: #666;
+}
+
+#si4 .breadcrumbs a {
+  color: #303030;
+}
+
+#si4 .breadcrumbs a:last-child {
+  color: #883333;
+}
+
+#si4 .newVersion,
+#si4 .removedTo {
+  border: 1px solid #883333;
+  background: #f4f4f4;
+}
+
+#si4 .newVersion a,
+#si4 .removedTo a {
+  color: #883333;
+}
+
+#si4 .newVersion a:hover,
+#si4 .removedTo a:hover {
+  text-decoration: underline;
+}
+
+#si4 .searchFormContainer input.submit {
+  background-color: #883333;
+  color: white;
+  border-color: #ccc;
+}
+
+#si4 .searchFormContainer input.submit:hover {
+  background-color: #212121;
+}
+
+#si4 .searchFormContainer .searchFormSubmit {
+  background-color: #BA1810;
+  color: white;
+  border-color: #ccc;
+}
+
+#si4 .searchFormContainer .searchFormSubmit:hover {
+  background-color: #5c0c08;
+}
+
+#si4 .searchFormContainer .searchFormSubmitDropdown {
+  background-color: #883333;
+  color: white;
+  border-left-color: #c35e5e;
+}
+
+#si4 .searchFormContainer .searchFormSubmitDropdown:hover {
+  background-color: #212121;
+}
+
+#si4 .childPagination a.pagLink,
+#si4 .childPagination span.pagLink {
+  color: #883333;
+}
+
+#si4 .childPagination span.currentPage {
+  background-color: #883333;
+  color: white;
+}
+

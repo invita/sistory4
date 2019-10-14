@@ -37,6 +37,10 @@
             <div class="detailsContent">
                 <div class="contentWrap">
 
+                    @if ($data["children"])
+                        @include('fe.includes.resultsInfo', [ "childStyle" => $data["childStyle"], "took" => $data["took"], "totalHits" => $data["totalHits"]])
+                    @endif
+
                     <div class="detailsDcField detailsDcTitle">
                         <h3>{{ first($data["doc"]["si4"]["title"]) }}</h3>
                     </div>
@@ -60,8 +64,10 @@
                         @endif
                     @endforeach
 
-
-                    @include('fe.includes.entitySearchResults', ["entities" => $data["children"], "style" => $data["doc"]["system"]["child_style"]])
+                    @if ($data["children"])
+                        @include('fe.includes.entitySearchResults', ["entities" => $data["children"], "style" => $data["childStyle"]])
+                        @include('fe.includes.paginator', ["offset" => $data["offset"], "limit" => $data["limit"], "totalHits" => $data["totalHits"]])
+                    @endif
                 </div>
             </div>
 

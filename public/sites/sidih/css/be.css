@@ -1,1 +1,124 @@
-div.formTitle,div.mainTitle,div.statusDiv{color:#683}div.errorDiv{color:#966}span.loginName{color:#683}.gradRed{color:#fff}.gradRed,.gradRedA:active,.gradRedH:hover{background:#683;background:linear-gradient(180deg,#683 28%,#000222);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="$mainColor",endColorstr="#000222",GradientType=0)}.gradBrown{color:#fff}.gradBrown,.gradBrownA:active,.gradBrownH:hover{background:#606c4f;background:linear-gradient(180deg,#606c4f 28%,#181921);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="desaturate($mainColor, 30%)",endColorstr="#181921",GradientType=0)}.gradGray{color:#fff}.gradGray,.gradGrayA:active,.gradGrayH:hover{background:#888;background:linear-gradient(180deg,#888 28%,#181921);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#888888",endColorstr="#181921",GradientType=0)}
+/* Colors */
+
+div.mainTitle {
+  color: #668833;
+}
+
+div.formTitle {
+  color: #668833;
+}
+
+div.statusDiv {
+  color: #668833;
+}
+
+div.errorDiv {
+  color: #996666;
+}
+
+span.loginName {
+  color: #668833;
+}
+
+.gradRed {
+  background: #668833;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #668833 28%, #000222 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="$mainColor", endColorstr="#000222",GradientType=0 );
+  /* IE6-9 */
+  color: white;
+}
+
+.gradRedH:hover {
+  background: #668833;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #668833 28%, #000222 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="$mainColor", endColorstr="#000222",GradientType=0 );
+  /* IE6-9 */
+}
+
+.gradRedA:active {
+  background: #668833;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #668833 28%, #000222 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="$mainColor", endColorstr="#000222",GradientType=0 );
+  /* IE6-9 */
+}
+
+.gradBrown {
+  background: #606c4f;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #606c4f 28%, #181921 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="desaturate($mainColor, 30%)", endColorstr="#181921",GradientType=0 );
+  /* IE6-9 */
+  color: white;
+}
+
+.gradBrownH:hover {
+  background: #606c4f;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #606c4f 28%, #181921 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="desaturate($mainColor, 30%)", endColorstr="#181921",GradientType=0 );
+  /* IE6-9 */
+}
+
+.gradBrownA:active {
+  background: #606c4f;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #606c4f 28%, #181921 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="desaturate($mainColor, 30%)", endColorstr="#181921",GradientType=0 );
+  /* IE6-9 */
+}
+
+.gradGray {
+  background: #888888;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #888888 28%, #181921 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#888888", endColorstr="#181921",GradientType=0 );
+  /* IE6-9 */
+  color: white;
+}
+
+.gradGrayH:hover {
+  background: #888888;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #888888 28%, #181921 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#888888", endColorstr="#181921",GradientType=0 );
+  /* IE6-9 */
+}
+
+.gradGrayA:active {
+  background: #888888;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #888888 28%, #181921 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#888888", endColorstr="#181921",GradientType=0 );
+  /* IE6-9 */
+}
+

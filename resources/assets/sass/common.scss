@@ -11,6 +11,8 @@
 .mb-2 { margin-bottom: 2rem; }
 .mb-3 { margin-bottom: 3rem; }
 
+.pt-1 { padding-top: 1rem; }
+
 .flex { display: flex; flex-direction: column; }
 .flexRow { display: flex; flex-direction: row; }
 .flexResponsive {
@@ -439,9 +441,11 @@ input:checked + #collectionSearchIndicator {
   color: gray;
 }
 .fileList .fileDetails .fileDownload {
+  /*
   margin-bottom: 15px;
   margin-left: 20px;
   margin-top: 10px;
+  */
 }
 
 .fileDetails {
@@ -495,9 +499,12 @@ input:checked + #collectionSearchIndicator {
 /* si4button */
 .si4button {
   //border-radius: 5px;
-  padding: 6px 15px;
+  padding: 8px 20px;
   margin-top: 10px;
   cursor: pointer;
+  text-transform: uppercase;
+  line-height: 45px;
+  font-size: 14px;
 }
 .si4button:hover, .si4button:focus {
 }
@@ -664,7 +671,11 @@ input:checked + #collectionSearchIndicator {
 }
 
 .bottomMenuWrap .footerText {
+  font-size: 12px;
+}
 
+.bottomMenuWrap .footerBorder {
+  border-top: #ddd solid 1px;
 }
 
 
@@ -848,6 +859,69 @@ input:checked + #collectionSearchIndicator {
     }
   }
 }
+
+.childPagination {
+  text-align: center;
+  margin: 40px 0 10px 0;
+  a.pagLink, span.pagLink {
+    padding: 5px 10px;
+    margin: 5px 2px;
+  }
+  span.pagLink {
+    cursor: default;
+  }
+  span.currentPage {
+    font-weight: bold;
+  }
+
+}
+
+.resultsInfo {
+  float: right;
+  text-align: right;
+  margin-right: 12px;
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    .btn {
+      border-radius: 5px;
+      //border: silver solid 1px;
+      //box-shadow: silver 0 0 1px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 2px;
+      img {
+        margin: 6px;
+        width: 20px;
+        opacity: 0.5;
+      }
+    }
+    .btn.active {
+      img {
+        opacity: 0.8;
+      }
+    }
+    .btn:hover {
+      box-shadow: silver 0 0 2px;
+      img {
+        opacity: 0.8;
+      }
+    }
+  }
+  .infoText1 {
+    color: #888;
+    font-size: 12px;
+  }
+  .infoText2 {
+    color: #c9c9c9;
+    font-size: 12px;
+  }
+}
+
 
 /*
   .detailsContent .childrenWrap {

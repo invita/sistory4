@@ -145,9 +145,9 @@
                 </div>
             </div>
 
-            <div class="row mt-1 mb-2">
+            <div class="row mt-1 mb-2 pt-1 footerBorder">
                 <div class="medium-12 columns">
-                    <span class="footerText">{{ __("fe.footer_footerText") }}</span>
+                    <span class="footerText">{{ __("fe.footer_footerText") }} <a class="defLink" href="http://www.invita.si/">Invita</a></span>
                 </div>
             </div>
 

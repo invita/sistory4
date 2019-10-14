@@ -1,5 +1,9 @@
-
 @if ($entities)
+
+    <!--
+    include('fe.includes.entitySearchResults', ["entities" => $data["children"], "style" => $data["doc"]["system"]["child_style"]])
+    -->
+
     <div class="entitySearchWrap esr{{ucfirst($style)}}">
         @foreach($entities as $entity)
             @if ($style == "cards")

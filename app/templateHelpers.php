@@ -22,3 +22,12 @@ function details_link($handle_id) {
     return "/".si4config('handlePrefix')."/".$handle_id;
     //return "/details/".$handle_id;
 }
+
+function si4link($path = "", $params = []) {
+    $newParamsArr = array_merge([], request()->query(), $params);
+    if (!count($newParamsArr)) return $path;
+
+    $newParamsStr = [];
+    foreach ($newParamsArr as $k => $v) $newParamsStr[] = $k."=".$v;
+    return $path."?".join("&", $newParamsStr);
+}

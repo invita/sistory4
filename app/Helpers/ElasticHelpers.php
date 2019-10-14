@@ -1182,7 +1182,13 @@ HERE;
 
         //print_r($dataElastic);
 
-        return self::elasticResultToAssocArray($dataElastic);
+        $assocData = self::elasticResultToAssocArray($dataElastic);
+
+        return [
+            "took" => Si4Util::pathArg($dataElastic, "took", 0),
+            "totalHits" => Si4Util::pathArg($dataElastic, "hits/total", 0),
+            "assocData" => $assocData,
+        ];
         // self::mergeElasticResultAndIdArray($dataElastic, $idArray);
     }
 

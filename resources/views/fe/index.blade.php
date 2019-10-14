@@ -19,6 +19,9 @@
                     @endif
 
                     @include('fe.includes.entitySearchResults', ["entities" => $indexEntities, "style" => $rootDoc["system"]["child_style"]])
+                    @if ($indexEntities)
+                        @include('fe.includes.paginator', ["offset" => $offset, "limit" => $limit, "totalHits" => $totalHits])
+                    @endif
                 </div>
             </div>
 

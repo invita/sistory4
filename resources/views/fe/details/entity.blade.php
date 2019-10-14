@@ -99,13 +99,17 @@
                                 <?php /* print_r($file); */ ?>
                                 <div class="fileDetails">
                                     <div class="flexRow flexAlignEnd">
-                                        <a href="{{ $file["detailsUrl"]}}" {{ $file["isExternal"] ? 'target=_blank' : '' }}>
-                                            <div class="flexRow">
-                                                <div>
+                                        <div class="flexRow">
+                                            <div>
+                                                <a href="{{ $file["detailsUrl"]}}" {{ $file["isExternal"] ? 'target=_blank' : '' }}>
                                                     <img class="fileThumb iiifImage" src="{{ $file["thumbUrl"] }}" />
-                                                </div>
-                                                <div class="fileContent">
-                                                    <div class="fileName">{{ $file["fileName"] }}</div>
+                                                </a>
+                                            </div>
+
+                                            <div class="fileContent">
+                                                <a href="{{ $file["detailsUrl"]}}" {{ $file["isExternal"] ? 'target=_blank' : '' }}>
+                                                    <div class="defLink fileName">{{ $file["fileName"] }}</div>
+
                                                     @if ($file["displayCreated"])
                                                         <div class="created">{{ __('fe.details_fileCreated') }}: {{ $file["displayCreated"] }}</div>
                                                     @endif
@@ -135,17 +139,18 @@
                                                             <source src="{{ $file["detailsUrl"] }}">
                                                         </video>
                                                     @endif
-                                                </div>
-                                            </div>
-                                        </a>
-
-                                        @if (!$file["isExternal"])
-                                            <div class="fileDownload">
-                                                <a class="si4button download" href="{{ $file["downloadUrl"] }}" target="_blank">
-                                                    {{ __('fe.details_fileOpen') }}
                                                 </a>
+
+                                                @if (!$file["isExternal"])
+                                                    <div class="fileDownload">
+                                                        <a class="si4button download" href="{{ $file["downloadUrl"] }}" target="_blank">
+                                                            {{ __('fe.details_fileOpen') }}
+                                                        </a>
+                                                    </div>
+                                                @endif
                                             </div>
-                                        @endif
+                                        </div>
+
                                     </div>
                                 </div>
                             @endif

@@ -2,6 +2,10 @@
 $mainColor: #883333;
 
 #si4 {
+  .defLink {
+    color: $mainColor;
+  }
+
   /* Search box */
   .searchFormContainer {
     /*
@@ -68,22 +72,14 @@ $mainColor: #883333;
   }
   /* si4button */
   .si4button {
-    color: white;
-    background: #BA1810;
-    transition: background-color 300ms ease-out;
-    //cursor: pointer;
-    //padding: 6px 15px;
-    //margin-top: 10px;
-    //border: silver solid 1px;
-    //border-radius: 5px;
-    //background: -moz-linear-gradient(top, rgba($mainColor,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-    //background: -webkit-linear-gradient(top, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    //background: linear-gradient(to bottom, rgba($mainColor,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#338e130b', endColorstr='#006d0019',GradientType=0 ); /* IE6-9 */
+    color: $mainColor;
+    border: $mainColor solid 2px;
+    border-radius: 5px;
+    font-weight: bold;
   }
   .si4button:hover, .si4button:focus {
+    background: $mainColor;
     color: white;
-    background: black;
   }
   /* accordion */
   .accordion {
@@ -176,11 +172,11 @@ $mainColor: #883333;
     }
 
     .searchFormSubmit {
-      background-color: $mainColor;
+      background-color: #BA1810;
       color: white;
       border-color: #ccc;
       &:hover {
-        background-color: #212121;
+        background-color: darken(#BA1810, 20%);
       }
     }
     .searchFormSubmitDropdown {
@@ -194,4 +190,16 @@ $mainColor: #883333;
     }
   }
 
+  .childPagination {
+    a.pagLink, span.pagLink {
+      color: $mainColor;
+    }
+    span.currentPage {
+      background-color: $mainColor;
+      color: white;
+    }
+  }
+
 }
+
+
