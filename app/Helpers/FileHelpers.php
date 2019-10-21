@@ -14,7 +14,8 @@ class FileHelpers
     // $handleId -> file's parent handle_id
     public static function getPreviewUrl($handleId, $structType, $fileName) {
         $storageName = self::getStorageName($handleId, $fileName);
-        return "/storage/preview?path=".$storageName;
+        //return "/storage/preview?path=".$storageName;
+        return "/cdn/".$handleId."/".$fileName;
     }
 
     // $handleId -> file's parent handle_id

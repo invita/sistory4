@@ -104,12 +104,15 @@ class ThumbsCreate extends Command
                         $imInput = $fullPath;
                         if (strtolower($ext) == "pdf") $imInput .= "[0]";
                         $image = new \Imagick($imInput);
-                        $image->setResolution(320, 0);
-                        $image->setCompressionQuality(85);
+                        //$image->setResolution(320, 200);
+                        $image->thumbnailImage(320, 320, true);
                         $image->setImageFormat('jpeg');
+                        $image->setCompressionQuality(85);
+                        //$this->info("Size: ".$image->getImageWidth().",".$image->getImageHeight());
                         $image->writeImage($fullPath.SI4_THUMB_FILE_POSTFIX);
                         $image->clear();
                         $image->destroy();
+                        $this->info("  output: ".$fullPath.SI4_THUMB_FILE_POSTFIX);
                         break;
                 }
             } else {

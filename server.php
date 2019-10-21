@@ -19,3 +19,13 @@ if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
 }
 
 require_once __DIR__.'/public/index.php';
+
+/*
+//if (file_exists(__DIR__ . '/' . $_SERVER['REQUEST_URI'])) {
+$uri = $_SERVER['REQUEST_URI'];
+if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
+    return false;
+} else {
+    include_once __DIR__.'/public/index.php';
+}
+*/

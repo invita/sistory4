@@ -211,6 +211,8 @@ class Entities extends Controller
 
         $entity = Entity::find($id);
 
+
+
         $hdlElasticData = ElasticHelpers::searchByHandleArray([$entity->handle_id]);
         $hdlDocData = $hdlElasticData[array_keys($hdlElasticData)[0]];
         $hdlDoc = Si4Helpers::getEntityListPresentation($hdlDocData);

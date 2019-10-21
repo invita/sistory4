@@ -38,6 +38,7 @@ Route::get('/storage/preview', "StorageController@preview")->name("storage.previ
 Route::get('/storage/mets', "StorageController@mets")->name("storage.mets#get");
 Route::get('/xsd/{name}', "XsdController@index")->name("xsd.index#get");
 
+Route::get('/cdn/{hdl}/{file}', "CdnController@index")->name("cdn.index#get");
 
 
 // *** Admin ***
