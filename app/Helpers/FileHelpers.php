@@ -133,4 +133,26 @@ class FileHelpers
         if (isset(self::$mimeTypes[$extLower])) return self::$mimeTypes[$extLower];
         return "";
     }
+
+    public static function getStructTypeAndNumFromHandleId($handleId) {
+        $prefix = substr($handleId, 0, 4);
+        if ($prefix == "file") {
+            $type = "file";
+            $num = intval(str_replace("file", "", $handleId));
+        } else if ($prefix == "menu") {
+            $type = "menu";
+            $num = intval(str_replace("menu", "", $handleId));
+        } else if (is_numeric($handleId)) {
+            $type = "entity";
+            $num = intval($handleId);
+        } else {
+            $type = null;
+            $num = null;
+        }
+
+        return [
+            "type" => $type,
+            "num" => $num
+        ];
+    }
 }

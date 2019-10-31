@@ -137,13 +137,57 @@ class UploadController extends Controller
         $result["fileList"] = [];
         for ($i = 0; $i < $maxBucket +1; $i++) {
             if (isset($sortBuckets[$i])) {
-                sort($sortBuckets[$i]);
+                usort($sortBuckets[$i], array($this, 'zipFilesSortFunction'));
                 $result["fileList"] = array_merge($result["fileList"], $sortBuckets[$i]);
             }
         }
 
         //print_r($result);
         return $result;
+    }
+
+    private static $structTypeSortMap = [
+        "menu" => 3,
+        "entity" => 2,
+        "file" => 1
+    ];
+    private function zipFilesSortFunction($e1, $e2) {
+
+        // Example: files/sidih/menuTop/menu1/menu2/menu3/1/file1/mets.xml
+
+        $rpos1 = strrpos($e1, "/", -10);
+        $rpos2 = strrpos($e2, "/", -10);
+
+        $path1 = substr($e1, 0, $rpos1);
+        $path2 = substr($e2, 0, $rpos2);
+
+        $pathsCmp = strcmp($path1, $path2);
+
+        // If paths are not equal, return sort by paths
+        if ($pathsCmp !== 0) return $pathsCmp;
+
+        // Paths are equal.
+        // Extract last handle in original path before mets.xml
+
+        $e1h = substr($e1, $rpos1 +1, -9); // file2
+        $e2h = substr($e2, $rpos2 +1, -9); // file10
+
+        // Get type and num from both handles (i.e. file11 gives type=file and num=11)
+        $e1tn = FileHelpers::getStructTypeAndNumFromHandleId($e1h);
+        $e2tn = FileHelpers::getStructTypeAndNumFromHandleId($e2h);
+
+        if ($e1tn["type"] == null) return 1;
+        if ($e2tn["type"] == null) return -1;
+
+        // Compare by type: menu > entity > file
+        $e1tv = self::$structTypeSortMap[$e1tn["type"]];
+        $e2tv = self::$structTypeSortMap[$e2tn["type"]];
+        $typeCmp = $e1tv - $e2tv;
+        if ($typeCmp !== 0) return $typeCmp;
+
+        // Types are the same, compare by num
+        $numCmp = $e1tn["num"] - $e2tn["num"];
+        return $numCmp;
     }
 
     public function importCheck(Request $request) {
