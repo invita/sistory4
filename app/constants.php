@@ -1,4 +1,5 @@
 <?php
 
 const SI4_DEFAULT_PAGINATION_SIZE = 20;
+const SI4_PAGINATION_MAX_SIZE = 10000;
 const SI4_THUMB_FILE_POSTFIX = ".thumb.jpg";

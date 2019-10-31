@@ -161,7 +161,7 @@ class DetailsController extends FrontendController
         $internalFiles = ElasticHelpers::makeHandleIdMap(ElasticHelpers::searchMust([
             "parent" => $hdl,
             "struct_type" => "file"
-        ]));
+        ], 0, SI4_PAGINATION_MAX_SIZE));
         //print_r($internalFiles);
 
         $files = Si4Util::pathArg($docData, "_source/data/files", []);
