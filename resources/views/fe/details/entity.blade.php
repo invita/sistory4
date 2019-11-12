@@ -70,7 +70,6 @@
                     @if ($data["children"] && count($data["children"]))
                         <div class="detailsChildren">
                             <div class="childrenText">{{ __('fe.details_childEntities') }}</div>
-                            <?php print_r($data["children"]); ?>
                             <ul class="entityChildren">
                                 @foreach ($data["children"] as $child)
                                     <li>
