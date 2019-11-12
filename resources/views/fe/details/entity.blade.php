@@ -70,14 +70,19 @@
                     @if ($data["children"] && count($data["children"]))
                         <div class="detailsChildren">
                             <div class="childrenText">{{ __('fe.details_childEntities') }}</div>
+                            <?php print_r($data["children"]); ?>
                             <ul class="entityChildren">
                                 @foreach ($data["children"] as $child)
-                                    @if ($child["system"]["handle_id"] && isset($child["si4"]["creator"]))
-                                        <li>
+                                    <li>
+                                        @if (isset($child["si4"]["creator"]))
                                             <span>{{ first($child["si4"]["creator"]) }}:</span>
+                                        @endif
+                                        @if ($child["system"]["handle_id"])
                                             <a href="{{ details_link($child["system"]["handle_id"]) }}">{{ first($child["si4"]["title"]) }}</a>
-                                        </li>
-                                    @endif
+                                        @else
+                                            <a>{{ first($child["si4"]["title"]) }}</a>
+                                        @endif
+                                    </li>
                                 @endforeach
                             </ul>
                             <?php /* print_r($data["children"]); */ ?>
