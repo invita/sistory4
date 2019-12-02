@@ -147,10 +147,16 @@ class DetailsController extends FrontendController
         $assocData = $childData["assocData"];
 
         $children = [];
+        $hasEntityChildren = false;
         foreach ($assocData as $child) {
-            $children[] = Si4Helpers::getEntityListPresentation($child);
+            $childData = Si4Helpers::getEntityListPresentation($child);
+            $children[] = $childData;
+
+            $childStructType = Si4Util::pathArg($childData, "system/struct_type", "entity");
+            if ($childStructType === "entity") $hasEntityChildren = true;
         }
         $data["children"] = $children;
+        $data["hasEntityChildren"] = $hasEntityChildren;
         $data["totalHits"] = $childData["totalHits"];
         $data["took"] = $childData["took"];
         $data["offset"] = $offset;

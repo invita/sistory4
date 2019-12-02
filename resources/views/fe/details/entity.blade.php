@@ -67,7 +67,7 @@
                         @endif
                     @endforeach
 
-                    @if ($data["children"] && count($data["children"]))
+                    @if (isset($data["hasEntityChildren"]) && $data["hasEntityChildren"])
                         <div class="detailsChildren">
                             <div class="childrenText">{{ __('fe.details_childEntities') }}</div>
                             <ul class="entityChildren">
