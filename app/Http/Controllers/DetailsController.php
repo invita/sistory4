@@ -116,12 +116,12 @@ class DetailsController extends FrontendController
         // Find children
         $offset = $request->query("offset", 0);
         $limit = $request->query("limit", SI4_DEFAULT_PAGINATION_SIZE);
+
         $childData = ElasticHelpers::searchChildren($hdl, $offset, $limit, $sort);
         $assocData = $childData["assocData"];
 
         $children = [];
         foreach ($assocData as $child) {
-            //$children[] = DcHelpers::mapElasticEntity($child);
             $children[] = Si4Helpers::getEntityListPresentation($child);
         }
         $data["children"] = $children;
@@ -142,7 +142,7 @@ class DetailsController extends FrontendController
 
         // Find children
         $offset = $request->query("offset", 0);
-        $limit = $request->query("limit", SI4_DEFAULT_PAGINATION_SIZE);
+        $limit = $request->query("limit", SI4_PAGINATION_MAX_SIZE);
         $childData = ElasticHelpers::searchChildren($hdl, $offset, $limit, $sort);
         $assocData = $childData["assocData"];
 

@@ -72,16 +72,18 @@
                             <div class="childrenText">{{ __('fe.details_childEntities') }}</div>
                             <ul class="entityChildren">
                                 @foreach ($data["children"] as $child)
-                                    <li>
-                                        @if (isset($child["si4"]["creator"]))
-                                            <span>{{ first($child["si4"]["creator"]) }}:</span>
-                                        @endif
-                                        @if ($child["system"]["handle_id"])
-                                            <a href="{{ details_link($child["system"]["handle_id"]) }}">{{ first($child["si4"]["title"]) }}</a>
-                                        @else
-                                            <a>{{ first($child["si4"]["title"]) }}</a>
-                                        @endif
-                                    </li>
+                                    @if ($child["system"]["struct_type"] === "entity")
+                                        <li>
+                                            @if (isset($child["si4"]["creator"]))
+                                                <span>{{ first($child["si4"]["creator"]) }}:</span>
+                                            @endif
+                                            @if ($child["system"]["handle_id"])
+                                                <a href="{{ details_link($child["system"]["handle_id"]) }}">{{ first($child["si4"]["title"]) }}</a>
+                                            @else
+                                                <a>{{ first($child["si4"]["title"]) }}</a>
+                                            @endif
+                                        </li>
+                                    @endif
                                 @endforeach
                             </ul>
                             <?php /* print_r($data["children"]); */ ?>
