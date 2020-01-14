@@ -568,6 +568,28 @@ class Entity extends Model
         return $valid;
     }
 
+    public function save(array $options = array())
+    {
+        parent::save($options);
+        $this->backupXml();
+    }
 
+    public function backupXml() {
+        $hierarchy = $this->findParentHierarchy()['data'];
+        $filePath = env('SI4_BACKUP_DIR');
+        
+        $parent = $hierarchy;
+        foreach($hierarchy as $parent)
+            $filePath .= '/' . $parent['handle_id'];
 
+        $filePath .= "/mets.xml";
+        $filePath = str_replace("//", "/", $filePath);
+        
+        // Ensure directory structure
+        if(!file_exists(dirname($filePath))) {
+            mkdir(dirname($filePath), 0777, true);
+        }
+        
+        file_put_contents($filePath, $this->xml);
+    }
 }

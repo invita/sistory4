@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\ExportEntities::class,
         Commands\ReindexRecreate::class,
         Commands\ReindexEntity::class,
         Commands\ReindexEntities::class,
