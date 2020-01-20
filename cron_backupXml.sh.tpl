@@ -1,7 +1,6 @@
 #!/bin/bash
 cd /var/www/sistory4/backup
 
-DIR=./backup/
 LOCK_FILE=".backup_lock"
 FORMAT='+%Y-%m-%d %H:%M:%S'
 
