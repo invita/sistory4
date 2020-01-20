@@ -12,5 +12,6 @@ touch $LOCK_FILE
 
 git add *
 git commit -m "Automatic backup  $(date "$FORMAT")"
+git push -u origin master
 
 rm $LOCK_FILE

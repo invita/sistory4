@@ -576,7 +576,7 @@ class Entity extends Model
 
     public function backupXml() {
         $hierarchy = $this->findParentHierarchy()['data'];
-        $filePath = env('SI4_BACKUP_DIR');
+        $filePath = env('SI4_BACKUP');
         
         $parent = $hierarchy;
         foreach($hierarchy as $parent)

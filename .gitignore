@@ -23,4 +23,5 @@ out.txt
 npm-debug.log
 cron_reindexFullText.sh
 cron_generateThumbnails.sh
+cron_backupXml.sh
 
