@@ -575,21 +575,21 @@ class Entity extends Model
     }
 
     public function backupXml() {
-        $hierarchy = $this->findParentHierarchy()['data'];
-        $filePath = env('SI4_BACKUP');
+        $hierarchy = $this->findParentHierarchy()["data"];
+        $filePath = env("SI4_BACKUP");
         
         $parent = $hierarchy;
         foreach($hierarchy as $parent)
-            $filePath .= '/' . $parent['handle_id'];
+            $filePath .= "/" . $parent["handle_id"];
 
-        $filePath .= "/mets.xml";
+        $filePath .= "/" . $this->handle_id . "/mets.xml";
         $filePath = str_replace("//", "/", $filePath);
         
         // Ensure directory structure
         if(!file_exists(dirname($filePath))) {
             mkdir(dirname($filePath), 0777, true);
         }
-        
+
         file_put_contents($filePath, $this->xml);
     }
 }
