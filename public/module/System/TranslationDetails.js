@@ -7,8 +7,8 @@ var F = function(args){
     var rowValue = args.row ? args.row : {};
     if (!rowValue.id) rowValue.id = "";
     if (!rowValue.key) rowValue.key = "";
-    if (!rowValue.language) rowValue.language = "";
-    if (!rowValue.module) rowValue.module = "";
+    if (!rowValue.language) rowValue.language = args.staticData.language;
+    if (!rowValue.module) rowValue.module = args.staticData.module;
     if (!rowValue.value) rowValue.value = "";
 
     var panel = new si4.widget.si4Panel({parent:args.contentTab.content.selector});
@@ -17,8 +17,8 @@ var F = function(args){
     var actionsForm = new si4.widget.si4Form({parent:panelGroup.content.selector, captionWidth:"90px" });
 
     var fieldId = actionsForm.addInput({name:"id", value:rowValue.id, type:"hidden"});
-    var fieldModule = actionsForm.addInput({name:"module", value:rowValue.module, type:"hidden"});
-    var fieldLanguage = actionsForm.addInput({name:"language", value:rowValue.language, type:"hidden"});
+    var fieldModule = actionsForm.addInput({name:"module", value:rowValue.module, type:"text", readOnly: true});
+    var fieldLanguage = actionsForm.addInput({name:"language", value:rowValue.language, type:"text", readOnly: true});
 
     var fieldKey = actionsForm.addInput({name:"key", value:rowValue.key, type:"text", caption:si4.translate("field_key"), readOnly: rowValue.id ? true : false});
     var fieldName = actionsForm.addInput({name:"value", value:rowValue.value, type:"text", caption:si4.translate("field_value")});
