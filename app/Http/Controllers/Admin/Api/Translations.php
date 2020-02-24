@@ -47,6 +47,8 @@ class Translations extends Controller
 
         if ($id) {
             $translation = Translation::find($id);
+            $translation->language = $language;
+            $translation->module = $module;
             $translation->value = $value;
             $translation->save();
         } else {
