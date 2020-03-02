@@ -2,8 +2,8 @@
 return [
     "siteName" => "Sidih",
     "siteUrl" => "https://sidih.si",
-    //"handlePrefix" => "20.500.12325",
-    "handlePrefix" => "12325",
+    "handlePrefix" => "20.500.12325",
+    //"handlePrefix" => "12325",
     "defaultLang" => "slv",
     "oai_identifyInfo" => array(
         "repositoryName" => "Sidih.si OAI Repository",
